@@ -1,0 +1,45 @@
+<div bsModal #modal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form *ngIf="active" #createcountryForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">
+                        <span *ngIf="enquiryStatus.id">{{l("Edit Stage")}}: {{enquiryStatus.enqStatusName}}</span>
+                        <span *ngIf="!enquiryStatus.id">{{l("Create Stage")}}</span>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                        <input #nameInput class="form-control" type="text" name="code" [ngClass]="{'edited':enquiryStatus.enqStatusCode}" [(ngModel)]="enquiryStatus.enqStatusCode" required>
+                        <label>{{l("Stage Code")}} <required_field></required_field></label>
+                    </div>
+
+                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                        <input class="form-control" type="text" name="name" [ngClass]="{'edited':enquiryStatus.enqStatusName}" [(ngModel)]="enquiryStatus.enqStatusName" required>
+                        <label>{{l("Stage Name")}} <required_field></required_field></label>
+                    </div>
+                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                            <input class="form-control" type="text" name="percentage" [ngClass]="{'edited':enquiryStatus.percentage}" [(ngModel)]="enquiryStatus.percentage">
+                            <label>{{l("Percentage")}} <required_field></required_field></label>
+                        </div>
+                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                        <input class="form-control" type="text" name="enqStatusColor" [ngClass]="{'edited':enquiryStatus.enqStatusColor}" [(ngModel)]="enquiryStatus.enqStatusColor" required>
+                        <label>{{l("Color Code")}} <required_field></required_field></label>
+                    </div>
+                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                            <label>{{l("Stage Status")}}</label>
+                            <ng-select [active]="active_state" [allowClear]="true" [items]="stageState" (selected)="selectedState($event)" (removed)="removeState($event)"  placeholder="Select StageState">
+                            </ng-select>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!createcountryForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

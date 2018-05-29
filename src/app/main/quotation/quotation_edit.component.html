@@ -1,0 +1,613 @@
+<div [busyIf]="loading" class="container" style="width:100%;margin-bottom: 25px;">
+        <div class="modal-header">
+                <a class="close" tooltip="Close" (click)="goToQuotation()">
+                        <i class="fa fa-times" style="color:red;"></i>
+                </a>
+                <a (click)="goToEnquiry()" tooltip="Go To Enquiry" style="float: right;margin-right: 15px;margin-top: -7px;color:black;">
+                   <i class="fa fa-external-link" ></i>
+                </a>
+                <h4 class="modal-title">
+                    <span *ngIf="id"> <span *ngIf="quotationList.optional" style="color: red;font-weight: 600;">STSTEM GENERATED :</span> &nbsp;{{quotation.refNo}} - {{quotationList.inquiryName}}</span>
+                </h4>
+            </div>
+    <tabset  class="tab-container tabbable-line"  >
+            <tab heading="Quotation Details">
+                    <div class="col-xs-12" style="margin-top: -32px;">
+                <h3 class="head_qt">
+                        <div class="actions" style="display: inline;">
+                            <div class="btn-group mydropdown">
+                                <a class="btn green-haze btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false"> Preview
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu text-right">
+                                    <li>
+                                        <a href="javascript:;" (click)="quot_preview(1)">Standard</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" (click)="quot_preview(4)">Standard Optional</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" (click)="quot_preview(2)">PhotoEmphasis</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" (click)="quot_preview(3)">Product Category</a>
+                                    </li>
+                                </ul>
+                            </div>
+                                <button type="button" (click)="sendDiscountMail()" tooltip="Discount Mail" *ngIf="quotationList.discountEmail" class="btn btn-circle btn-icon-only green edit-person" style="margin-left: 15px;">
+                                    <i class="fa fa-share"></i>
+                                </button>
+                                  <button  [ngClass]="{'no-edit':quotationList.submitted}" type="button" *ngIf="isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.ImportProduct')" (click)="productUpload()" tooltip="{{l('Import Product')}}" class="btn btn-circle btn-icon-only green edit-person" style="margin-left: 15px;">
+                                    <i class="fa fa-upload"></i>
+                                </button>
+                                <button  [ngClass]="{'no-edit':quotationList.submitted}" type="button" *ngIf="isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.AddSection')" (click)="createSection()" tooltip="{{l('Add Section')}}" class="btn btn-circle btn-icon-only green edit-person">
+                                    <i class="fa fa-code"></i>
+                                </button>
+                                <button  [ngClass]="{'no-edit':quotationList.submitted}" type="button" *ngIf="isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.AddQuotationProduct')" (click)="createQuotationProduct()" tooltip="{{l('Add Quotation Product')}}" class="btn btn-circle btn-icon-only white delete-person" >
+                                    <i class="fa fa-plus"></i>
+                                </button>  
+                                <button  [ngClass]="{'no-edit':quotationList.submitted}" type="button" *ngIf="isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.AddQuotationProduct')" (click)="setDiscount()" tooltip="{{l('Set Discount')}}" class="btn btn-circle btn-icon-only white delete-person" >
+                                    <i class="fa fa-eyedropper" aria-hidden="true"></i>
+                                </button>  
+                                <button type="button" (click)="discountApproveAll()" tooltip="Discount Approve" *ngIf="quotationList.discountEmail && isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.DiscountApprove')" class="btn btn-circle btn-icon-only green edit-person" style="margin-left: 15px;">
+                                    <i class="fa fa-thumbs-o-up"></i>
+                                </button>
+                                 
+                                <img *ngIf="quotationList.designerImage" tooltip="Designer : {{quotationList.designerName}}" style="border: 2px solid #e0e6ec;float: right;margin-left: 10px" alt=""  width="35" height="35" class="img-circle" id="HeaderProfilePicture" src="{{quotationList.designerImage}}">                                                               
+                                <img *ngIf="quotationList.salespersonImage" tooltip="Salesperson : {{quotationList.salesPersonName}}" style="border: 2px solid #e0e6ec;float: right;margin-left: 10px" alt=""  width="35" height="35" class="img-circle" id="HeaderProfilePicture" src="{{quotationList.salespersonImage}}">
+                                                   
+                        </div>    
+                    </h3>
+                    <form #createQuotationForm="ngForm" novalidate>
+                        <div class="col-md-12 quotation-cont" [ngClass]="{'no-edit':quotationList.submitted}">
+                        <div class="col-md-4">
+                           <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                   <label>Company<required_field></required_field></label>
+                               <ng-select [active]="active_company" [disabled]="true" [allowClear]="true" [items]="company" (selected)="selectCompany($event)" (removed)="removeCompany($event)" placeholder="Nothing is Selected">
+                               </ng-select>
+                           </div>
+                           <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                   <label>Attention Name</label>
+                               <ng-select [active]="active_contact" [allowClear]="true" [items]="contact" (selected)="selectContact($event)" (removed)="removeContact($event)" placeholder="Nothing is selected">
+                               </ng-select>
+                           </div>
+                        </div>              
+                        <div class="col-xs-3">
+                               <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                       <label>Email</label>
+                               <ng-select [active]="active_email" [allowClear]="true" [items]="con_email" (selected)="selectEmail($event)" (removed)="removeEmail($event)" placeholder="Nothing is Selected">
+                               </ng-select>
+                           </div>
+                           <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                   <label>Phone</label>
+                               <ng-select [active]="active_phone" [allowClear]="true" [items]="con_phone" (selected)="selectPhone($event)" (removed)="removePhone($event)" placeholder="Nothing is selected">
+                               </ng-select>
+                           </div>
+                        </div>
+                         <div class="col-md-3"> 
+                               <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                               <label>Salesperson <b *ngIf="sales_error" class="sales_err">(Please Update The Salesperson)</b></label>
+                               <ng-select [active]="active_sales" [disabled]="true" [allowClear]="true" [items]="salesMan" (selected)="selectSalesMan($event)" (removed)="removeSalesMan($event)" placeholder="Nothing is Selected">
+                               </ng-select>
+                           </div>                                 
+                           <div *ngIf="isvatswitch == true" class="text-right" style="margin-top: 34px;">
+                                   <label style="display: block;">VAT</label>
+                                   <span>({{quotationList.vat}} %)</span>
+                                   <label class="sub-total_content"> {{svatamount}} </label>
+                           </div>
+                        </div>   
+                           <div class="col-md-2" >
+                            <div *ngIf="isvatswitch == true" class="text-right sub-total">
+                                <label style="display: block;">Total</label>
+                                <span>({{squotationTotal}})</span>
+                                <label class="sub-total_content">{{sTotalamount}}</label>
+                            </div>
+                            <div *ngIf="!isvatswitch == true" class="text-right sub-total">
+                                    <label style="display: block;">Total</label>
+                                    <label class="sub-total_content">{{sTotalamount}}</label>
+                                </div>
+
+                             <div class="text-right" style="margin-top: 12px;">
+                                           <label style="display: block;">Discount </label>
+                                           <span>({{quotationList.discount}}  %)</span>
+                                           <label class="sub-total_content"> {{quotationList.discountAmountFormat}} </label>
+                            </div>
+                           </div>
+                       </div>
+                       
+                       <div class="col-xs-12" *ngIf="quotations.length > 0">
+                        <div class="portlet box" style="background: #eff3f8; margin-right: -15px;margin-left: -15px;">
+                            <div class="portlet-title" style="max-height: 0px;margin-top: -21px;">                                 
+                                <div class="tools" (click)="expand()">   
+                                        <div>
+                                                <span style="color: #32c5d2;font-weight: 600;margin-top:-12px;" > {{quotations.length}} other options created for this quotation</span>
+                                                <i  style="color:red;" class="fa fa-arrow-circle-down fa-lg" ></i>
+                                        </div>                       
+                                </div>
+                            </div>
+                            <div class="portlet-body" *ngIf="ViewLinkedDetails">
+                                <div class="modal-body">
+                                    <div class="row">                                       
+                                        <div class="list-group">
+                                            <a *ngFor="let quot of quotations" href="javascript:;" class="list-group-item">
+                                                <h4 class="list-group-item-heading">
+                                                    {{quot.refNo}}                                                   
+                                                     <button type="button" (click)="editQuotation(quot)" title="{{l('Edit')}}" class="btn btn-circle btn-icon-only green edit-person">
+                                                            <i class="icon-pencil"></i>
+                                                    </button>
+                                                   
+                                                </h4>
+                                                <p class="list-group-item-text" style="color:green">
+                                                    Sales Person :  {{quot.salesPersonName}} &nbsp;&nbsp; Contact Person : {{quot.attentionName}}
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </div>                                
+                                </div>
+
+                            </div>
+                        </div>
+                </div>
+            <div class="row">
+                <div class="portlet">
+                    <div class="row margin18_q">
+                            <div class="col-md-1">
+                                <label>Section</label>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <label>Product Code</label>
+                            </div>
+                            <div class="col-md-1">
+                                
+                            </div>
+                            <div class="col-md-2 text-center">
+                                <label>Quantity</label>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="col-md-4">
+                                    <label>Unit Price</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Discount</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Amount</label>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="portlet-body margin18_q" [ngClass]="{'no-edit':quotationList.submitted}">
+                        <div class="list-group" *ngFor="let product of q_product;">
+                                <div *ngIf = "product.getQuotationProduct.length > 0"   style="margin-bottom: -20px;">
+                                 <div>                                               
+                                        <div class="col-md-12" style="background: #444d58;color: white;z-index: 1;margin-bottom: 30px;">
+                                                <h4>{{product.name}}
+                                                <button type="button" tooltip="{{l('Edit')}}" *ngIf="isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.EditSection')" (click)="sectionEdit(product.getQuotationProduct[0])" class="btn btn-circle btn-icon-only green edit-person" style="margin-top: -9px;background: transparent;border: 1px solid #444d58;">
+                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                    </button>
+                                        </h4>
+                                    </div>
+                                    </div>
+                                    <div class="list-group-item" *ngFor="let products of product.getQuotationProduct">
+                                          
+                                            <div class="row" style="padding-top: 20px;">   
+                                                <!-- <div class="ribbon"><span>POPULAR</span></div>                                                 -->
+                                               
+                                                <div class="col-md-1">
+                                                        <button type="button" *ngIf="isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.QuotationProductLink') && products.locked" tooltip="{{l('Un Link')}}" (click)="relock(products.id)" class="btn btn-circle btn-icon-only green edit-person" style="margin-top: -9px;background: transparent;border: 1px solid #ffffff;color: black;font-size: 14px;box-shadow: none">
+                                                                <i class="fa fa-lock" aria-hidden="true"></i>
+                                                        </button> 
+                                                   </div>
+                                                <div class="col-md-3 text-center">
+                                                    <label><b>{{products.productCode}}</b></label>
+                                                </div>
+                                                <div class="col-md-1" style="margin-top: -20px">
+                                                    <img *ngIf="!products.imageUrl" style="border: 1px dotted #444d58;border-radius: 10px;" src="/assets/common/images/img-not-available.png" alt="product-pic" class="poduct-img" width="60" height="60" />
+                                                    <img *ngIf="products.imageUrl" style="border: 1px dotted #444d58;border-radius: 10px;" src="{{path+products.imageUrl}}" alt="product-pic" class="poduct-img" width="60" height="60" />
+                                                </div>
+                                                <div class="col-md-2 text-center">
+                                                    <label>{{products.quantity}} pcs</label>
+                                                </div>
+                                                <div class="col-md-3 text-center">
+                                                    <div class="col-md-4">
+                                                        <label>{{products.sUnitOfPrice}}</label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label>{{products.discount}}</label>
+                                                        <span (click)="getApproval(products.id,products.locked)" tooltip="Excess discount" *ngIf="isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.QuotationproductDiscountApproval') && products.approval == false">
+                                                                <i class="fa fa-exclamation-triangle" style="color: brown;"></i>
+                                                                </span>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label>{{products.sTotalAmount}}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                            <button type="button" tooltip="{{l('Edit')}}" *ngIf="isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.EditQuotationProduct')" (click)="productEdit(products)" class="btn btn-circle btn-icon-only green edit-person">
+                                                    <i class="icon-pencil"></i>
+                                                </button>
+                                            <button type="button" tooltip="{{l('Delete')}}" *ngIf="isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.DeleteQuotationProduct')" (click)="deleteProduct(products)" class="btn btn-circle btn-icon-only red delete-person" >
+                                                    <i class="icon-trash"></i>
+                                                </button>
+                                            </div>  
+                                            </div>  
+                                        </div>
+                                        <div class="row sec_sub-tot">
+                                                <div class="text-right sub-total_sec">
+                                                    <!-- <button type="button" [disabled]="getTotal(product.subtotal)" style="display: none;"></button> -->
+                                                    <span style="margin-right: 10px;" class="sub-total_head">Sub Total : <span class="sub-total_content">{{product.subtotalFormat}}</span></span>         
+                                                </div>
+                                            </div>
+                                </div>
+                                
+                               
+                        </div>
+                    </div> 
+                    <div class="portlet-body" style="margin-top: 40px">
+                        <div class="row">
+                                <div class="col-md-2">
+                                        <div style="width: 100px;margin: auto;" >
+                                                <label>VAT</label>
+                                                <div class="onoffswitch">
+                                                        <input type="checkbox" name="IsVAT" class="onoffswitch-checkbox" id="IsVAT" [(ngModel)]="isvatswitch"> 
+                                                             <label class="onoffswitch-label" for="IsVAT">
+                                                                 <span class="onoffswitch-inner"></span>
+                                                                 <span class="onoffswitch-switch"></span>
+                                                             </label>
+                                                  </div>
+                 
+                                        </div>
+                               </div>
+                               <div class="col-md-2" [ngClass]="{'no-edit':non_editable||this.quotationList.won || this.quotationList.lost}">
+                                <div style="width: 100px;margin: auto;" >
+                                    <label>Negotiation</label>
+                                        <div class="onoffswitch">
+                                            <input type="checkbox" name="negotiation" class="onoffswitch-checkbox" id="negotiation" [(ngModel)]="negotiationSwitch" [disabled]="quotationList.quotationStatusId == 1|| quotationList.negotiation"> 
+                                            <label class="onoffswitch-label" for="negotiation">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                        </div>
+                                </div>
+                            </div>
+                            <div *ngFor="let status of stat_all">
+                                <div class="col-md-2" *ngIf="status.name!='New'" [ngStyle]="{'pointer-events': pointenable == 'yes' ? 'auto' : 'none' }">
+                                
+                                <div style="width: 100px;margin: auto;">
+                                        <label>{{status.name}}</label>
+                                        <div class="onoffswitch">
+                                                <input type="checkbox" name="{{status.name}}" class="onoffswitch-checkbox" id="{{status.name}}" [(ngModel)]="status.stat_switch" (change)="getQuotationStatusId(status.name,status.stat_switch)" [disabled]="(status.switch_disable || !quotation.submitted || quotationList.quotationStatusId !=2) && status.name!='Submitted'" value="">                                            <label class="onoffswitch-label" for="{{status.name}}">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div> 
+                    <div class="portlet-body" [ngClass]="{'no-edit':non_editable||this.quotationList.won || this.quotationList.lost}">
+                            <!-- <div  class="row" *ngIf="showStage == true">
+                                    <div class="col-md-4">
+                                            <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                                    <label>Stage <required_field></required_field></label>
+                                                    <ng-select id="stage" [disabled]="false" [active]="active_stage" [allowClear]="true" [items]="stages" (selected)="selectedStage($event)" (removed)="removedStage($event)" placeholder="No Stage selected">
+                                                    </ng-select>
+                                            </div>
+                                     </div>  
+                            </div> -->
+                        <div  class="row">                           
+                                <div class="col-md-3">
+                                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                            <input #nameInput class="form-control" type="text" name="name" [ngClass]="{'edited':quotation.name}" [(ngModel)]="quotation.name">
+                                            <label>{{l("Subject")}}</label>
+                                        </div>
+                                    </div> 
+                                    <div class="col-md-3" style="padding-top: 25px;" *ngIf="(statusId !=2 && quotation.quotationStatusId == 2) || (statusId !=3 && quotation.quotationStatusId == 3)">
+                                        <label>Next Activity <required_field></required_field></label>
+                                           <p-calendar id="datetime" [(ngModel)]="nextActivity" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
+                                    </div> 
+                                    <div class="col-md-3" *ngIf="negotiationSwitch == true">
+                                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                            <input #nameInput class="form-control"  type="number" name="amount" [ngClass]="{'edited':quotation.overAllDiscountAmount}" [(ngModel)]="quotation.overAllDiscountAmount" (keyup)="getAmount(quotation.overAllDiscountAmount,1)" (keydown)="check($event)">
+                                                <label>{{l("Discount (AED)")}}</label>
+                                         </div>
+                                    </div> 
+                                    <div class="col-md-3" *ngIf="negotiationSwitch == true">
+                                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                            <input #nameInput class="form-control"  type="number" name="percentage" [ngClass]="{'edited':quotation.overAllDiscountPercentage}" [(ngModel)]="quotation.overAllDiscountPercentage" (keyup)="getAmount(quotation.overAllDiscountPercentage,2)" (keydown)="check($event)">
+                                                <label>{{l("Discount (%)")}}</label>
+                                         </div>
+                                    </div>  
+                                    <div class="col-md-3" *ngIf="quotation.won == true">
+                                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                            <input #nameInput class="form-control"  type="text" name="ponumber" [ngClass]="{'edited':quotation.poNumber}" [(ngModel)]="quotation.poNumber" required>
+                                            <label>{{l("PO Number")}} <required_field></required_field></label>
+                                    </div>
+                                   </div>  
+                        </div>
+                            <div class="row" *ngIf="quotation.lost == true">
+                                     <div class="col-md-6">
+                                     <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <label>Competitors<required_field></required_field></label>
+                                        <ng-select [active]="active_competators" [allowClear]="true" [items]="competators" (selected)="selectedCompetitor($event)" (removed)="removedCompetitor($event)" placeholder="Competitors">
+                                        </ng-select>
+                                     </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                            <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                               <label>Lost Reason<required_field></required_field></label>
+                                               <ng-select [active]="active_reason" [allowClear]="true" [items]="reasons"  (selected)="selectedReason($event)" (removed)="removedReason($event)" placeholder="Lost Reasons">
+                                               </ng-select>
+                                            </div>
+                                  </div>
+                            </div>
+                            <div class="row" *ngIf="quotation.lost == true">
+                                    <div class="col-md-12">
+                                            <label>{{l("Remarks")}}  <required_field></required_field></label>
+                                            <textarea style="height: 100px;" name="description" [(ngModel)]="quotation.reasonRemark" class="form-control" [ngClass]="{'edited':quotation.reasonRemark}"></textarea>                        
+                                        </div>  
+                            </div>
+                           
+                    </div> 
+                    <div class="portlet-body" [ngClass]="{'no-edit':non_editable||this.quotationList.won || this.quotationList.lost}">
+                        <div class="list-group">
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <label>Terms & Conditions</label>
+                                        <p-editor [(ngModel)]="quotation.termsandCondition" name="HtmlEditorInput" class="termsAndCondition" [style]="{'min-height':'100px','width':'100%'}"></p-editor>
+                                        <!-- <ckeditor [(ngModel)]="quotation.termsandCondition" name="HtmlEditorInput" debounce="1000"></ckeditor>  -->
+                                    </div>
+                        </div>                     
+                    </div>
+                    <div class="portlet-body" [ngClass]="{'no-edit':non_editable||this.quotationList.won || this.quotationList.lost}">
+                    <div  class="row">
+                         <div class="col-md-6">
+                                <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                    <input #nameInput class="form-control"  type="text" name="RFQNo" [ngClass]="{'edited':quotation.refQNo}" [(ngModel)]="quotation.refQNo">
+                                    <label>{{l("REF No")}}</label>
+                                </div>
+                         </div>  
+                         <div class="col-md-6">
+                            <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                <input #nameInput class="form-control"  type="text" name="refQNo" [ngClass]="{'edited':quotation.rfqNo}" [(ngModel)]="quotation.rfqNo">
+                                <label>{{l("RFQ NO / JOB NO")}}</label>
+                            </div>
+                         </div>  
+                </div>
+            </div>
+              </div>  
+            </div>
+            <div class="row">
+                <div class="col-xs-12 text-right">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="goToQuotation()">{{l("Cancel")}}</button>
+                    <button type="button" class="btn btn-primary blue" [disabled]="isValidQuotation(createQuotationForm)" (click)="save()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>    
+            </div>    
+        </form>    
+        </div>
+        </tab>
+        <tab heading="Product Import History">  
+                <div class="col-xs-12" style="margin-top: -32px;">
+                <div class="row margin-bottom-5">
+            <div class="col-xs-6">
+                <div class="page-head">
+                    <div class="page-title">
+                        <h1>
+                            <span>History</span>
+                        </h1>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+        <div class="portlet light margin-bottom-0">
+            <div class="portlet-body">
+                
+                    <div class="primeng-datatable-container" [busyIf]="primengDatatableHelper.isLoading">
+                        <p-dataTable #dataTable
+                                     (onLazyLoad)="getData($event)"
+                                     [value]="primengDatatableHelper.records"
+                                     rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     emptyMessage="{{l('NoData')}}"
+                                     [responsive]="primengDatatableHelper.isResponsive">
+                          
+                            <p-column field="file_name" header="{{l('File Name')}}" [sortable]="false">
+                                <ng-template let-record="rowData" pTemplate="body">
+                                    <span>
+                                    {{record.fileName}}
+    
+                                </span>
+                                </ng-template>
+                            </p-column>
+                            <p-column field="section_name" header="{{l('Section Name')}}" [sortable]="false">
+                                <ng-template let-record="rowData" pTemplate="body">
+                                    <span>
+                                    {{record.sectionName}}
+    
+                                </span>
+                                </ng-template>
+                            </p-column>
+                            <p-column field="product_code" header="{{l('Product Code')}}" [sortable]="false">
+                                <ng-template let-record="rowData" pTemplate="body">
+                                    <span>
+                                    {{record.productCode}}
+    
+                                </span>
+                                </ng-template>
+                            </p-column>
+                            <p-column field="quantity" header="{{l('Quantity')}}" [sortable]="false">
+                                <ng-template let-record="rowData" pTemplate="body">
+                                <span>
+                                    {{record.quantity}}
+    
+                                </span>
+                                </ng-template>
+                            </p-column>
+                            <p-column field="status" header="{{l('Status')}}" [sortable]="false">
+                                <ng-template let-record="rowData" pTemplate="body">
+                                <span>
+                                    {{record.status}}
+    
+                                </span>
+                                </ng-template>
+                            </p-column>
+                            <p-column field="creationTime" header="Creation Time" [sortable]="false" [style]="{'width':'200px'}"></p-column>
+                        </p-dataTable>
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                                         #paginator
+                                         (onPageChange)="getData($event)"
+                                         [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengDatatableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+    
+            </div>
+        </div>
+            </div>  
+        </tab>
+        <tab heading="Revision History"> 
+                <div class="portlet light margin-bottom-0">
+                <div class="portlet-body">
+                    <div class="primeng-datatable-container" [busyIf]="primengDatatableHelper.isLoading">
+                        <p-dataTable #dataTable
+                             (onLazyLoad)="getRevisedQuotation($event)"
+                             [value]="revisedQuotationArray"
+                             rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                             [paginator]="false"
+                             [lazy]="true"
+                             emptyMessage="{{l('NoData')}}"
+                             scrollable="true" 
+                             [responsive]="primengDatatableHelper.isResponsive">
+                            <p-column field=""
+                               header="{{l('Actions')}}"
+                               [sortable]="false" 
+                               [style]="{'width':'75px'}">
+                                <ng-template let-record="rowData" pTemplate="body">
+                                  <div class="btn-group dropdown mydropdown">
+                                    <button class="dropdown-toggle btn btn-xs btn-primary blue"
+                                        data-toggle="dropdown"
+                                        tooltip="{{l('Actions')}}"
+                                        aria-haspopup="true"
+                                        aria-expanded="false">
+                                      <i class="fa fa-cog"></i><span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                                <a  *ngIf="isGranted('Pages.Tenant.Quotation.Quotation.Edit.RevisionHistory.Open')"(click)="editRevisedQuotation(record)">{{l('Open')}}</a>
+                                        </li>                                       
+                                    </ul>
+                                  </div>
+                                </ng-template>
+                            </p-column>
+                            <p-column field="refNo" header="{{l('Ref No')}}" [sortable]="false" [style]="{'width':'150px'}"></p-column>
+                            <p-column field="inquiryName" header="{{l('Enquiry Name')}}" [sortable]="false" [style]="{'width':'200px'}"></p-column>
+                            <p-column field="companyName" header="{{l('Company Name')}}" [sortable]="false" [style]="{'width':'200px'}"></p-column>
+                            <p-column field="attentionName" header="Attention Name" [sortable]="false" [style]="{'width':'150px'}"></p-column>
+                            <p-column field="salesPersonName" header="Salesperson" [sortable]="false" [style]="{'width':'150px'}"></p-column>
+                            <p-column field="statusName" header="Quotation Status" [sortable]="false" [style]="{'width':'100px'}"></p-column>
+                            <p-column field="total" header="Total" [sortable]="false" [style]="{'width':'100px'}"></p-column>
+                            <p-column field="Revised" header="Revised" [sortable]="false" [style]="{'width':'100px'}">
+                                <ng-template let-record="rowData" pTemplate="body">
+                                    <span class="label label-success" *ngIf="record.revised">{{l('Yes')}}</span>
+                                    <span class="label label-default" *ngIf="!record.revised">{{l('No')}}</span>
+                                </ng-template>
+                            </p-column>
+                            <p-column field="sCreationTime" header="Creation Time" [sortable]="false" [style]="{'width':'200px'}"></p-column>
+                        </p-dataTable>
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                                 #paginator
+                                 (onPageChange)="getRevisedQuotation($event)"
+                                 [totalRecords]="quotationRevisedArrayCount"
+                                 [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                               {{l('TotalRecordsCount', quotationRevisedArrayCount)}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tab>
+        </tabset>
+    </div>
+    <RevisedQuotationModel #RevisedQuotationModel></RevisedQuotationModel>
+    <createQuotationSectionModal #createQuotationSectionModal (modalSave)="getQuotationProduct()" ></createQuotationSectionModal>
+    <createQuotationProductModal #createQuotationProductModal (modalSave)="ngOnInit()"></createQuotationProductModal>
+    <ProductImportModal #ProductImportModal (modalSave)="ngOnInit()"></ProductImportModal>
+    <quotationPreviewModal #quotationPreviewModal></quotationPreviewModal>
+    <productChangeModal #productChangeModal (modalSave)="ngOnInit()"></productChangeModal>
+    <discountModal #discountModal (modalSave)="ngOnInit()"></discountModal>
+
+    <style>
+      .ribbon {
+        position: absolute;
+        left: -1px;
+        top: -1px;
+        z-index: 1;
+        overflow: hidden;
+        width: 49px;
+        height: 48px;
+        text-align: right;
+      }
+      .ribbon span {
+        font-size: 6px;
+        font-weight: bold;
+        color: #FFF;
+        text-transform: uppercase;
+        text-align: center;
+        line-height: 11px;
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        width: 81px;
+        display: block;
+        background: #79A70A;
+        background: linear-gradient(#F79E05 0%, #8F5408 100%);
+        box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 16px;
+        left: -21px;
+    }
+      
+      .ribbon span::before {
+        content: "";
+        position: absolute; left: 0px; top: 100%;
+        z-index: -1;
+        border-left: 3px solid #8F5408;
+        border-right: 3px solid transparent;
+        border-bottom: 3px solid transparent;
+        border-top: 3px solid #8F5408;
+      }
+      .ribbon span::after {
+        content: "";
+        position: absolute; right: 0px; top: 100%;
+        z-index: -1;
+        border-left: 3px solid transparent;
+        border-right: 3px solid #8F5408;
+        border-bottom: 3px solid transparent;
+        border-top: 3px solid #8F5408;
+      }
+      .head_qt{
+        color: #999EA1;
+        
+      }
+      .ref_qt{   
+            font-size: 23px;
+            position: absolute;
+            margin-top: -6px;
+            left: 61px;
+        }
+        li.active{
+            border-bottom: 2px solid #36c6d3;
+        }
+        .tabbable-line > .nav-tabs > li.open, .tabbable-line > .nav-tabs > li:hover{
+            border-bottom: 2px solid #36c6d3;
+        }
+    </style>

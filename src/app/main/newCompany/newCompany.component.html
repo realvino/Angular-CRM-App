@@ -1,0 +1,223 @@
+<div class="container" style="width:100%;margin-bottom: 25px;">
+    <tabset class="tab-container tabbable-line">
+        <tab heading="Company Details">
+            <div class="col-xs-12" style="background: rgba(113, 145, 176, 0.16);padding: 20px;">
+                <div *ngIf="isApproved"  class="ribbon"><span>Approved</span></div>
+                <div *ngIf="!isApproved" class="ribbon1"><span>UnApproved</span></div>
+                <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm)">
+                    <div class="actions" style="text-align:right;">
+                        <button type="button" (click)="goToCompany()" title="{{l('Edit')}}" class="btn btn-circle btn-icon-only btn-default">
+                            <i class="fa fa-times" style="color:red;"></i>
+                        </button>
+                    </div>
+                    <div class="row" style="width: 100%;margin-left: 0px;">
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                <label>Company Name <required_field></required_field></label>
+                                <input type="text" class="form-control" formControlName="companyName">
+                                <small *ngIf="!myForm.controls.companyName.valid" class="text-danger">
+                                Name is required (minimum 5 characters).
+                             </small>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <label>Company Type <required_field></required_field></label>
+                            <ng-select [active]="active_company" [items]="companytypes" [allowClear]="true" (data)="refreshValue($event,myForm)" placeholder="No Company Type selected">
+                            </ng-select>
+                            <input type="hidden" formControlName="typeid">
+                        </div>
+                        <div class="col-xs-4">
+                            <label>Industry</label>
+                            <ng-select [active]="active_indus" [allowClear]="true" [items]="indus" [disabled]="disabled_indus" (data)="refreshIndus($event)" (removed)="removedIndus($event)" placeholder="Select industry">
+                            </ng-select>
+                        </div>
+                    </div>
+
+                    <div class="row" style="width: 100%;margin-left: 0px;">
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                <label>Customer Id </label>
+                                <input type="text" class="form-control" formControlName="customerId" [disabled]="customerId" >
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                <label>Company Name as per Trade License</label>
+                                <input type="text" class="form-control" formControlName="tradeLicense">
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                <label>TRN number </label>
+                                <input type="text" class="form-control" formControlName="trNnumber">
+                            </div>
+                        </div>
+                    </div>
+                   
+                    
+                    <div class="row" style="width: 100%;margin-left: 0px;">
+                        <div class="col-xs-4">
+                            <label>Contributed By</label>
+                            <ng-select [disabled]="true" [active]="active_user"  [allowClear]="true">
+                            </ng-select>
+                        </div>
+                        <div class="col-xs-4">
+                            <label>Managed By</label>
+                                <ng-select [disabled]="!isGranted('Pages.Tenant.AddressBook.Company.Edit.Managedby') || managedId" [active]="active_managed" [allowClear]="true" [items]="managedBy" (selected)="selectManagedBy($event)" (removed)="removeManagedBy($event)" placeholder="Nothing is selected">
+                                </ng-select>
+                                <input type="hidden" formControlName="managed">
+                        </div>
+                        <div class="col-xs-4">
+                            <label>Approved By <required_field></required_field></label>
+                            <ng-select [disabled]="true" [active]="active_app" [allowClear]="true">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-left: 0px;width: 100%;margin-top: 15px;">
+                            <div class="col-xs-4">
+                                   
+                                </div>
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                              <label>Discountable (%)</label>
+                              <input type="text" class="form-control" formControlName="discountable" (keydown)="check($event)" maxlength="2">
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                <label>Non Discountable (%)</label>
+                                <input type="text" class="form-control" formControlName="undiscountable" (keydown)="check($event)" maxlength="2">
+                            </div>
+                        </div>
+                    </div>
+                    <div formArrayName="contacts" class="col-xs-12" style="margin-top: 2%;">
+
+                        <div class="panel panel-default" style="padding-bottom: 15px">
+                            <div class="panel-heading">
+
+                                <div style="width:40%;">
+                                    <span>Contact Details <required_field></required_field></span>
+                                </div>
+                                <div style="width:1%;float:right">
+                                    <a style="cursor: pointer;float:right;text-align:right;margin-top: -18px;position: absolute">
+                                        <i style="color:green;" *ngIf="myForm.controls.contacts.valid" (click)="addContacts(1)" class="fa fa-plus-circle" aria-hidden="true" title="Create"> </i>
+                                    </a>
+                                </div>
+
+                            </div>
+							<div class="row" style="padding-left:15px; padding-top:15px;">
+								<div class="col-xs-5"><label>Type</label></div>
+								<div class="col-xs-7" style="margin-top:5px;"></div>
+							</div>
+                            <div *ngFor="let contact of myForm.controls.contacts.controls;let j=index">
+                                <input type="hidden">
+                                <div class="panel-body" [formGroupName]="j" style="padding-bottom:0px;">
+                                    <contact [group]="myForm.controls.contacts.controls[j]"></contact>
+                                    <span style="margin-top: -33px;" class="fa fa-trash-o pull-right" *ngIf="myForm.controls.contacts.controls.length > 1" (click)="removeContacts(j,contact)">
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div formArrayName="addresses" class="col-xs-12">
+                        <div class="panel-heading">
+                            <div style="width:40%;">
+                                <span>Address Details <required_field></required_field></span>
+                            </div>
+                            <div style="width:1%;float:right">
+                                <a style="cursor: pointer;float:right;text-align:right;margin-top: -18px;position: absolute">
+                                    <i style="color:green;" *ngIf="myForm.controls.addresses.valid" (click)="addAddress(1)" class="fa fa-plus-circle" aria-hidden="true" title="Create"> </i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="panel panel-default" style="padding-bottom: 15px;">
+						<div class="row" style="padding-left:15px; padding-top:15px;">
+								<div class="col-xs-2 noPaddingR"><label>Type</label></div>
+                                <div class="col-xs-3 noPaddingR"><label>Address 1</label></div>
+                                <div class="col-xs-2 noPaddingL noPaddingR"><label>Address 2</label></div>
+                                <div class="col-xs-2 noPaddingL noPaddingR" ><label>City</label></div>
+                                <div class="col-xs-3 noPaddingL noPaddingR"><label>Country</label></div>
+							</div>
+                            <div *ngFor="let address of myForm.controls.addresses.controls;let i=index">
+                                <input type="hidden">
+                                <div class="panel-body" [formGroupName]="i" style="padding-bottom:0px;">
+
+                                    <address [group]="myForm.controls.addresses.controls[i]"></address>
+
+                                    <span style="margin-top: -33px;" class="fa fa-trash-o pull-right" *ngIf="myForm.controls.addresses.controls.length > 1" (click)="removeAddress(i,address)">
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">  
+                        <div *ngIf="!isApproved && isGranted('Pages.Tenant.AddressBook.Company.Edit.CompanyApproval')">
+                                <label>Approved:</label>
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch"   (change)="getApproved($event)" >
+                                    <label class="onoffswitch-label" for="myonoffswitch">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>      
+                        </div>  
+                                            
+                    </div>
+                    <div class="col-xs-6" style="margin-bottom: 30px !important;">                          
+                        <div class="margin-20">                              
+                            <button  type="submit" class="btn btn-primary pull-right" [disabled]="!myForm.valid">Submit</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+        </tab>
+        <tab heading="Contact Details"*ngIf="isGranted('Pages.Tenant.AddressBook.Company.Edit.ContactDetails')">
+            <div class="portlet light margin-bottom-0">
+                <div class="portlet-body">
+                    <h3>All Contacts ({{companyContacts.length}})</h3>
+                    
+                        <div class="actions" style="text-align:right;margin-top: -30px;margin-bottom: 11px;">
+
+                            <button type="button" *ngIf="isGranted('Pages.Tenant.AddressBook.Company.Edit.ContactDetails.Create')" (click)="createContact()" title="{{l('Create')}}" class="btn btn-circle btn-icon-only btn-default">                                <i style="color:#FFDE16" class="fa fa-plus"></i>
+                                </button>
+                        </div>
+                         <div style="width:100%;background: white;">
+                        <div class="scroll-window" slimScroll [options]="opts" style="width:100%;max-height:291px;font-size:13px;padding:10px;">
+                        <div class="list-group" style="margin-bottom: 0px;">
+                        <div class="list-group-item" *ngFor="let contact of companyContacts">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-1">
+                                        <img src="/assets/common/images/Contacts.png" style="height:50px;width:50px;align-content:center;" class="img-rounded" />
+                                    </div>
+                                    <div class="col-md-11">
+                                        <h4 class="list-group-item-heading" style="color:blue">
+                                            {{contact.contactName}}<br />
+                                            <span style="float:right;">
+                                                <button type="button" *ngIf="isGranted('Pages.Tenant.AddressBook.Company.Edit.ContactDetails.Edit')" (click)="editCompanyContact(contact)" title="{{l('Edit')}}" class="btn btn-circle btn-icon-only green edit-person">
+                                                    <i class="icon-pencil"></i>
+                                                    </button>
+                                                    <button type="button" *ngIf="isGranted('Pages.Tenant.AddressBook.Company.Edit.ContactDetails.Delete')" title="{{l('Delete')}}" class="btn btn-circle btn-icon-only red delete-person">
+                                                    <i class="icon-trash"></i>
+                                                    </button>
+                                                    </span>
+                                        </h4>
+
+                                        <h5 class="list-group-item-heading" style="color:green">
+                                            Contact type : {{contact.customerTypeName}}<br />
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div></div>
+                </div>
+            </div>
+        </tab>
+    </tabset>
+    <createNewContactModal #createNewContactModal (modalSave)="getCompanyCon()">
+    </createNewContactModal>
+</div>

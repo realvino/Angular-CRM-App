@@ -1,0 +1,109 @@
+<div bsModal #modal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+		
+						<div class="modal-header">
+							<button type="button" class="close" (click)="close()" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title">
+								<span *ngIf="team.id">{{l("Edit Team")}}: {{team.name}}</span>
+								<span *ngIf="!team.id">{{l("Create Team")}}</span>
+							</h4>
+						   
+						</div> 
+						<form *ngIf="active && !team.id"  #createTeamForm="ngForm" novalidate (ngSubmit)="save(createTeamForm)">
+						<div class="modal-body">
+                            <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                <input #nameInput class="form-control" type="text" name="code" [ngClass]="{'edited':team.name}" [(ngModel)]="team.name" required>
+                                <label>{{l("Name")}} <required_field></required_field></label>
+                            </div>
+
+                            <div class="form-group form-md-line-input form-md-floating-label no-hint">
+								<label>Sales Manager <required_field></required_field></label>
+                               <ng-select [active]="active_selmanaged" [allowClear]="true" [items]="selmanagedBy" (selected)="selectselManagedBy($event)" (removed)="removeselManagedBy($event)" placeholder="Nothing is selected">
+								</ng-select>
+                        
+							</div>
+							 <div class="form-group form-md-line-input form-md-floating-label no-hint">
+								<label>Division Name <required_field></required_field></label>
+                                <ng-select [active]="active_dept" [allowClear]="true" [items]="deptType" (selected)="selectdeptType($event)" (removed)="removedeptType($event)" placeholder="Nothing is selected">
+                                </ng-select>
+                        
+							</div> 
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+							<button type="submit" class="btn btn-primary blue" [disabled]="!createTeamForm.form.valid || !team.salesManagerId || !team.departmentId" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>                        </div>
+                    </form>
+					
+					<tabset class="tab-container tabbable-line" #staticTabs *ngIf="team.id">
+						<tab heading='Team'  active="active">
+							<form *ngIf="active" #createTeamForm="ngForm" novalidate (ngSubmit)="save(createTeamForm)">
+								
+								<div class="modal-body">
+									<div class="form-group form-md-line-input form-md-floating-label no-hint">
+										<input #nameInput class="form-control" type="text" name="code" [ngClass]="{'edited':team.name}" [(ngModel)]="team.name" required>
+										<label>{{l("Name")}} <required_field></required_field></label>
+									</div>
+
+									<div class="form-group form-md-line-input form-md-floating-label no-hint">
+										<label>Sales Manager <required_field></required_field></label>
+										<ng-select [active]="active_selmanaged" [allowClear]="true" [items]="selmanagedBy" (selected)="selectselManagedBy($event)" (removed)="removeselManagedBy($event)" placeholder="Nothing is selected">
+										</ng-select>
+								
+									</div>
+									 <div class="form-group form-md-line-input form-md-floating-label no-hint">
+										<label>Division Name <required_field></required_field></label>
+										<ng-select [active]="active_dept" [allowClear]="true" [items]="deptType" (selected)="selectdeptType($event)" (removed)="removedeptType($event)" placeholder="Nothing is selected">
+										</ng-select>
+								
+									</div> 
+
+
+								</div>
+								<div class="modal-footer">
+									<button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+									<button type="submit" class="btn btn-primary blue" [disabled]="!createTeamForm.form.valid || !team.salesManagerId || !team.departmentId" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>								</div>
+							</form>
+						</tab>
+						<tab heading='Salesperson'  *ngIf="team.id">
+					 <form  *ngIf="active_teamdetails" #createteamdetailsForm="ngForm" novalidate (ngSubmit)="teamdetailssave()">
+						<div class="modal-body">
+							<div class="list-group">
+								<div class="row list-group-item" *ngFor="let teamdet of teamdetails" style="margin: 0px;margin-top: -1px;">
+											<div class="col-md-2">
+													<img  class="img-rounded" src="/assets/common/images/Contacts.png" style="height:50px;width:50px;align-content:center;">
+											</div>
+											<div class="col-md-10">
+															<h4 class="list-group-item-heading">
+																{{teamdet.salesman}}
+																<button style="float: right;" type="button" class="btn btn-circle btn-icon-only red delete-person" *ngIf="isGranted('Pages.Tenant.Master.Team.Edit.SalesPerson.Delete')"(click)="deleteteamdetails(teamdet)" href="javascript:;"><i class="icon-trash"></i></button> 
+															</h4>
+															<p style="margin: 0px;" class="list-group-item-text">
+																<!-- {{teamdet.salesman}} --> Sales Executive
+															</p>
+											</div>
+									</div>
+
+								</div>									
+								<div class="row">
+									<div class="col-md-6">
+										<ng-select [active]="active_managed" [allowClear]="true" [items]="managedBy" (selected)="selectManagedBy($event)" (removed)="removeManagedBy($event)" placeholder="Nothing is selected">
+										  </ng-select>
+									</div>
+									<div class="col-md-4">
+									</div>
+									<div class="col-md-2">
+										<button type="submit" class="btn btn-circle btn-icon-only blue"><i class="fa fa-floppy-o"></i></button>
+									</div>
+								</div>
+							</div>
+                   </form>
+						</tab>
+            </tabset>
+        </div>
+    </div>
+</div>

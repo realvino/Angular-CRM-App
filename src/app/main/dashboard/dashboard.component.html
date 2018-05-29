@@ -1,0 +1,239 @@
+﻿<div [@routerTransition]>
+    <div class="row margin-bottom-5">
+        <div class="col-xs-3">
+            <div class="page-head">
+                <div class="page-title">
+                    <h1>
+                        <span>Dashboard</span> <small>statistics and reports</small>
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="bidselect0d" style="width: 350px; float: none;margin: 0 auto;margin-top: 15px;">
+            <ng-select [active]="active_team" [items]="teams" (selected)="loadslider($event)" placeholder="No Team selected"></ng-select>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="form-group form-md-line-input form-md-floating-label edited row" style="margin-bottom: 0;">
+                <!-- <label class="col-md-2 control-label">Default daterange picker</label> -->
+                <div class="col-md-10">
+                    <div class="input-group">
+                        <div class="input-group-control">
+
+                            <date-range-picker name="DashDateRangePicker"
+                                               [(startDate)]="dashdateRangePickerStartDate"
+                                               [(endDate)]="dashdateRangePickerEndDate"
+                                               [allowFutureDate]="true">
+                            </date-range-picker>
+
+                        </div>
+                        <span class="input-group-btn btn-right">
+                            <button class="btn green-haze" (click)="dashsubmitDateRange()" type="button">{{l("Submit")}}</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet light" style="background-color: #444d58 !important;">
+                            <ng2-carousel-3d [slides]="slides" [options]="options" class="col-12" #carousel>
+                                    <ng2-carousel-3d-slide *ngFor="let slide of slides; let i = index" (click)="slideClicked(i)">
+                                        <img class="slide-img" src="{{slide.src}}" width= "310" height= "220" style="width: 50%;height: 100%;float: left;" alt=""/>
+                                        <div style="width: 50%;height: 100%;float: right;background-color: #444d58;text-align: center;color: white;line-height: 23px;">
+                                            <br><h4><b>{{slide.name}}</b></h4>
+                                            <!-- <h5 style="margin: 0">Email:</h5> -->
+                                            <h5 style="margin: 0">{{slide.email}}</h5>
+                                            <!-- <h5 style="margin: 0">Won:</h5>
+                                            <h5 style="margin: 0">121123</h5> -->
+                                            <br>
+                                        </div>
+                                    </ng2-carousel-3d-slide>
+                                </ng2-carousel-3d>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-xs-12 col-sm-12">
+                            <div class="portlet light ">
+                                <div class="portlet-title tabbable-line">
+                                    <div class="caption">
+                                        <i class="icon-bubbles font-dark hide"></i>
+                                        <span class="caption-subject font-green-haze bold uppercase">CLOSURE SOON</span>
+                                    </div>
+                                    <ul class="nav nav-tabs">
+                                        <li class="active">
+                                            <a href="#portlet_comments_1" data-toggle="tab" aria-expanded="true"><b style="color: #7b7e8a;">THIS WEEK</b></a>
+                                        </li>
+                                        <li class="">
+                                            <a href="#portlet_comments_2" data-toggle="tab" aria-expanded="false"><b style="color: #7b7e8a;">NEXT WEEK</b></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div id="style-4" class="portlet-body scrollab">
+                                    <div class="tab-content">
+                                        <div class="tab-pane" id="portlet_comments_2">
+                                            <!-- BEGIN: Comments -->
+                                            <div class="general-item-list">
+                                                    <div *ngFor="let clos of Closure.nextWeekClosureInquiry" class="item">
+                                                        <div class="item-head">
+                                                            <div class="item-details">
+                                                                    <img class="item-pic rounded" src="{{path+clos.salesManImage}}">
+                                                                <a href="" class="item-name primary-link">{{clos.subMmissionId}}</a>
+                                                                <span class="item-label">{{clos.closureDate}}</span>
+                                                            </div>
+                                                            <span class="item-status">
+                                                                <span class="badge badge-empty badge-success"></span> Open</span>
+                                                        </div>
+                                                        <div class="item-body"> <b>{{clos.inquiryName}}</b> {{clos.remarks}} </div>
+                                                    </div>
+                                                    </div>
+                                            <!-- END: Comments -->
+                                        </div>
+                                        <div class="tab-pane active" id="portlet_comments_1">
+                                            <!-- BEGIN: Comments -->
+                                            <div class="general-item-list">
+                                                    <div *ngFor="let clst of Closure.thisWeekClosureInquiry" class="item">
+                                                            <div class="item-head">
+                                                                <div class="item-details">
+                                                                    <img class="item-pic rounded" src="{{path+clst.salesManImage}}">
+                                                                    <a href="" class="item-name primary-link">{{clst.subMmissionId}}</a>
+                                                                    <span class="item-label">{{clst.closureDate}}</span>
+                                                                </div>
+                                                                <span class="item-status">
+                                                                    <span class="badge badge-empty badge-success"></span> Open</span>
+                                                            </div>
+                                                            <div class="item-body"> <b>{{clst.inquiryName}}</b> {{clst.remarks}} </div>
+                                                        </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="col-md-6">
+                            <!-- BEGIN PORTLET-->
+                            <div class="portlet light">
+                                <div class="portlet-title">
+                                    <div class="caption caption-md">
+                                        <i class="icon-bar-chart font-green-haze hide"></i>
+                                        <span class="caption-subject font-green-haze bold uppercase">Next Activities
+                                            </span>
+                                    </div>
+                                    <div class="actions">
+                                            <div class="btn-group btn-group-devided" data-toggle="buttons">
+                                                <label class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle btn-sm active" (click)="reportClick(1)">
+                                                    <input type="radio" name="options" class="toggle" id="option1">Over Due</label>
+                                                <label class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle btn-sm" (click)="reportClick(2)">
+                                                    <input type="radio" name="options" class="toggle" id="option2">This Week</label>
+                                                <label class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle btn-sm" (click)="reportClick(3)">
+                                                    <input type="radio" name="options" class="toggle" id="option2">Next Week</label>
+                                            </div>
+                                        </div>
+                                </div>
+                                
+                                <div id="style-4" class="portlet-body scrollab">
+                                             
+                                    <div class=" table-scrollable table-scrollable-borderless">                                          
+                                            <div class=" col-md-10 m-timeline-2">
+                                                    <div class="m-timeline-2__items  m--padding-top-25 m--padding-bottom-30">                                                      
+                                                        <div *ngIf="endata == 1">
+                                                        <div *ngFor="let oact of Activity.overDueActivityInquiry" class="m-timeline-2__item">
+                                                            <span class="m-timeline-2__item-time" style="width: 80px;">{{oact.closureDate}}</span>                                                           	
+                                                            <div class="m-timeline-2__item-cricle">									 
+                                                                <i class="fa fa-genderless m--font-danger"></i>									 
+                                                            </div>
+                                                            <div class="m-timeline-2__item-text  m--padding-top-5">
+                                                              <a href="" class="item-name primary-link">{{oact.subMmissionId}}</a>
+                                                               <b>{{oact.inquiryName}}</b><br>
+                                                                {{oact.remarks}}        
+                                                                <img width="20" height="20" class="item-pic rounded" src="{{path+oact.salesManImage}}">
+                                                                <img width="20" height="20" class="item-pic rounded" src="{{path+oact.coordinatorImage}}">
+                                                                <img width="20" height="20" class="item-pic rounded" src="{{path+oact.designerImage}}">                                         	                                	                                                                                                   
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                        <div *ngIf="endata == 2">
+                                                                <div *ngFor="let tact of Activity.thisWeekActivityInquiry" class="m-timeline-2__item">
+                                                                        <span class="m-timeline-2__item-time" style="width: 80px;">{{tact.closureDate}}</span>                                                           	
+                                                                        <div class="m-timeline-2__item-cricle">									 
+                                                                                <i class="fa fa-genderless m--font-warning"></i>									 
+                                                                        </div>
+                                                                        <div class="m-timeline-2__item-text  m--padding-top-5">
+                                                                          <a href="" class="item-name primary-link">{{tact.subMmissionId}}</a>
+                                                                           <b>{{tact.inquiryName}}</b><br>
+                                                                            {{tact.remarks}}  
+                                                                            <img width="20" height="20" class="item-pic rounded" src="{{path+tact.salesManImage}}">
+                                                                            <img width="20" height="20" class="item-pic rounded" src="{{path+tact.coordinatorImage}}">
+                                                                            <img width="20" height="20" class="item-pic rounded" src="{{path+tact.designerImage}}">
+              
+                                                                        </div>
+                                                                       
+                                                                       
+                                                                    </div>
+                                                        </div>
+                                                        <div *ngIf="endata == 3">
+                                                                <div *ngFor="let nact of Activity.nextWeekActivityInquiry" class="m-timeline-2__item">
+                                                                        <span class="m-timeline-2__item-time" style="width: 80px;">{{nact.closureDate}}</span>                                                           	
+                                                                        <div class="m-timeline-2__item-cricle">									 
+                                                                                <i class="fa fa-genderless m--font-brand"></i>									 
+                                                                            </div>
+                                                                        <div class="m-timeline-2__item-text  m--padding-top-5">
+                                                                          <a href="" class="item-name primary-link">{{nact.subMmissionId}}</a>
+                                                                           <b>{{nact.inquiryName}}</b><br>
+                                                                            {{nact.remarks}}  
+                                                                            <img width="20" height="20" class="item-pic rounded" src="{{path+nact.salesManImage}}">
+                                                                            <img width="20" height="20" class="item-pic rounded" src="{{path+nact.coordinatorImage}}">
+                                                                            <img width="20" height="20" class="item-pic rounded" src="{{path+nact.designerImage}}">                                         	                                	               
+                                                                        </div>
+                                                                    </div>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+                            <!-- END PORTLET-->
+                    </div>
+                        <div class="col-md-6">
+                            <!-- BEGIN PORTLET-->
+                            <div class="portlet light ">
+                                <div class="portlet-title">
+                                    <div class="caption caption-md">
+                                        <i class="icon-bar-chart font-green-haze hide"></i>
+                                        <span class="caption-subject font-green-haze bold uppercase">Lead Summary Graph</span>
+                                    </div>
+                        
+                                </div>
+                                <div class="portlet-body">
+                        
+                                    <div class="table-scrollable table-scrollable-borderless">
+                                        <chart type="Chart" [options]="lsgoption"></chart>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END PORTLET-->
+                        </div>
+                        <div class="col-md-6">
+                                <!-- BEGIN PORTLET-->
+                                <div class="portlet light ">
+                                    <div class="portlet-title">
+                                        <div class="caption caption-md">
+                                            <i class="icon-bar-chart font-green-haze hide"></i>
+                                            <span class="caption-subject font-green-haze bold uppercase">Lost Reason Graph</span>
+                                        </div>
+                            
+                                    </div>
+                                    <div class="portlet-body">
+                            
+                                        <div class="table-scrollable table-scrollable-borderless">
+                                            <chart type="Chart" [options]="lrgoption"></chart>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END PORTLET-->
+                            </div>
+</div>
+

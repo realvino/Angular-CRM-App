@@ -1,0 +1,83 @@
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true" [config]="{backdrop: 'static'}">
+        <div class="modal-dialog" style="top: 30%;width: 37%;">
+            <div class="modal-content">
+                    <div class="modal-header">
+                            <a class="close" (click)="close()">
+                               <span aria-hidden="true">&times;</span>
+                            </a>
+                            <h5 class="modal-title"><b>{{Name}} - ({{CurrentStageName}})</b> </h5>
+                        </div>
+                        <div class="modal-body">
+                                <h5 class="modal-title"> Please click any Stage here</h5>
+                                <br>
+                               <div class="row" style="text-align: center;">
+                                   <div *ngIf="stage_list?.length == 2">
+                                        <div  class="col-md-6" style="margin-bottom: 10px;"  *ngFor="let stage of stage_list">
+                                                <button [disabled]="IsValidClick(stage.name)"  [ngStyle]="{'background':stage.colorCode,'min-width':'150px','color': '#000','border-color':'#000','font-size': '10px'}" type="button" class="btn btn-default red" (click)="save(stage.id,stage.name)">{{stage.name}} &nbsp; <span *ngIf="stage.value">{{stage.value}} %</span></button>
+                                        </div>
+                                   </div>
+                                   <div *ngIf="stage_list?.length == 1">
+                                        <div  class="col-md-12" style="margin-bottom: 10px;"  *ngFor="let stage of stage_list">
+                                                <button [disabled]="IsValidClick(stage.name)"  [ngStyle]="{'background':stage.colorCode,'min-width':'150px','color': '#000','border-color':'#000','font-size': '10px'}" type="button" class="btn btn-default red" (click)="save(stage.id,stage.name)">{{stage.name}} &nbsp; <span *ngIf="stage.value">{{stage.value}} %</span></button>
+                                        </div>
+                                   </div>
+                                   <div *ngIf="stage_list?.length > 2">
+                                        <div  class="col-md-4" style="margin-bottom: 10px;"  *ngFor="let stage of stage_list">
+                                                <button [disabled]="IsValidClick(stage.name)"  [ngStyle]="{'background':stage.colorCode,'min-width':'150px','color': '#000','border-color':'#000','font-size': '10px'}" type="button" class="btn btn-default red" (click)="save(stage.id,stage.name)">{{stage.name}} &nbsp; <span *ngIf="stage.value">{{stage.value}} %</span></button>
+                                        </div>
+                                   </div>   
+                            </div> 
+                                <div class="portlet-body" style="background: #d6d6d6;padding: 15PX" *ngIf="lost > 0 || won > 0">
+                                        <form #createQuotationForm="ngForm" novalidate>
+                                            <div  class="row" *ngIf="won">
+                                                <div class="col-md-12">
+                                                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                                            <input #nameInput class="form-control"  type="text" name="ponumber" [ngClass]="{'edited':QuotationInput.poNumber}" [(ngModel)]="QuotationInput.poNumber" required>
+                                                            <label>{{l("PO Number")}} <required_field></required_field></label>
+                                                        </div>
+                                                 </div>  
+                                            </div>
+                                            <div class="row" *ngIf="lost">
+                                                     <div class="col-md-6">
+                                                     <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                                        <label>Competitors<required_field></required_field></label>
+                                                        <ng-select [active]="active_competators" [allowClear]="true" [items]="competators" (selected)="selectedCompetitor($event)" (removed)="removedCompetitor($event)" placeholder="Competitors">
+                                                        </ng-select>
+                                                     </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                            <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                                               <label>Lost Reason<required_field></required_field></label>
+                                                               <ng-select [active]="active_reason" [allowClear]="true" [items]="reasons"  (selected)="selectedReason($event)" (removed)="removedReason($event)" placeholder="Lost Reasons">
+                                                               </ng-select>
+                                                            </div>
+                                                  </div>
+                                            </div>
+                                            <div class="row" *ngIf="lost">
+                                                    <div class="col-md-12">
+                                                            <label>{{l("Remarks")}}  <required_field></required_field></label>
+                                                            <textarea style="height: 60px;" name="description" [(ngModel)]="QuotationInput.reasonRemark" class="form-control" [ngClass]="{'edited':QuotationInput.reasonRemark}"></textarea>                        
+                                                        </div>  
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-12 text-right" style="margin-top: 10px;">
+                                                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="cancel()">{{l("Cancel")}}</button>
+                                                    <button type="button" class="btn btn-primary blue" [disabled]="IsValid(createQuotationForm)" (click)="saveQuotation()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                                                </div>    
+                                            </div>                        
+                                            </form>
+                                    </div> 
+                                    <div class="row" *ngIf="location == 'sales-enquiry' || location == 'sales-grid'">
+                                        <hr>   
+                                        <div class="col-md-12">
+                                            <label>Next Activity <required_field></required_field></label>
+                                               <p-calendar id="datetime3" [(ngModel)]="lastActivity" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
+                                         </div>
+                                    </div>
+                        </div>
+                            
+            </div>
+        </div>
+    </div>
+    
+    

@@ -1,0 +1,79 @@
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true" [config]="{backdrop: 'static'}">
+        <div class="modalOverlay" style="background:rgba(0,0,0,.5); top:0px; left:0px; width:100%; height:100%; z-index:99;position: fixed;"></div>
+        <div class="modal-dialog modal-md" style="width:65%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" (click)="close()">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                    <h4 class="modal-title">
+                        <span *ngIf="activities.id">{{l("Edit Activity")}} : {{activities.jobNumber}}</span>
+                        <span *ngIf="!activities.id">{{l("Create Job Activity")}}</span>
+                    </h4>
+    
+                </div>
+    
+                <form #createJobActivityForm="ngForm" novalidate (ngSubmit)="save()">
+                    <div class="modal-body">
+                        <div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input #activityTitle class="form-control" type="text" name="title" [(ngModel)]="activities.title" required  [ngClass]="{'edited':activities.title}">
+                                        <label>{{l("Title")}} <required_field></required_field></label>
+                                    </div>
+                                </div>
+                            </div>    
+                           
+                          
+ 
+                            <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- <div class="form-group form-md-line-input form-md-floating-label no-hint"> -->
+                                             <label>Remark <required_field></required_field></label>
+                                    <textarea class="form-control" placeholder="Remark" style="min-height: 100px;" name="notes" [(ngModel)]="activities.remark" required></textarea>
+                                           <!-- </div> -->
+                                    </div>
+                                </div>
+
+                          
+
+                                  <div class="row" style="margin-top: 20px;">
+                                    <div class="col-sm-4" style="padding-bottom: 10px;"> 
+                                            <label>Allotted Date</label>
+                                            <p-calendar id="datetime" [(ngModel)]="allotedDate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
+                                           </div>
+                                     <div class="col-sm-4"style="padding-left: 1px;">
+                                            <label>Start Date</label>
+                                          <p-calendar id="datetime" [(ngModel)]="statdate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
+                                     </div>
+    
+                                   <div class="col-sm-4" style="padding-left: 1px;">
+                                           <label>End Date</label>
+                                         <p-calendar id="datetime" [(ngModel)]="endDate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
+                                  </div>
+                            </div>
+                            <div class="row" style="margin-bottom:18px;">
+                                <div class="col-md-12" >
+                              <label>IsOpen:</label>
+                                        <div class="onoffswitch" >
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch5" [(ngModel)]="activities.isopen" checked >
+                                            <label class="onoffswitch-label" for="myonoffswitch5">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                            </div>
+                                </div>
+                            </div>  
+                            <div class="modal-footer">
+                                <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                                <button type="submit" class="btn btn-primary blue" [disabled]="!createJobActivityForm.form.valid " [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+    
+            </div>
+        </div>
+    
+    </div>

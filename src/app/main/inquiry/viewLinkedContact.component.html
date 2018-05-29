@@ -1,0 +1,38 @@
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+		<div class="modal-header">
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Linked Contacts</h4>
+                </div>
+				
+            <div class="list-group">
+                <a *ngFor="let contact of linkedContacts" href="javascript:;" class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-1">
+                                        <img src="/assets/common/images/Contacts.png" style="height:70px;width:65px;align-content:center;" class="img-rounded" />
+                                    </div>
+                                    <div class="col-md-11" style="left:5%;">
+                                        <h3 class="list-group-item-heading" style="color:blue">
+                                            {{contact.newContactName}}<br />
+                                            
+                                        </h3>
+
+                                        <h4 class="list-group-item-heading" style="color:green">
+                                            Company : {{contact.newCompanyName}}<br />
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                </a>
+            </div>
+			<div class="modal-footer">
+                            <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Close")}}</button>
+                        </div>
+        </div>
+    </div>
+</div>
+

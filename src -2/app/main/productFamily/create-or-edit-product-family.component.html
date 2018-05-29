@@ -1,0 +1,73 @@
+<div bsModal #modal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form *ngIf="active" #createproductFamilyForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">
+                        <span *ngIf="productFamily.id">{{l("Edit product family")}}: {{productFamily.productFamilyName}}</span>
+                        <span *ngIf="!productFamily.id">{{l("Create New product family")}}</span>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                              <input #nameInput class="form-control" type="text" name="code" [ngClass]="{'edited':productFamily.productFamilyCode}" [(ngModel)]="productFamily.productFamilyCode" required>
+                              <label>{{l("ProductFamilyCode")}}  <required_field></required_field></label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                             <input class="form-control" type="text" name="name" [ngClass]="{'edited':productFamily.productFamilyName}" [(ngModel)]="productFamily.productFamilyName" required>
+                             <label>{{l("ProductFamilyName")}}  <required_field></required_field></label>
+                           </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6" >
+                            <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                <input class="form-control" type="text" name="warranty" [ngClass]="{'edited':productFamily.warranty}" [(ngModel)]="productFamily.warranty" required>
+                                <label>{{l("Warranty")}}  <required_field></required_field></label>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="margin-top: -25px;">
+                            <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                              <label>{{l("Collection")}}  <required_field></required_field></label>
+                              <ng-select [active]="active_collection" [allowClear]="true" [items]="collections" (selected)="selectedCollection($event)" (removed)="removeCollection($event)" placeholder="Select Collection">
+                              </ng-select>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>{{l("Description")}}  <required_field></required_field></label>
+                            <textarea style="height: 100px;" name="description" [(ngModel)]="productFamily.description" class="form-control" [ngClass]="{'edited':productFamily.description}"></textarea>                        
+                        </div>  
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6" style="float:left">
+                                    <label>Discountable:</label>
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" [(ngModel)]="productFamily.discount" checked>
+                                        <label class="onoffswitch-label" for="myonoffswitch">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                   </div>
+                                   <div class="col-md-6">
+                                        <div class="modal-footer">
+                                                <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                                                <button type="submit" class="btn btn-primary blue" [disabled]="!createproductFamilyForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                                            </div>
+                                   </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

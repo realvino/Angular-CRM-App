@@ -1,0 +1,172 @@
+<div class="container" style="width:98%;margin-bottom: 25px;">
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>Contact Information</h4>
+            <!--<button class="btn btn-success pull-right" (click)="goToCompany()">X</button>-->
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12" style="background: rgba(113, 145, 176, 0.16);padding: 20px;">
+            <!--<div class="margin-20">
+                <h4> Edit Company</h4>
+            </div>-->
+            <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm)">
+                <div class="actions" style="text-align:right;">
+                    <button type="button" (click)="goToCompany()" title="{{l('Edit')}}" class="btn btn-circle btn-icon-only btn-default">
+                            <i class="fa fa-times" style="color:red;"></i>
+                        </button>
+                </div>
+				<div class="row">
+				    <div class="col-xs-4">
+                        <label>Title <required_field></required_field></label>
+                        <ng-select [active]="active_title" [allowClear]="true" [items]="title" [disabled]="disabled" (data)="refreshTitle($event,myForm)" (removed)="removedTitle($event,myForm)" placeholder="No Title selected">
+                        </ng-select>
+                        <input type="hidden" formControlName="newcompanyid" value="">
+                    </div> 
+				    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>Contact Name <required_field></required_field></label>
+                            <input type="text" class="form-control" formControlName="companyName">                          
+                        </div>
+                    </div>
+					<div class="col-xs-4">
+                        <div class="form-group">
+                            <label>Last Name <required_field></required_field></label>
+                            <input type="text" class="form-control" formControlName="lastName">
+                        </div>
+                    </div>
+
+				</div>
+                <div class="row" style="padding-bottom: 25px">
+                    <div class="col-xs-4">
+                        <label>Contact Type <required_field></required_field></label>
+                        <ng-select [active]="active_customer" [items]="companytypes" [allowClear]="true" (data)="refreshValue($event,myForm)" placeholder="No Contact Type selected">
+                        </ng-select>
+                        <input type="hidden" formControlName="typeid" value="">
+                        <!--<select #milesourceCombobox id="yourDropDownElementId" name="source" class="form-control" formControlName="typeid" [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                            <option value="" >{{emptyText}}</option>
+                            <option value="1">Customer</option>
+                            <option value="2">Consultant</option>
+                            <option value="3">Contractor</option>
+                            </select>-->
+                    </div>
+                    <div class="col-xs-4">
+                        <label>Company</label>
+                        <ng-select [active]="active_company" [allowClear]="true" [items]="items" [disabled]="cmp_disabled" (data)="refreshCompany($event,myForm)"  (selected)="selectedCompany($event,myForm)" (removed)="removedCompany($event,myForm)" (keyup)="typedCompany($event)" placeholder="No Company selected">
+                        </ng-select>
+                        <input type="hidden" formControlName="newcompanyid" value="">
+                    </div>
+                    <div class="col-xs-4">
+                        <label>Designation </label>
+                        <ng-select [active]="active_desg" [allowClear]="true" [items]="desg" [disabled]="disabled_desg" (data)="refreshDesg($event)" (removed)="removedDesg($event)" placeholder="Select Designation">
+                        </ng-select>
+                    </div>
+                </div>
+				
+				
+                <!--contact-->
+                <!--<div class="row">
+                    <div class="col-xs-12">
+                        <h3>Contact Information</h3>
+                    </div>
+                </div>-->
+                <div formArrayName="contacts">
+                    <div class="panel panel-default" style="padding-bottom: 15px">
+                        <div class="panel-heading">
+
+                            <div style="width:40%;">
+                                <span>Contact Details <required_field></required_field></span>
+                            </div>
+                            <div style="width:1%;float:right">
+                                <a style="cursor: pointer;float:right;text-align:right;margin-top: -18px;position: absolute">
+                                    <i style="color:green;" *ngIf="myForm.controls.contacts.valid" (click)="addContacts(1)" class="fa fa-plus-circle" aria-hidden="true" title="Create"> </i>
+                                </a>
+                            </div>
+
+                        </div>
+						<div class="row" style="padding-left:15px; padding-top:15px;">
+								<div class="col-xs-5"><label>Type</label></div>
+								<div class="col-xs-7" style="margin-top:5px;"></div>
+							</div>
+                        <div *ngFor="let contact of myForm.controls.contacts.controls; let j=index">
+                            <div class="panel-body" [formGroupName]="j" style="padding-bottom:0px;">
+                                <contact [group]="myForm.controls.contacts.controls[j]"></contact>
+                                <span style="margin-top: -33px;" class="fa fa-trash-o pull-right" *ngIf="myForm.controls.contacts.controls.length > 1" (click)="removeContacts(j,contact)">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--addresses-->
+                <!--<div class="row">
+                    <div class="col-xs-12">
+                        <h3>Address Information</h3>
+                    </div>
+                </div>-->
+                <div formArrayName="addresses">
+                    <div class="panel-heading">
+                        <div style="width:40%;">
+                            <span>Address Details <required_field></required_field></span>
+                        </div>
+                        <div style="width:1%;float:right">
+                            <a style="cursor: pointer;float:right;text-align:right;margin-top: -18px;position: absolute">
+                                <i style="color:green;" *ngIf="myForm.controls.addresses.valid" (click)="addAddress(1)" class="fa fa-plus-circle" aria-hidden="true" title="Create"> </i>
+                            </a>
+                        </div>
+                    </div>
+					
+                    <div class="panel panel-default" style="padding-bottom: 15px">
+					<div class="row" style="padding-left:15px; padding-top:15px;">
+								<div class="col-xs-2 noPaddingR"><label>Type</label></div>
+								<div class="col-xs-3 noPaddingR"><label>Address 1</label></div>
+								<div class="col-xs-2 noPaddingL noPaddingR"><label>Address 2</label></div>
+								<div class="col-xs-2 noPaddingL noPaddingR" ><label>City</label></div>
+                                <div class="col-xs-3 noPaddingL noPaddingR"><label>Country</label></div>
+							</div>
+                        <div *ngFor="let address_con of myForm.controls.addresses.controls; let i=index">
+                            <div class="panel-body" [formGroupName]="i" style="padding-bottom:0px;">
+                                <div>
+                                    <address_con [group]="myForm.controls.addresses.controls[i]"></address_con>
+                                </div>
+                                <span style="margin-top: -33px;" class="fa fa-trash-o pull-right" *ngIf="myForm.controls.addresses.controls.length > 1" (click)="removeAddress(i,address_con)">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="margin-20">
+                    <button style="margin-bottom: 20px !important;" type="submit" class="btn btn-primary pull-right" [disabled]="!myForm.valid">Submit</button>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <!--<div class="margin-20">
+                    <div>myForm details:-</div>
+                    <pre>Total modified and updated address values:{{values_arr | json}}</pre>
+                    <pre>Total removed addresses is: {{removed_address_arr | json}}</pre>
+                    <pre>Total modified and updated contact values:{{contact_arr | json}}</pre>
+                    <pre>Total removed contacts is: {{remove_contact_arr | json}}</pre>
+                    <pre>Is myForm valid?: <br>{{myForm.valid | json}}</pre>
+                    <pre>{{myForm.controls.addresses.valid | json}}</pre>
+                    <pre>form value: <br>{{myForm.value | json}}</pre>
+
+                </div>-->
+            </form>
+            <!--<div style="width: 300px; margin-bottom: 20px;">
+                <h3>Select a single city</h3>
+                <ng-select [allowClear]="true" [items]="items" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)" (removed)="removed($event)" (typed)="typed($event)" placeholder="No city selected">
+                </ng-select>
+                <p></p>
+                <pre>{{value.text}}</pre>
+                <div>
+                    <button type="button" class="btn btn-primary" [(ngModel)]="disabledV" btnCheckbox btnCheckboxTrue="1" btnCheckboxFalse="0">
+                         {{disabled === '1' ? 'Enable' : 'Disable'}}
+                        </button>
+                </div>
+            </div>-->
+        </div>
+    </div>
+</div>

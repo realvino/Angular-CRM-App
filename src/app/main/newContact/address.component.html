@@ -1,0 +1,53 @@
+<div [formGroup]="adressForm" *ngIf="!displayOption">
+    <div class="row" style=" margin-right:20px;">       
+        <div class="col-xs-2 noPaddingR">            
+                <ng-select [items]="companytypes" [active]="active_company" [allowClear]="true" (data)="refreshValue($event,adressForm)">
+                </ng-select>
+                <input type="hidden" formControlName="typeid" value="">
+                <input type="hidden" formControlName="company">
+                <input type="hidden" formControlName="id">         
+        </div>
+        <div class="form-group col-xs-3 noPaddingR" style="padding-left: 5px;">
+            <input type="text" class="form-control" formControlName="street">
+        </div>
+        <div class="form-group col-xs-2" style="padding: 0 5px;">
+            <input type="text" class="form-control" formControlName="postcode">
+        </div>
+        <div class="col-xs-2 noPaddingL noPaddingR" >           
+                <ng-select [active]="active_location" [allowClear]="true" [items]="location" [disabled]="companyEnable" (selected)="selectedLocation($event,adressForm,location)" (removed)="removedLocation($event,adressForm)" (typed)="typedLocation($event,adressForm)" >
+                </ng-select>
+                <input type="hidden" formControlName="cityid" value="">          
+        </div>
+        <div class="col-xs-3 noPaddingR">
+            <input type="text" class="form-control" formControlName="country" [attr.disabled]="true">
+        </div>
+    </div>
+</div>
+<div [formGroup]="adressForm" *ngIf="displayOption">
+    <div class="row" style=" margin-right:20px;">
+        
+        <div class="col-xs-4">
+            
+                <ng-select [items]="companytypes" [active]="active_company" [allowClear]="true" (data)="refreshValue($event,adressForm)" placeholder="Type">
+                </ng-select>
+                <input type="hidden" formControlName="typeid" value="">
+                <input type="hidden" formControlName="company">
+          <input type="hidden" formControlName="id">
+           
+        </div>
+        <div class="form-group col-xs-4">
+            <input type="text" class="form-control" formControlName="street" placeholder="Address 1">
+        </div>
+        <div class="form-group col-xs-4">
+            <input type="text" class="form-control" formControlName="postcode" placeholder="Address 2">
+        </div>
+        <div class="col-xs-6" >           
+                <ng-select [active]="active_location" [allowClear]="true" [items]="location" [disabled]="companyEnable" (selected)="selectedLocation($event,adressForm,location)" (removed)="removedLocation($event,adressForm)" (typed)="typedLocation($event,adressForm)" placeholder="City">
+                </ng-select>
+                <input type="hidden" formControlName="cityid" value="">         
+        </div>
+        <div class="col-xs-6">
+            <input type="text" class="form-control" formControlName="country" placeholder="Country" [attr.disabled]="true">
+        </div>
+    </div>
+</div>

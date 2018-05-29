@@ -1,0 +1,265 @@
+<div bsModal #modal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true" [config]="{backdrop: 'static'}" >
+    <div class="modal-dialog" style="width:72% !important">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">
+                        <span *ngIf="!tempProduct_input.id">{{l("Create NonStandard Product")}}</span>
+                        <span *ngIf="tempProduct_input.id">{{l("Edit NonStandard Product")}}: {{tempProduct_input.productCode}}</span>
+                    </h4>
+                </div>
+                <form *ngIf="active" #createCompanyForm="ngForm" novalidate (ngSubmit)="save()">                        
+                    <div class="modal-body">
+                        <div class="modal_processing" *ngIf="processed_image">
+                            <span class="fa fa-2x fa-spinner loader"></span>
+                        </div>
+                        <div class="row">
+                            <div *ngIf="tempProduct_input.id" class="col-md-2" >
+                                <div class="col-md-12 imgCont">
+                                    <span *ngFor="let item of imageList">
+                                        <img *ngIf="item.imageUrl" src="{{path+item.imageUrl}}" class="img-product" />
+                                            <span class="delete-pic" (click)="deleteImg(item.id)">
+                                                <i class="fa fa-trash"></i>
+                                            </span>
+                                    </span>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" style="margin-top: 15px;">
+                                        <div class="box">
+                                            <input type="file" name="file-1[]" id="file-1" class="inputfile inputfile-1" ng2FileSelect [uploader]="imguploader"/>
+                                            <label for="file-1"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg> <span>Choose a file&hellip;</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="tempProduct_input.id" class="col-md-10">
+							    <div class="col-md-6"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="productName"  [ngClass]="{'edited':tempProduct_input.productName}" [(ngModel)]="tempProduct_input.productName">
+                                        <label>{{l("Product Name")}} </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="product_code" [disabled]="tempProduct_input.id" [ngClass]="{'edited':tempProduct_input.productCode}" [(ngModel)]="tempProduct_input.productCode" required>
+                                        <label>{{l("Product Code")}} <required_field></required_field></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="suspectCode" [disabled]="tempProduct_input.id" [ngClass]="{'edited':tempProduct_input.suspectCode}" [(ngModel)]="tempProduct_input.suspectCode" required>
+                                        <label>{{l("SupplierCode")}} <required_field></required_field></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="gpcode" [ngClass]="{'edited':tempProduct_input.gpcode}" [(ngModel)]="tempProduct_input.gpcode">
+                                        <label>{{l("GPCode")}} </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="price" [ngClass]="{'edited':tempProduct_input.price}" [(ngModel)]="tempProduct_input.price" required>
+                                        <label>{{l("Price")}} <required_field></required_field></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="width" [ngClass]="{'edited':tempProduct_input.width}" [(ngModel)]="tempProduct_input.width">
+                                        <label>{{l("Width")}} </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="depth" [ngClass]="{'edited':tempProduct_input.depth}" [(ngModel)]="tempProduct_input.depth">
+                                        <label>{{l("Depth")}} </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="height" [ngClass]="{'edited':tempProduct_input.height}" [(ngModel)]="tempProduct_input.height">
+                                        <label>{{l("Height")}} </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="!tempProduct_input.id" class="col-md-12">
+							    <div class="col-md-6"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="productName"  [ngClass]="{'edited':tempProduct_input.productName}" [(ngModel)]="tempProduct_input.productName">
+                                        <label>{{l("Product Name")}} </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="product_code" [disabled]="tempProduct_input.id" [ngClass]="{'edited':tempProduct_input.productCode}" [(ngModel)]="tempProduct_input.productCode" required>
+                                        <label>{{l("Product Code")}} <required_field></required_field></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="suspectCode" [disabled]="tempProduct_input.id" [ngClass]="{'edited':tempProduct_input.suspectCode}" [(ngModel)]="tempProduct_input.suspectCode" required>
+                                        <label>{{l("SupplierCode")}} <required_field></required_field></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="gpcode" [ngClass]="{'edited':tempProduct_input.gpcode}" [(ngModel)]="tempProduct_input.gpcode">
+                                        <label>{{l("GPCode")}} </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="price" [ngClass]="{'edited':tempProduct_input.price}" [(ngModel)]="tempProduct_input.price" required>
+                                        <label>{{l("Price")}} <required_field></required_field></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="width" [ngClass]="{'edited':tempProduct_input.width}" [(ngModel)]="tempProduct_input.width">
+                                        <label>{{l("Width")}} </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="depth" [ngClass]="{'edited':tempProduct_input.depth}" [(ngModel)]="tempProduct_input.depth">
+                                        <label>{{l("Depth")}} </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="height" [ngClass]="{'edited':tempProduct_input.height}" [(ngModel)]="tempProduct_input.height">
+                                        <label>{{l("Height")}} </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label>Description</label>
+                                    <p-editor [(ngModel)]="tempProduct_input.description" name="HtmlEditorInput" [style]="{'min-height':'100px'}"></p-editor>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                            <button type="submit" class="btn btn-primary blue" [disabled]="!createCompanyForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                        </div>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+<style>
+   
+.modal_processing{
+    position: fixed;
+    z-index: 9;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    -webkit-animation-name: fadeIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: fadeIn;
+    animation-duration: 0.4s;
+}
+.loader {
+    margin-top: 28%;
+    margin-left: 51%;
+    animation: spin 3s linear infinite;
+    color: #fff;
+    -webkit-animation: spin 2s linear infinite;
+}
+@-moz-keyframes spin {
+    to { -moz-transform: rotate(359deg); }
+}
+@-webkit-keyframes spin {
+    to { -webkit-transform: rotate(359deg); }
+}
+@keyframes spin {
+    to {transform:rotate(359deg);}
+}
+.delete-pic{
+    position: relative;
+    color: #fff;
+    top: 3px;
+    bottom: 10px;
+    background: #0C0C0C;
+}
+.imgCont{
+    /*padding: 54px;*/
+    border: 1px solid #eee;
+    height: 210px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.img-product{
+    width: 100%;
+    height: auto;
+    border: 1px solid #eee;
+    margin-bottom: -20px;
+    margin-top: 10px;  
+}
+
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile + label {
+    max-width: 150px;
+    font-size: 1.25rem;
+    /* 20px */
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    padding: 0.625rem 1.25rem;
+    padding-right: 28px;
+    margin-top: 10px;}
+
+.no-js .inputfile + label {
+    display: none;
+}
+
+.inputfile:focus + label,
+.inputfile.has-focus + label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
+
+.inputfile + label svg {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    fill: currentColor;
+    margin-top: -0.25em;
+    /* 4px */
+    margin-right: 0.25em;
+    /* 4px */
+}
+
+.inputfile-1 + label {
+    color: #f1e5e6;
+    background-color: #414996;
+}
+
+.inputfile-1:focus + label,
+.inputfile-1.has-focus + label,
+.inputfile-1 + label:hover {
+    background-color: #722040;
+}
+</style>

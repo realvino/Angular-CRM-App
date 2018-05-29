@@ -1,0 +1,25 @@
+<div class="row">
+<div [formGroup]="contactForm">    
+        <div class="col-xs-4" >
+            
+                <input type="hidden" formControlName="id" required> 
+                <!--<label>Type</label>-->
+                <ng-select [items]="contacttypes" [active]="active_con" [allowClear]="true" (data)="refreshContactValue($event,contactForm)" placeholder="Type" >
+                </ng-select>
+                <input type="hidden" formControlName="infoid" value="">
+               <!-- <select #milesourceCombobox id="yourDropDownElementId" name="infoid" class="form-control" formControlName="infoid" [attr.data-live-search]="true" jq-plugin="selectpicker">
+                            <option value="">{{emptyText}}</option>
+                            <option value="1">Mobile</option>
+                            <option value="2">Email</option>
+                            <option value="3">Telephone</option>
+                            <option value="4">Fax</option>
+          </select>-->
+
+        </div>
+        <div class="form-group col-xs-7" style="width: 61%;">
+           
+            <input type="text" class="form-control" formControlName="contactinfo">
+
+        </div>
+    </div>
+</div>

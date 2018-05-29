@@ -1,0 +1,59 @@
+<div bsModal #modal="bs-modal"  class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true" [config]="{backdrop: 'static'}" >
+        <div class="modal-dialog" style="width:70% !important">
+            <div class="modal-content">
+                <form *ngIf="active" #createQuotationForm="ngForm" novalidate (ngSubmit)="save()">
+                    <div class="modal-header">
+                        <button type="button" class="close" (click)="close()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">
+                            <span>{{l("CreateQuotation")}}</span>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div *ngIf="!quotation.id">
+                            <div class="row">
+                                <!-- <div class="col-md-6">
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input #nameInput class="form-control" type="text" name="ref_no" [ngClass]="{'edited':quotation.name}" [(ngModel)]="quotation.name" required>
+                                        <label>{{l("Name")}} <required_field></required_field></label>
+                                    </div>
+                                </div> -->
+                                    <div class="col-md-6">
+                                        <label>Enquiry</label>
+                                        <ng-select [active]="active_inquiry" [disabled]="true" [allowClear]="true" [items]="inquiry" (selected)="selectInquiry($event)" (removed)="removeInquiry($event)" placeholder="Nothing is Selected">
+                                         </ng-select>
+                                     </div>
+                                     <div class="col-md-6">
+                                            <label>Company<required_field></required_field></label>
+                                            <ng-select [active]="active_company" [disabled]="true" [allowClear]="true" [items]="company" (selected)="selectCompany($event)" (removed)="removeCompany($event)" placeholder="Nothing is Selected">
+                                            </ng-select>                                      
+                                        </div>
+                               
+                            </div>
+                            <div class="row">                          
+                                <div class="col-md-6">
+                                    <label>Salesperson</label>
+                                    <ng-select [active]="active_sales" [items]="salesMan" (selected)="selectSalesMan($event)" (removed)="removeSalesMan($event)" [disabled]="true" placeholder="Nothing is Selected">
+                                    </ng-select>
+                                </div>
+                                <div class="col-md-6">
+    
+                                    <label>Contact</label>
+                                    <ng-select [active]="active_contact" [disabled]="true" [allowClear]="true" [items]="contact" (selected)="selectContact($event)" (removed)="removeContact($event)" placeholder="Nothing is selected">
+                                    </ng-select>
+                                   
+    
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                                <button type="submit" class="btn btn-primary blue" [disabled]="!createQuotationForm.form.valid" [buttonBusy]="Creating" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Create")}}</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- <editEnqQuotationModal #editEnqQuotationModal></editEnqQuotationModal> -->

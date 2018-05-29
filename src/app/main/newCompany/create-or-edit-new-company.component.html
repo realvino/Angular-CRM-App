@@ -1,0 +1,74 @@
+<div bsModal #modal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true" [config]="{backdrop: 'static'}" >
+    <div class="modal-dialog" style="width:70% !important">
+        <div class="modal-content">
+            <form *ngIf="active" #createCompanyForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">
+                        <!--<span *ngIf="company.id">{{l("EditCompany")}}: {{company.cityName}}</span>-->
+                        <span>{{l("CreateCompany")}}</span>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div *ngIf="!company.id">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                    <input #nameInput class="form-control" type="text" name="name" [ngClass]="{'edited':company_name}" [(ngModel)]="company_name" (change)="CheckCompanyDuplicate(company_name)" required>
+                                    <label>{{l("CompanyName")}} <required_field></required_field>
+                                        &nbsp; <span style="color:red;" *ngIf="CompanyDuplicate"> ( This Company Already Exist <i  class="fa fa-exclamation"></i> )</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                    <input class="form-control" type="text" name="tradeLicense" [ngClass]="{'edited':company.tradeLicense}" [(ngModel)]="company.tradeLicense">
+                                    <label>{{l("Company Name as per Trade License")}} </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-md-6">
+                                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                            <input class="form-control" type="text" name="trNnumber" [ngClass]="{'edited':company.trNnumber}" [(ngModel)]="company.trNnumber">
+                                            <label>{{l("TRN number")}} </label>
+                                        </div>
+                                    </div>
+
+                                <div class="col-md-6">
+                                        <label>Industry</label>
+                                                <ng-select [active]="active_indus" [allowClear]="true" [items]="indus" [disabled]="disabled_indus" (data)="refreshIndus($event)" (removed)="removedIndus($event)" placeholder="Select industry">
+                                                </ng-select>
+                                            </div>
+                         </div>
+                            
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <label>Customer Type <required_field></required_field></label>
+                                <ng-select [active]="active_ctype" [allowClear]="true" [items]="custType" (selected)="doSomethingType($event)" (removed)="removeCompany($event)" placeholder="Select CustomerType">
+                                </ng-select>
+                               
+
+                            </div>
+                            <div class="col-md-6">
+
+                                <label>Managed By</label>
+                                <ng-select [active]="active_managed" [allowClear]="true" [items]="managedBy" (selected)="selectManagedBy($event)" (removed)="removeManagedBy($event)" placeholder="Select ManagedBy">
+                                </ng-select>
+                               
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                            <button type="submit" class="btn btn-primary blue" [disabled]="isValidCompany(createCompanyForm)" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

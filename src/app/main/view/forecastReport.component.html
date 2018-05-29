@@ -1,0 +1,570 @@
+<div [@routerTransition]>
+    <div class="row margin-bottom-5">
+        <div class="col-xs-6">
+            <div class="page-head">
+                <div class="page-title">
+                    <h1>
+                        <span>Forecast Report</span> <small>Grid</small>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portlet light margin-bottom-0">
+            <div class="portlet-body">
+                <form class="horizontal-form">
+                    <div class="form-body">                       
+                        <div class="row margin-bottom-10">
+                             <div class="col-md-4">
+                                <ng-select [active]="active_team" [allowClear]="true" [items]="teams" (selected)="selectedTeam($event)" (removed)="removedTeam($event)" (data)="refreshTeam($event)" placeholder="Select A Team"></ng-select>
+                             </div>
+                             <div class="col-md-4">
+                                     <ng-select [active]="active_view" [allowClear]="true" [disabled]="!teamId" [items]="sales" (selected)="selectSales($event)" (removed)="removeSales($event)" placeholder="Select A Account Manager">
+                                    </ng-select> 
+                             </div>   
+                        </div>
+                    </div>
+                </form>
+                <div *ngIf="viewId" class="primeng-datatable-container" [busyIf]="primengDatatableHelper.isLoading" style="margin-top: 18px;">
+                    <div class="primeng-paging-container">
+                        <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                             #paginator
+                             (onPageChange)="getInquiry($event)"
+                             [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                             [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                        </p-paginator>
+                        <span class="total-records-count">
+                           {{l('TotalRecordsCount', primengDatatableHelper.totalRecordsCount)}}
+                        </span>
+                    </div>
+                    <p-dataTable #dataTable
+                         (onLazyLoad)="getInquiry($event)"
+                         [value]="primengDatatableHelper.records"
+                         rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                         [paginator]="false"
+                         [lazy]="false"
+                         emptyMessage="{{l('NoData')}}"
+                         scrollable="true"
+                         columnResizeMode="expand"
+                         rowHover="true" 
+                         (onRowDblclick)="cellClicked($event)"  
+                         [responsive]="primengDatatableHelper.isResponsive">
+                         <p-headerColumnGroup>
+                             <p-row>
+                                    <p-column field="date" [filter]="true" header="Creation Date" [sortable]="true" [style]="{'width':'200px'}"></p-column>
+                                    <p-column field="inquiryName" [filter]="true" header="{{l('Opportunity Name')}}" [sortable]="true" [style]="{'width':'230px'}"></p-column>
+                                    <p-column field="companyName" [filter]="true" header="{{l('Company Name')}}" [sortable]="true" [style]="{'width':'230px'}"></p-column>
+                                    <p-column field="status" [filter]="true" header="{{l('Status')}}" [sortable]="true" [style]="{'width':'150px'}"></p-column>
+                                    <p-column field="accountManager" [filter]="true" header="{{l('Account Manager')}}" [sortable]="true" [style]="{'width':'150px'}"></p-column>
+                                    <p-column field="newOrExisting" [filter]="true" header="{{l('New/Existing')}}" [sortable]="true" [style]="{'width':'150px'}"></p-column>
+                                    <p-column field="location" [filter]="true" header="{{l('Location')}}" [sortable]="true" [style]="{'width':'200px'}"></p-column>
+                                    <p-column field="aedValue" [filter]="true" header="{{l('AEDValue')}}" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                                    <p-column field="stage" [filter]="true" header="{{l('Stage')}}" [sortable]="true" [style]="{'width':'200px'}"></p-column>
+                                    <p-column field="percentage" [filter]="true" header="{{l('Percentage')}}" [sortable]="true"  [style]="{'width':'150px'}"></p-column>
+                                    <p-column field="weightedAED" [filter]="true" header="{{l('WeightedAED')}}" [sortable]="true"  [style]="{'width':'150px'}"></p-column>
+                                    <p-column field="total1Value" [filter]="true" [header]="this.quotation.total1ValueFormat" *ngIf="this.quotation.total1Value > 0" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                                    <p-column field="total2Value" [filter]="true" [header]="this.quotation.total2ValueFormat" *ngIf="this.quotation.total2Value > 0" [sortable]="true" [style]="{'width':'120px'}"></p-column> 
+                                    <p-column field="total3Value" [filter]="true" [header]="this.quotation.total3ValueFormat" *ngIf="this.quotation.total3Value > 0" [sortable]="true" [style]="{'width':'120px'}"></p-column> 
+                                    <p-column field="total4Value" [filter]="true" [header]="this.quotation.total4ValueFormat" *ngIf="this.quotation.total4Value > 0" [sortable]="true" [style]="{'width':'120px'}"></p-column> 
+                                    <p-column field="total5Value" [filter]="true" [header]="this.quotation.total5ValueFormat" *ngIf="this.quotation.total5Value > 0" [sortable]="true" [style]="{'width':'120px'}"></p-column> 
+                                    <p-column field="total6Value" [filter]="true" [header]="this.quotation.total6ValueFormat" *ngIf="this.quotation.total6Value > 0" [sortable]="true" [style]="{'width':'120px'}"></p-column> 
+                                    <p-column field="total7Value" [filter]="true" [header]="this.quotation.total7ValueFormat" *ngIf="this.quotation.total7Value > 0" [sortable]="true" [style]="{'width':'120px'}"></p-column> 
+                                    <p-column field="total8Value" [filter]="true" [header]="this.quotation.total8ValueFormat" *ngIf="this.quotation.total8Value > 0" [sortable]="true" [style]="{'width':'120px'}"></p-column> 
+                                    <p-column field="total9Value" [filter]="true" [header]="this.quotation.total9ValueFormat" *ngIf="this.quotation.total9Value > 0" [sortable]="true" [style]="{'width':'120px'}"></p-column> 
+                                    <p-column field="total10Value" [filter]="true" [header]="this.quotation.total10ValueFormat" *ngIf="this.quotation.total10Value > 0" [sortable]="true" [style]="{'width':'120px'}"></p-column> 
+                                    <p-column field="total11Value" [filter]="true" [header]="this.quotation.total11ValueFormat" *ngIf="this.quotation.total11Value > 0" [sortable]="true" [style]="{'width':'120px'}"></p-column> 
+                                    <p-column field="total12Value" [filter]="true" [header]="this.quotation.total12ValueFormat" *ngIf="this.quotation.total12Value > 0" [sortable]="true" [style]="{'width':'120px'}"></p-column> 
+                                    <p-column field="actionDate" [filter]="true" header="Action Date" [sortable]="true" [style]="{'width':'200px'}"></p-column> 
+                                    <p-column field="notes" [filter]="true" header="Notes" [sortable]="true" [style]="{'width':'400px'}"></p-column> 
+
+                             </p-row>
+                             </p-headerColumnGroup>  
+                         <p-column field="date" [style]="{'width':'200px'}"></p-column>
+                         <p-column field="inquiryName" [style]="{'width':'230px'}" (onclick)= "cellClicked($event)"></p-column>
+                         <p-column field="companyName" [style]="{'width':'230px'}"></p-column>
+                         <p-column field="status" [style]="{'width':'150px'}"></p-column>
+                         <p-column field="accountManager" [style]="{'width':'150px'}"></p-column>
+                         <p-column field="newOrExisting" [style]="{'width':'150px'}"></p-column>
+                         <p-column field="location" [style]="{'width':'200px'}"></p-column>
+                         <p-column field="aedValue" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.aedValue.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template> 
+                         </p-column>
+                         <p-column field="stage" [style]="{'width':'200px'}"></p-column>
+                         <p-column field="percentage" [style]="{'width':'150px'}"></p-column>
+                         <p-column field="weightedAED" [style]="{'width':'150px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.weightedAED.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template> 
+                         </p-column>
+                         <p-column *ngIf="this.quotation.total1Value > 0" field="total1Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total1Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template>     
+                         </p-column>
+                         <p-column *ngIf="this.quotation.total2Value > 0" field="total2Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total2Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template>   
+                         </p-column> 
+                         <p-column *ngIf="this.quotation.total3Value > 0" field="total3Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total3Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template>   
+                         </p-column> 
+                         <p-column *ngIf="this.quotation.total4Value > 0" field="total4Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total4Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template>   
+                         </p-column> 
+                         <p-column *ngIf="this.quotation.total5Value > 0" field="total5Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total5Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template>   
+                         </p-column> 
+                         <p-column *ngIf="this.quotation.total6Value > 0" field="total6Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total6Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template>   
+                         </p-column> 
+                         <p-column *ngIf="this.quotation.total7Value > 0" field="total7Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total7Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template>   
+                         </p-column> 
+                         <p-column *ngIf="this.quotation.total8Value > 0" field="total8Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total8Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template>   
+                         </p-column> 
+                         <p-column *ngIf="this.quotation.total9Value > 0" field="total9Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total9Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template>   
+                         </p-column> 
+                         <p-column *ngIf="this.quotation.total10Value > 0" field="total10Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total10Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template>   
+                         </p-column> 
+                         <p-column *ngIf="this.quotation.total11Value > 0" field="total11Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total11Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template>   
+                         </p-column> 
+                         <p-column *ngIf="this.quotation.total12Value > 0" field="total12Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total12Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template>   
+                         </p-column> 
+                         <p-column [style]="{'width':'200px'}" field="actionDate"></p-column> 
+                         <p-column [style]="{'width':'400px'}" field="notes"></p-column> 
+                         <p-footerColumnGroup>
+                            <p-row *ngIf="count">
+                                    <p-column footer="Total" [style]="{'width':'200px','font-weight': '700'}"></p-column>
+                                    <p-column footer="" [style]="{'width':'230px','font-weight': '700'}"></p-column>
+                                    <p-column footer="" [style]="{'width':'230px','font-weight': '700'}"></p-column>
+                                    <p-column footer="" [style]="{'width':'150px','font-weight': '700'}"></p-column>
+                                    <p-column footer="" [style]="{'width':'150px','font-weight': '700'}"></p-column>
+                                    <p-column footer="" [style]="{'width':'150px','font-weight': '700'}"></p-column>
+                                    <p-column footer="" [style]="{'width':'200px','font-weight': '700'}"></p-column>
+                                    <p-column footer="{{this.quotation.aedValue.toLocaleString('en', { minimumFractionDigits: 2 })}}" [style]="{'width':'120px','font-weight': '700'}"></p-column>
+                                    <p-column footer="" [style]="{'width':'200px','font-weight': '700'}"></p-column>
+                                    <p-column footer="" [style]="{'width':'150px','font-weight': '700'}"></p-column>
+                                    <p-column footer="{{this.quotation.weightedAED.toLocaleString('en', { minimumFractionDigits: 2 })}}" [style]="{'width':'150px','font-weight': '700'}"></p-column>
+                                    <p-column *ngIf="this.quotation.total1Value > 0" footer="{{this.quotation.total1Value.toLocaleString('en', { minimumFractionDigits: 2 })}}" [style]="{'width':'120px','font-weight': '700'}">
+                                     
+                                    </p-column>
+                                    <p-column *ngIf="this.quotation.total2Value > 0" footer="{{this.quotation.total2Value.toLocaleString('en', { minimumFractionDigits: 2 })}}" [style]="{'width':'120px','font-weight': '700'}">
+                                    
+                                    </p-column> 
+                                    <p-column *ngIf="this.quotation.total3Value > 0" footer="{{this.quotation.total3Value.toLocaleString('en', { minimumFractionDigits: 2 })}}" [style]="{'width':'120px','font-weight': '700'}">
+                                     
+                                    </p-column> 
+                                    <p-column *ngIf="this.quotation.total4Value > 0" footer="{{this.quotation.total4Value.toLocaleString('en', { minimumFractionDigits: 2 })}}" [style]="{'width':'120px','font-weight': '700'}">
+                                     
+                                    </p-column> 
+                                    <p-column *ngIf="this.quotation.total5Value > 0" footer="{{this.quotation.total5Value.toLocaleString('en', { minimumFractionDigits: 2 })}}" [style]="{'width':'120px','font-weight': '700'}">
+                                      
+                                    </p-column> 
+                                    <p-column *ngIf="this.quotation.total6Value > 0" footer="{{this.quotation.total6Value.toLocaleString('en', { minimumFractionDigits: 2 })}}" [style]="{'width':'120px','font-weight': '700'}">
+                                     
+                                    </p-column> 
+                                    <p-column *ngIf="this.quotation.total7Value > 0" footer="{{this.quotation.total7Value.toLocaleString('en', { minimumFractionDigits: 2 })}}" [style]="{'width':'120px','font-weight': '700'}">
+                                      
+                                    </p-column> 
+                                    <p-column *ngIf="this.quotation.total8Value > 0" footer="{{this.quotation.total8Value.toLocaleString('en', { minimumFractionDigits: 2 })}}" [style]="{'width':'120px','font-weight': '700'}">
+                                     
+                                    </p-column> 
+                                    <p-column *ngIf="this.quotation.total9Value > 0" footer="{{this.quotation.total9Value.toLocaleString('en', { minimumFractionDigits: 2 })}}" [style]="{'width':'120px','font-weight': '700'}">
+                                     
+                                    </p-column> 
+                                    <p-column *ngIf="this.quotation.total10Value > 0" footer="{{this.quotation.total10Value.toLocaleString('en', { minimumFractionDigits: 2 })}}" [style]="{'width':'120px','font-weight': '700'}">
+                                      
+                                    </p-column> 
+                                    <p-column *ngIf="this.quotation.total11Value > 0" footer="{{this.quotation.total11Value.toLocaleString('en', { minimumFractionDigits: 2 })}}" [style]="{'width':'120px','font-weight': '700'}">
+                                      
+                                    </p-column> 
+                                    <p-column *ngIf="this.quotation.total12Value > 0" footer="{{this.quotation.total12Value.toLocaleString('en', { minimumFractionDigits: 2 })}}" [style]="{'width':'120px','font-weight': '700'}">
+
+                                    </p-column> 
+                                    <p-column footer="" [style]="{'width':'200px'}"></p-column> 
+                                    <p-column footer="" [style]="{'width':'400px'}"></p-column>  
+                             </p-row>
+                         </p-footerColumnGroup>
+                 </p-dataTable>
+                   
+                </div>
+
+                <div *ngIf="teamId && !viewId" class="primeng-datatable-container" [busyIf]="primengDatatableHelper.isLoading" style="margin-top: 18px;">
+                    <div class="primeng-paging-container">
+                        <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                             #paginator
+                             (onPageChange)="getTeamInquiry($event)"
+                             [totalRecords]="teamSalesmanArrayCount"
+                             [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                        </p-paginator>
+                        <span class="total-records-count">
+                           {{l('TotalRecordsCount', teamSalesmanArrayCount)}}
+                        </span>
+                    </div>
+                    <p-dataTable #dataTable 
+                         (onLazyLoad)="getTeamInquiry($event)"
+                         [value]="teamSalesmanArray"
+                         rowHover="true" 
+                         (onRowDblclick)="clickedRow($event)"
+                         rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                         [paginator]="false"
+                         [lazy]="false"
+                         emptyMessage="{{l('NoData')}}"
+                         scrollable="true" 
+                         columnResizeMode="expand"  
+                         [responsive]="primengDatatableHelper.isResponsive">
+                         <p-headerColumnGroup>
+                            <p-row>
+                                <p-column field="accountManager" header="Account Manager" [filter]="true" [sortable]="true" [style]="{'width':'200px'}"></p-column>
+                                <p-column field="totalAEDValue" header="AED Value" [filter]="true" [sortable]="true" [style]="{'width':'200px'}"></p-column>
+                                <p-column field="totalWeightedAED" header="Weighted AED Value" [filter]="true" [sortable]="true" [style]="{'width':'200px'}"></p-column>
+                                <p-column field="total1Value" [header]="this.teamReportList.total1ValueFormat" *ngIf="this.teamReportList.total1Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                                <p-column field="total2Value" [header]="this.teamReportList.total2ValueFormat" *ngIf="this.teamReportList.total2Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                                <p-column field="total3Value" [header]="this.teamReportList.total3ValueFormat" *ngIf="this.teamReportList.total3Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                                <p-column field="total4Value" [header]="this.teamReportList.total4ValueFormat" *ngIf="this.teamReportList.total4Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                                <p-column field="total5Value" [header]="this.teamReportList.total5ValueFormat" *ngIf="this.teamReportList.total5Value > 0"  [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                                <p-column field="total6Value" [header]="this.teamReportList.total6ValueFormat" *ngIf="this.teamReportList.total6Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                                <p-column field="total7Value" [header]="this.teamReportList.total7ValueFormat" *ngIf="this.teamReportList.total7Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                                <p-column field="total8Value" [header]="this.teamReportList.total8ValueFormat" *ngIf="this.teamReportList.total8Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                                <p-column field="total9Value" [header]="this.teamReportList.total9ValueFormat" *ngIf="this.teamReportList.total9Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                                <p-column field="total10Value" [header]="this.teamReportList.total10ValueFormat" *ngIf="this.teamReportList.total10Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                                <p-column field="total11Value" [header]="this.teamReportList.total11ValueFormat" *ngIf="this.teamReportList.total11Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                                <p-column field="total12Value" [header]="this.teamReportList.total12ValueFormat" *ngIf="this.teamReportList.total12Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                            </p-row>
+                        </p-headerColumnGroup>
+                        <p-column field="accountManager" [style]="{'width':'200px'}"></p-column>
+                        <p-column field="totalAEDValue" [style]="{'width':'200px'}">
+                                <ng-template let-record="rowData" pTemplate="body">
+                                        <span >{{record.totalAEDValue.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                                    </ng-template> 
+                        </p-column>
+                        <p-column field="totalWeightedAED" [style]="{'width':'200px'}">
+                                <ng-template let-record="rowData" pTemplate="body">
+                                        <span >{{record.totalWeightedAED.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                                    </ng-template> 
+                        </p-column>
+                        <p-column *ngIf="this.teamReportList.total1Value > 0" field="total1Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total1Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template> 
+                        </p-column>
+                        <p-column *ngIf="this.teamReportList.total2Value > 0" field="total2Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total2Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template> 
+                        </p-column>
+                        <p-column *ngIf="this.teamReportList.total3Value > 0" field="total3Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total3Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template> 
+                        </p-column>
+                        <p-column *ngIf="this.teamReportList.total4Value > 0" field="total4Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total4Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template> 
+                        </p-column>
+                        <p-column *ngIf="this.teamReportList.total5Value > 0" field="total5Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total5Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template> 
+                        </p-column>
+                        <p-column *ngIf="this.teamReportList.total6Value > 0" field="total6Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total6Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template> 
+                        </p-column>
+                        <p-column *ngIf="this.teamReportList.total7Value > 0" field="total7Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total7Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template> 
+                        </p-column>
+                        <p-column *ngIf="this.teamReportList.total8Value > 0" field="total8Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total8Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template> 
+                        </p-column> 
+                        <p-column *ngIf="this.teamReportList.total9Value > 0" field="total9Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total9Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template> 
+                        </p-column> 
+                        <p-column *ngIf="this.teamReportList.total10Value > 0" field="total10Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total10Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template> 
+                        </p-column> 
+                        <p-column *ngIf="this.teamReportList.total11Value > 0" field="total11Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total11Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template> 
+                        </p-column> 
+                        <p-column *ngIf="this.teamReportList.total12Value > 0"field="total12Value" [style]="{'width':'120px'}">
+                            <ng-template let-record="rowData" pTemplate="body">
+                                <span >{{record.total12Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                            </ng-template> 
+                        </p-column> 
+                        <p-footerColumnGroup>
+                            <p-row *ngIf="teamSalesmanArrayCount"> 
+                                <p-column [style]="{'width':'200px','font-weight': '700'}" footer="Total"></p-column>
+                                <p-column [style]="{'width':'200px','font-weight': '700'}" footer="{{this.teamReportList.totalAEDValue.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                                   
+                                </p-column>
+                                <p-column [style]="{'width':'200px','font-weight': '700'}" footer="{{this.teamReportList.totalWeightedAED.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                                  
+                                </p-column>
+                                <p-column *ngIf="this.teamReportList.total1Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total1Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                                  
+                                </p-column>
+                                <p-column *ngIf="this.teamReportList.total2Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total2Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                                   
+                                </p-column>
+                                <p-column *ngIf="this.teamReportList.total3Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total3Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                                 
+                                </p-column>
+                                <p-column *ngIf="this.teamReportList.total4Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total4Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                                   
+                                </p-column>
+                                <p-column *ngIf="this.teamReportList.total5Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total5Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                                 
+                                </p-column>
+                                <p-column *ngIf="this.teamReportList.total6Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total6Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                                  
+                                </p-column>
+                                <p-column *ngIf="this.teamReportList.total7Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total7Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                                
+                                </p-column>
+                                <p-column *ngIf="this.teamReportList.total8Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total8Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                                   
+                                </p-column>
+                                <p-column *ngIf="this.teamReportList.total9Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total9Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                                  
+                                </p-column>
+                                <p-column *ngIf="this.teamReportList.total10Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total10Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                                   
+                                </p-column>
+                                <p-column *ngIf="this.teamReportList.total11Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total11Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                                 
+                                </p-column>
+                                <p-column *ngIf="this.teamReportList.total12Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total12Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                                  
+                                </p-column>
+                            </p-row>
+                        </p-footerColumnGroup>                     
+                 </p-dataTable>
+                   
+                </div> 
+
+                <div *ngIf="!viewId && !teamId" class="primeng-datatable-container" [busyIf]="primengDatatableHelper.isLoading" style="margin-top: 18px;">
+                    <div class="primeng-paging-container">
+                        <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                             #paginator
+                             (onPageChange)="getAllTeamInquiry($event)"
+                             [totalRecords]="teamArrayCount"
+                             [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                        </p-paginator>
+                        <span class="total-records-count">
+                           {{l('TotalRecordsCount', teamArrayCount)}}
+                        </span>
+                    </div>
+                    <p-dataTable #dataTable
+                    rowHover="true"
+                    (onLazyLoad)="getAllTeamInquiry($event)"
+                    [value]="teamArray"
+                    (onRowDblclick)="clickedRow($event)" 
+                    rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                    [paginator]="false"
+                    [lazy]="false"
+                    emptyMessage="{{l('NoData')}}"
+                    scrollable="true"
+                    columnResizeMode="expand"  
+                    [responsive]="primengDatatableHelper.isResponsive">  
+                   <p-headerColumnGroup>
+                           <p-row>
+                               <p-column field="teamName" header="Team" [filter]="true" [sortable]="true" [style]="{'width':'200px'}"></p-column>
+                               <p-column field="totalAEDValue" header="AED Value" [filter]="true" [sortable]="true" [style]="{'width':'200px'}"></p-column>
+                               <p-column field="totalWeightedAED" header="Weighted AED Value" [filter]="true" [sortable]="true" [style]="{'width':'200px'}"></p-column>
+                               <p-column field="total1Value" [header]="this.teamReportList.total1ValueFormat" *ngIf="this.teamReportList.total1Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                               <p-column field="total2Value" [header]="this.teamReportList.total2ValueFormat" *ngIf="this.teamReportList.total2Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                               <p-column field="total3Value" [header]="this.teamReportList.total3ValueFormat" *ngIf="this.teamReportList.total3Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                               <p-column field="total4Value" [header]="this.teamReportList.total4ValueFormat" *ngIf="this.teamReportList.total4Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                               <p-column field="total5Value"[header]="this.teamReportList.total5ValueFormat" *ngIf="this.teamReportList.total5Value > 0"  [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                               <p-column field="total6Value"[header]="this.teamReportList.total6ValueFormat" *ngIf="this.teamReportList.total6Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                               <p-column field="total7Value" [header]="this.teamReportList.total7ValueFormat" *ngIf="this.teamReportList.total7Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                               <p-column field="total8Value" [header]="this.teamReportList.total8ValueFormat" *ngIf="this.teamReportList.total8Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                               <p-column field="total9Value" [header]="this.teamReportList.total9ValueFormat" *ngIf="this.teamReportList.total9Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                               <p-column field="total10Value" [header]="this.teamReportList.total10ValueFormat" *ngIf="this.teamReportList.total10Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                               <p-column field="total11Value" [header]="this.teamReportList.total11ValueFormat" *ngIf="this.teamReportList.total11Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                               <p-column field="total12Value" [header]="this.teamReportList.total12ValueFormat" *ngIf="this.teamReportList.total12Value > 0" [filter]="true" [sortable]="true" [style]="{'width':'120px'}"></p-column>
+                           </p-row>
+                       </p-headerColumnGroup>
+                       <p-column field="teamName" [style]="{'width':'200px'}"></p-column>
+                       <p-column field="totalAEDValue" [style]="{'width':'200px'}">
+                        <ng-template let-record="rowData" pTemplate="body">
+                            <span >{{record.totalAEDValue.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                        </ng-template> 
+                       </p-column>
+                       <p-column field="totalWeightedAED" [style]="{'width':'200px'}">
+                        <ng-template let-record="rowData" pTemplate="body">
+                            <span >{{record.totalWeightedAED.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                        </ng-template> 
+                       </p-column>
+                       <p-column *ngIf="this.teamReportList.total1Value > 0" field="total1Value" [style]="{'width':'120px'}">
+                        <ng-template let-record="rowData" pTemplate="body">
+                            <span >{{record.total1Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                        </ng-template> 
+                       </p-column>
+                       <p-column *ngIf="this.teamReportList.total2Value > 0" field="total2Value" [style]="{'width':'120px'}">
+                        <ng-template let-record="rowData" pTemplate="body">
+                            <span >{{record.total2Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                        </ng-template> 
+                       </p-column>
+                       <p-column *ngIf="this.teamReportList.total3Value > 0" field="total3Value" [style]="{'width':'120px'}">
+                        <ng-template let-record="rowData" pTemplate="body">
+                            <span >{{record.total3Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                        </ng-template> 
+                       </p-column>
+                       <p-column *ngIf="this.teamReportList.total4Value > 0" field="total4Value" [style]="{'width':'120px'}">
+                        <ng-template let-record="rowData" pTemplate="body">
+                            <span >{{record.total4Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                        </ng-template> 
+                       </p-column>
+                       <p-column *ngIf="this.teamReportList.total5Value > 0" field="total5Value" [style]="{'width':'120px'}">
+                        <ng-template let-record="rowData" pTemplate="body">
+                            <span >{{record.total5Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                        </ng-template> 
+                       </p-column>
+                       <p-column *ngIf="this.teamReportList.total6Value > 0" field="total6Value" [style]="{'width':'120px'}">
+                        <ng-template let-record="rowData" pTemplate="body">
+                            <span >{{record.total6Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                        </ng-template> 
+                       </p-column>
+                       <p-column *ngIf="this.teamReportList.total7Value > 0" field="total7Value" [style]="{'width':'120px'}">
+                        <ng-template let-record="rowData" pTemplate="body">
+                            <span >{{record.total7Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                        </ng-template> 
+                       </p-column>
+                       <p-column *ngIf="this.teamReportList.total8Value > 0" field="total8Value" [style]="{'width':'120px'}">
+                        <ng-template let-record="rowData" pTemplate="body">
+                            <span >{{record.total8Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                        </ng-template> 
+                       </p-column> 
+                       <p-column *ngIf="this.teamReportList.total9Value > 0" field="total9Value" [style]="{'width':'120px'}">
+                        <ng-template let-record="rowData" pTemplate="body">
+                            <span >{{record.total9Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                        </ng-template> 
+                       </p-column> 
+                       <p-column *ngIf="this.teamReportList.total10Value > 0" field="total10Value" [style]="{'width':'120px'}">
+                        <ng-template let-record="rowData" pTemplate="body">
+                            <span >{{record.total10Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                        </ng-template> 
+                       </p-column> 
+                       <p-column *ngIf="this.teamReportList.total11Value > 0" field="total11Value" [style]="{'width':'120px'}">
+                        <ng-template let-record="rowData" pTemplate="body">
+                            <span >{{record.total11Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                        </ng-template> 
+                       </p-column> 
+                       <p-column *ngIf="this.teamReportList.total12Value > 0"field="total12Value" [style]="{'width':'120px'}">
+                        <ng-template let-record="rowData" pTemplate="body">
+                            <span >{{record.total12Value.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                        </ng-template> 
+                       </p-column> 
+                       <p-footerColumnGroup>
+                           <p-row *ngIf="teamArrayCount"> 
+                               <p-column [style]="{'width':'200px','font-weight': '700'}" footer="Total"></p-column>
+                               <p-column [style]="{'width':'200px','font-weight': '700'}" footer="{{this.teamReportList.totalAEDValue.toLocaleString('en', { minimumFractionDigits: 2 })}}">                           
+                               </p-column>
+                               <p-column [style]="{'width':'200px','font-weight': '700'}" footer="{{this.teamReportList.totalWeightedAED.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                               </p-column>
+                               <p-column *ngIf="this.teamReportList.total1Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total1Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+
+                               </p-column>
+                               <p-column *ngIf="this.teamReportList.total2Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total2Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+           
+                               </p-column>
+                               <p-column *ngIf="this.teamReportList.total3Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total3Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                               
+                               </p-column>
+                               <p-column *ngIf="this.teamReportList.total4Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total4Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                               
+                               </p-column>
+                               <p-column *ngIf="this.teamReportList.total5Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total5Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                              
+                               </p-column>
+                               <p-column *ngIf="this.teamReportList.total6Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total6Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                               
+                               </p-column>
+                               <p-column *ngIf="this.teamReportList.total7Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total7Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                              
+                               </p-column>
+                               <p-column *ngIf="this.teamReportList.total8Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total8Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                              
+                               </p-column>
+                               <p-column *ngIf="this.teamReportList.total9Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total9Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                               
+                               </p-column>
+                               <p-column *ngIf="this.teamReportList.total10Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total10Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                               
+                               </p-column>
+                               <p-column *ngIf="this.teamReportList.total11Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total11Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">
+                              
+                               </p-column>
+                               <p-column *ngIf="this.teamReportList.total12Value > 0" [style]="{'width':'120px','font-weight': '700'}" footer="{{this.teamReportList.total12Value.toLocaleString('en', { minimumFractionDigits: 2 })}}">                             
+                               </p-column>
+                           </p-row>
+                       </p-footerColumnGroup>
+            </p-dataTable> 
+                  
+                </div> 
+
+            </div>
+    </div>
+    <createNewQuotationModal #createNewQuotationModal (modalSave)="getQuotation()">
+    </createNewQuotationModal>
+</div>
+<style>
+ hr{
+    border: 0;
+    border: 1px solid #a92020;
+    border-bottom: 0;
+    padding: -14px !important;
+    margin-bottom: 3px;
+    margin-top: 3px;
+}
+.ui-datatable-footer
+{
+ background: #e6e6e6 !important;
+ padding: 10px;
+}
+.ui-widget, .ui-widget * {
+    box-sizing: border-box;
+    cursor: alias !important;
+}
+</style>

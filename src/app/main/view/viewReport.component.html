@@ -1,0 +1,345 @@
+<div [@routerTransition]>
+    <div class="row margin-bottom-5">
+        <div class="col-xs-6">
+            <div class="page-head">
+                <div class="page-title">
+                    <h1>
+                        <span>View Report</span> <small *ngIf="viewId">Grid For {{name}}</small>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portlet light margin-bottom-0">
+            <!-- <div class="row" style="margin-bottom: 25px;">
+                <div class="col-md-6">
+                <label>Views</label>
+                    <ng-select [active]="active_view" [allowClear]="true" [items]="view" (selected)="selectView($event)" (removed)="removeView($event)" placeholder="Nothing is Selected">
+                    </ng-select>
+                </div>    
+            </div> -->
+            <div class="portlet-body">
+                <form class="horizontal-form">
+                    <div class="form-body">                       
+                        <div class="row margin-bottom-10">
+                             <div class="col-md-4">
+                                    <!-- <ng-select [active]="active_view" [allowClear]="true" [items]="view" (selected)="selectView($event)" (removed)="removeView($event)" placeholder="Nothing is Selected">
+                                    </ng-select> -->
+                                <div class="btn-group mydropdown">
+                                <a class="btn green-haze btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false"> Views
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu text-right">
+                                    <h4 style="margin-left: 3px;">System Views</h4><hr>
+                                    <ng-container *ngFor="let v of view">
+                                        <li *ngIf="!v.isEditable">
+                                        <a (click)="selectView(v)">{{v.text}}</a>
+                                       </li>
+                                    </ng-container>
+                                    <h4 style="margin-left: 3px;">Custom Views</h4> <hr>   
+                                    <ng-container *ngFor="let v of view">                                                                
+                                       <li *ngIf="v.isEditable">
+                                        <a (click)="selectView(v)">{{v.text}}</a>
+                                       </li>                                    
+                                    </ng-container>                                                                  
+                                </ul>
+                            </div>
+                        </div>   
+                        <!-- <div class="col-md-2">
+                           
+                        </div> -->
+                        <div class="col-md-8">
+                                <div class="btn-group mydropdown" *ngIf="viewId && hidedColumns.length > 0" style="float: right;margin-left: 10px;">
+                                        <a class="btn green-haze btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">Hidden Columns
+                                            <i class="fa fa-eye-slash"></i>
+                                        </a>
+                                        <ul class="dropdown-menu text-right" style="padding: 10px;">
+                                            <ng-container *ngFor="let c of hidedColumns">
+                                                <li style="background: #32c5d2; border: 1px solid #32c5d2;border-radius: 5px;text-align: center;margin-bottom: 5px;">
+                                                  <!-- <i style="cursor: pointer;color: deepskyblue;" class="fa fa-plus btn btn-circle btn-icon-only" (click)="checked(c.columnName,viewId)"></i>  -->
+                                                  <a (click)="checked(c.columnName,viewId)"> {{c.columnName}}</a> 
+                                                  
+                                                </li>
+                                            </ng-container>
+                                        </ul>
+                                    </div>
+                            <div class="btn-group mydropdown" style="float: right;" *ngIf="this.viewId">
+                            <a class="btn green-haze btn-outline btn-circle btn-sm" (click)="createview()" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false"> Save As
+                            </a>                          
+                        </div>
+                    </div>   
+                        </div>
+                    </div>
+                </form>
+                <div class="primeng-datatable-container" [busyIf]="primengDatatableHelper.isLoading" style="margin-top: 18px;">
+                    <p-dataTable #dataTable
+                         (onLazyLoad)="initInquiry($event)"
+                         [value]="primengDatatableHelper.records"
+                         rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                         rowHover="true" 
+                         (onRowDblclick)="goToQuotation($event)"
+                         [paginator]="false"
+                         [lazy]="false"
+                         emptyMessage="{{l('NoData')}}"
+                         scrollable="true" 
+                         resizableColumns="true" 
+                         columnResizeMode="expand"
+                         [responsive]="primengDatatableHelper.isResponsive">
+     
+                        <!-- <p-column *ngFor="let col of gridColumn" [filter]="true" [field]="col.columnName" [header]="col.name" [style]="{'width':'150px'}"></p-column> -->
+                        <p-column *ngIf="Show('Probability %') == true" [filter]="false" field="probability" header="{{l('Probability %')}}" [sortable]="true" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                                <i style="cursor: pointer;" class="fa fa-filter" (mouseenter)="percentageFilter.toggle($event)" *ngIf="!filtered[col.field]"></i>
+                                <span class="fa-stack" (mouseenter)="percentageFilter.toggle($event)" *ngIf="filtered[col.field]">
+                                  <i class="fa fa-square fa-stack-2x"></i>
+                                  <i class="fa fa-filter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </ng-template>
+                        </p-column>
+                        <p-column *ngIf="Show('Quotation Ref No') == true" [filter]="true" (mouseenter)="hideColumn($event)" field="quotationRefNo" header="{{l('Quotation Ref No')}}" [sortable]="true" [style]="{'width':'170px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                        <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                            </ng-template>
+                        </p-column>
+                        <p-column *ngIf="Show('Opportunity Name') == true" [filter]="true" field="titleOfInquiry" header="{{l('Opportunity Name')}}" [sortable]="true" [style]="{'width':'200px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                            </ng-template>
+                        </p-column>
+                        <p-column *ngIf="Show('Opportunity Ref No') == true" [filter]="true" field="inquiryRefNo" header="Opportunity Ref No" [sortable]="true" [style]="{'width':'180px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                            </ng-template>
+                        </p-column>
+                        <p-column *ngIf="Show('Company Name') == true" [filter]="true" field="potentialCustomer" header="{{l('Company Name')}}" [sortable]="true" [style]="{'width':'200px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                            </ng-template>
+                        </p-column>
+                        <p-column *ngIf="Show('Designation') == true" [filter]="true" field="designationName" header="Designation" [sortable]="true" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                            </ng-template>
+                        </p-column>
+                        <p-column *ngIf="Show('Quotation Status') == true" [filter]="false" field="quotationStatus" header="Quotation Status" [sortable]="true" [style]="{'width':'170px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                                <i style="cursor: pointer;" class="fa fa-filter" (mouseenter)="stageFilter.toggle($event)" *ngIf="!filtered[col.field]"></i>
+                                <span class="fa-stack" (mouseenter)="stageFilter.toggle($event)" *ngIf="filtered[col.field]">
+                                  <i class="fa fa-square fa-stack-2x"></i>
+                                  <i class="fa fa-filter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </ng-template>
+                        </p-column>
+                        <p-column *ngIf="Show('Email') == true" [filter]="true" field="email" header="Email" [sortable]="false" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                            </ng-template>
+                        </p-column>
+                        <p-column *ngIf="Show('MobileNumber') == true" [filter]="true" field="mobileNumber" header="MobileNumber" [sortable]="false" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                            </ng-template>
+                        </p-column>
+                        <p-column *ngIf="Show('MileStone') == true" [filter]="false" field="mileStoneName" header="MileStone" [sortable]="true" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                                <i  style="cursor: pointer;" class="fa fa-filter" (mouseenter)="stoneFilter.toggle($event)" *ngIf="!filtered[col.field]"></i>
+                                <span class="fa-stack" (mouseenter)="stoneFilter.toggle($event)" *ngIf="filtered[col.field]">
+                                  <i class="fa fa-square fa-stack-2x"></i>
+                                  <i class="fa fa-filter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </ng-template>
+                        </p-column>                      
+                        <p-column *ngIf="Show('Stages') == true" [filter]="true" field="enquiryStatus" header="Stages" [sortable]="true" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                    <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                                <i  style="cursor: pointer;" class="fa fa-filter" (mouseenter)="statusFilter.toggle($event)" *ngIf="!filtered[col.field]"></i>
+                                <span class="fa-stack" (mouseenter)="statusFilter.toggle($event)" *ngIf="filtered[col.field]">
+                                  <i class="fa fa-square fa-stack-2x"></i>
+                                  <i class="fa fa-filter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </ng-template>
+                        </p-column>
+                        <p-column *ngIf="Show('Team') == true" [filter]="true" field="teamName" header="Team" [sortable]="true" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                    <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                                <i  style="cursor: pointer;" class="fa fa-filter" (mouseenter)="teamFilter.toggle($event)" *ngIf="!filtered[col.field]"></i>
+                                <span class="fa-stack" (mouseenter)="teamFilter.toggle($event)" *ngIf="filtered[col.field]">
+                                  <i class="fa fa-square fa-stack-2x"></i>
+                                  <i class="fa fa-filter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </ng-template>
+                        </p-column>
+                        <p-column *ngIf="Show('Department') == true" [filter]="false" field="depatmentName" header="Department" [sortable]="true" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                    <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                                <i  style="cursor: pointer;" class="fa fa-filter" (mouseenter)="deptFilter.toggle($event)" *ngIf="!filtered[col.field]"></i>
+                                <span class="fa-stack" (mouseenter)="deptFilter.toggle($event)" *ngIf="filtered[col.field]">
+                                  <i class="fa fa-square fa-stack-2x"></i>
+                                  <i class="fa fa-filter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </ng-template>
+                        </p-column>                      
+                        <p-column *ngIf="Show('Salesperson') == true" [filter]="false" field="salesman" header="Salesperson" [sortable]="true" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                    <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                                <i  style="cursor: pointer;" class="fa fa-filter" (mouseenter)="salesFilter.toggle($event)" *ngIf="!filtered[col.field]"></i>
+                                <span class="fa-stack" (mouseenter)="salesFilter.toggle($event)" *ngIf="filtered[col.field]">
+                                  <i class="fa fa-square fa-stack-2x"></i>
+                                  <i class="fa fa-filter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </ng-template>
+                        </p-column>
+                        <p-column *ngIf="Show('Designer') == true" [filter]="false" field="designer" header="Designer" [sortable]="true" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                    <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                                <i  style="cursor: pointer;" class="fa fa-filter" (mouseenter)="designerFilter.toggle($event)" *ngIf="!filtered[col.field]"></i>
+                                <span class="fa-stack" (mouseenter)="designerFilter.toggle($event)" *ngIf="filtered[col.field]">
+                                  <i class="fa fa-square fa-stack-2x"></i>
+                                  <i class="fa fa-filter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </ng-template>
+                        </p-column>
+                        <p-column *ngIf="Show('Co-Ordinator') == true" [filter]="false" field="coordinator" header="{{l('Co-Ordinator')}}" [sortable]="true" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                    <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                                <i  style="cursor: pointer;" class="fa fa-filter" (mouseenter)="coordinatorFilter.toggle($event)" *ngIf="!filtered[col.field]"></i>
+                                <span class="fa-stack" (mouseenter)="coordinatorFilter.toggle($event)" *ngIf="filtered[col.field]">
+                                  <i class="fa fa-square fa-stack-2x"></i>
+                                  <i class="fa fa-filter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </ng-template>
+                        </p-column>
+                        <p-column *ngIf="Show('Categories') == true" [filter]="false" field="categories" header="Categories" [sortable]="true" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                    <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                                <i  style="cursor: pointer;" class="fa fa-filter" (mouseenter)="catagiriesFilter.toggle($event)" *ngIf="!filtered[col.field]"></i>
+                                <span class="fa-stack" (mouseenter)="catagiriesFilter.toggle($event)" *ngIf="filtered[col.field]">
+                                  <i class="fa fa-square fa-stack-2x"></i>
+                                  <i class="fa fa-filter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </ng-template>
+                        </p-column>                      
+                        <p-column *ngIf="Show('Estimation Value') == true" [filter]="true" field="total" header="Estimation Value" [sortable]="true" [style]="{'width':'150px'}">
+                            <!-- <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                            </ng-template> -->
+                            <ng-template let-record="rowData" pTemplate="body">
+                                    <span >{{record.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                                </ng-template>      
+                        </p-column>               
+                        <p-column *ngIf="Show('Quotation Value') == true" [filter]="true" field="quotationValue" header="Quotation Value" [sortable]="true" [style]="{'width':'150px'}">
+                            <!-- <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                            </ng-template>    -->
+                            <ng-template let-record="rowData" pTemplate="body">
+                                    <span >{{record.quotationValue.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                                </ng-template>     
+                        </p-column>                                                                                
+                        <p-column *ngIf="Show('Quotation Creator') == true" [filter]="true" field="quotationCreateBy" header="Quotation Creator" [sortable]="true" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                            </ng-template>
+                        </p-column>
+                        <p-column *ngIf="Show('Closure Date') == true" [filter]="false" field="closureDate" header="Closure Date" [sortable]="true" [style]="{'width':'150px'}">
+                                <ng-template #filterTemplate pTemplate="filter" let-col>
+                                        <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                                        <i  style="cursor: pointer;" class="fa fa-filter" (mouseenter)="actionDateFilter.toggle($event,2)" *ngIf="!filtered[col.field]"></i>
+                                        <span class="fa-stack" (mouseenter)="actionDateFilter.toggle($event,2)" *ngIf="filtered[col.field]">
+                                          <i class="fa fa-square fa-stack-2x"></i>
+                                          <i class="fa fa-filter fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </ng-template>  
+                        </p-column>
+                        <p-column *ngIf="Show('Next Activity Date') == true" [filter]="false" field="lastActivity" header="Next Activity Date" [sortable]="true" [style]="{'width':'180px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                    <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                                <i  style="cursor: pointer;" class="fa fa-filter" (mouseenter)="actionDateFilter.toggle($event,1)" *ngIf="!filtered[col.field]"></i>
+                                <span class="fa-stack" (mouseenter)="actionDateFilter.toggle($event,1)" *ngIf="filtered[col.field]">
+                                  <i class="fa fa-square fa-stack-2x"></i>
+                                  <i class="fa fa-filter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </ng-template>  
+                        </p-column>
+                        <p-column *ngIf="Show('Creation Date') == true" [filter]="false" field="quotationCreation" header="Creation Date" [sortable]="true" [style]="{'width':'150px'}">
+                                <ng-template #filterTemplate pTemplate="filter" let-col>
+                                        <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                                        <i  style="cursor: pointer;" class="fa fa-filter" (mouseenter)="actionDateFilter.toggle($event,3)" *ngIf="!filtered[col.field]"></i>
+                                        <span class="fa-stack" (mouseenter)="actionDateFilter.toggle($event,3)" *ngIf="filtered[col.field]">
+                                          <i class="fa fa-square fa-stack-2x"></i>
+                                          <i class="fa fa-filter fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </ng-template>  
+                        </p-column>                  
+                        <p-column *ngIf="Show('Emirates') == true" [filter]="true"  field="emirates" [sortable]="true" header="Emirates" [sortable]="false" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                            </ng-template>    
+                        </p-column>                      
+                        <p-column *ngIf="Show('Area Name') == true" [filter]="true" field="areaName" [sortable]="true" header="Area Name" [sortable]="false" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                            </ng-template>
+                        </p-column>                      
+                        <p-column *ngIf="Show('Building Name') == true" [filter]="true" field="buildingName" [sortable]="true" header="Building Name" [sortable]="false" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                            </ng-template>    
+                        </p-column>                      
+                        <p-column *ngIf="Show('WhyBafco') == true" [filter]="true" field="whyBafco" [sortable]="true" header="WhyBafco" [sortable]="false" [style]="{'width':'150px'}">
+                            <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <div class="edit_hover_class"><a (click)="hideColumn(col)"><i style="cursor: pointer;color: red;" class="fa fa-times"></i></a></div>
+                            </ng-template>
+                            <!-- <ng-template #filterTemplate pTemplate="filter" let-col>
+                                <i  style="cursor: pointer;" class="fa fa-filter" (mouseenter)="whybafcoFilter.toggle($event)" *ngIf="!filtered[col.field]"></i>
+                                <span class="fa-stack" (mouseenter)="whybafcoFilter.toggle($event)" *ngIf="filtered[col.field]">
+                                  <i class="fa fa-square fa-stack-2x"></i>
+                                  <i class="fa fa-filter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </ng-template> -->
+                        </p-column>                  
+
+                    </p-dataTable>
+                    <div class="primeng-paging-container">
+                        <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                             #paginator
+                             (onPageChange)="initInquiry($event)"
+                             [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                             [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                        </p-paginator>
+                        <span class="total-records-count">
+                           {{l('TotalRecordsCount', primengDatatableHelper.totalRecordsCount)}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <creationDateFilterModal #creationDateFilter (onChange)="selectedCreationDate($event)" [(ngModel)]="filter.date"></creationDateFilterModal>
+    <stageFilterModal #stageFilter [options]="stages" (onChange)="selectedStage($event)" [(ngModel)]="filter.stage"></stageFilterModal>
+    <percentageFilterModal #percentageFilter [options]="percentages.sort()" (onChange)="selectedPercentage($event)" [(ngModel)]="filter.percentage"></percentageFilterModal>
+    <actionDateFilterModal #actionDateFilter [options]="newView" (onChange)="selectedActionDate($event)" [(ngModel)]="filter.actionDate"></actionDateFilterModal>
+   
+    <stoneFilterModal #stoneFilter [options]="mileStoneNames" (onChange)="selectedStone($event)" [(ngModel)]="filter.milestone"></stoneFilterModal>
+    <catagiriesFilterModal #catagiriesFilter [options]="categories" (onChange)="selectedCatagiries($event)" [(ngModel)]="filter.categorie"></catagiriesFilterModal>
+    <coordinatorFilterModal #coordinatorFilter [options]="coordinators" (onChange)="selectedCoordinator($event)" [(ngModel)]="filter.coordinator"></coordinatorFilterModal>
+    <deptFilterModal #deptFilter [options]="depatmentNames" (onChange)="selectedDept($event)" [(ngModel)]="filter.depatmentName"></deptFilterModal>
+    <designerFilterModal #designerFilter [options]="designers" (onChange)="selectedDesigner($event)" [(ngModel)]="filter.designer"></designerFilterModal>
+    <salesFilterModal #salesFilter [options]="salesmans" (onChange)="selectedSales($event)" [(ngModel)]="filter.salesman"></salesFilterModal>
+    <teamFilterModal #teamFilter [options]="teamNames" (onChange)="selectedTeam($event)" [(ngModel)]="filter.teamName"></teamFilterModal>
+    <whybafcoFilterModal #whybafcoFilter [options]="whyBafcos" (onChange)="selectedWhybafco($event)" [(ngModel)]="filter.whyBafco"></whybafcoFilterModal>
+    <statusFilterModal #statusFilter [options]="statuses" (onChange)="selectedStatus($event)" [(ngModel)]="filter.status"></statusFilterModal>
+    <ViewcreateModal #ViewcreateModal (modalSave)="ngOnInit()"></ViewcreateModal> 
+   
+</div>
+<style>
+ hr{
+    border: 0;
+    border: 1px solid #a92020;
+    border-bottom: 0;
+    padding: -14px !important;
+    margin-bottom: 3px;
+    margin-top: 3px;
+}
+</style>
