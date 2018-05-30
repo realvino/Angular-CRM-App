@@ -10,10 +10,20 @@
             </div>
         </div>
         <div class="col-xs-6">
-            <div class="bidselect0d" style="width: 350px; float: none;margin: 0 auto;margin-top: 15px;">
-            <ng-select [active]="active_team" [items]="teams" (selected)="loadslider($event)" placeholder="No Team selected"></ng-select>
+            <div class="bidselect0d0" style="width: 350px; float: none;margin: 0 auto;margin-top: 15px;">
+                    <ng-multiselect-dropdown 
+                    id="multiselect"
+                    name="multiselect"
+                    [placeholder]="'Select Team'"
+                    [data]="teams"
+                    [(ngModel)]='selectedItems' 
+                    [settings]="dropdownSettings"
+                    (click)="onItemSelect(selectedItems)">
+                    </ng-multiselect-dropdown>
+            <!-- <ng-select [active]="active_team" [items]="teams" (selected)="loadslider($event)" placeholder="No Team selected"></ng-select> -->
             </div>
         </div>
+        
         <div class="col-xs-3">
             <div class="form-group form-md-line-input form-md-floating-label edited row" style="margin-bottom: 0;">
                 <!-- <label class="col-md-2 control-label">Default daterange picker</label> -->
@@ -82,11 +92,12 @@
                                                                     <img class="item-pic rounded" src="{{path+clos.salesManImage}}">
                                                                 <a href="" class="item-name primary-link">{{clos.subMmissionId}}</a>
                                                                 <span class="item-label">{{clos.closureDate}}</span>
+                                                                <span class="item-label"> active {{clos.lastActivity| amTimeAgo}} </span>
                                                             </div>
                                                             <span class="item-status">
-                                                                <span class="badge badge-empty badge-success"></span> Open</span>
+                                                                <span class="badge badge-empty badge-success"></span> On Progress</span>
                                                         </div>
-                                                        <div class="item-body"> <b>{{clos.inquiryName}}</b> {{clos.remarks}} </div>
+                                                        <div class="item-body"> <b>{{clos.inquiryName}}</b> <b class="font-green-haze">{{clos.company}}</b> {{clos.remarks}} </div>
                                                     </div>
                                                     </div>
                                             <!-- END: Comments -->
@@ -100,11 +111,13 @@
                                                                     <img class="item-pic rounded" src="{{path+clst.salesManImage}}">
                                                                     <a href="" class="item-name primary-link">{{clst.subMmissionId}}</a>
                                                                     <span class="item-label">{{clst.closureDate}}</span>
+                                                                    <span class="item-label"> active {{clst.lastActivity| amTimeAgo}} </span>
                                                                 </div>
                                                                 <span class="item-status">
-                                                                    <span class="badge badge-empty badge-success"></span> Open</span>
+                                                                    <span class="badge badge-empty badge-success"></span> On Progress</span>
+                                                                                                                        
                                                             </div>
-                                                            <div class="item-body"> <b>{{clst.inquiryName}}</b> {{clst.remarks}} </div>
+                                                            <div class="item-body"> <b>{{clst.inquiryName}}</b> <b class="font-green-haze">{{clst.company}}</b> {{clst.remarks}} </div>
                                                         </div>
                                             </div>
                                         </div>

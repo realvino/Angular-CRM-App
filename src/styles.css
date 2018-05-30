@@ -204,16 +204,7 @@ address{ margin-bottom:0px;}
     white-space: nowrap;
     
  }
- .selected-item{
-    margin-bottom: 5px;
-    border: 1px solid #337ab7;
-    margin-right: 4px;
-    background: #337ab7;
-    padding: 3px 10px !important;
-    color: #fff;
-    border-radius: 2px;
-    float: left;
-}
+
 .iconCont{width:100px; display:inline-block; position:relative; padding:0;}
 .contact-formSection{
 
@@ -618,7 +609,6 @@ display:none;
 .m-widget2__item.m-widget2__item--info:before{background:#36a3f7}
 .m-widget2__item.m-widget2__item--warning:before{background:#ffb822}
 .m-widget2__item.m-widget2__item--danger:before{background:#f4516c}
-.m-timeline-2:before{content:'';position:absolute;left:157px;width:.214rem;height:100%;}
  .m-timeline-2 .m-timeline-2__items .m-timeline-2__item{display:table;position:relative;margin-bottom: 20px;}
  .m-timeline-2 .m-timeline-2__items .m-timeline-2__item .m-timeline-2__item-time{display:table-cell;font-size:1.6rem;font-weight:500;vertical-align:top;padding-top:.18rem}
  .m-timeline-2 .m-timeline-2__items .m-timeline-2__item .m-timeline-2__item-cricle{-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;border:.89rem solid #fff;z-index:1;top:.2rem;left:4.1rem;position:relative}
@@ -749,4 +739,47 @@ chart
 .portlet.light {
     padding: 12px 20px 15px 20px;
     background-color: #fff !important;
+}
+.m-timeline-2:before{content:'';position:absolute;left:145px;width:.214rem;height:100%;}
+
+@media all and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) { 
+    .m-timeline-2:before{left:157px !important;}
+  }
+#multiselect >div>div>span
+{
+    border-radius: 30px !important;
+    border: 1px solid !important;
+    background: #fff !important;
+    height: 40px;
+}
+.selected-item{
+    margin-bottom: 2px !important;
+    border: 1px solid #337ab7;
+    margin-right: 4px;
+    background: #337ab7;
+    padding: 6px 30px !important;
+    color: #fff;
+    border-radius: 18px !important;
+    float: left;
+    margin-top: -4px !important;
+}
+
+#multiselect > div > div.dropdown-list
+{
+position: absolute;
+padding-top: 6px;
+width: 100%;
+z-index: 9999;
+border: 1px solid #ccc0;
+border-radius: 3px;
+background: #8775a700;
+margin-top: 10px;
+-webkit-box-shadow: 0 1px 5px #959595;
+box-shadow: 0 1px 5px #95959500;
+}
+.bidselect0d0 li {
+    border: 1px solid;
+    border-radius: 40px;
+    overflow-x: hidden;
+    background: #d8e5e6;
 }

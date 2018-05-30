@@ -38,13 +38,22 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     chart : any;
     lrgoption: Object;
     lsgoption: Object;
-    teamId:any;
+    teamIdselect: string;
+    dropdownSettings = {
+        itemsShowLimit : 1,
+        allowSearchFilter : false,
+        enableCheckAll :false
+    };
     path : string = AppConsts.remoteServiceBaseUrl;
+    selectedItems = [];
+    teamselect: string;
+    allteamselect: string;
     
     @ViewChild('carousel')carousel:any;
     slides : Array<Object> = [];
     Closure : RecentInquiryClosureList = new RecentInquiryClosureList();
     Activity : RecentInquiryActivityList = new RecentInquiryActivityList();
+    ActivityInput : string;
     options : Object = {
     clicking: true,
     sourceProp: 'src',
@@ -79,6 +88,8 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
         this.carousel.slideClicked(index);
         this.lostreasonpiegraph(this.slides[index]);
         this.leadsummaryfunnelgraph(this.slides[index]);
+        this.Closuresoon(this.slides[index]);
+        this.LastActivity(this.slides[index]);
     }
     getDashboardStatisticsData(datePeriod): void {
         this._dashboardService
@@ -87,9 +98,10 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
                 this.dashboardHeaderStats.init(result.totalProfit, result.newFeedbacks, result.newOrders, result.newUsers);
       });
     };
-    Closuresoon(): void {
+    Closuresoon(data:any): void {
+        
         this._dashboardService
-            .getInquiryRecentClosure()
+            .getInquiryRecentClosure(data.id)
             .subscribe(result => {
                 this.Closure = result;
                 console.log(this.Closure);
@@ -97,9 +109,9 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
                 //thisWeekClosureInquiry
       });
     };
-    LastActivity(): void {
+    LastActivity(data:any): void {
         this._dashboardService
-            .getInquiryRecentActivity()
+            .getInquiryRecentActivity(data.id)
             .subscribe(result => {
                 this.Activity = result;
                 console.log(this.Activity);
@@ -110,42 +122,61 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
         this.getDashboardStatisticsData(AppSalesSummaryDatePeriod.Daily);
         this.memberActivityTable.init();
         this.teamdetail();
-        this.loadslider(this.active_team);
-        this.Closuresoon();
-        this.LastActivity();
+        // this.loadslider(this.active_team);
     }
-
+    onItemSelect(item:any){
+        this.teamselect = "";
+        item.forEach((item:{id:number, text:string}) => {
+            this.teamselect = this.teamselect + item.id + ",";
+        }); 
+        this.loadslider(this.teamselect);
+    }
+    
     teamdetail():void{
-        this._select2Service.getDashboardTeam().takeUntil(this.destroy$).subscribe((result) => { 
+        this._dashboardService.getDashboardTeam().takeUntil(this.destroy$).subscribe((result) => { 
+            this.allteamselect ="";
             if (result.selectDdata != null) {
                  this.team_list = result.selectDdata;
                  this.teams = [];
                 this.team_list.forEach((team: {id: number, name: string, photo: string}) => {
                   this.teams.push({
                     id: team.id,
-                    text:`<img class="img-circle" height="25" id="SalesmanProfilePicture" width="25" src="${team.photo}">&nbsp;&nbsp;${team.name}`,
+                    text:team.name,
+                    // text:`<img class="img-circle" height="25" id="SalesmanProfilePicture" width="25" src="${team.photo}">&nbsp;&nbsp;${team.name}`,
                   });
                 });
-                this.active_team = [{id: 1000, text:`<img class="img-circle" height="25" id="SalesmanProfilePicture" width="25" src="${this.path}/Common/Profile/default-profile-picture.png">&nbsp;&nbsp;All`}];
+                this.selectedItems = this.teams;
+                this.teamselect = "";
+                this.teams.forEach((item:{id:number, text:string}) => {
+                    this.teamselect = this.teamselect + item.id + ",";
+                }); 
+                this.allteamselect = this.teamselect;
+                this.loadslider(this.teamselect);
+                //this.active_team = [{id: 1000, text:'All'}];
+                // this.active_team = [{id: 1000, text:`<img class="img-circle" height="25" id="SalesmanProfilePicture" width="25" src="${this.path}/Common/Profile/default-profile-picture.png">&nbsp;&nbsp;All`}];
              }
-          });
+        });
     }
 
     loadslider(value:any):void{
-        this.teamId = value.id;
+        this.teamIdselect = value;
         this.slides = [];
-        this._select2Service.getSalesExecutive(this.teamId)
+
+        this._dashboardService.getSalesExecutive(this.teamIdselect)
         .subscribe(result =>{
             let newSlide = new Array<object>()
             result.forEach((item) => {
                 newSlide.push({src: item['profilePicture'],name: item['name'],id: item['id'],email: item['email']})
-               // newSlide.push({src: "http://localhost:22742/Common/Images/TemporaryProduct/104/DVnl0SaU8AANUyQ.jpg",name: item['name'],id: item['id'],email: item['email']})
             });
             this.slides = newSlide.concat(this.slides);
             this.lostreasonpiegraph(this.slides[0]);
             this.leadsummaryfunnelgraph(this.slides[0]);
+            this.Closuresoon(this.slides[0]);
+            this.LastActivity(this.slides[0]);
         });
     }
+    
+
 
     dashsubmitDateRange(): void {
         // console.log(this.dashdateRangePickerStartDate);
@@ -156,7 +187,19 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
 
     lostreasonpiegraph(value:any):void{
         var scorelrp = [];
-        this._dashboardService.getLostReasonGraph(value.id, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
+        var resultvalue = value.id
+        if(resultvalue ==1)
+        {
+            if(this.teamselect =='' || this.teamselect == null)
+            {
+                resultvalue = this.allteamselect;
+            }
+            else
+            {
+                resultvalue = this.teamselect;
+            }
+        }
+        this._dashboardService.getLostReasonGraph(resultvalue, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
         .subscribe((result) => {
             for (var i = 0; i < result.length; i++) {
                 scorelrp.push([result[i].reason, result[i].total]);
@@ -195,7 +238,19 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     }
     leadsummaryfunnelgraph(value:any):void{
         var scorelsp = [];
-        this._dashboardService.getLeadSummaryGraph(value.id, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
+        var resultvalue = value.id
+        if(resultvalue ==1)
+        {
+            if(this.teamselect =='' || this.teamselect == null)
+            {
+                resultvalue = this.allteamselect;
+            }
+            else
+            {
+                resultvalue = this.teamselect;
+            }
+        }
+        this._dashboardService.getLeadSummaryGraph(resultvalue, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
         .subscribe((result) => {
             for (var i = 0; i < result.length; i++) {
                 scorelsp.push([result[i].stageName, result[i].total]);

@@ -18,7 +18,7 @@
                 <form class="horizontal-form">
                     <div class="form-body">
                         <div class="row margin-bottom-10">
-                            <div class="col-md-12">
+                            <div class="col-md-8">
                                 <div class="inputs inputs-full-width">
                                     <div class="portlet-input">
                                         <div class="input-group">
@@ -30,6 +30,9 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <ng-select [active]="active_designer" [allowClear]="true" [items]="designer" (selected)="selectedDesigner($event)" (removed)="removedDesigner($event)" (data)="refreshDesigner($event)" placeholder="Select A Designer"></ng-select>
+                             </div>
                         </div>
                     </div>
                 </form>

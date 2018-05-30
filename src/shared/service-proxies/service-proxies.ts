@@ -10820,10 +10820,12 @@ export class InquiryServiceProxy {
     /**
      * @return Success
      */
-    getOverallJobActivity(filter: string, sorting: string, maxResultCount: number, skipCount: number): Observable<PagedResultDtoOfJobActivityList> {
+    getOverallJobActivity(filter: string, designerId: number, sorting: string, maxResultCount: number, skipCount: number): Observable<PagedResultDtoOfJobActivityList> {
         let url_ = this.baseUrl + "/api/services/app/Inquiry/GetOverallJobActivity?";
         if (filter !== undefined)
             url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (designerId !== undefined)
+            url_ += "DesignerId=" + encodeURIComponent("" + designerId) + "&"; 
         if (sorting !== undefined)
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         if (maxResultCount !== undefined)
@@ -25038,6 +25040,54 @@ export class Select2ServiceProxy {
     /**
      * @return Success
      */
+    getDesigners(): Observable<Select3Result> {
+        let url_ = this.baseUrl + "/api/services/app/Select2/GetDesigners";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetDesigners(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetDesigners(response_);
+                } catch (e) {
+                    return <Observable<Select3Result>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<Select3Result>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetDesigners(response: Response): Observable<Select3Result> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: Select3Result = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Select3Result.fromJS(resultData200) : new Select3Result();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<Select3Result>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
     getCity(): Observable<Select2City> {
         let url_ = this.baseUrl + "/api/services/app/Select2/GetCity";
         url_ = url_.replace(/[?&]$/, "");
@@ -31145,7 +31195,7 @@ export class TenantDashboardServiceProxy {
     /**
      * @return Success
      */
-    getLostReasonGraph(id: number, startDate: moment.Moment, endDate: moment.Moment): Observable<any[]> {
+    getLostReasonGraph(id: string, startDate: moment.Moment, endDate: moment.Moment): Observable<any[]> {
         let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetLostReasonGraph?";
         if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
@@ -31203,7 +31253,7 @@ export class TenantDashboardServiceProxy {
     /**
      * @return Success
      */
-    getLeadSummaryGraph(id: number, startDate: moment.Moment, endDate: moment.Moment): Observable<any[]> {
+    getLeadSummaryGraph(id: string, startDate: moment.Moment, endDate: moment.Moment): Observable<any[]> {
         let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetLeadSummaryGraph?";
         if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
@@ -31261,8 +31311,10 @@ export class TenantDashboardServiceProxy {
     /**
      * @return Success
      */
-    getInquiryRecentClosure(): Observable<RecentInquiryClosureList> {
-        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetInquiryRecentClosure";
+    getInquiryRecentClosure(teamId: string): Observable<RecentInquiryClosureList> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetInquiryRecentClosure?";
+        if (teamId !== undefined)
+            url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = "";
@@ -31309,8 +31361,10 @@ export class TenantDashboardServiceProxy {
     /**
      * @return Success
      */
-    getInquiryRecentActivity(): Observable<RecentInquiryActivityList> {
-        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetInquiryRecentActivity";
+    getInquiryRecentActivity(teamId: string): Observable<RecentInquiryActivityList> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetInquiryRecentActivity?";
+        if (teamId !== undefined)
+            url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = "";
@@ -31352,6 +31406,108 @@ export class TenantDashboardServiceProxy {
             return throwException("An unexpected server error occurred.", status, responseText);
         }
         return Observable.of<RecentInquiryActivityList>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getSalesExecutive(datainput: string): Observable<SliderDataList[]> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetSalesExecutive?";
+        if (datainput !== undefined)
+            url_ += "datainput=" + encodeURIComponent("" + datainput) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetSalesExecutive(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetSalesExecutive(response_);
+                } catch (e) {
+                    return <Observable<SliderDataList[]>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<SliderDataList[]>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetSalesExecutive(response: Response): Observable<SliderDataList[]> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: SliderDataList[] = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(SliderDataList.fromJS(item));
+            }
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<SliderDataList[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getDashboardTeam(): Observable<SelectDResult> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetDashboardTeam";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetDashboardTeam(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetDashboardTeam(response_);
+                } catch (e) {
+                    return <Observable<SelectDResult>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<SelectDResult>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetDashboardTeam(response: Response): Observable<SelectDResult> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: SelectDResult = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? SelectDResult.fromJS(resultData200) : new SelectDResult();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<SelectDResult>(<any>null);
     }
 }
 
@@ -53800,6 +53956,88 @@ export interface IDatadtoes {
     photo: string;
 }
 
+export class Select3Result implements ISelect3Result {
+    select3data: Datadtos[];
+
+    constructor(data?: ISelect3Result) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (data["select3data"] && data["select3data"].constructor === Array) {
+                this.select3data = [];
+                for (let item of data["select3data"])
+                    this.select3data.push(Datadtos.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Select3Result {
+        let result = new Select3Result();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.select3data && this.select3data.constructor === Array) {
+            data["select3data"] = [];
+            for (let item of this.select3data)
+                data["select3data"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ISelect3Result {
+    select3data: Datadtos[];
+}
+
+export class Datadtos implements IDatadtos {
+    id: number;
+    name: string;
+
+    constructor(data?: IDatadtos) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+        }
+    }
+
+    static fromJS(data: any): Datadtos {
+        let result = new Datadtos();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data; 
+    }
+}
+
+export interface IDatadtos {
+    id: number;
+    name: string;
+}
+
 export class Select2City implements ISelect2City {
     select2data: Citydto[];
 
@@ -54058,88 +54296,6 @@ export class Datadto implements IDatadto {
 }
 
 export interface IDatadto {
-    id: number;
-    name: string;
-}
-
-export class Select3Result implements ISelect3Result {
-    select3data: Datadtos[];
-
-    constructor(data?: ISelect3Result) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            if (data["select3data"] && data["select3data"].constructor === Array) {
-                this.select3data = [];
-                for (let item of data["select3data"])
-                    this.select3data.push(Datadtos.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): Select3Result {
-        let result = new Select3Result();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (this.select3data && this.select3data.constructor === Array) {
-            data["select3data"] = [];
-            for (let item of this.select3data)
-                data["select3data"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface ISelect3Result {
-    select3data: Datadtos[];
-}
-
-export class Datadtos implements IDatadtos {
-    id: number;
-    name: string;
-
-    constructor(data?: IDatadtos) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-            this.name = data["name"];
-        }
-    }
-
-    static fromJS(data: any): Datadtos {
-        let result = new Datadtos();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        return data; 
-    }
-}
-
-export interface IDatadtos {
     id: number;
     name: string;
 }
@@ -57717,7 +57873,8 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
     salesManImage: string;
     coordinatorImage: string;
     designerImage: string;
-    lastActivity: string;
+    lastActivity: moment.Moment;
+    company: string;
 
     constructor(data?: IRecentInquiryClosureDto) {
         if (data) {
@@ -57740,7 +57897,8 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
             this.salesManImage = data["salesManImage"];
             this.coordinatorImage = data["coordinatorImage"];
             this.designerImage = data["designerImage"];
-            this.lastActivity = data["lastActivity"];
+            this.lastActivity = data["lastActivity"] ? moment(data["lastActivity"].toString()) : <any>undefined;
+            this.company = data["company"];
         }
     }
 
@@ -57762,7 +57920,8 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
         data["salesManImage"] = this.salesManImage;
         data["coordinatorImage"] = this.coordinatorImage;
         data["designerImage"] = this.designerImage;
-        data["lastActivity"] = this.lastActivity;
+        data["lastActivity"] = this.lastActivity ? this.lastActivity.toISOString() : <any>undefined;
+        data["company"] = this.company;
         return data; 
     }
 }
@@ -57778,7 +57937,8 @@ export interface IRecentInquiryClosureDto {
     salesManImage: string;
     coordinatorImage: string;
     designerImage: string;
-    lastActivity: string;
+    lastActivity: moment.Moment;
+    company: string;
 }
 
 export class RecentInquiryActivityList implements IRecentInquiryActivityList {
