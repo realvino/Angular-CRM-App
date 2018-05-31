@@ -159,11 +159,12 @@
                                                             </div>
                                                             <div class="m-timeline-2__item-text  m--padding-top-5">
                                                               <a href="" class="item-name primary-link">{{oact.subMmissionId}}</a>
-                                                               <b>{{oact.inquiryName}}</b><br>
+                                                               <b>{{oact.inquiryName}}</b> &nbsp; <span style="color: #c0c9cc;" class="item-label"> active {{oact.lastActivity| amTimeAgo}} </span><br>
+
                                                                 {{oact.remarks}}        
-                                                                <img width="20" height="20" class="item-pic rounded" src="{{path+oact.salesManImage}}">
-                                                                <img width="20" height="20" class="item-pic rounded" src="{{path+oact.coordinatorImage}}">
-                                                                <img width="20" height="20" class="item-pic rounded" src="{{path+oact.designerImage}}">                                         	                                	                                                                                                   
+                                                                <img width="20" *ngIf="oact.salesManImage" height="20" class="item-pic rounded" src="{{path+oact.salesManImage}}">
+                                                                <img width="20" *ngIf="oact.coordinatorImage" height="20" class="item-pic rounded" src="{{path+oact.coordinatorImage}}">
+                                                                <img width="20" *ngIf="oact.designerImage" height="20" class="item-pic rounded" src="{{path+oact.designerImage}}">                                         	                                	                                                                                                   
                                                             </div>
                                                         </div>
                                                         </div>
@@ -175,11 +176,11 @@
                                                                         </div>
                                                                         <div class="m-timeline-2__item-text  m--padding-top-5">
                                                                           <a href="" class="item-name primary-link">{{tact.subMmissionId}}</a>
-                                                                           <b>{{tact.inquiryName}}</b><br>
+                                                                           <b>{{tact.inquiryName}}</b>&nbsp; <span style="color: #c0c9cc;" class="item-label"> active {{tact.lastActivity| amTimeAgo}} </span><br>
                                                                             {{tact.remarks}}  
-                                                                            <img width="20" height="20" class="item-pic rounded" src="{{path+tact.salesManImage}}">
-                                                                            <img width="20" height="20" class="item-pic rounded" src="{{path+tact.coordinatorImage}}">
-                                                                            <img width="20" height="20" class="item-pic rounded" src="{{path+tact.designerImage}}">
+                                                                            <img width="20" *ngIf="tact.salesManImage" height="20" class="item-pic rounded" src="{{path+tact.salesManImage}}">
+                                                                            <img width="20" *ngIf="tact.coordinatorImage" height="20" class="item-pic rounded" src="{{path+tact.coordinatorImage}}">
+                                                                            <img width="20" *ngIf="tact.designerImage" height="20" class="item-pic rounded" src="{{path+tact.designerImage}}">
               
                                                                         </div>
                                                                        
@@ -194,11 +195,11 @@
                                                                             </div>
                                                                         <div class="m-timeline-2__item-text  m--padding-top-5">
                                                                           <a href="" class="item-name primary-link">{{nact.subMmissionId}}</a>
-                                                                           <b>{{nact.inquiryName}}</b><br>
+                                                                           <b>{{nact.inquiryName}}</b>&nbsp; <span style="color: #c0c9cc;" class="item-label"> active {{nact.lastActivity| amTimeAgo}} </span><br>
                                                                             {{nact.remarks}}  
-                                                                            <img width="20" height="20" class="item-pic rounded" src="{{path+nact.salesManImage}}">
-                                                                            <img width="20" height="20" class="item-pic rounded" src="{{path+nact.coordinatorImage}}">
-                                                                            <img width="20" height="20" class="item-pic rounded" src="{{path+nact.designerImage}}">                                         	                                	               
+                                                                            <img width="20" *ngIf="nact.salesManImage" height="20" class="item-pic rounded" src="{{path+nact.salesManImage}}">
+                                                                            <img width="20" *ngIf="nact.coordinatorImage" height="20" class="item-pic rounded" src="{{path+nact.coordinatorImage}}">
+                                                                            <img width="20" *ngIf="nact.designerImage" height="20" class="item-pic rounded" src="{{path+nact.designerImage}}">                                         	                                	               
                                                                         </div>
                                                                     </div>
                                                         </div>

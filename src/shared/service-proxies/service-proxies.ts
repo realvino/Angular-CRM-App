@@ -9379,10 +9379,12 @@ export class InquiryServiceProxy {
     /**
      * @return Success
      */
-    getOverAllEnquiryActivitys(filter: string): Observable<ListResultDtoOfEnqActList> {
+    getOverAllEnquiryActivitys(filter: string, salesmanId: number): Observable<ListResultDtoOfEnqActList> {
         let url_ = this.baseUrl + "/api/services/app/Inquiry/GetOverAllEnquiryActivitys?";
         if (filter !== undefined)
             url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (salesmanId !== undefined)
+            url_ += "SalesmanId=" + encodeURIComponent("" + salesmanId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = "";
@@ -31195,10 +31197,12 @@ export class TenantDashboardServiceProxy {
     /**
      * @return Success
      */
-    getLostReasonGraph(id: string, startDate: moment.Moment, endDate: moment.Moment): Observable<any[]> {
+    getLostReasonGraph(userId: string, teamId: string, startDate: moment.Moment, endDate: moment.Moment): Observable<any[]> {
         let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetLostReasonGraph?";
-        if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        if (userId !== undefined)
+            url_ += "UserId=" + encodeURIComponent("" + userId) + "&"; 
+        if (teamId !== undefined)
+            url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
         if (startDate !== undefined)
             url_ += "StartDate=" + encodeURIComponent("" + startDate.toJSON()) + "&"; 
         if (endDate !== undefined)
@@ -31253,10 +31257,12 @@ export class TenantDashboardServiceProxy {
     /**
      * @return Success
      */
-    getLeadSummaryGraph(id: string, startDate: moment.Moment, endDate: moment.Moment): Observable<any[]> {
+    getLeadSummaryGraph(userId: string, teamId: string, startDate: moment.Moment, endDate: moment.Moment): Observable<any[]> {
         let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetLeadSummaryGraph?";
-        if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        if (userId !== undefined)
+            url_ += "UserId=" + encodeURIComponent("" + userId) + "&"; 
+        if (teamId !== undefined)
+            url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
         if (startDate !== undefined)
             url_ += "StartDate=" + encodeURIComponent("" + startDate.toJSON()) + "&"; 
         if (endDate !== undefined)
@@ -31311,10 +31317,12 @@ export class TenantDashboardServiceProxy {
     /**
      * @return Success
      */
-    getInquiryRecentClosure(teamId: string): Observable<RecentInquiryClosureList> {
+    getInquiryRecentClosure(teamId: string, salesId: string): Observable<RecentInquiryClosureList> {
         let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetInquiryRecentClosure?";
         if (teamId !== undefined)
             url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
+        if (salesId !== undefined)
+            url_ += "SalesId=" + encodeURIComponent("" + salesId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = "";
@@ -31361,10 +31369,12 @@ export class TenantDashboardServiceProxy {
     /**
      * @return Success
      */
-    getInquiryRecentActivity(teamId: string): Observable<RecentInquiryActivityList> {
+    getInquiryRecentActivity(teamId: string, salesId: string): Observable<RecentInquiryActivityList> {
         let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetInquiryRecentActivity?";
         if (teamId !== undefined)
             url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
+        if (salesId !== undefined)
+            url_ += "SalesId=" + encodeURIComponent("" + salesId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = "";
@@ -49232,6 +49242,7 @@ export class TempProductList implements ITempProductList {
     salesCount: number;
     isQuotation: boolean;
     productImage: string;
+    screationTime: string;
     isDeleted: boolean;
     deleterUserId: number;
     deletionTime: moment.Moment;
@@ -49272,6 +49283,7 @@ export class TempProductList implements ITempProductList {
             this.salesCount = data["salesCount"];
             this.isQuotation = data["isQuotation"];
             this.productImage = data["productImage"];
+            this.screationTime = data["screationTime"];
             this.isDeleted = data["isDeleted"];
             this.deleterUserId = data["deleterUserId"];
             this.deletionTime = data["deletionTime"] ? moment(data["deletionTime"].toString()) : <any>undefined;
@@ -49311,6 +49323,7 @@ export class TempProductList implements ITempProductList {
         data["salesCount"] = this.salesCount;
         data["isQuotation"] = this.isQuotation;
         data["productImage"] = this.productImage;
+        data["screationTime"] = this.screationTime;
         data["isDeleted"] = this.isDeleted;
         data["deleterUserId"] = this.deleterUserId;
         data["deletionTime"] = this.deletionTime ? this.deletionTime.toISOString() : <any>undefined;
@@ -49344,6 +49357,7 @@ export interface ITempProductList {
     salesCount: number;
     isQuotation: boolean;
     productImage: string;
+    screationTime: string;
     isDeleted: boolean;
     deleterUserId: number;
     deletionTime: moment.Moment;

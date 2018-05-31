@@ -2,11 +2,16 @@ import { Component, ViewChild, Injector, Renderer,ElementRef,Input, Output, Even
 import { ModalDirective } from 'ngx-bootstrap';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { Select2ServiceProxy,InquiryServiceProxy, InquiryListDto,EnqActList,Datadto} from "shared/service-proxies/service-proxies";
+import { Select2ServiceProxy,InquiryServiceProxy, InquiryListDto,EnqActList,Datadto, Userprofiledto} from "shared/service-proxies/service-proxies";
 import { ActivatedRoute,Router } from '@angular/router';
 import { createCommentActivityModalComponent } from "app/main/activity_enq/createCommentActivityComponent";
 import { ISlimScrollOptions } from 'ng2-slimscroll';
 import { CreateIncActivityModalComponent } from '@app/main/inquiry/createActivityModelComponent';
+
+export interface SelectOption{
+    id?: number;
+    text?: string;
+ }
 
 @Component({
     selector: 'createInquiry',
@@ -30,8 +35,15 @@ export class CreateActivityEnqComponent extends AppComponentBase implements Afte
 	enqActivityList:any=[];
 	filter:string = '';
     actTypes: Datadto[];
-  radio_val:string='All';
-  radioitems:any=[];
+    radio_val:string='All';
+    radioitems:any=[];
+
+    salesmanId:number=0;
+    active_salesman:SelectOption[];
+    salesman:Array<any>;
+    salesmanData:Userprofiledto[];
+    showSelect: number;
+
 	constructor(
         injector: Injector,
         private _inquiryServiceProxy: InquiryServiceProxy,
@@ -72,6 +84,25 @@ export class CreateActivityEnqComponent extends AppComponentBase implements Afte
           }
 
        });
+       this._select2Service.getUserProfile().subscribe(result=>{			
+		 if(result.select3data!=null){
+			this.salesmanData = result.select3data;
+			  this.salesman = [];
+				this.salesmanData.forEach((sales:{id: number,name: string})=>{
+					this.salesman.push({
+						id: sales.id,
+						text: sales.name
+					});
+				});
+				this.showSelect = this.salesmanData.length;
+				if(this.salesmanData.length == 1 ){
+				  this.active_salesman = [{id: this.salesmanData[0].id,text: this.salesmanData[0].name}];
+				  this.salesmanId = this.salesmanData[0].id;
+				  this.getAllActivities();
+				}
+		}
+	   });
+
     }
 
     show(): void {
@@ -133,8 +164,7 @@ export class CreateActivityEnqComponent extends AppComponentBase implements Afte
       this.radio_val = name;
     }
     getAllActivities():void{
-        this._inquiryServiceProxy.getOverAllEnquiryActivitys(this.filter).subscribe((result) => {
-
+        this._inquiryServiceProxy.getOverAllEnquiryActivitys(this.filter,this.salesmanId).subscribe((result) => {
             if(result.items != null){
                /* result.items.forEach((data)=>{
                     this._inquiryServiceProxy.getEnqActComment(this.filter,data.id).subscribe((response) => {
@@ -151,6 +181,14 @@ export class CreateActivityEnqComponent extends AppComponentBase implements Afte
 
     }
 
+    selectSalesman(data:any){
+        this.salesmanId = data.id;
+        this.getAllActivities();
+    }
+    removeSalesman(data:any){
+        this.salesmanId = 0;
+        this.getAllActivities();
+    }
 
 
 

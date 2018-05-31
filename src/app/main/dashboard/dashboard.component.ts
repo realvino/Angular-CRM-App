@@ -86,8 +86,8 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
 
     slideClicked(index): void  {
         this.carousel.slideClicked(index);
-        this.lostreasonpiegraph(this.slides[index]);
-        this.leadsummaryfunnelgraph(this.slides[index]);
+        // this.lostreasonpiegraph(this.slides[index]);
+        // this.leadsummaryfunnelgraph(this.slides[index]);
         this.Closuresoon(this.slides[index]);
         this.LastActivity(this.slides[index]);
     }
@@ -101,7 +101,7 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     Closuresoon(data:any): void {
         
         this._dashboardService
-            .getInquiryRecentClosure(data.id)
+            .getInquiryRecentClosure(this.teamselect,data.id)
             .subscribe(result => {
                 this.Closure = result;
                 console.log(this.Closure);
@@ -111,7 +111,7 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     };
     LastActivity(data:any): void {
         this._dashboardService
-            .getInquiryRecentActivity(data.id)
+            .getInquiryRecentActivity(this.teamselect,data.id)
             .subscribe(result => {
                 this.Activity = result;
                 console.log(this.Activity);
@@ -126,8 +126,13 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     }
     onItemSelect(item:any){
         this.teamselect = "";
+        var i = 1;
         item.forEach((item:{id:number, text:string}) => {
-            this.teamselect = this.teamselect + item.id + ",";
+            if (i == 1)
+            this.teamselect =  item.id.toString() ;
+            else
+            this.teamselect = this.teamselect + ","+ item.id;
+            i = i + 1;
         }); 
         this.loadslider(this.teamselect);
     }
@@ -142,13 +147,17 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
                   this.teams.push({
                     id: team.id,
                     text:team.name,
-                    // text:`<img class="img-circle" height="25" id="SalesmanProfilePicture" width="25" src="${team.photo}">&nbsp;&nbsp;${team.name}`,
                   });
                 });
                 this.selectedItems = this.teams;
                 this.teamselect = "";
+                var i = 1;
                 this.teams.forEach((item:{id:number, text:string}) => {
-                    this.teamselect = this.teamselect + item.id + ",";
+                    if (i == 1)
+                    this.teamselect =  item.id.toString() ;
+                    else
+                    this.teamselect = this.teamselect + ","+ item.id;
+                    i = i + 1;
                 }); 
                 this.allteamselect = this.teamselect;
                 this.loadslider(this.teamselect);
@@ -169,8 +178,8 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
                 newSlide.push({src: item['profilePicture'],name: item['name'],id: item['id'],email: item['email']})
             });
             this.slides = newSlide.concat(this.slides);
-            this.lostreasonpiegraph(this.slides[0]);
-            this.leadsummaryfunnelgraph(this.slides[0]);
+            // this.lostreasonpiegraph(this.slides[0]);
+            // this.leadsummaryfunnelgraph(this.slides[0]);
             this.Closuresoon(this.slides[0]);
             this.LastActivity(this.slides[0]);
         });
@@ -181,14 +190,14 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     dashsubmitDateRange(): void {
         // console.log(this.dashdateRangePickerStartDate);
         // console.log(this.dashdateRangePickerEndDate);
-        this.lostreasonpiegraph(this.slides[0]);
-        this.leadsummaryfunnelgraph(this.slides[0]);
+        // this.lostreasonpiegraph(this.slides[0]);
+        // this.leadsummaryfunnelgraph(this.slides[0]);
     }
 
     lostreasonpiegraph(value:any):void{
         var scorelrp = [];
         var resultvalue = value.id
-        if(resultvalue ==1)
+        if(resultvalue == 1)
         {
             if(this.teamselect =='' || this.teamselect == null)
             {
@@ -199,7 +208,7 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
                 resultvalue = this.teamselect;
             }
         }
-        this._dashboardService.getLostReasonGraph(resultvalue, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
+        this._dashboardService.getLostReasonGraph(resultvalue,resultvalue, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
         .subscribe((result) => {
             for (var i = 0; i < result.length; i++) {
                 scorelrp.push([result[i].reason, result[i].total]);
@@ -250,7 +259,7 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
                 resultvalue = this.teamselect;
             }
         }
-        this._dashboardService.getLeadSummaryGraph(resultvalue, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
+        this._dashboardService.getLeadSummaryGraph(resultvalue,resultvalue, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
         .subscribe((result) => {
             for (var i = 0; i < result.length; i++) {
                 scorelsp.push([result[i].stageName, result[i].total]);
