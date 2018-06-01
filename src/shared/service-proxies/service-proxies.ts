@@ -23844,6 +23844,56 @@ export class QuotationServiceProxy {
         }
         return Observable.of<PagedResultDtoOfTeamReportListDto>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    getQuotationInquiryFilterToExcel(id: number): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/Quotation/GetQuotationInquiryFilterToExcel?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetQuotationInquiryFilterToExcel(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetQuotationInquiryFilterToExcel(response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<FileDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetQuotationInquiryFilterToExcel(response: Response): Observable<FileDto> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: FileDto = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? FileDto.fromJS(resultData200) : new FileDto();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<FileDto>(<any>null);
+    }
 }
 
 @Injectable()
@@ -31421,10 +31471,12 @@ export class TenantDashboardServiceProxy {
     /**
      * @return Success
      */
-    getSalesExecutive(datainput: string): Observable<SliderDataList[]> {
+    getSalesExecutive(datainput: string, isSales: boolean): Observable<SliderDataList[]> {
         let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetSalesExecutive?";
         if (datainput !== undefined)
             url_ += "datainput=" + encodeURIComponent("" + datainput) + "&"; 
+        if (isSales !== undefined)
+            url_ += "IsSales=" + encodeURIComponent("" + isSales) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = "";
@@ -53931,6 +53983,7 @@ export class Datadtoes implements IDatadtoes {
     id: number;
     name: string;
     photo: string;
+    isSales: boolean;
 
     constructor(data?: IDatadtoes) {
         if (data) {
@@ -53946,6 +53999,7 @@ export class Datadtoes implements IDatadtoes {
             this.id = data["id"];
             this.name = data["name"];
             this.photo = data["photo"];
+            this.isSales = data["isSales"];
         }
     }
 
@@ -53960,6 +54014,7 @@ export class Datadtoes implements IDatadtoes {
         data["id"] = this.id;
         data["name"] = this.name;
         data["photo"] = this.photo;
+        data["isSales"] = this.isSales;
         return data; 
     }
 }
@@ -53968,6 +54023,7 @@ export interface IDatadtoes {
     id: number;
     name: string;
     photo: string;
+    isSales: boolean;
 }
 
 export class Select3Result implements ISelect3Result {
@@ -57889,6 +57945,10 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
     designerImage: string;
     lastActivity: moment.Moment;
     company: string;
+    stageName: string;
+    mileStone: string;
+    total: number;
+    stage: string;
 
     constructor(data?: IRecentInquiryClosureDto) {
         if (data) {
@@ -57913,6 +57973,10 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
             this.designerImage = data["designerImage"];
             this.lastActivity = data["lastActivity"] ? moment(data["lastActivity"].toString()) : <any>undefined;
             this.company = data["company"];
+            this.stageName = data["stageName"];
+            this.mileStone = data["mileStone"];
+            this.total = data["total"];
+            this.stage = data["stage"];
         }
     }
 
@@ -57936,6 +58000,10 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
         data["designerImage"] = this.designerImage;
         data["lastActivity"] = this.lastActivity ? this.lastActivity.toISOString() : <any>undefined;
         data["company"] = this.company;
+        data["stageName"] = this.stageName;
+        data["mileStone"] = this.mileStone;
+        data["total"] = this.total;
+        data["stage"] = this.stage;
         return data; 
     }
 }
@@ -57953,6 +58021,10 @@ export interface IRecentInquiryClosureDto {
     designerImage: string;
     lastActivity: moment.Moment;
     company: string;
+    stageName: string;
+    mileStone: string;
+    total: number;
+    stage: string;
 }
 
 export class RecentInquiryActivityList implements IRecentInquiryActivityList {

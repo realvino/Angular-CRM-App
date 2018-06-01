@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="col-xs-6">
-            <div class="bidselect0d0" style="width: 350px; float: none;margin: 0 auto;margin-top: 15px;">
+            <div class="bidselect0d0" style="width: 350px; float: none;margin: 0 auto;margin-top: 15px;" *ngIf="SliderCount > 1">
                     <ng-multiselect-dropdown 
                     id="multiselect"
                     name="multiselect"
@@ -70,20 +70,28 @@
                                 <div class="portlet-title tabbable-line">
                                     <div class="caption">
                                         <i class="icon-bubbles font-dark hide"></i>
-                                        <span class="caption-subject font-green-haze bold uppercase">CLOSURE SOON</span>
+                                        <span class="caption-subject font-green-haze bold uppercase">CLOSING SOON</span>
                                     </div>
-                                    <ul class="nav nav-tabs">
+                                    <!-- <ul class="nav nav-tabs">
                                         <li class="active">
                                             <a href="#portlet_comments_1" data-toggle="tab" aria-expanded="true"><b style="color: #7b7e8a;">THIS WEEK</b></a>
                                         </li>
                                         <li class="">
                                             <a href="#portlet_comments_2" data-toggle="tab" aria-expanded="false"><b style="color: #7b7e8a;">NEXT WEEK</b></a>
                                         </li>
-                                    </ul>
+                                    </ul> -->
+                                    <div class="actions">
+                                        <div class="btn-group btn-group-devided" data-toggle="buttons">
+                                            <label class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle btn-sm active" (click)="ClosureClick(1)">
+                                                <input type="radio" name="options" class="toggle" id="option2">This Week</label>
+                                            <label class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle btn-sm" (click)="ClosureClick(2)">
+                                                <input type="radio" name="options" class="toggle" id="option2">Next Week</label>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div id="style-4" class="portlet-body scrollab">
                                     <div class="tab-content">
-                                        <div class="tab-pane" id="portlet_comments_2">
+                                        <div *ngIf="clsdata == 2">
                                             <!-- BEGIN: Comments -->
                                             <div class="general-item-list">
                                                     <div *ngFor="let clos of Closure.nextWeekClosureInquiry" class="item">
@@ -91,18 +99,19 @@
                                                             <div class="item-details">
                                                                     <img class="item-pic rounded" src="{{path+clos.salesManImage}}">
                                                                 <a href="" class="item-name primary-link">{{clos.subMmissionId}}</a>
-                                                                <span class="item-label">{{clos.closureDate}}</span>
+                                                                <span class="item-label">{{clos.closureDate}} ({{clos.stageName}})</span>&nbsp;
+                                                                <span class="item-label" style="color: black;"><b>{{clos.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</b></span>&nbsp;
                                                                 <span class="item-label"> active {{clos.lastActivity| amTimeAgo}} </span>
                                                             </div>
                                                             <span class="item-status">
-                                                                <span class="badge badge-empty badge-success"></span> On Progress</span>
+                                                                <span class="badge badge-empty badge-success"></span> &nbsp;{{clos.mileStone}} ({{clos.stage}} %)</span>
                                                         </div>
                                                         <div class="item-body"> <b>{{clos.inquiryName}}</b> <b class="font-green-haze">{{clos.company}}</b> {{clos.remarks}} </div>
                                                     </div>
                                                     </div>
                                             <!-- END: Comments -->
                                         </div>
-                                        <div class="tab-pane active" id="portlet_comments_1">
+                                        <div *ngIf="clsdata == 1">
                                             <!-- BEGIN: Comments -->
                                             <div class="general-item-list">
                                                     <div *ngFor="let clst of Closure.thisWeekClosureInquiry" class="item">
@@ -110,13 +119,13 @@
                                                                 <div class="item-details">
                                                                     <img class="item-pic rounded" src="{{path+clst.salesManImage}}">
                                                                     <a href="" class="item-name primary-link">{{clst.subMmissionId}}</a>
-                                                                    <span class="item-label">{{clst.closureDate}}</span>
+                                                                    <span class="item-label">{{clst.closureDate}} ({{clst.stageName}})</span>&nbsp;
+                                                                    <span class="item-label" style="color: black;"><b>{{clst.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</b></span>&nbsp;
                                                                     <span class="item-label"> active {{clst.lastActivity| amTimeAgo}} </span>
                                                                 </div>
                                                                 <span class="item-status">
-                                                                    <span class="badge badge-empty badge-success"></span> On Progress</span>
-                                                                                                                        
-                                                            </div>
+                                                                    <span class="badge badge-empty badge-success"></span> &nbsp;{{clst.mileStone}} ({{clst.stage}} %)</span>                                                                                                                       
+                                                            </div> 
                                                             <div class="item-body"> <b>{{clst.inquiryName}}</b> <b class="font-green-haze">{{clst.company}}</b> {{clst.remarks}} </div>
                                                         </div>
                                             </div>
@@ -131,7 +140,7 @@
                                 <div class="portlet-title">
                                     <div class="caption caption-md">
                                         <i class="icon-bar-chart font-green-haze hide"></i>
-                                        <span class="caption-subject font-green-haze bold uppercase">Next Activities
+                                        <span class="caption-subject font-green-haze bold uppercase">Upcoming Activities
                                             </span>
                                     </div>
                                     <div class="actions">
@@ -149,7 +158,7 @@
                                 <div id="style-4" class="portlet-body scrollab">
                                              
                                     <div class=" table-scrollable table-scrollable-borderless">                                          
-                                            <div class=" col-md-10 m-timeline-2">
+                                            <div class=" col-md-12 m-timeline-2">
                                                     <div class="m-timeline-2__items  m--padding-top-25 m--padding-bottom-30">                                                      
                                                         <div *ngIf="endata == 1">
                                                         <div *ngFor="let oact of Activity.overDueActivityInquiry" class="m-timeline-2__item">
@@ -164,7 +173,11 @@
                                                                 {{oact.remarks}}        
                                                                 <img width="20" *ngIf="oact.salesManImage" height="20" class="item-pic rounded" src="{{path+oact.salesManImage}}">
                                                                 <img width="20" *ngIf="oact.coordinatorImage" height="20" class="item-pic rounded" src="{{path+oact.coordinatorImage}}">
-                                                                <img width="20" *ngIf="oact.designerImage" height="20" class="item-pic rounded" src="{{path+oact.designerImage}}">                                         	                                	                                                                                                   
+                                                                <img width="20" *ngIf="oact.designerImage" height="20" class="item-pic rounded" src="{{path+oact.designerImage}}"> &nbsp; 
+                                                                <span class="item-status">
+                                                                    <span class="badge badge-empty badge-danger"></span> &nbsp;
+                                                                    <span class="item-label" style="color: black;"><b>{{oact.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</b></span>&nbsp;
+                                                                    &nbsp;{{oact.mileStone}} ({{oact.stage}} %)</span>                                                                                                   
                                                             </div>
                                                         </div>
                                                         </div>
@@ -180,8 +193,11 @@
                                                                             {{tact.remarks}}  
                                                                             <img width="20" *ngIf="tact.salesManImage" height="20" class="item-pic rounded" src="{{path+tact.salesManImage}}">
                                                                             <img width="20" *ngIf="tact.coordinatorImage" height="20" class="item-pic rounded" src="{{path+tact.coordinatorImage}}">
-                                                                            <img width="20" *ngIf="tact.designerImage" height="20" class="item-pic rounded" src="{{path+tact.designerImage}}">
-              
+                                                                            <img width="20" *ngIf="tact.designerImage" height="20" class="item-pic rounded" src="{{path+tact.designerImage}}">&nbsp;  
+                                                                            <span class="item-status">
+                                                                                <span class="badge badge-empty badge-danger"></span> &nbsp;
+                                                                                <span class="item-label" style="color: black;"><b>{{tact.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</b></span>&nbsp;
+                                                                                &nbsp;{{tact.mileStone}} ({{tact.stage}} %)</span>    
                                                                         </div>
                                                                        
                                                                        
@@ -199,10 +215,14 @@
                                                                             {{nact.remarks}}  
                                                                             <img width="20" *ngIf="nact.salesManImage" height="20" class="item-pic rounded" src="{{path+nact.salesManImage}}">
                                                                             <img width="20" *ngIf="nact.coordinatorImage" height="20" class="item-pic rounded" src="{{path+nact.coordinatorImage}}">
-                                                                            <img width="20" *ngIf="nact.designerImage" height="20" class="item-pic rounded" src="{{path+nact.designerImage}}">                                         	                                	               
+                                                                            <img width="20" *ngIf="nact.designerImage" height="20" class="item-pic rounded" src="{{path+nact.designerImage}}">  &nbsp;  
+                                                                            <span class="item-status">
+                                                                                <span class="badge badge-empty badge-danger"></span> &nbsp;
+                                                                                <span class="item-label" style="color: black;"><b>{{nact.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</b></span>&nbsp;
+                                                                                &nbsp;{{nact.mileStone}} ({{nact.stage}} %)</span>                                          	                                	               
                                                                         </div>
                                                                     </div>
-                                                        </div>
+                                                        </div> 
                                                     </div>
                                             </div>
                                     </div>

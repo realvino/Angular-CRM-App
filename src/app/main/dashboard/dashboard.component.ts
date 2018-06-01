@@ -21,6 +21,7 @@ export interface SelectOption{
 })
 export class DashboardComponent extends AppComponentBase implements AfterViewInit, OnDestroy {
 
+    clsdata: number = 1;
     endata: number = 1;
     @ViewChild('DashDateRangePicker') sampleDateTimePicker: ElementRef;
 
@@ -39,6 +40,8 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     lrgoption: Object;
     lsgoption: Object;
     teamIdselect: string;
+    IsSales:boolean = false;
+    SliderCount:number;
     dropdownSettings = {
         itemsShowLimit : 1,
         allowSearchFilter : false,
@@ -83,11 +86,13 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     reportClick(value):void{
         this.endata = value;
     }
-
+    ClosureClick(value):void{
+        this.clsdata = value;
+    }
     slideClicked(index): void  {
         this.carousel.slideClicked(index);
-        // this.lostreasonpiegraph(this.slides[index]);
-        // this.leadsummaryfunnelgraph(this.slides[index]);
+        this.lostreasonpiegraph(this.slides[index]);
+        this.leadsummaryfunnelgraph(this.slides[index]);
         this.Closuresoon(this.slides[index]);
         this.LastActivity(this.slides[index]);
     }
@@ -125,6 +130,7 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
         // this.loadslider(this.active_team);
     }
     onItemSelect(item:any){
+        var selected =  this.teamselect;
         this.teamselect = "";
         var i = 1;
         item.forEach((item:{id:number, text:string}) => {
@@ -134,14 +140,27 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
             this.teamselect = this.teamselect + ","+ item.id;
             i = i + 1;
         }); 
-        this.loadslider(this.teamselect);
+        var data = this.isEmpty(this.teamselect);
+        if(data == true)
+        {
+            this.teamselect = this.allteamselect;   
+        }
+        if(selected != this.teamselect)
+        {
+            this.loadslider(this.teamselect);
+        }
     }
     
     teamdetail():void{
         this._dashboardService.getDashboardTeam().takeUntil(this.destroy$).subscribe((result) => { 
             this.allteamselect ="";
             if (result.selectDdata != null) {
-                 this.team_list = result.selectDdata;
+                this.team_list = result.selectDdata;
+                this.SliderCount = this.team_list.length;
+                if (this.SliderCount == 1)
+                  {
+                       this.IsSales = this.team_list[0].isSales;
+                  }
                  this.teams = [];
                 this.team_list.forEach((team: {id: number, name: string, photo: string}) => {
                   this.teams.push({
@@ -160,10 +179,10 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
                     i = i + 1;
                 }); 
                 this.allteamselect = this.teamselect;
+
                 this.loadslider(this.teamselect);
-                //this.active_team = [{id: 1000, text:'All'}];
-                // this.active_team = [{id: 1000, text:`<img class="img-circle" height="25" id="SalesmanProfilePicture" width="25" src="${this.path}/Common/Profile/default-profile-picture.png">&nbsp;&nbsp;All`}];
-             }
+
+            }
         });
     }
 
@@ -171,15 +190,15 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
         this.teamIdselect = value;
         this.slides = [];
 
-        this._dashboardService.getSalesExecutive(this.teamIdselect)
+        this._dashboardService.getSalesExecutive(this.teamIdselect,this.IsSales)
         .subscribe(result =>{
             let newSlide = new Array<object>()
             result.forEach((item) => {
                 newSlide.push({src: item['profilePicture'],name: item['name'],id: item['id'],email: item['email']})
             });
             this.slides = newSlide.concat(this.slides);
-            // this.lostreasonpiegraph(this.slides[0]);
-            // this.leadsummaryfunnelgraph(this.slides[0]);
+            this.lostreasonpiegraph(this.slides[0]);
+            this.leadsummaryfunnelgraph(this.slides[0]);
             this.Closuresoon(this.slides[0]);
             this.LastActivity(this.slides[0]);
         });
@@ -190,25 +209,13 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     dashsubmitDateRange(): void {
         // console.log(this.dashdateRangePickerStartDate);
         // console.log(this.dashdateRangePickerEndDate);
-        // this.lostreasonpiegraph(this.slides[0]);
-        // this.leadsummaryfunnelgraph(this.slides[0]);
+        this.lostreasonpiegraph(this.slides[0]);
+        this.leadsummaryfunnelgraph(this.slides[0]);
     }
 
     lostreasonpiegraph(value:any):void{
-        var scorelrp = [];
-        var resultvalue = value.id
-        if(resultvalue == 1)
-        {
-            if(this.teamselect =='' || this.teamselect == null)
-            {
-                resultvalue = this.allteamselect;
-            }
-            else
-            {
-                resultvalue = this.teamselect;
-            }
-        }
-        this._dashboardService.getLostReasonGraph(resultvalue,resultvalue, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
+        var scorelrp = [];      
+        this._dashboardService.getLostReasonGraph(value.id,this.teamselect, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
         .subscribe((result) => {
             for (var i = 0; i < result.length; i++) {
                 scorelrp.push([result[i].reason, result[i].total]);
@@ -246,20 +253,9 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
          }); 
     }
     leadsummaryfunnelgraph(value:any):void{
+        console.log(value);
         var scorelsp = [];
-        var resultvalue = value.id
-        if(resultvalue ==1)
-        {
-            if(this.teamselect =='' || this.teamselect == null)
-            {
-                resultvalue = this.allteamselect;
-            }
-            else
-            {
-                resultvalue = this.teamselect;
-            }
-        }
-        this._dashboardService.getLeadSummaryGraph(resultvalue,resultvalue, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
+        this._dashboardService.getLeadSummaryGraph(value.id,this.teamselect, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
         .subscribe((result) => {
             for (var i = 0; i < result.length; i++) {
                 scorelsp.push([result[i].stageName, result[i].total]);
@@ -310,6 +306,9 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     }
 
     ngOnDestroy() {
+    }
+ isEmpty(val){
+        return (val === undefined || val == null || val.length <= 0) ? true : false;
     }
 };
 
