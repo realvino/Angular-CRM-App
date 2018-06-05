@@ -783,3 +783,19 @@ box-shadow: 0 1px 5px #95959500;
     overflow-x: hidden;
     background: #d8e5e6;
 }
+.item-body1
+{
+    text-align: center;
+    padding: 10px;
+    color: #f6837a;
+    font-size: 18px;
+    margin-top: -8px;
+}
+.item-body2
+{
+    text-align: center;
+    padding: 10px;
+    color: #f6837a;
+    font-size: 18px;
+    margin-top: -9px;
+}

@@ -49,24 +49,39 @@
                            
                         </div> -->
                         <div class="col-md-8">
-                                <div class="btn-group mydropdown" *ngIf="viewId && hidedColumns.length > 0" style="float: right;margin-left: 10px;">
-                                        <a class="btn green-haze btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">Hidden Columns
-                                            <i class="fa fa-eye-slash"></i>
-                                        </a>
-                                        <ul class="dropdown-menu text-right" style="padding: 10px;">
-                                            <ng-container *ngFor="let c of hidedColumns">
-                                                <li style="background: #32c5d2; border: 1px solid #32c5d2;border-radius: 5px;text-align: center;margin-bottom: 5px;">
-                                                  <!-- <i style="cursor: pointer;color: deepskyblue;" class="fa fa-plus btn btn-circle btn-icon-only" (click)="checked(c.columnName,viewId)"></i>  -->
-                                                  <a (click)="checked(c.columnName,viewId)"> {{c.columnName}}</a> 
-                                                  
-                                                </li>
-                                            </ng-container>
-                                        </ul>
+                                
+                              <div class="col-md-10">
+                                    <div class="btn-group mydropdown" *ngIf="viewId && hidedColumns.length > 0" style="float: right;margin-left: 10px;">
+                                            <a class="btn green-haze btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">Hidden Columns
+                                                <i class="fa fa-eye-slash"></i>
+                                            </a>
+                                            <ul class="dropdown-menu text-right" style="padding: 10px;">
+                                                <ng-container *ngFor="let c of hidedColumns">
+                                                    <li style="background: #32c5d2; border: 1px solid #32c5d2;border-radius: 5px;text-align: center;margin-bottom: 5px;">
+                                                      <!-- <i style="cursor: pointer;color: deepskyblue;" class="fa fa-plus btn btn-circle btn-icon-only" (click)="checked(c.columnName,viewId)"></i>  -->
+                                                      <a (click)="checked(c.columnName,viewId)"> {{c.columnName}}</a> 
+                                                      
+                                                    </li>
+                                                </ng-container>
+                                            </ul>
+                                        </div>
+                              </div>
+                              <div class="col-md-2" *ngIf="this.viewId">
+                                    <div class="col-md-8">
+                                            <div class="btn-group mydropdown" style="float: right;">
+                                                    <a class="btn green-haze btn-outline btn-circle btn-sm" (click)="createview()" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false"> Save As
+                                                    </a>      
+                                                                      
+                                                </div>
                                     </div>
-                            <div class="btn-group mydropdown" style="float: right;" *ngIf="this.viewId">
-                            <a class="btn green-haze btn-outline btn-circle btn-sm" (click)="createview()" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false"> Save As
-                            </a>                          
-                        </div>
+                                    <div class="col-md-4">
+                                            <div>
+                                                    <button title="Export" (click)="exportToExcel()" class="btn btn-circle btn-icon-only blue"><i class="fa fa-download"></i></button>
+                                                  </div>   
+                                    </div>
+                              </div>
+                               
+                           
                     </div>   
                         </div>
                     </div>

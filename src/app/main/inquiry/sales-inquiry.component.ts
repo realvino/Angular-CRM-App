@@ -203,10 +203,19 @@ openClosedInquiry(data): void{
             this.primengDatatableHelper.hideLoadingIndicator();
         });
     }
-	exportToExcel(): void {
-        this._inquiryProxyService.getSalesInquiryToExcel()
+    exportToExcel(from): void {
+        if(from == 1){
+            this._inquiryProxyService.getSalesInquiryToExcel()
             .subscribe(result => {
                 this._fileDownloadService.downloadTempFile(result);
             });
+        }
+        else{
+            this._inquiryProxyService.getClosedInquiryToExcel()
+            .subscribe(result => {
+                this._fileDownloadService.downloadTempFile(result);
+            });
+        }
+        
     }
 }

@@ -119,6 +119,9 @@ export class CreateInquiryComponent extends AppComponentBase implements AfterVie
   address:CreateAddressInfo =new CreateAddressInfo();
   contact:CreateContactInfo = new CreateContactInfo();
   enquiryjunkinput:EnquiryJunkUpdateInputDto = new EnquiryJunkUpdateInputDto();
+  private InqLeadStatus:Array<any>;
+  active_inqleadstatus:SelectOption[];
+  inqleadstatusData:Datadto[] = [];
 
     values_company: Datadto[] = [];
     reasons: Datadto[] = [];
@@ -432,6 +435,18 @@ editEnqActivity(companyId,data): void {
               }
          });
 
+         this._select2Service.getLeadStatus().subscribe((result)=>{
+          this.InqLeadStatus = [];
+          if(result.select2data!=null){
+            this.inqleadstatusData = result.select2data;
+            this.inqleadstatusData.forEach((lstatus:{id:number,name:string})=>{
+              this.InqLeadStatus.push({
+                id:lstatus.id,
+                text: lstatus.name
+              })
+            });
+          }
+         });
          this._select2Service.getAllLocation().subscribe((result) => {
           this.location = [];
            if (result.select2data != null) {
@@ -494,6 +509,11 @@ editEnqActivity(companyId,data): void {
              console.log(result.inquiryLock);
              this.lqref = result.inquiryLock.quotationRefno;
              this.lqtot = result.inquiryLock.quotationTotal;
+           }
+           if(result.inquirys.leadStatusId !=0)
+           {
+            this.update_details.leadStatusId = result.inquirys.leadStatusId;
+            this.active_inqleadstatus = [{"id":result.inquirys.leadStatusId,"text":result.inquirys.leadStatusName}];
            }
            if(result.inquiryDetails!=null){
 
@@ -1176,7 +1196,11 @@ else{
   
 }
 }
-  
+  selectedInqLeadStatus(data:any){
+      this.update_details.leadStatusId = data.id;
+      this.active_inqleadstatus = [{"id":data.id,"text":data.text}];
+}
+
    save(model): void {
            this.saving = true;
            if(this.closedDate){
@@ -1392,6 +1416,7 @@ deleteJobActivity(job: JobActivityList): void {
             this._select2Service.getEnquiryStages(4).subscribe((result)=>{
               console.log(result);
               if(result.select2data !=null){
+                this.update_details.leadStatusId = 1;  
                 this.updateInquiryIn.stageId = result.select2data[1].id;
                 this._inquiryServiceProxy.createOrUpdateInquiry(this.update_details)
                 .finally(() => this.saving = false)
@@ -1758,7 +1783,7 @@ initContact(){
       }
       else{
         if(this.which_located =='sales-enquiry' || this.which_located =='sales-grid'){
-          if(!data.valid || !this.inquiry.name || !this.inquiry.remarks || !this.update_details.statusId || !this.inquiry.cEmail || !this.inquiry.cLandlineNumber || !this.inquiry.mbNo || !this.inquiry.email || !this.contact_edit.titleId || !this.saveLeadDetailInput.estimationValue || !this.inquiry.teamId || !this.inquiry.departmentId || !this.inquiry.assignedbyId)
+          if(!data.valid || !this.inquiry.name || !this.inquiry.remarks || !this.update_details.statusId || !this.inquiry.cEmail || !this.inquiry.cLandlineNumber || !this.inquiry.mbNo || !this.inquiry.email || !this.contact_edit.titleId || !this.saveLeadDetailInput.estimationValue || !this.inquiry.teamId || !this.inquiry.departmentId || !this.inquiry.assignedbyId || !this.lastActivity || !this.closedDate)
           {      
              return true;
           }else{

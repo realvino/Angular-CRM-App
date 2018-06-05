@@ -64,22 +64,16 @@
                                     </ng2-carousel-3d-slide>
                                 </ng2-carousel-3d>
                         </div>
-                    </div>
-                    <div class="col-lg-6 col-xs-12 col-sm-12">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
                             <div class="portlet light ">
                                 <div class="portlet-title tabbable-line">
                                     <div class="caption">
                                         <i class="icon-bubbles font-dark hide"></i>
                                         <span class="caption-subject font-green-haze bold uppercase">CLOSING SOON</span>
-                                    </div>
-                                    <!-- <ul class="nav nav-tabs">
-                                        <li class="active">
-                                            <a href="#portlet_comments_1" data-toggle="tab" aria-expanded="true"><b style="color: #7b7e8a;">THIS WEEK</b></a>
-                                        </li>
-                                        <li class="">
-                                            <a href="#portlet_comments_2" data-toggle="tab" aria-expanded="false"><b style="color: #7b7e8a;">NEXT WEEK</b></a>
-                                        </li>
-                                    </ul> -->
+                                    </div>                                  
                                     <div class="actions">
                                         <div class="btn-group btn-group-devided" data-toggle="buttons">
                                             <label class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle btn-sm active" (click)="ClosureClick(1)">
@@ -101,7 +95,7 @@
                                                                 <a href="" class="item-name primary-link">{{clos.subMmissionId}}</a>
                                                                 <span class="item-label">{{clos.closureDate}} ({{clos.stageName}})</span>&nbsp;
                                                                 <span class="item-label" style="color: black;"><b>{{clos.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</b></span>&nbsp;
-                                                                <span class="item-label"> active {{clos.lastActivity| amTimeAgo}} </span>
+                                                                <span class="item-label"> inactive {{clos.lastActivity| amTimeAgo}} </span>
                                                             </div>
                                                             <span class="item-status">
                                                                 <span class="badge badge-empty badge-success"></span> &nbsp;{{clos.mileStone}} ({{clos.stage}} %)</span>
@@ -121,7 +115,7 @@
                                                                     <a href="" class="item-name primary-link">{{clst.subMmissionId}}</a>
                                                                     <span class="item-label">{{clst.closureDate}} ({{clst.stageName}})</span>&nbsp;
                                                                     <span class="item-label" style="color: black;"><b>{{clst.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</b></span>&nbsp;
-                                                                    <span class="item-label"> active {{clst.lastActivity| amTimeAgo}} </span>
+                                                                    <span class="item-label"> inactive {{clst.lastActivity| amTimeAgo}} </span>
                                                                 </div>
                                                                 <span class="item-status">
                                                                     <span class="badge badge-empty badge-success"></span> &nbsp;{{clst.mileStone}} ({{clst.stage}} %)</span>                                                                                                                       
@@ -133,8 +127,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
                             <!-- BEGIN PORTLET-->
                             <div class="portlet light">
                                 <div class="portlet-title">
@@ -143,24 +137,14 @@
                                         <span class="caption-subject font-green-haze bold uppercase">Upcoming Activities
                                             </span>
                                     </div>
-                                    <div class="actions">
-                                            <div class="btn-group btn-group-devided" data-toggle="buttons">
-                                                <label class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle btn-sm active" (click)="reportClick(1)">
-                                                    <input type="radio" name="options" class="toggle" id="option1">Over Due</label>
-                                                <label class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle btn-sm" (click)="reportClick(2)">
-                                                    <input type="radio" name="options" class="toggle" id="option2">This Week</label>
-                                                <label class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle btn-sm" (click)="reportClick(3)">
-                                                    <input type="radio" name="options" class="toggle" id="option2">Next Week</label>
-                                            </div>
-                                        </div>
+                                    
                                 </div>
                                 
                                 <div id="style-4" class="portlet-body scrollab">
-                                             
+                                    <div *ngIf="Activity.overDueActivityInquiry?.length > 0" class="item-body item-body1"> <b>Over Due</b><hr></div>         
                                     <div class=" table-scrollable table-scrollable-borderless">                                          
                                             <div class=" col-md-12 m-timeline-2">
                                                     <div class="m-timeline-2__items  m--padding-top-25 m--padding-bottom-30">                                                      
-                                                        <div *ngIf="endata == 1">
                                                         <div *ngFor="let oact of Activity.overDueActivityInquiry" class="m-timeline-2__item">
                                                             <span class="m-timeline-2__item-time" style="width: 80px;">{{oact.closureDate}}</span>                                                           	
                                                             <div class="m-timeline-2__item-cricle">									 
@@ -168,7 +152,7 @@
                                                             </div>
                                                             <div class="m-timeline-2__item-text  m--padding-top-5">
                                                               <a href="" class="item-name primary-link">{{oact.subMmissionId}}</a>
-                                                               <b>{{oact.inquiryName}}</b> &nbsp; <span style="color: #c0c9cc;" class="item-label"> active {{oact.lastActivity| amTimeAgo}} </span><br>
+                                                               <b>{{oact.inquiryName}}</b> &nbsp; <span style="color: #c0c9cc;" class="item-label"> inactive {{oact.lastActivity| amTimeAgo}} </span><br>
 
                                                                 {{oact.remarks}}        
                                                                 <img width="20" *ngIf="oact.salesManImage" height="20" class="item-pic rounded" src="{{path+oact.salesManImage}}">
@@ -180,58 +164,69 @@
                                                                     &nbsp;{{oact.mileStone}} ({{oact.stage}} %)</span>                                                                                                   
                                                             </div>
                                                         </div>
-                                                        </div>
-                                                        <div *ngIf="endata == 2">
-                                                                <div *ngFor="let tact of Activity.thisWeekActivityInquiry" class="m-timeline-2__item">
-                                                                        <span class="m-timeline-2__item-time" style="width: 80px;">{{tact.closureDate}}</span>                                                           	
-                                                                        <div class="m-timeline-2__item-cricle">									 
-                                                                                <i class="fa fa-genderless m--font-warning"></i>									 
-                                                                        </div>
-                                                                        <div class="m-timeline-2__item-text  m--padding-top-5">
-                                                                          <a href="" class="item-name primary-link">{{tact.subMmissionId}}</a>
-                                                                           <b>{{tact.inquiryName}}</b>&nbsp; <span style="color: #c0c9cc;" class="item-label"> active {{tact.lastActivity| amTimeAgo}} </span><br>
-                                                                            {{tact.remarks}}  
-                                                                            <img width="20" *ngIf="tact.salesManImage" height="20" class="item-pic rounded" src="{{path+tact.salesManImage}}">
-                                                                            <img width="20" *ngIf="tact.coordinatorImage" height="20" class="item-pic rounded" src="{{path+tact.coordinatorImage}}">
-                                                                            <img width="20" *ngIf="tact.designerImage" height="20" class="item-pic rounded" src="{{path+tact.designerImage}}">&nbsp;  
-                                                                            <span class="item-status">
-                                                                                <span class="badge badge-empty badge-danger"></span> &nbsp;
-                                                                                <span class="item-label" style="color: black;"><b>{{tact.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</b></span>&nbsp;
-                                                                                &nbsp;{{tact.mileStone}} ({{tact.stage}} %)</span>    
-                                                                        </div>
-                                                                       
-                                                                       
-                                                                    </div>
-                                                        </div>
-                                                        <div *ngIf="endata == 3">
-                                                                <div *ngFor="let nact of Activity.nextWeekActivityInquiry" class="m-timeline-2__item">
-                                                                        <span class="m-timeline-2__item-time" style="width: 80px;">{{nact.closureDate}}</span>                                                           	
-                                                                        <div class="m-timeline-2__item-cricle">									 
-                                                                                <i class="fa fa-genderless m--font-brand"></i>									 
-                                                                            </div>
-                                                                        <div class="m-timeline-2__item-text  m--padding-top-5">
-                                                                          <a href="" class="item-name primary-link">{{nact.subMmissionId}}</a>
-                                                                           <b>{{nact.inquiryName}}</b>&nbsp; <span style="color: #c0c9cc;" class="item-label"> active {{nact.lastActivity| amTimeAgo}} </span><br>
-                                                                            {{nact.remarks}}  
-                                                                            <img width="20" *ngIf="nact.salesManImage" height="20" class="item-pic rounded" src="{{path+nact.salesManImage}}">
-                                                                            <img width="20" *ngIf="nact.coordinatorImage" height="20" class="item-pic rounded" src="{{path+nact.coordinatorImage}}">
-                                                                            <img width="20" *ngIf="nact.designerImage" height="20" class="item-pic rounded" src="{{path+nact.designerImage}}">  &nbsp;  
-                                                                            <span class="item-status">
-                                                                                <span class="badge badge-empty badge-danger"></span> &nbsp;
-                                                                                <span class="item-label" style="color: black;"><b>{{nact.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</b></span>&nbsp;
-                                                                                &nbsp;{{nact.mileStone}} ({{nact.stage}} %)</span>                                          	                                	               
-                                                                        </div>
-                                                                    </div>
-                                                        </div> 
+                                                                                                                             
                                                     </div>
                                             </div>
                                     </div>
-                                  
+                                    <div *ngIf="Activity.thisWeekActivityInquiry?.length > 0" class="item-body item-body1"> <b>Today</b><hr></div>         
+                                    <div class=" table-scrollable table-scrollable-borderless">                                          
+                                            <div class=" col-md-12 m-timeline-2">
+                                                    <div class="m-timeline-2__items  m--padding-top-25 m--padding-bottom-30">                                                      
+                                                            <div *ngFor="let tact of Activity.thisWeekActivityInquiry" class="m-timeline-2__item">
+                                                                    <span class="m-timeline-2__item-time" style="width: 80px;">{{tact.closureDate}}</span>                                                              
+                                                                    <div class="m-timeline-2__item-cricle">                                  
+                                                                            <i class="fa fa-genderless m--font-warning"></i>                                     
+                                                                    </div>
+                                                                    <div class="m-timeline-2__item-text  m--padding-top-5">
+                                                                      <a href="" class="item-name primary-link">{{tact.subMmissionId}}</a>
+                                                                       <b>{{tact.inquiryName}}</b>&nbsp; <span style="color: #c0c9cc;" class="item-label"> inactive {{tact.lastActivity| amTimeAgo}} </span><br>
+                                                                        {{tact.remarks}}  
+                                                                        <img width="20" *ngIf="tact.salesManImage" height="20" class="item-pic rounded" src="{{path+tact.salesManImage}}">
+                                                                        <img width="20" *ngIf="tact.coordinatorImage" height="20" class="item-pic rounded" src="{{path+tact.coordinatorImage}}">
+                                                                        <img width="20" *ngIf="tact.designerImage" height="20" class="item-pic rounded" src="{{path+tact.designerImage}}">&nbsp;  
+                                                                        <span class="item-status">
+                                                                            <span class="badge badge-empty badge-danger"></span> &nbsp;
+                                                                            <span class="item-label" style="color: black;"><b>{{tact.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</b></span>&nbsp;
+                                                                            &nbsp;{{tact.mileStone}} ({{tact.stage}} %)</span>    
+                                                                    </div>
+                                                                </div>
+                                                                                                                             
+                                                    </div>
+                                            </div>
+                                    </div>
+                                    <div *ngIf="Activity.nextWeekActivityInquiry?.length > 0" class="item-body item-body2"> <b>Next Day</b><hr></div>         
+                                    <div class=" table-scrollable table-scrollable-borderless">                                          
+                                            <div class=" col-md-12 m-timeline-2">
+                                                    <div class="m-timeline-2__items  m--padding-top-25 m--padding-bottom-30">                                                      
+                                                        
+                                                            <div *ngFor="let nact of Activity.nextWeekActivityInquiry" class="m-timeline-2__item">
+                                                                    <span class="m-timeline-2__item-time" style="width: 80px;">{{nact.closureDate}}</span>                                                           	
+                                                                    <div class="m-timeline-2__item-cricle">									 
+                                                                            <i class="fa fa-genderless m--font-brand"></i>									 
+                                                                        </div>
+                                                                    <div class="m-timeline-2__item-text  m--padding-top-5">
+                                                                      <a href="" class="item-name primary-link">{{nact.subMmissionId}}</a>
+                                                                       <b>{{nact.inquiryName}}</b>&nbsp; <span style="color: #c0c9cc;" class="item-label"> inactive {{nact.lastActivity| amTimeAgo}} </span><br>
+                                                                        {{nact.remarks}}  
+                                                                        <img width="20" *ngIf="nact.salesManImage" height="20" class="item-pic rounded" src="{{path+nact.salesManImage}}">
+                                                                        <img width="20" *ngIf="nact.coordinatorImage" height="20" class="item-pic rounded" src="{{path+nact.coordinatorImage}}">
+                                                                        <img width="20" *ngIf="nact.designerImage" height="20" class="item-pic rounded" src="{{path+nact.designerImage}}">  &nbsp;  
+                                                                        <span class="item-status">
+                                                                            <span class="badge badge-empty badge-danger"></span> &nbsp;
+                                                                            <span class="item-label" style="color: black;"><b>{{nact.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</b></span>&nbsp;
+                                                                            &nbsp;{{nact.mileStone}} ({{nact.stage}} %)</span>                                          	                                	               
+                                                                    </div>
+                                                                </div>                                                               
+                                                    </div>
+                                            </div>
+                                    </div>
                                 </div>
                             </div>
                             <!-- END PORTLET-->
-                    </div>
-                        <div class="col-md-6">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
                             <!-- BEGIN PORTLET-->
                             <div class="portlet light ">
                                 <div class="portlet-title">
@@ -249,8 +244,8 @@
                                 </div>
                             </div>
                             <!-- END PORTLET-->
-                        </div>
-                        <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
                                 <!-- BEGIN PORTLET-->
                                 <div class="portlet light ">
                                     <div class="portlet-title">
@@ -268,6 +263,7 @@
                                     </div>
                                 </div>
                                 <!-- END PORTLET-->
-                            </div>
+        </div>
+    </div>
 </div>
 

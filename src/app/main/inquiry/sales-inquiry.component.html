@@ -19,7 +19,7 @@
                             <button *ngIf="isGranted('Pages.Tenant.Enquiry.SalesEnquiry.Gridview.Create')" (click)="createInquiry()" class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("Create New")}}</button>
                                 <a class="btn btn-primary blue" [routerLink]="['/app/main/sales-enquiry']" ><i class="fa fa-list"></i>{{l("Kanban View")}} </a>
                             <button class="btn btn-primary blue" [routerLink]="['/app/main/forecast']" ><i class="fa fa-list"></i>{{l("Forecast Kanban")}} </button>
-                            <button (click)="exportToExcel()" class="btn btn-primary blue"><i class="fa fa-download"></i> {{l("Export")}}</button>
+                            <button (click)="exportToExcel(1)" class="btn btn-primary blue"><i class="fa fa-download"></i> {{l("Export")}}</button>
                         </div>
                     </div> 
             <div class="portlet light margin-bottom-0">
@@ -108,6 +108,9 @@
                                 </span>
                         </div>
                     </form> 
+                </div>               
+                <div class="col-xs-4 text-right">
+                    <button (click)="exportToExcel(2)" class="btn btn-primary blue"><i class="fa fa-download"></i> {{l("Export")}}</button>
                 </div>
              </div>
            

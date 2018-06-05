@@ -28,6 +28,10 @@ export class CreateSalesModalComponent extends AppComponentBase implements OnIni
     @ViewChild('modal') modal: ModalDirective;
     @ViewChild('nameInput') nameInput: ElementRef;
 
+        inqleadstatusData:Datadto[] = [];
+private InqLeadStatus:Array<any>;
+active_inqleadstatus:SelectOption[];
+
     inquiryContact:NullableIdDto = new NullableIdDto();
     updateSalesmanInput: SalesmanChange = new SalesmanChange();    
     assignedDiff: boolean = false;
@@ -261,6 +265,20 @@ export class CreateSalesModalComponent extends AppComponentBase implements OnIni
             });
             
            } });
+           this._select2Service.getLeadStatus().subscribe((result)=>{
+            this.InqLeadStatus = [];
+            if(result.select2data!=null){
+              this.inqleadstatusData = result.select2data;
+              this.inqleadstatusData.forEach((lstatus:{id:number,name:string})=>{
+                this.InqLeadStatus.push({
+                  id:lstatus.id,
+                  text: lstatus.name
+                })
+              });
+              this.inquiry.leadStatusId = this.InqLeadStatus[0].id;
+              this.active_inqleadstatus = [{"id":this.InqLeadStatus[0].id,"text":this.InqLeadStatus[0].text}];
+            }
+           });
          this._select2Service.getIndustry().subscribe((result) => {
            if (result.select2data != null) {
             this.allIndustry=result.select2data;
@@ -1160,6 +1178,11 @@ saveLeadInformation(InquiryId){
         
         control.removeAt(i);
     }
+
+selectedInqLeadStatus(data:any){
+this.inquiry.leadStatusId = data.id;
+this.active_inqleadstatus = [{"id":data.id,"text":data.text}];
+}
 
 // Address
     initAddress() {

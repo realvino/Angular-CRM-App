@@ -214,11 +214,15 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     }
 
     lostreasonpiegraph(value:any):void{
-        var scorelrp = [];      
+        var scorelrp = []; 
+        var colorlrp = [];
+
+             
         this._dashboardService.getLostReasonGraph(value.id,this.teamselect, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
         .subscribe((result) => {
             for (var i = 0; i < result.length; i++) {
                 scorelrp.push([result[i].reason, result[i].total]);
+                colorlrp.push([result[i].color]);
             }
             this.lrgoption = {
                 chart: { type: 'pie' },
@@ -237,6 +241,7 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
                             enabled: true,
                             format: '<b>({point.percentage:.1f} %)</b>'
                             }
+                            //colors: colorlrp
                         }
                     },
                 tooltip: {
@@ -255,10 +260,12 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     leadsummaryfunnelgraph(value:any):void{
         console.log(value);
         var scorelsp = [];
+        var colorlsp = [];
         this._dashboardService.getLeadSummaryGraph(value.id,this.teamselect, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
         .subscribe((result) => {
             for (var i = 0; i < result.length; i++) {
                 scorelsp.push([result[i].stageName, result[i].total]);
+                colorlsp .push([result[i].color]);
             }
             this.lsgoption = {
                 chart: { type: 'funnel' },
@@ -289,6 +296,7 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
                         neckHeight: '25%',
                         width: '70%',
                         showInLegend: true
+                        // colorlsp : colorlsp
                     }
                 },
                 series: [{

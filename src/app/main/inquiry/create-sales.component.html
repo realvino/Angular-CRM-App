@@ -260,20 +260,25 @@
                         <label>{{l("Size")}}</label>
                     </div>
                 </div>  
-                <div class="col-md-6">
-                </div> 
+                <div class="col-md-3">
+                    <label>Lead Status</label>
+                    <ng-select [active]="active_inqleadstatus" (selected)="selectedInqLeadStatus($event)" [items]="InqLeadStatus" placeholder="Lead Status">
+                    </ng-select>
+               </div> 
+              <div class="col-md-3">
+              </div> 
                 <div class="col-md-3" style="padding-top: 10px;">
-                    <label>Expected Closure</label>
+                    <label>Expected Closure <required_field></required_field></label>
                     <p-calendar id="datetime2" [(ngModel)]="closedDate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
                 </div> 
                 <div class="col-md-3" style="padding-top: 10px;">
-                    <label>Next Activity</label>
+                    <label>Next Activity <required_field></required_field></label>
                         <p-calendar id="datetime" [(ngModel)]="lastActivity" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
                 </div>
             </div>
             <div class="modal-footer">
                 <button [disabled]="saving" type="button" class="btn btn-default" (click)="close(myForm)">{{l("Cancel")}}</button>
-                <button type="button" class="btn btn-primary blue" [disabled]="isValidInquiry(myForm)" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="save(myForm)"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>            </div>
+                <button type="button" class="btn btn-primary blue" [disabled]="isValidInquiry(myForm) || !lastActivity || !closedDate" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="save(myForm)"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>            </div>
             </div>
     </div>
 </div>

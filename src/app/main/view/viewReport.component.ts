@@ -8,6 +8,7 @@ import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { CreateViewComponent } from '@app/main/view/create-or-edit-view.component';
 import { ViewCreateComponent } from '@app/main/view/createview.component';
 import { Router } from '@angular/router';
+import { FileDownloadService } from '@shared/utils/file-download.service';
 
 export interface SelectOption{
     id?: number;
@@ -122,7 +123,8 @@ export class ViewReportComponent extends AppComponentBase implements OnInit {
         private _select2Service: Select2ServiceProxy,
         private _inquiryProxyService: InquiryServiceProxy,
         private _quoatationService: QuotationServiceProxy,
-        private route: Router
+        private route: Router,
+        private _fileDownloadService: FileDownloadService
     )
     {
         super(injector);
@@ -837,6 +839,12 @@ hideColumn(col){
        }
 
     }
- 
+
+    exportToExcel(): void {
+             this._quoatationService.getQuotationInquiryFilterToExcel(this.viewId)
+                .subscribe(result => {
+                    this._fileDownloadService.downloadTempFile(result);
+                }); 
+        }
     
 }
