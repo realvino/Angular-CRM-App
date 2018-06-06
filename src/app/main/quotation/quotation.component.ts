@@ -82,12 +82,12 @@ export class QuotationComponent extends AppComponentBase implements AfterViewIni
     }
 
     editQuotation(data): void {
-        this.route.navigate(['app/main/quotation/'+data.id]);
+        this.route.navigate(['app/main/quotation/'+data.id,0]);
     }
     open(data): void {
-        this.route.navigate(['app/main/openquotation/'+data.id]);
+        this.route.navigate(['app/main/openquotation/'+data.id,0]);
     }
- 
+    
     deleteQuotation(quotation: QuotationListDto): void {
         this.message.confirm(
             this.l('Are you sure to Delete the Quotation', quotation.refNo),

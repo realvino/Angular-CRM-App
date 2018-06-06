@@ -102,6 +102,8 @@ filterText: string = '';
   updateInquiryIn: EnquiryUpdateInputDto = new EnquiryUpdateInputDto();
   QRevisionInput: QuotationRevisionInput = new QuotationRevisionInput();
 
+  enq_id: number;
+
    constructor(
         injector: Injector,
         private _http: Http,
@@ -118,6 +120,7 @@ filterText: string = '';
         super(injector); 
         this._activatedRoute.params.subscribe(params => {
             this.id = +params['id'];   
+            this.enq_id = +params['enq_id'];
       	});
         // console.log(this.id,this.enq_id);
 
@@ -599,19 +602,28 @@ filterText: string = '';
     }
    
    editQuotation(data): void {
-     this.router.navigate(['app/main/quotation/'+data.id]);
+      if(this.enq_id > 0){
+         this.router.navigate(['app/main/sales-enquiry/'+data.id,this.enq_id]);
+      }
+      else{
+        this.router.navigate(['app/main/quotation/'+data.id,this.enq_id]);
+     }
      this.id = data.id;
      this.ngOnInit();
    }
    redirectQuotation(data): void {
-    this.router.navigate(['app/main/quotation/'+data]);
-    this.id = data;
-    this.ngOnInit();
-    this._quoatationService.getRevisedQuotation(data).subscribe(result => {
-      this.quotationRevisedArrayCount = result.totalCount;
-      this.revisedQuotationArray = result.items;
-      this.primengDatatableHelper.hideLoadingIndicator();
-  });
+     if(this.enq_id > 0){
+        this.router.navigate(["app/main/sales-enquiry/",data,this.enq_id]);  
+     }else{
+        this.router.navigate(['app/main/quotation/'+data,this.enq_id]);
+     }
+      this.id = data;
+      this.ngOnInit();
+      this._quoatationService.getRevisedQuotation(data).subscribe(result => {
+         this.quotationRevisedArrayCount = result.totalCount;
+         this.revisedQuotationArray = result.items;
+         this.primengDatatableHelper.hideLoadingIndicator();
+      });
   }
     expand(){
       this.ViewLinkedDetails = this.ViewLinkedDetails?false:true;
@@ -620,9 +632,13 @@ filterText: string = '';
       this.ProductImportModal.show(this.id);
     }
     goToQuotation(){
-      
-       this.router.navigate(['app/main/quotation']);
-     
+      if(this.enq_id > 0){
+        this.router.navigate(['app/main/sales-enquiry']);
+      }
+      else{
+        this.router.navigate(['app/main/quotation']);
+      }
+       //this.router.navigate(['app/main/quotation']);
      }
 
     selectEmail(data:any){

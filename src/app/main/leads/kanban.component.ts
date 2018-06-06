@@ -276,7 +276,7 @@ removeSalesman(data:any){
 	}
 	
 	createInquiry(): void {
-        this.createSalesModal.show(0);
+		this.router.navigate(["app/main/newSalesEnquiry"]);
     }
 	editInquiry(id): void {
 		this.createSalesModal.show(id);

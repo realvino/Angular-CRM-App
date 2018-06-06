@@ -1,4 +1,4 @@
-import { Component, ViewChild, Injector, Renderer,ElementRef,Input, Output, EventEmitter, OnInit, AfterViewInit ,OnDestroy} from '@angular/core';
+import { Component, ViewChild, Injector, Renderer,ElementRef,Input, Output, EventEmitter, OnInit, AfterViewInit ,OnDestroy,NgZone } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { Select2ServiceProxy, Datadto, InquiryServiceProxy, InquiryListDto,QuotationListDto, InquiryInputDto, EnqActList, Sourcelist, CompanyServiceProxy, CompanyCreateInput, DesignationInputDto, LocationInputDto, EnquiryContactServiceProxy,EnquiryUpdateInputDto,EnquiryUpdateServiceProxy,NewCompanyContactServiceProxy,CreateAddressInfo,CreateContactInfo,CreateCompanyOrContact,IndustryInputDto,IndustryServiceProxy,LeadDetailInputDto, Select2TeamDto, CheckInquiryInput, JobActivityList, QuotationServiceProxy, Datadto3, Select2CompanyDto, NullableIdDto, SalesmanChange, EnquiryJunkUpdateInputDto, Stagedto } from "shared/service-proxies/service-proxies";
@@ -20,7 +20,7 @@ import * as moment from "moment";
 import { CreateOrEditNewEnQuotationModalComponent } from "app/main/quotation/create-or-edit-new-enquiry-quotation.component";
 import { CreateJobActivityModalComponent } from 'app/main/inquiry/create-or-edit-jobActivity.Component';
 import { StageSelectComponent } from 'app/main/kanban/stage.component';
-
+import {Location} from '@angular/common';
 
 export interface SelectOption{
    id?: number;
@@ -28,12 +28,11 @@ export interface SelectOption{
 }
 
 @Component({
-    selector: 'createInquiry',
-    templateUrl: './createOReditModal.component.html',
+    templateUrl: './editInquiry.component.html',
     styleUrls: ['./createOReditModal.component.less']
 
 })
-export class CreateInquiryComponent extends AppComponentBase implements AfterViewInit,OnInit,OnDestroy {
+export class EditInquiryComponent extends AppComponentBase implements AfterViewInit,OnInit,OnDestroy {
   status: any;
   lqref:string='NoQuote';
   lqtot:any=1;
@@ -119,9 +118,6 @@ export class CreateInquiryComponent extends AppComponentBase implements AfterVie
   address:CreateAddressInfo =new CreateAddressInfo();
   contact:CreateContactInfo = new CreateContactInfo();
   enquiryjunkinput:EnquiryJunkUpdateInputDto = new EnquiryJunkUpdateInputDto();
-  private InqLeadStatus:Array<any>;
-  active_inqleadstatus:SelectOption[];
-  inqleadstatusData:Datadto[] = [];
 
     values_company: Datadto[] = [];
     reasons: Datadto[] = [];
@@ -237,7 +233,9 @@ export class CreateInquiryComponent extends AppComponentBase implements AfterVie
         private route: ActivatedRoute,
         private router: Router,
         private _newCompanyContactServiceProxy:NewCompanyContactServiceProxy,
-        private _industryServiceProxy:IndustryServiceProxy
+        private _industryServiceProxy:IndustryServiceProxy,
+        private zone: NgZone,
+        private _location: Location
     ){
         super(injector);
 		/*this.radioitems=[{'id':1,'name':'All'},
@@ -435,18 +433,6 @@ editEnqActivity(companyId,data): void {
               }
          });
 
-         this._select2Service.getLeadStatus().subscribe((result)=>{
-          this.InqLeadStatus = [];
-          if(result.select2data!=null){
-            this.inqleadstatusData = result.select2data;
-            this.inqleadstatusData.forEach((lstatus:{id:number,name:string})=>{
-              this.InqLeadStatus.push({
-                id:lstatus.id,
-                text: lstatus.name
-              })
-            });
-          }
-         });
          this._select2Service.getAllLocation().subscribe((result) => {
           this.location = [];
            if (result.select2data != null) {
@@ -509,11 +495,6 @@ editEnqActivity(companyId,data): void {
              console.log(result.inquiryLock);
              this.lqref = result.inquiryLock.quotationRefno;
              this.lqtot = result.inquiryLock.quotationTotal;
-           }
-           if(result.inquirys.leadStatusId !=0)
-           {
-            this.update_details.leadStatusId = result.inquirys.leadStatusId;
-            this.active_inqleadstatus = [{"id":result.inquirys.leadStatusId,"text":result.inquirys.leadStatusName}];
            }
            if(result.inquiryDetails!=null){
 
@@ -1196,11 +1177,7 @@ else{
   
 }
 }
-  selectedInqLeadStatus(data:any){
-      this.update_details.leadStatusId = data.id;
-      this.active_inqleadstatus = [{"id":data.id,"text":data.text}];
-}
-
+  
    save(model): void {
            this.saving = true;
            if(this.closedDate){
@@ -1416,7 +1393,6 @@ deleteJobActivity(job: JobActivityList): void {
             this._select2Service.getEnquiryStages(4).subscribe((result)=>{
               console.log(result);
               if(result.select2data !=null){
-                this.update_details.leadStatusId = 1;  
                 this.updateInquiryIn.stageId = result.select2data[1].id;
                 this._inquiryServiceProxy.createOrUpdateInquiry(this.update_details)
                 .finally(() => this.saving = false)
@@ -1476,6 +1452,8 @@ deleteJobActivity(job: JobActivityList): void {
       }
     }
 close() {
+  var self = this;
+
         this.assignedDiff = false;
         this.inquiryDuplicate = false;
         this.active = false;
@@ -1484,8 +1462,14 @@ close() {
         the_arr.pop();
         var located = the_arr.join('/');
         console.log(located);
-        this.router.navigate([located]);
-        // this.router.navigate(["/app/main/sales-enquiry/626"]); 
+       // this._location.go("app/main/sales-enquiry");
+        this.router.navigate([located],{ relativeTo: this.route });
+        // this.router.navigate([located], { relativeTo: this.route });
+
+        // self.zone.run(() => {
+				// 	self.router.navigate([located]);
+				// });
+
         return false;   
     }
 initContact(){
@@ -1743,17 +1727,6 @@ initContact(){
     this.router.navigate(["/app/main/sales-enquiry",data.id,data.inquiryId]);    
     // this.editEnqQuotationModal.show(data.id,data.inquiryId); 
   }
-
-   validatedate(data)
-   {
-    var d = new Date();
-    var visitDate = new Date (d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
-    if(d >= visitDate)
-    return true;
-    else 
-    return false;
-   }
-
 	deleteQuotation(quotation: QuotationListDto): void {
         this.message.confirm(
             this.l('Are you sure to Delete the Quotation', quotation.refNo),
@@ -1794,7 +1767,7 @@ initContact(){
       }
       else{
         if(this.which_located =='sales-enquiry' || this.which_located =='sales-grid'){
-          if(!data.valid || !this.inquiry.name || !this.inquiry.remarks || !this.update_details.statusId || !this.inquiry.cEmail || !this.inquiry.cLandlineNumber || !this.inquiry.mbNo || !this.inquiry.email || !this.contact_edit.titleId || !this.saveLeadDetailInput.estimationValue || !this.inquiry.teamId || !this.inquiry.departmentId || !this.inquiry.assignedbyId || this.validatedate(this.lastActivity) || this.validatedate(this.closedDate))
+          if(!data.valid || !this.inquiry.name || !this.inquiry.remarks || !this.update_details.statusId || !this.inquiry.cEmail || !this.inquiry.cLandlineNumber || !this.inquiry.mbNo || !this.inquiry.email || !this.contact_edit.titleId || !this.saveLeadDetailInput.estimationValue || !this.inquiry.teamId || !this.inquiry.departmentId || !this.inquiry.assignedbyId)
           {      
              return true;
           }else{

@@ -197,6 +197,9 @@ import { ViewCreateComponent } from '@app/main/view/createview.component';
 import { Ng2Carousel3dModule }  from 'ng2-carousel-3d';
 import { ChartModule } from 'angular2-highcharts';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
+import { EditInquiryComponent } from '@app/main/inquiry/editInquiry.component';
+import { CreateSalesInquiryComponent } from '@app/main/inquiry/createSalesInquiry.component';
+import { ArchivedInquiryComponent } from '@app/main/inquiry/archivedInquiry.component';
 
 export function highchartsFactory() {
     const hc = require('highcharts');
@@ -373,7 +376,11 @@ export function highchartsFactory() {
         StoneFilterComponent,
         TeamFilterComponent,
         whybafcoFilterComponent,
-        ViewCreateComponent
+        ViewCreateComponent,
+        EditInquiryComponent,      
+        CreateSalesInquiryComponent,
+        ArchivedInquiryComponent
+
     ],
     providers: [{
         provide: HighchartsStatic,

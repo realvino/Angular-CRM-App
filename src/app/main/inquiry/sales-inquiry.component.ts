@@ -143,7 +143,7 @@ export class SalesInquiryComponent extends AppComponentBase implements AfterView
     }
     
 openClosedInquiry(data): void{
-    this.archievedInquiryModal.show(data.id);
+    this.router.navigate(["app/main/archivedEnquiry/",data.id]);  
   }
 
     deleteQuotation(data): void {

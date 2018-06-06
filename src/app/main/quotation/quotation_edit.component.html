@@ -1,18 +1,18 @@
 <div [busyIf]="loading" class="container" style="width:100%;margin-bottom: 25px;">
-        <div class="modal-header">
-                <a class="close" tooltip="Close" (click)="goToQuotation()">
-                        <i class="fa fa-times" style="color:red;"></i>
-                </a>
-                <a (click)="goToEnquiry()" tooltip="Go To Enquiry" style="float: right;margin-right: 15px;margin-top: -7px;color:black;">
-                   <i class="fa fa-external-link" ></i>
-                </a>
-                <h4 class="modal-title">
-                    <span *ngIf="id"> <span *ngIf="quotationList.optional" style="color: red;font-weight: 600;">STSTEM GENERATED :</span> &nbsp;{{quotation.refNo}} - {{quotationList.inquiryName}}</span>
-                </h4>
-            </div>
+    <div class="modal-header">
+        <a class="close" tooltip="Close" (click)="goToQuotation()">
+             <i class="fa fa-times" style="color:red;"></i>
+        </a> 
+        <a (click)="goToEnquiry()" tooltip="Go To Enquiry" style="float: right;margin-right: 15px;margin-top: -7px;color:black;">
+             <i class="fa fa-external-link" ></i>
+        </a>
+        <h4 class="modal-title">
+            <span *ngIf="id"> <span *ngIf="quotationList.optional" style="color: red;font-weight: 600;">STSTEM GENERATED :</span> &nbsp;{{quotation.refNo}} - {{quotationList.inquiryName}}</span>
+        </h4>
+    </div>
     <tabset  class="tab-container tabbable-line"  >
-            <tab heading="Quotation Details">
-                    <div class="col-xs-12" style="margin-top: -32px;background: #75821336;">
+        <tab heading="Quotation Details">
+            <div class="col-xs-12" style="margin-top: -32px;" [ngClass]="{'no-edit':(non_editable || this.quotationList.won || this.quotationList.lost)}">
                 <h3 class="head_qt">
                         <div class="actions" style="display: inline;">
                             <div class="btn-group mydropdown">

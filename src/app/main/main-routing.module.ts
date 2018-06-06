@@ -67,6 +67,9 @@ import { ContactDesignationComponent } from '@app/main/contactDesignation/contac
 import { ViewComponent } from '@app/main/view/view.component';
 import { ViewReportComponent } from '@app/main/view/viewReport.component';
 import { ForecastReportComponent } from "app/main/view/forecastReport.component";
+import { EditInquiryComponent } from '@app/main/inquiry/editInquiry.component';
+import { CreateSalesInquiryComponent } from '@app/main/inquiry/createSalesInquiry.component';
+import { ArchivedInquiryComponent } from '@app/main/inquiry/archivedInquiry.component';
 @NgModule({
     imports: [
         RouterModule.forChild([
@@ -88,15 +91,15 @@ import { ForecastReportComponent } from "app/main/view/forecastReport.component"
                      { path: 'activity', component: ActivityComponent },
                      { path: 'leadCategory', component: LeadTypeComponent },
                      { path : 'openEnquiry_quotation/:id/:enq_id', component : EnquiryQuotationsComponent },
-                     { path: 'kanban', component: KanbanComponent,
-					children: [
-					  { path: ':id', component: CreateInquiryComponent }
-					]},
+                    //  { path: 'kanban', component: KanbanComponent,
+					// children: [
+					//   { path: ':id', component: CreateInquiryComponent }
+					// ]},
                     { path: 'lostReason', component: LeadReasonComponent },
-					{ path: 'enquiry', component: InquiryComponent,
-                    children: [
-                      { path: ':id', component: CreateInquiryComponent }
-                    ] },
+					// { path: 'enquiry', component: InquiryComponent,
+                    // children: [
+                    //   { path: ':id', component: CreateInquiryComponent }
+                    // ] },
                      { path: 'division', component: DepartmentComponent},
 					 { path: 'activity-enq', component: CreateActivityEnqComponent },
                     { path: 'newCustomerType', component: NewCustomerTypeComponent},
@@ -106,15 +109,15 @@ import { ForecastReportComponent } from "app/main/view/forecastReport.component"
                     { path: 'contact', component: ContactNewModelComponent, data: { permission: 'Pages.Tenant.AddressBook.Contact' }},
                     { path: 'contact/:id/:enqId', component:newContactComponent },
                     { path: 'company/contact/:id/:enqId', component:newContactComponent },
-					{ path: 'junk-enquiry', component: JunkInquiryComponent,children: [{ path: ':id', component: CreateInquiryComponent }]}, 
-                    { path: 'sales-enquiry', component: LeadsKanbanComponent,
-                    children: [
-                        { path: ':id', component: CreateInquiryComponent },
-                        { path: ':id/:enq_id', component: EnquiryQuotationsComponent }
-                      ]},
+					// { path: 'junk-enquiry', component: JunkInquiryComponent,children: [{ path: ':id', component: CreateInquiryComponent }]}, 
+                    // { path: 'sales-enquiry', component: LeadsKanbanComponent,
+                    // children: [
+                    //     { path: ':id', component: CreateInquiryComponent },
+                    //     { path: ':id/:enq_id', component: EnquiryQuotationsComponent }
+                    //   ]},
                     // { path: 'sales-enquiry', component: LeadsKanbanComponent,children: [{ path: ':id/:enq_id', component: EnquiryQuotationsComponent }]},
-                    { path: 'leads', component: LeadInquiryComponent,children: [{ path: ':id', component: CreateInquiryComponent }]},
-                    { path: 'sales-grid', component: SalesInquiryComponent,children: [{ path: ':id', component: CreateInquiryComponent }]},
+                    // { path: 'leads', component: LeadInquiryComponent,children: [{ path: ':id', component: CreateInquiryComponent }]},
+                    // { path: 'sales-grid', component: SalesInquiryComponent,children: [{ path: ':id', component: CreateInquiryComponent }]},
                     { path: 'pricelist', component: PriceLevelComponent},
                     { path: 'kanbanStage', component: EnquiryStatusComponent },
                     { path: 'leadStatus', component: LeadStatusComponent },
@@ -136,17 +139,33 @@ import { ForecastReportComponent } from "app/main/view/forecastReport.component"
                     { path: 'opportunitySource', component: OpportunitySourceComponent },
                     { path: 'whyBafco', component: WhyBafcoComponent },
                     { path: 'emailDomain', component: EmailDomainComponent },
-                    { path : 'openquotation/:id', component : QuotationEditComponent },
+                    // { path : 'openquotation/:id', component : QuotationEditComponent },
                     // { path : 'sales-enquiry/:id/:enq_id', component : EnquiryQuotationsComponent },
                     { path: 'jobActivity', component: JobActivityComponent},
                     { path: 'contactDesignation', component: ContactDesignationComponent },
                     { path: 'view', component: ViewComponent },
                     { path: 'viewReport', component: ViewReportComponent},
                     { path: 'forecastReport', component: ForecastReportComponent},
-                    { path: 'forecast', component: ForecastComponent, children: [{ path: ':id', component: CreateInquiryComponent }]
-                    }
-
-                ]
+                    // { path: 'forecast', component: ForecastComponent, children: [{ path: ':id', component: CreateInquiryComponent }]},
+                    { path: 'kanban', component: KanbanComponent },
+                    { path: 'kanban/:id', component: EditInquiryComponent },
+                    { path: 'enquiry', component: InquiryComponent }, 
+                    { path: 'enquiry/:id', component: EditInquiryComponent },
+                    { path: 'junk-enquiry', component: JunkInquiryComponent}, 
+                    { path: 'junk-enquiry/:id', component: EditInquiryComponent }, 
+                    { path: 'sales-enquiry', component: LeadsKanbanComponent}, 
+                    { path: 'sales-enquiry/:id', component: EditInquiryComponent}, 
+                    { path: 'sales-enquiry/:id/:enq_id', component: QuotationEditComponent},
+                    { path: 'leads', component: LeadInquiryComponent}, 
+                    { path: 'leads/:id', component: EditInquiryComponent },
+                    { path: 'sales-grid', component: SalesInquiryComponent}, 
+                    { path: 'sales-grid/:id', component: EditInquiryComponent },
+                    { path : 'quotation/:id/:enq_id', component : QuotationEditComponent },
+                    { path : 'openquotation/:id/:enq_id', component : QuotationEditComponent },
+                    { path: 'forecast', component: ForecastComponent }, 
+                    { path: 'newSalesEnquiry', component: CreateSalesInquiryComponent},
+                    { path: 'archivedEnquiry/:id', component: ArchivedInquiryComponent},
+                    { path: 'forecast/:id', component: EditInquiryComponent }]
             }
         ])
     ],
