@@ -20,7 +20,7 @@
 				<div class="row">
 				    <div class="col-xs-4">
                         <label>Title <required_field></required_field></label>
-                        <ng-select [active]="active_title" [allowClear]="true" [items]="title" [disabled]="disabled" (data)="refreshTitle($event,myForm)" (removed)="removedTitle($event,myForm)" placeholder="No Title selected">
+                        <ng-select [active]="active_title" [allowClear]="true" [items]="title" [disabled]="false" (data)="refreshTitle($event,myForm)" (removed)="removedTitle($event,myForm)" placeholder="No Title selected">
                         </ng-select>
                         <input type="hidden" formControlName="newcompanyid" value="">
                     </div> 
@@ -59,7 +59,7 @@
                     </div>
                     <div class="col-xs-4">
                         <label>Designation </label>
-                        <ng-select [active]="active_desg" [allowClear]="true" [items]="desg" [disabled]="disabled_desg" (data)="refreshDesg($event)" (removed)="removedDesg($event)" placeholder="Select Designation">
+                        <ng-select [active]="active_desg" [allowClear]="true" [items]="desg" [disabled]="false" (data)="refreshDesg($event)" (removed)="removedDesg($event)" placeholder="Select Designation">
                         </ng-select>
                     </div>
                 </div>
@@ -89,10 +89,10 @@
 								<div class="col-xs-5"><label>Type</label></div>
 								<div class="col-xs-7" style="margin-top:5px;"></div>
 							</div>
-                        <div *ngFor="let contact of myForm.controls.contacts.controls; let j=index">
+                        <div *ngFor="let contact of myForm.controls.contacts['controls']; let j=index">
                             <div class="panel-body" [formGroupName]="j" style="padding-bottom:0px;">
                                 <contact [group]="myForm.controls.contacts.controls[j]"></contact>
-                                <span style="margin-top: -33px;" class="fa fa-trash-o pull-right" *ngIf="myForm.controls.contacts.controls.length > 1" (click)="removeContacts(j,contact)">
+                                <span style="margin-top: -33px;" class="fa fa-trash-o pull-right" *ngIf="myForm.controls.contacts['controls'].length > 1" (click)="removeContacts(j,contact)">
                                 </span>
                             </div>
                         </div>
@@ -125,12 +125,12 @@
 								<div class="col-xs-2 noPaddingL noPaddingR" ><label>City</label></div>
                                 <div class="col-xs-3 noPaddingL noPaddingR"><label>Country</label></div>
 							</div>
-                        <div *ngFor="let address_con of myForm.controls.addresses.controls; let i=index">
+                        <div *ngFor="let address_con of myForm.controls.addresses['controls']; let i=index">
                             <div class="panel-body" [formGroupName]="i" style="padding-bottom:0px;">
                                 <div>
                                     <address_con [group]="myForm.controls.addresses.controls[i]"></address_con>
                                 </div>
-                                <span style="margin-top: -33px;" class="fa fa-trash-o pull-right" *ngIf="myForm.controls.addresses.controls.length > 1" (click)="removeAddress(i,address_con)">
+                                <span style="margin-top: -33px;" class="fa fa-trash-o pull-right" *ngIf="myForm.controls.addresses['controls'].length > 1" (click)="removeAddress(i,address_con)">
                                 </span>
                             </div>
                         </div>

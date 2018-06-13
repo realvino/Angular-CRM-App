@@ -10,8 +10,6 @@ import { FileDownloadService } from "shared/utils/file-download.service";
 import { DataTable } from 'primeng/components/datatable/datatable';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
-import { ArchievedInquiryComponent } from '@app/main/inquiry/archievedInquiry.component';
-import { CreateSalesModalComponent } from '@app/main/inquiry/create-sales.component';
 @Component({
     templateUrl: './sales-inquiry.component.html',
     animations: [appModuleAnimation()]
@@ -20,7 +18,6 @@ import { CreateSalesModalComponent } from '@app/main/inquiry/create-sales.compon
 export class SalesInquiryComponent extends AppComponentBase implements AfterViewInit {
 
    @ViewChild('createInquiryModal') createInquiryModal: CreateInquiryModalComponent;
-   @ViewChild('createSalesModal') createSalesModal: CreateSalesModalComponent;
    @ViewChild('ArchidataTable') ArchidataTable: DataTable;
 
     advancedFiltersAreShown: boolean = false;
@@ -33,7 +30,6 @@ export class SalesInquiryComponent extends AppComponentBase implements AfterView
     quotationArray: Array<any>;
     quotationArrayCount:number=0;
     @ViewChild('salesQuotdataTable') salesQuotdataTable: DataTable;
-    @ViewChild('archievedInquiryModal') archievedInquiryModal: ArchievedInquiryComponent;
     closedinquiryArray:Array<any>;
     closedinquiryArrayCount:number=0;
     reverse:NullableIdDto = new NullableIdDto();
@@ -94,7 +90,6 @@ export class SalesInquiryComponent extends AppComponentBase implements AfterView
         this._chatSignalrService.setPageTitle('New');
         this._chatSignalrService.setPageTag('Details');
         this._chatSignalrService.sendInfo('pageInfo');
-        this.createSalesModal.show(0);
     }
 
     revertClosedInquiry(data): void{
@@ -104,7 +99,7 @@ export class SalesInquiryComponent extends AppComponentBase implements AfterView
                 if (isConfirmed) {
                     this.reverse.id = data.id;
                     this._enquiryUpdateService.reverseClosed(this.reverse).subscribe(result=>{
-                       this.notify.success(this.l('This enquiry Has Reveted Successfully !'));
+                       this.notify.success(this.l('This enquiry Has Reverted Successfully !'));
                        this.getclosedInquiry();
                     });
                 }

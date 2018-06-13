@@ -45,7 +45,7 @@
                     <button  [ngClass]="{'no-edit':quotationList.submitted}" type="button" *ngIf="isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.AddQuotationProduct')" (click)="createQuotationProduct()" tooltip="{{l('Add Quotation Product')}}" class="btn btn-circle btn-icon-only white delete-person" >
                         <i class="fa fa-plus"></i>
                     </button>
-                    <button *ngIf="showCreate" type="button" tooltip="{{l('Create')}}" class="btn btn-circle btn-icon-only green edit-person" style="float: right;margin-right: 30px;margin-top: -30px;" (click)="createQuotation()">
+                    <button type="button" tooltip="{{l('Create')}}" class="btn btn-circle btn-icon-only green edit-person" style="float: right;margin-right: 30px;margin-top: -30px;" (click)="createQuotation()">
                             <i class="fa fa-plus"></i> 
                     </button>  
                     <button  [ngClass]="{'no-edit':quotationList.submitted}" type="button" *ngIf="isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.AddQuotationProduct')" (click)="setDiscount()" tooltip="{{l('Set Discount')}}" class="btn btn-circle btn-icon-only white delete-person" >

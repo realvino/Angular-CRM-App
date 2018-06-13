@@ -21,7 +21,7 @@ animations: [appModuleAnimation()]
 export class KanbanComponent extends AppComponentBase implements AfterViewInit,OnDestroy {
 
 	loading: boolean;
-	@ViewChild('createInquiryModal') createInquiryModal: CreateInquiryModalComponent;
+	// @ViewChild('createInquiryModal') createInquiryModal: CreateInquiryModalComponent;
 	@ViewChild('selectDepartmentModal') selectDepartmentModal :DepartmentSelectComponent;
 	@ViewChild('selectStageModal') selectStageModal :StageSelectComponent;
 	inquiryContact:NullableIdDto = new NullableIdDto;
@@ -177,27 +177,26 @@ else
 
 	if(this.updateInquiryIn.updateStatusName!='junk'){
 
-		if(this.updateInquiryIn.updateStatusName == 'Assigned'){
+	if(this.updateInquiryIn.updateStatusName == 'Assigned'){
 			this.getTickets('');
 		}else 
-		if(companyId){
-			
-	this.updateInquiry();			
-	var inquiry_Id = ei.getAttribute("data-itemId");
-	this._enquiryContactServiceProxy.getEnquiryWiseEnquiryContact(inquiry_Id).subscribe(contacts => {
-		this.linkedContacts = contacts.items;
-		this.contactInput.contactId = parseInt(ei.getAttribute("data-contactId"));
-		this.contactInput.inquiryId = this.updateInquiryIn.id;
-		console.log(this.contactInput);
-		this.updateLinkedContact();
-	});
-			
-				if(!designationId && designationName){
-					this.desigInput.designationCode = "AUT";
-					this.desigInput.desiginationName = designationName;
-					this.newDesignationCreate();
-					this.newCompanyId = companyId;
-				}
+	if(companyId > 0){	
+	        this.updateInquiry();			
+			var inquiry_Id = ei.getAttribute("data-itemId");
+			this._enquiryContactServiceProxy.getEnquiryWiseEnquiryContact(inquiry_Id).subscribe(contacts => {
+				this.linkedContacts = contacts.items;
+				this.contactInput.contactId = parseInt(ei.getAttribute("data-contactId"));
+				this.contactInput.inquiryId = this.updateInquiryIn.id;
+				console.log(this.contactInput);
+				this.updateLinkedContact();
+			});
+					
+						if(!designationId && designationName){
+							this.desigInput.designationCode = "AUT";
+							this.desigInput.desiginationName = designationName;
+							this.newDesignationCreate();
+							this.newCompanyId = companyId;
+						}
 		}
 		else
 		{
@@ -276,10 +275,11 @@ else
 		});
 	}
 	createInquiry(): void {
-        this.createInquiryModal.show(0);
+		this.router.navigate(["app/main/enquiry-create"]);
+
     }
 	editInquiry(id): void {
-		this.createInquiryModal.show(id);
+		//this.createInquiryModal.show(id);
 	}
 	getTickets(filter:string): void {
 		setTimeout(() => {

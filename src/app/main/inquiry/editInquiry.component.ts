@@ -36,6 +36,7 @@ export class EditInquiryComponent extends AppComponentBase implements AfterViewI
   status: any;
   lqref:string='NoQuote';
   lqtot:any=1;
+  loading : boolean = false;
   lead_source_enable: boolean = false;
   designerr: boolean = false;
   inquiryDuplicate: boolean = false;
@@ -62,6 +63,10 @@ export class EditInquiryComponent extends AppComponentBase implements AfterViewI
 	  @ViewChild('dataTable') dataTable: DataTable;
     @ViewChild('paginator') paginator: Paginator;
     @ViewChild('selectStageModal') selectStageModal :StageSelectComponent;
+
+    private InqLeadStatus:Array<any>;
+    active_inqleadstatus:SelectOption[];
+    inqleadstatusData:Datadto[] = [];
 
     company: CompanyCreateInput = new CompanyCreateInput();
     active_tagdept:SelectOption[]; departments:any=[]; depts: Datadto[] = [];
@@ -210,6 +215,8 @@ export class EditInquiryComponent extends AppComponentBase implements AfterViewI
    non_editable:boolean=false;
    closedDate:string;
    lastActivity:string;
+   dclosedDate:any;
+   dlastActivity:any;
 
    filterText: string = '';
    inquiryId:number;
@@ -314,6 +321,7 @@ editEnqActivity(companyId,data): void {
     
    show(inquiryId?: number) {
     this.inquiryId = inquiryId;
+    this.loading = true;
        this._enquiryContactService.getEnquiryWiseEnquiryContact(inquiryId).subscribe(contacts => {
 		   this.linkedContacts = contacts.items;
        if(contacts.items!=null){
@@ -345,6 +353,19 @@ editEnqActivity(companyId,data): void {
               
           }
 
+       });
+
+       this._select2Service.getLeadStatus().subscribe((result)=>{
+        this.InqLeadStatus = [];
+        if(result.select2data!=null){
+          this.inqleadstatusData = result.select2data;
+          this.inqleadstatusData.forEach((lstatus:{id:number,name:string})=>{
+            this.InqLeadStatus.push({
+              id:lstatus.id,
+              text: lstatus.name
+            })
+          });
+        }
        });
        
          this._select2Service.getDesignation().subscribe((result) => {
@@ -496,6 +517,11 @@ editEnqActivity(companyId,data): void {
              this.lqref = result.inquiryLock.quotationRefno;
              this.lqtot = result.inquiryLock.quotationTotal;
            }
+           if(result.inquirys.leadStatusId !=0)
+           {
+            this.update_details.leadStatusId = result.inquirys.leadStatusId;
+            this.active_inqleadstatus = [{"id":result.inquirys.leadStatusId,"text":result.inquirys.leadStatusName}];
+           }
            if(result.inquiryDetails!=null){
 
                 this.co_ordimg = result.inquiryDetails.coordinatorImage;
@@ -556,10 +582,12 @@ editEnqActivity(companyId,data): void {
             }
             if(result.inquirys.closureDate){
               this.closedDate = moment(result.inquirys.closureDate).format('MM/DD/YYYY');
+              this.dclosedDate = result.inquirys.closureDate;
             }
             
             if(result.inquirys.lastActivity){
               this.lastActivity = moment(result.inquirys.lastActivity).format('MM/DD/YYYY');
+              this.dlastActivity = result.inquirys.lastActivity;
             }
 
            if(result.inquirys.mileStoneId == 1){
@@ -847,7 +875,7 @@ editEnqActivity(companyId,data): void {
               }
             });
            } });
-this._select2Service.getCompanyDetails(this.inquiry.companyId ? this.inquiry.companyId:0,this.inquiry.companyName).subscribe((result) => {
+     this._select2Service.getCompanyDetails(this.inquiry.companyId ? this.inquiry.companyId:0,this.inquiry.companyName).subscribe((result) => {
   if (result.select2Company != null) {
       this.companyDetailsDto = result.select2Company;
       if(this.companyDetailsDto.email)
@@ -866,6 +894,7 @@ this._select2Service.getCompanyDetails(this.inquiry.companyId ? this.inquiry.com
 
 		   }
         this.active = true;
+        this.loading = false;
         });
       
        console.log(this.CompanyText);
@@ -1009,7 +1038,7 @@ getEnquiryActivity():void{
     }
    selectedOpportunitySource(data:any){
     this.inquiry.opportunitySourceId = data.id;
-      this.active_opportunity = [{"id":data.id,"text":data.text}];
+      // this.active_opportunity = [{"id":data.id,"text":data.text}];
     }
     removedOpportunitySource(data:any){
       this.inquiry.whyBafcoId = null;
@@ -1017,7 +1046,7 @@ getEnquiryActivity():void{
     }
     selectedWhyBafco(data:any){
       this.inquiry.whyBafcoId = data.id;
-      this.active_whybafco = [{"id":data.id,"text":data.text}];
+      // this.active_whybafco = [{"id":data.id,"text":data.text}];
     }
     removedWhyBafco(data:any){
       this.inquiry.whyBafcoId = null;
@@ -1104,12 +1133,11 @@ getEnquiryActivity():void{
    }
 
 public typeddesc(event):void {
-    // this.descText = event.target.value;
-    // this.active_desg = [{id : 0, text : event.target.value}];
-    // console.log('New search input: ', event.target.value);
-    // this.desid.desiginationName = event.target.value;
-    //     this.inquiry.designationId = null;
-    // this.inquiry.designationName = event.target.value;
+    this.descText = event;
+    this.active_desg = [{id : 0, text : event}];
+    this.desid.desiginationName = event;
+    this.inquiry.designationId = null;
+    this.inquiry.designationName = event;
   }
 
   saveDesignation(): void {
@@ -1178,7 +1206,7 @@ else{
 }
 }
   
-   save(model): void {
+ save(model): void {
            this.saving = true;
            if(this.closedDate){
             let stdate= moment(moment(this.closedDate).toDate().toString());
@@ -1314,7 +1342,10 @@ else{
       }
     });
     }
- onShown(): void {
+ 
+ 
+ 
+    onShown(): void {
         $(this.nameInput.nativeElement).focus();
     }
 
@@ -1403,7 +1434,7 @@ deleteJobActivity(job: JobActivityList): void {
                  this.updateInquiryIn.updateStatusName = 'Assigned';
                  this.updateInquiryIn.currentStatusName = 'Lead';          
                  this.enquiryStatusUpdate();
-                 this.close();
+                 //this.close();
                });
               }
               else{
@@ -1425,7 +1456,8 @@ deleteJobActivity(job: JobActivityList): void {
               .subscribe(() => {
                 this.updateSalesman();
                this.notify.success(this.l('SavedSuccessfully'));
-               this.close();
+               //this.close();
+               this.show(this.update_details.id);
              });
           }
           }
@@ -1585,44 +1617,47 @@ initContact(){
       this.active_lead_category = [];
     }
     typedLeadCategory(data:any){
-      this.inquiry.leadTypeId = null;
-      this.active_lead_category = [{"id":0,"text":data.target.value}];
+      // this.inquiry.leadTypeId = null;
+      // this.active_lead_category = [{"id":0,"text":data}];
     }
     selectedLeadSaveCategory(data:any){
       this.saveLeadDetailInput.leadTypeId = data.id;
-      this.active_lead_save_category = [{"id":data.id,"text":data.text}];
+      // this.active_lead_save_category = [{"id":data.id,"text":data.text}];
     }
     removedLeadSaveCategory(data:any){
       this.saveLeadDetailInput.leadTypeId = null;
       this.active_lead_save_category = [];
     }
     typedLeadSaveCategory(data:any){
-      this.saveLeadDetailInput.leadTypeId = null;
-      this.active_lead_save_category = [{"id":0,"text":data.target.value}];
+      // this.saveLeadDetailInput.leadTypeId = null;
+      // this.active_lead_save_category = [{"id":0,"text":data}];
     }
     selectedCompetitor(data:any){
+      console.log(data);
       this.inquiry.compatitorsId = data.id;
-      this.active_competators = [{id:data.id,text:data.text}];
+      // this.active_competators = [{id:data.id,text:data.text}];
     }
     removedCompetitor(data:any){
+      console.log(data);
       this.inquiry.compatitorsId = null;
       this.active_competators = [];
     }
     typedCompetitor(event:any){
-      this.inquiry.compatitorsId = null;
-      this.active_competators = [{id:0,text:event.target.value}];
+      console.log(event);
+      // this.inquiry.compatitorsId = null;
+      // this.active_competators = [{id:0,text:event}];
     }
     selectedLeadSource(data:any){
       this.inquiry.opportunitySourceId =data.id;
-      this.active_lead_source = [{"id":data.id,"text":data.text}];
+      // this.active_lead_source = [{"id":data.id,"text":data.text}];
     }
     removedLeadSource(data:any){
       this.saveLeadDetailInput.leadSourceId = null;
       this.active_lead_source = [];
     }
     typedLeadSource(data:any){
-      this.saveLeadDetailInput.leadSourceId = null;
-      this.active_lead_source = [{"id":0,"text":data.target.value}];
+      // this.saveLeadDetailInput.leadSourceId = null;
+      // this.active_lead_source = [{"id":0,"text":data}];
     }
     /*selectedLeadStatus(data:any){
 
@@ -1635,7 +1670,7 @@ initContact(){
     }*/
     selectedSales(data:any){
       this.saveLeadDetailInput.salesManagerId = data.id;
-      this.active_sales = [{"id":data.id,"text":data.text}];
+      // this.active_sales = [{"id":data.id,"text":data.text}];
     }
     removedSales(data:any){
 
@@ -1644,34 +1679,37 @@ initContact(){
 
     }
     typedSales(event:any){
-      this.saveLeadDetailInput.salesManagerId = null;
-      this.active_sales = [{"id":0,"text":event.target.value}];
+      // this.saveLeadDetailInput.salesManagerId = null;
+      // this.active_sales = [{"id":0,"text":event}];
     }
     selectedCoord(data:any){
       this.saveLeadDetailInput.coordinatorId = data.id;
-      this.active_coord = [{"id":data.id,"text":data.text}];
+      // this.active_coord = [{"id":data.id,"text":data.text}];
     }
     removedCoord(data:any){
       this.saveLeadDetailInput.coordinatorId = null;
       this.active_coord = [];
     }
     typedCoord(data:any){
-      this.saveLeadDetailInput.coordinatorId = null;
-      this.active_coord = [{"id":0,"text":data.target.value}];
+      // this.saveLeadDetailInput.coordinatorId = null;
+      // this.active_coord = [{"id":0,"text":data}];
     }
     selectedDesigner(data:any){
       this.saveLeadDetailInput.designerId = data.id;
-      this.active_designer = [{"id":data.id,"text":data.text}];
+      // this.active_designer = [{"id":data.id,"text":data.text}];
     }
     removedDesigner(data:any){
       this.saveLeadDetailInput.designerId = null;
       this.active_designer = [];
     }
     typedDesigner(event:any){
-      this.saveLeadDetailInput.designerId = null;
-      this.active_designer = [{"id":0,"text":event.target.value}];
+      // this.saveLeadDetailInput.designerId = null;
+      // this.active_designer = [{"id":0,"text":event}];
     }
-
+    selectedInqLeadStatus(data:any){
+      this.update_details.leadStatusId = data.id;
+      this.active_inqleadstatus = [{"id":data.id,"text":data.text}];
+    }     
     saveLeadDetails(){
       if(!this.saveLeadDetailInput.leadTypeId && this.inquiry.leadTypeId)
       this.saveLeadDetailInput.leadTypeId = this.inquiry.leadTypeId;
@@ -1740,9 +1778,34 @@ initContact(){
             }
         );
     }
+
+    validatedate(data)
+    {
+    //  var d = new Date();
+    //  var visitDate = new Date (d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+    //  var newdate= moment(moment(data).toDate().toString());
+    //  var newdate2 = moment(newdate).add(4, 'hours');
+    //  if(newdate2 >= d)
+    //  {
+    //   console.log('----------start--------');
+    //   console.log(d);
+    //   console.log(data);
+    //    console.log('false');
+    //   return false;
+    //  }
+    //  else
+    //  {
+    //   console.log('----------start--------');
+    //   console.log(d);
+    //   console.log(data);
+    //   console.log('true');
+    //   return true;
+    //  }
+    }
+
     isValidEnquiry(data){ 
       if(this.inquiry.mileStoneId == 1){
-        if(!data.valid || !this.inquiry.name || !this.inquiry.remarks || !this.update_details.statusId || !this.inquiry.cEmail || !this.inquiry.cLandlineNumber || !this.inquiry.mbNo || !this.inquiry.email || !this.contact_edit.titleId ||!this.closedDate||!this.lastActivity)
+        if(!data.valid || !this.inquiry.name || !this.inquiry.remarks || !this.update_details.statusId || !this.inquiry.cEmail || !this.inquiry.cLandlineNumber || !this.inquiry.mbNo || !this.inquiry.email || !this.contact_edit.titleId)
         {      
             return true;
         }else{
@@ -1767,7 +1830,7 @@ initContact(){
       }
       else{
         if(this.which_located =='sales-enquiry' || this.which_located =='sales-grid'){
-          if(!data.valid || !this.inquiry.name || !this.inquiry.remarks || !this.update_details.statusId || !this.inquiry.cEmail || !this.inquiry.cLandlineNumber || !this.inquiry.mbNo || !this.inquiry.email || !this.contact_edit.titleId || !this.saveLeadDetailInput.estimationValue || !this.inquiry.teamId || !this.inquiry.departmentId || !this.inquiry.assignedbyId)
+          if(!data.valid || !this.inquiry.name || !this.inquiry.remarks || !this.update_details.statusId || !this.inquiry.cEmail || !this.inquiry.cLandlineNumber || !this.inquiry.mbNo || !this.inquiry.email || !this.contact_edit.titleId || !this.saveLeadDetailInput.estimationValue || !this.inquiry.teamId || !this.inquiry.departmentId || !this.inquiry.assignedbyId || !this.closedDate || !this.lastActivity)
           {      
              return true;
           }else{

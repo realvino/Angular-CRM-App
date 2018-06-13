@@ -11187,6 +11187,112 @@ export class InquiryServiceProxy {
         }
         return Observable.of<PagedResultDtoOfInquiryListDto>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    getCompanyWiseInquiry(filter: string): Observable<ListResultDtoOfCompanyEnquiryList> {
+        let url_ = this.baseUrl + "/api/services/app/Inquiry/GetCompanyWiseInquiry?";
+        if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetCompanyWiseInquiry(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetCompanyWiseInquiry(response_);
+                } catch (e) {
+                    return <Observable<ListResultDtoOfCompanyEnquiryList>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ListResultDtoOfCompanyEnquiryList>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetCompanyWiseInquiry(response: Response): Observable<ListResultDtoOfCompanyEnquiryList> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: ListResultDtoOfCompanyEnquiryList = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ListResultDtoOfCompanyEnquiryList.fromJS(resultData200) : new ListResultDtoOfCompanyEnquiryList();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<ListResultDtoOfCompanyEnquiryList>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getCompanyWiseInquiryGrid(filter: string, sorting: string, maxResultCount: number, skipCount: number): Observable<PagedResultDtoOfCompanyEnquiryList> {
+        let url_ = this.baseUrl + "/api/services/app/Inquiry/GetCompanyWiseInquiryGrid?";
+        if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetCompanyWiseInquiryGrid(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetCompanyWiseInquiryGrid(response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfCompanyEnquiryList>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfCompanyEnquiryList>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetCompanyWiseInquiryGrid(response: Response): Observable<PagedResultDtoOfCompanyEnquiryList> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: PagedResultDtoOfCompanyEnquiryList = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfCompanyEnquiryList.fromJS(resultData200) : new PagedResultDtoOfCompanyEnquiryList();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<PagedResultDtoOfCompanyEnquiryList>(<any>null);
+    }
 }
 
 @Injectable()
@@ -23880,6 +23986,154 @@ export class QuotationServiceProxy {
     }
 
     protected processGetQuotationInquiryFilterToExcel(response: Response): Observable<FileDto> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: FileDto = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? FileDto.fromJS(resultData200) : new FileDto();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<FileDto>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getTeamEnquiryReportExcel(id: number): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/Quotation/GetTeamEnquiryReportExcel?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetTeamEnquiryReportExcel(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetTeamEnquiryReportExcel(response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<FileDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetTeamEnquiryReportExcel(response: Response): Observable<FileDto> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: FileDto = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? FileDto.fromJS(resultData200) : new FileDto();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<FileDto>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getTeamReportExcel(id: number): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/Quotation/GetTeamReportExcel?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetTeamReportExcel(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetTeamReportExcel(response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<FileDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetTeamReportExcel(response: Response): Observable<FileDto> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: FileDto = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? FileDto.fromJS(resultData200) : new FileDto();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<FileDto>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllTeamReportExcel(): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/Quotation/GetAllTeamReportExcel";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetAllTeamReportExcel(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetAllTeamReportExcel(response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<FileDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetAllTeamReportExcel(response: Response): Observable<FileDto> {
         const status = response.status; 
 
         if (status === 200) {
@@ -43901,6 +44155,202 @@ export class SalesmanChange implements ISalesmanChange {
 export interface ISalesmanChange {
     companyId: number;
     salesmanId: number;
+}
+
+export class ListResultDtoOfCompanyEnquiryList implements IListResultDtoOfCompanyEnquiryList {
+    items: CompanyEnquiryList[];
+
+    constructor(data?: IListResultDtoOfCompanyEnquiryList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(CompanyEnquiryList.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfCompanyEnquiryList {
+        let result = new ListResultDtoOfCompanyEnquiryList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IListResultDtoOfCompanyEnquiryList {
+    items: CompanyEnquiryList[];
+}
+
+export class CompanyEnquiryList implements ICompanyEnquiryList {
+    companyId: number;
+    companyName: string;
+    accountManager: string;
+    enquiryCount: number;
+    enquiryWonCount: number;
+    inquirys: InquiryInformation[];
+
+    constructor(data?: ICompanyEnquiryList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.companyId = data["companyId"];
+            this.companyName = data["companyName"];
+            this.accountManager = data["accountManager"];
+            this.enquiryCount = data["enquiryCount"];
+            this.enquiryWonCount = data["enquiryWonCount"];
+            if (data["inquirys"] && data["inquirys"].constructor === Array) {
+                this.inquirys = [];
+                for (let item of data["inquirys"])
+                    this.inquirys.push(InquiryInformation.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CompanyEnquiryList {
+        let result = new CompanyEnquiryList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["companyId"] = this.companyId;
+        data["companyName"] = this.companyName;
+        data["accountManager"] = this.accountManager;
+        data["enquiryCount"] = this.enquiryCount;
+        data["enquiryWonCount"] = this.enquiryWonCount;
+        if (this.inquirys && this.inquirys.constructor === Array) {
+            data["inquirys"] = [];
+            for (let item of this.inquirys)
+                data["inquirys"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ICompanyEnquiryList {
+    companyId: number;
+    companyName: string;
+    accountManager: string;
+    enquiryCount: number;
+    enquiryWonCount: number;
+    inquirys: InquiryInformation[];
+}
+
+export class InquiryInformation implements IInquiryInformation {
+    enquiryId: number;
+    enquiryName: string;
+    won: boolean;
+
+    constructor(data?: IInquiryInformation) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.enquiryId = data["enquiryId"];
+            this.enquiryName = data["enquiryName"];
+            this.won = data["won"];
+        }
+    }
+
+    static fromJS(data: any): InquiryInformation {
+        let result = new InquiryInformation();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["enquiryId"] = this.enquiryId;
+        data["enquiryName"] = this.enquiryName;
+        data["won"] = this.won;
+        return data; 
+    }
+}
+
+export interface IInquiryInformation {
+    enquiryId: number;
+    enquiryName: string;
+    won: boolean;
+}
+
+export class PagedResultDtoOfCompanyEnquiryList implements IPagedResultDtoOfCompanyEnquiryList {
+    totalCount: number;
+    items: CompanyEnquiryList[];
+
+    constructor(data?: IPagedResultDtoOfCompanyEnquiryList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(CompanyEnquiryList.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfCompanyEnquiryList {
+        let result = new PagedResultDtoOfCompanyEnquiryList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfCompanyEnquiryList {
+    totalCount: number;
+    items: CompanyEnquiryList[];
 }
 
 export class GetLanguagesOutput implements IGetLanguagesOutput {

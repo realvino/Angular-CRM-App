@@ -70,6 +70,7 @@ import { ForecastReportComponent } from "app/main/view/forecastReport.component"
 import { EditInquiryComponent } from '@app/main/inquiry/editInquiry.component';
 import { CreateSalesInquiryComponent } from '@app/main/inquiry/createSalesInquiry.component';
 import { ArchivedInquiryComponent } from '@app/main/inquiry/archivedInquiry.component';
+import { CreateInquiryModalComponent } from '@app/main/inquiry/createORedit.component';
 @NgModule({
     imports: [
         RouterModule.forChild([
@@ -163,7 +164,8 @@ import { ArchivedInquiryComponent } from '@app/main/inquiry/archivedInquiry.comp
                     { path : 'quotation/:id/:enq_id', component : QuotationEditComponent },
                     { path : 'openquotation/:id/:enq_id', component : QuotationEditComponent },
                     { path: 'forecast', component: ForecastComponent }, 
-                    { path: 'newSalesEnquiry', component: CreateSalesInquiryComponent},
+                    { path: 'salesLead', component: CreateSalesInquiryComponent},
+                    { path: 'enquiry-create', component: CreateInquiryModalComponent},
                     { path: 'archivedEnquiry/:id', component: ArchivedInquiryComponent},
                     { path: 'forecast/:id', component: EditInquiryComponent }]
             }

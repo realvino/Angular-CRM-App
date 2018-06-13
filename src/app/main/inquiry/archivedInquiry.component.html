@@ -1,4 +1,4 @@
-<div [busyIf]="loading" class="container" style="width:100%;margin-bottom: 25px;">
+<div  class="container" style="width:100%;margin-bottom: 25px;">
     <div class="modal-header">
         <div class="row">
             <div class="col-md-5">
@@ -41,7 +41,7 @@
                     </div>
                     <div class="col-md-6">
                             <label>Stage</label>
-                            <ng-select id="select" [active]="active_status" [allowClear]="true" [items]="statuses" [disabled]="status_enable" (selected)="selectedStatus($event)" (removed)="removedStatus($event)" (keyup)="typedStatus($event)" placeholder="Status">
+                            <ng-select id="select" [active]="active_status" [allowClear]="true" [items]="statuses" [disabled]="status_enable" placeholder="Status">
                             </ng-select>
                     </div>
                 </div>
@@ -62,12 +62,12 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label>Project Location</label>
-                        <ng-select [active]="active_location" [allowClear]="true" [items]="location" (selected)="selectedLocation($event)" (removed)="removedLocation($event)" (keyup)="typedLocation($event)" placeholder="No Location Selected">
+                        <ng-select [active]="active_location" [allowClear]="true" [items]="location" placeholder="No Location Selected">
                         </ng-select>
                     </div>
                     <div class="col-md-6">
                         <label>Why Bafco</label>
-                            <ng-select [active]="active_whybafco" [allowClear]="true" [items]="whybafco"  (selected)="selectedWhyBafco($event)" (removed)="removedWhyBafco($event)"  placeholder="Why Bafco">
+                            <ng-select [active]="active_whybafco" [allowClear]="true" [items]="whybafco" placeholder="Why Bafco">
                             </ng-select>
                     </div>
                 </div>
@@ -87,13 +87,13 @@
                     </div>
                     <div *ngIf="!lead_source_enable"  class="col-md-12" [ngClass]="{'no-edit':non_editable}">
                         <label class="mBottom">Company </label>
-                        <ng-select id="select" [active]="active_tagCompany" [allowClear]="true" [items]="companies" (selected)="selectedCompany($event)" (removed)="removedCompany($event)" (typed)="typedCompany($event)" [disabled]="linked_disabled" placeholder="No Company selected">
+                        <ng-select id="select" [active]="active_tagCompany" [allowClear]="true" [items]="companies" placeholder="No Company selected">
                         </ng-select>
                         <i *ngIf="CompanyText" style="top: 38px;left: 245px;position: absolute; z-index: 1000;color:green;" class="fa fa-plus-circle" aria-hidden="true" (click)="saveCompany(myForm)" title="Update"></i>
                     </div>
                     <div *ngIf="lead_source_enable" class="col-md-6" [ngClass]="{'no-edit':non_editable}">
                         <label class="mBottom">Company </label>
-                        <ng-select id="select" [active]="active_tagCompany" [allowClear]="true" [items]="companies" (selected)="selectedCompany($event)" (removed)="removedCompany($event)" (typed)="typedCompany($event)" [disabled]="linked_disabled" placeholder="No Company selected">
+                        <ng-select id="select" [active]="active_tagCompany" [allowClear]="true" [items]="companies" placeholder="No Company selected">
                         </ng-select>
                         <i *ngIf="CompanyText" style="top: 38px;left: 245px;position: absolute; z-index: 1000;color:green;" class="fa fa-plus-circle" aria-hidden="true" (click)="saveCompany(myForm)" title="Update"></i>
                     </div>
@@ -121,7 +121,7 @@
                     </div>
                     <div class="col-md-6" *ngIf="this.inquiry.companyId">
                         <label>Industry <required_field></required_field></label>
-                        <ng-select [active]="active_indus" [allowClear]="true" [items]="indus" [disabled]="disabled_indus" (selected)="refreshIndus($event)" (removed)="removedIndus($event)" placeholder="Select industry">
+                        <ng-select [active]="active_indus" [allowClear]="true" [items]="indus" placeholder="Select industry">
                         </ng-select>
                     </div>
                 </div>
@@ -160,7 +160,7 @@
                     </div>
                     <div class="col-xs-4" style="padding-left: 7px;">
                         <label>Designation</label>
-                        <ng-select [active]="active_desg" [allowClear]="true" [items]="designation" [disabled]="disabled" (selected)="selecteddesc($event)" (removed)="removeddesc($event)" placeholder="No Designation selected">
+                        <ng-select [active]="active_desg" [allowClear]="true" [items]="designation" placeholder="No Designation selected">
                         </ng-select>
                     </div>  
                  </div>  
@@ -243,11 +243,11 @@
             </div>   
             <div class="col-md-4" *ngIf="inquiry.teamId">
                 <label class="mBottom">Team</label>
-                <ng-select [active]="active_team" [disabled]="!isGranted('Pages.Tenant.Enquiry.SalesEnquiry.Edit.Team')" [allowClear]="true" [items]="teams" (selected)="selectedTeam($event)" (removed)="removedTeam($event)" placeholder="No Team selected"></ng-select>
+                <ng-select [active]="active_team" [disabled]="!isGranted('Pages.Tenant.Enquiry.SalesEnquiry.Edit.Team')" [allowClear]="true" [items]="teams" placeholder="No Team selected"></ng-select>
             </div>
             <div class="col-md-4" >
                 <label class="mBottom">Assigned To: </label>
-                <ng-select [active]="active_assigned" [allowClear]="true" [items]="assignedBy" [disabled]="!isGranted('Pages.Tenant.Enquiry.SalesEnquiry.Edit.Team') || Enabled_Assigned" (selected)="selectAssigned($event)"></ng-select>
+                <ng-select [active]="active_assigned" [allowClear]="true" [items]="assignedBy" [disabled]="!isGranted('Pages.Tenant.Enquiry.SalesEnquiry.Edit.Team') || Enabled_Assigned"></ng-select>
             </div>                   
         </div>
     </div>
@@ -255,12 +255,12 @@
     <div class="row" style="background: #cccccc; margin-right: 5px;margin-left: 5px; padding: 10px;margin-top: 10px;">
          <div class="col-md-3">
             <label>Lead Category</label>
-            <ng-select [active]="active_lead_save_category" [allowClear]="true" [items]="lead_category" [disabled]="lead_category_enable" (selected)="selectedLeadSaveCategory($event)" (removed)="removedLeadSaveCategory($event)" (keyup)="typedLeadSaveCategory($event)" placeholder="Lead Category">
+            <ng-select [active]="active_lead_save_category" [allowClear]="true" placeholder="Lead Category">
             </ng-select>
          </div>
         <div class="col-md-3">
             <label>Opportunity Source</label>
-            <ng-select [active]="active_lead_source" [allowClear]="true" [items]="lead_source" [disabled]="lead_source_enable" (selected)="selectedLeadSource($event)" (removed)="removedLeadSource($event)" (keyup)="typedLeadSource($event)" placeholder="Lead Source">
+            <ng-select [active]="active_lead_source" [allowClear]="true" placeholder="Lead Source">
             </ng-select>
         </div> 
         <div class="col-md-3">
@@ -281,18 +281,18 @@
             </div>
             <div class="col-md-3">
                 <label>Competitors</label>
-                   <ng-select [active]="active_competators" [allowClear]="true" [items]="competators" [disabled]="competator_enable" (selected)="selectedCompetitor($event)" (removed)="removedCompetitor($event)" (keyup)="typedCompetitor($event)" placeholder="Competitors">
+                   <ng-select [active]="active_competators" [allowClear]="true"   placeholder="Competitors">
                    </ng-select>
             </div> 
             <div class="col-md-3">
                 <label>Co-ordinator</label>
-                   <ng-select [active]="active_coord" [allowClear]="true" [items]="coordinator" [disabled]="coordinator_enable" (selected)="selectedCoord($event)" (removed)="removedCoord($event)" (keyup)="typedCoord($event)" placeholder="Co-ordinator">
+                   <ng-select [active]="active_coord" [allowClear]="true" placeholder="Co-ordinator">
                    </ng-select>
             </div> 
             <div class="col-md-3">
                 <div>
                     <label>Designer</label>
-                    <ng-select [active]="active_designer" [allowClear]="true" [items]="designer" [disabled]="!designerr" (selected)="selectedDesigner($event)" (removed)="removedDesigner($event)" (keyup)="typedDesigner($event)" placeholder="Designer">
+                    <ng-select [active]="active_designer" [allowClear]="true" [disabled]="!designerr" placeholder="Designer">
                     </ng-select>
                 </div>  
             </div>

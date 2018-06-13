@@ -1,4 +1,4 @@
-<div [busyIf]="loading" class="container" style="width:100%;margin-bottom: 25px;" >
+<div class="container" style="width:100%;background: #fff;margin-bottom: 25px;" >
     <form *ngIf="active" [formGroup]="myForm" novalidate>
         <div class="modal-header">
             <button type="button" class="close" (click)="close(myForm)" aria-label="Close" >
@@ -41,7 +41,7 @@
                         <div class="row">
                            <div class="col-md-6">
                                 <label>Project Location</label>
-                                    <ng-select [active]="active_location" [allowClear]="true" [items]="location" (selected)="selectedLocation($event)" (removed)="removedLocation($event)" (keyup)="typedLocation($event)" placeholder="No Location Selected">
+                                    <ng-select [active]="active_location" [allowClear]="true" [items]="location" (selected)="selectedLocation($event)" (removed)="removedLocation($event)" (typed)="typedLocation($event)" placeholder="No Location Selected">
                                     </ng-select>
                             </div>
                             <div class="col-md-6">
@@ -55,7 +55,7 @@
                                 <label>Company <required_field></required_field></label>
                                         &nbsp;<span style="color:red;" *ngIf="CompanyDuplicate && companyDetailsDto.salesManId > 0 "> ( This Company Allotted To {{companyDetailsDto.salesMan}} <i  class="fa fa-exclamation"></i> )</span>
                                        <span style="color:red;" *ngIf="CompanyDuplicate && companyDetailsDto.salesManId == 0"> ( This Company Already Exists <i  class="fa fa-exclamation"></i> )</span>
-                                <ng-select id="select" [active]="active_tags" [allowClear]="true" [items]="companies" [disabled]="companyEnable" (selected)="selectedCompany($event)" (removed)="removedCompany($event)" (keyup)="typedCompany($event)" placeholder="No Company selected">
+                                <ng-select id="select" [active]="active_tags" [allowClear]="true" [items]="companies" [disabled]="companyEnable" (selected)="selectedCompany($event)" (removed)="removedCompany($event)" (typed)="typedCompany($event)" placeholder="No Company selected">
                                 </ng-select>
                              </div>
                         </div>
@@ -89,14 +89,14 @@
                         <div class="row">
                             <div class="col-lg-3 col-md-6">
                                 <label>Salutation <required_field></required_field></label>
-                                <ng-select [active]="active_title" [allowClear]="true" [items]="title" [disabled]="disabled" (selected)="refreshTitle($event,myForm)" (removed)="removedTitle($event,myForm)" placeholder="Title">
+                                <ng-select [active]="active_title" [allowClear]="true" [items]="title"  (selected)="refreshTitle($event,myForm)" (removed)="removedTitle($event,myForm)" placeholder="Title">
                                 </ng-select>  
                                 <input type="hidden" formControlName="newtitleid" value="">
                             </div> 
                             <div class="col-lg-3 col-md-6">
                                 <div class="form-group">
                                     <label>First Name <required_field></required_field></label>
-                                    <ng-select [active]="active_fname" [allowClear]="true" [items]="fname" [disabled]="disabled" (selected)="refreshFname($event,fname)" (removed)="removedFname($event)" (keyup)="typedFname($event)" placeholder="Name">
+                                    <ng-select [active]="active_fname" [allowClear]="true" [items]="fname"  (selected)="refreshFname($event,fname)" (removed)="removedFname($event)" (typed)="typedFname($event)" placeholder="Name">
                                     </ng-select>
                                 </div>
                             </div>
@@ -108,7 +108,7 @@
                             </div> 
                             <div class="col-lg-3 col-md-6">
                                 <label>Designation</label>
-                                <ng-select [active]="active_desg" [allowClear]="true" [items]="designation" [disabled]="disabled" (selected)="selecteddesc($event)" (removed)="removeddesc($event)" (typed)="typeddesc($event)" placeholder="No Designation selected">
+                                <ng-select [active]="active_desg" [allowClear]="true" [items]="designation"  (selected)="selecteddesc($event)" (removed)="removeddesc($event)" (typed)="typeddesc($event)" placeholder="No Designation selected">
                                 </ng-select>
                             </div>  
                         </div>
@@ -200,21 +200,21 @@
                 </div>
             </div>
         </div>
-    </form>
     <div class="row" style="background: #e2959545; margin-right: 5px;margin-left: 5px; padding: 10px;margin-top: 10px;">
         <div class="col-md-3">
             <label>Lead Category</label>
-                <ng-select [active]="active_leadCategory" [allowClear]="true" [items]="lead_category" (selected)="selectedLeadCategory($event)" (removed)="removedLeadCategory($event)" (keyup)="typedLeadCategory($event)" placeholder="Lead Category">
+                <ng-select [active]="active_leadCategory" [allowClear]="true" [items]="lead_category" (selected)="selectedLeadCategory($event)" (removed)="removedLeadCategory($event)" (typed)="typedLeadCategory($event)" placeholder="Lead Category">
                 </ng-select>
         </div>
         <div class="col-md-3">
             <label>Opportunity Source</label>
-               <ng-select [active]="active_opportunity" [allowClear]="true" [items]="opportunity_source"  (selected)="selectedOpportunitySource($event)" (removed)="removedOpportunitySource($event)"  placeholder="Opportunity Source"></ng-select>
+               <ng-select [active]="active_opportunity" [allowClear]="true" [items]="opportunity_source"  (selected)="selectedOpportunitySource($event)" (removed)="removedOpportunitySource($event)"  placeholder="Opportunity Source">
+               </ng-select>
         </div> 
         <div class="col-md-3">
             <label>Design</label>
                 <div class="onoffswitch">
-                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" [(ngModel)]="designerr"  checked>
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" [(ngModel)]="designerr" [ngModelOptions]="{standalone: true}" checked>
                         <label class="onoffswitch-label" for="myonoffswitch">
                             <span class="onoffswitch-inner"></span>
                             <span class="onoffswitch-switch"></span>
@@ -223,48 +223,62 @@
         </div>
         <div class="col-md-3">
             <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                <input class="form-control" type="number" name="estimatedValue" [ngClass]="{'edited':inquiry.estimationValue}" [(ngModel)]="inquiry.estimationValue" >
+                <input class="form-control" type="number" name="estimatedValue" [ngClass]="{'edited':inquiry.estimationValue}" [(ngModel)]="inquiry.estimationValue" [ngModelOptions]="{standalone: true}">
                     <label>{{l("Estimated Value")}} <required_field></required_field></label>
             </div>
         </div>
         <div class="col-md-3">
                 <label>Co-ordinator</label>
-                    <ng-select [active]="active_Coordinator" [allowClear]="true" [items]="coordinators" [disabled]="coordinator_enable" (selected)="selectedCoord($event)" (removed)="removedCoord($event)" (keyup)="typedCoord($event)" placeholder="Co-ordinator">
+                    <ng-select [active]="active_Coordinator" 
+                               [allowClear]="true" 
+                               [items]="coordinators" 
+                               (selected)="selectedCoord($event)" 
+                               (removed)="removedCoord($event)" 
+                               (typed)="typedCoord($event)" 
+                               (data)="refreshValue($event)"
+                               placeholder="Co-ordinator">
                     </ng-select>
         </div> 
         <div class="col-md-3">
             <label>Competitors</label>
-                <ng-select [active]="active_Competitors" [allowClear]="true" [items]="competators" [disabled]="competator_enable" (selected)="selectedCompetitor($event)" (removed)="removedCompetitor($event)" (keyup)="typedCompetitor($event)" placeholder="Competitors">
+                <ng-select [active]="active_Competitors" [allowClear]="true" [items]="competators"  (selected)="selectedCompetitor($event)" (removed)="removedCompetitor($event)" (typed)="typedCompetitor($event)" placeholder="Competitors">
                 </ng-select>
         </div> 
         <div class="col-md-3">
             <div>
                 <label>Designer</label>
-                <ng-select [active]="active_designer" [allowClear]="true" [items]="designers" [disabled]="!designerr" (selected)="selectedDesigner($event)" (removed)="removedDesigner($event)" (keyup)="typedDesigner($event)" placeholder="Designer">
+                <ng-select [active]="active_designer" [allowClear]="true" [items]="designers" [disabled]="!designerr" (selected)="selectedDesigner($event)" (removed)="removedDesigner($event)" (typed)="typedDesigner($event)" placeholder="Designer">
                 </ng-select>
             </div>  
         </div>
         <div class="col-md-3">
             <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                <input class="form-control" type="text" name="code" [ngClass]="{'edited':inquiry.size}" [(ngModel)]="inquiry.size" >
+                <input class="form-control" type="text" name="code" [ngClass]="{'edited':inquiry.size}" [(ngModel)]="inquiry.size" [ngModelOptions]="{standalone: true}">
                 <label>{{l("Size")}}</label>
             </div>
         </div>  
-        <div class="col-md-6">
-        </div> 
+        <div class="col-md-3">
+            <label>Lead Status</label>
+            <ng-select [active]="active_inqleadstatus" (selected)="selectedInqLeadStatus($event)" [items]="InqLeadStatus" placeholder="Lead Status">
+            </ng-select>
+    </div> 
+    <div class="col-md-3">
+    </div> 
         <div class="col-md-3" style="padding-top: 10px;">
-            <label>Expected Closure</label>
+            <label>Expected Closure <required_field></required_field></label>
             <p-calendar id="datetime2" [(ngModel)]="closedDate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
         </div> 
         <div class="col-md-3" style="padding-top: 10px;">
-            <label>Next Activity</label>
+            <label>Next Activity <required_field></required_field></label>
                 <p-calendar id="datetime" [(ngModel)]="lastActivity" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
         </div>
     </div>
     <div class="modal-footer">
         <button [disabled]="saving" type="button" class="btn btn-default" (click)="close(myForm)">{{l("Cancel")}}</button>
-        <button type="button" class="btn btn-primary blue" [disabled]="isValidInquiry(myForm)" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="save(myForm)"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>           
+        <button type="button" class="btn btn-primary blue" [disabled]="isValidInquiry(myForm) || !closedDate || !lastActivity" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="save(myForm)"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>           
      </div>
+    </form>
+
 </div>        
 
 <style>

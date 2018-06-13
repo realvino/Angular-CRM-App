@@ -28,7 +28,7 @@
         <div class="col-xs-2 noPaddingL noPaddingR" >
             
                 <!--<label>City</label>-->
-                <ng-select [active]="active_location" [allowClear]="true" [items]="location" [disabled]="companyEnable" (selected)="selectedLocation($event,adressForm,location)" (removed)="removedLocation($event,adressForm)" (typed)="typedLocation($event,adressForm)" >
+                <ng-select [active]="active_location" [allowClear]="true" [items]="location"  (selected)="selectedLocation($event,adressForm,location)" (removed)="removedLocation($event,adressForm)" (typed)="typedLocation($event,adressForm)" >
                 </ng-select>
                 <!--<i *ngIf="LocText" style="top: 35px;left: 120px;position: absolute; z-index: 1000;color:green;" class="fa fa-plus-circle" aria-hidden="true" (click)="saveLocation()" title="Update"></i>-->
                 <input type="hidden" formControlName="cityid" value="">

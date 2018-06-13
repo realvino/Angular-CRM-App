@@ -40,7 +40,6 @@
                 <h5><b>{{group.name}} ({{group.getTicketReservation.length}})</b>
                     <b style="float: right;" *ngIf="group.total != '0'">{{group.total}}</b>
                 </h5>
-                <!-- <button *ngIf="group.ID == 1" class="btn"><i class="fa fa-plus"></i></button> -->
             </div>
             <div id="style-1" class="desk-items" [dragula]='"nested-bag"' [attr.data-type]="non-status" [attr.data-milestoneId]="group.statusId" [attr.data-milestoneName]="group.name" *ngIf="isGranted('Pages.Tenant.Enquiry.Enquiry.Create')" >
                 <a id="cart" *ngFor="let item of group.getTicketReservation" [ngStyle]="{'background':item.statusColorCode?item.statusColorCode:'','border-style':item.statusColorCode?'solid':'none','border-width':'0px'}" [attr.data-StageName]="item.statusName" [attr.data-itemId]="item.id" [attr.data-companyId]="item.companyId" [attr.data-contactId]="item.contactId" [attr.data-designationId]="item.designationId" [attr.data-designationName]="item.designationName" [attr.data-type]="non-status" class="deskItem">
@@ -60,37 +59,13 @@
                         <small style="color: darkblue;font-size: 10px;font-weight: 600;">{{item.estimationValueformat}}</small>                    
                     </div>
                     </div>
-                    <!-- <a id="cart2" style="float: right;margin-top: -12px;" (click)="changeStage(item.id,group.statusId,group.name,item.statusName)">
-                            <i class="fa fa-pencil-square" aria-hidden="true"></i>                       
-                   </a>   -->
-                   <a style="color: black;font-size: 8px;" class="btn green-haze btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false" (click)="changeStage(item.id,group.statusId,group.name,item.statusName)"> 
+                   <a style="color: black;font-size: 8px;" class="btn green-haze btn-outline btn-circle btn-sm" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false" (click)="changeStage(item.id,group.statusId,group.name,item.statusName)"> 
                         <span style="padding: 5px;">{{item.statusName}}</span>
                         <span style="padding: 5px;">{{item.percentage}} %</span>
                          <i class="fa fa-angle-down"></i>
                      </a>
                 </a>               
             </div>
-         
-            <div class="desk-items" [attr.data-type]="non-status" [attr.data-milestoneId]="group.statusId" [attr.data-milestoneName]="group.name" *ngIf="!isGranted('Pages.Tenant.Enquiry.Enquiry.Create')">
-                    <a id="cart" *ngFor="let item of group.getTicketReservation" [ngStyle]="{'background':item.statusColorCode?item.statusColorCode:'','border-style':item.statusColorCode?'solid':'none','border-width':'0px'}" [attr.data-itemId]="item.id" [attr.data-companyId]="item.companyId" [attr.data-contactId]="item.contactId" [attr.data-designationId]="item.designationId" [attr.data-designationName]="item.designationName" [attr.data-type]="non-status" class="deskItem" [routerLink]="['/app/main/kanban/',item.id]">
-                        
-                        <div class="row">
-                            <div class="col-sm-8 sourceInd">
-                                    <span *ngFor='let src of item.activityColors' data-placement="bottom"  tooltip="{{src.activityName}}" [ngStyle]="{'background-color': src.activityColors,'cursor':'pointer'}">{{src.activityCount}}</span>                                
-                            </div>
-                            <div class="col-sm-4">
-                                    <small class="pull-right">{{item.creationTime| amTimeAgo}}</small>
-                                </div>                       
-                        </div>
-                        <div>
-                            <p style="font-weight: 600">{{item.companyName}}</p>
-                            <p style="font-size: 12px;" class="name">{{item.name}}</p>
-                            <small>{{item.departmentName}}</small>                      
-                            </div>
-                    </a>
-
-            </div>
-                  
         </div>
         <div class='container' style="position: fixed; left:0; right:0px;top: 0px; width: 350px;z-index: 999;height: 75px;background: transparent;" *ngIf="isJunk">
             <div [dragula]='"nested-bag"' data-milestoneName='junk' style="width: 350px;height: 75px;">
@@ -102,11 +77,11 @@
         </div>     
     </div>
 
-    <createInquiryModal #createInquiryModal (modalSave)="getTickets()">
-    </createInquiryModal>
-    <selectDepartmentModal #selectDepartmentModal (modalSave)="getTickets()">
+    <!-- <createInquiryModal #createInquiryModal (modalSave)="getTickets()">
+    </createInquiryModal> -->
+    <selectDepartmentModal #selectDepartmentModal (modalSave)="getTickets('')">
     </selectDepartmentModal>
-    <selectStageModal #selectStageModal (modalSave)="getTickets()">
+    <selectStageModal #selectStageModal (modalSave)="getTickets('')">
     </selectStageModal>
 </div> 
 

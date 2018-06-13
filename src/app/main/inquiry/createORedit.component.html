@@ -1,6 +1,5 @@
-<div bsModal #modal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true" [config]="{backdrop: 'static'}">
-    <div class="modal-dialog" style="width:98%;">
-        <div class="modal-content">
+<!-- <div bsModal #modal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true" [config]="{backdrop: 'static'}"> -->
+    <div  class="container" style="width:100%;background: #fff;margin-bottom: 25px;" >
             <form *ngIf="active" [formGroup]="myForm" novalidate (ngSubmit)="save(myForm)">
                 <div class="modal-header">
                 
@@ -222,9 +221,7 @@
                     </div>
                 </div>
             </form>
-        </div>
     </div>
-</div>
 <style>
           #style-1::-webkit-scrollbar-thumb {
         border-radius: 10px;

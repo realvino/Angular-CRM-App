@@ -4,7 +4,6 @@ import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { Http } from "@angular/http";
 import { TokenAuthServiceProxy, InquiryServiceProxy, EnquiryUpdateInputDto,EnquiryUpdateServiceProxy,EnquiryContactServiceProxy,InquiryListDto,EnquiryJunkUpdateInputDto, QuotationStatusUpdateInput, EnquiryStatusUpdateInput, EnquiryContactInputDto, Select2ServiceProxy, QuotationServiceProxy, CreateQuotationInput, Select2InquiryDto, Userprofiledto, QuotationRevisionInput } from "shared/service-proxies/service-proxies";
 import { ActivatedRoute } from "@angular/router";
-import { CreateSalesModalComponent } from "app/main/inquiry/create-sales.component";
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import { Router } from '@angular/router';
 import { LeadsDepartmentSelectComponent, SelectOption } from "app/main/leads/departmentSelect.component";
@@ -21,7 +20,6 @@ animations: [appModuleAnimation()]
 })
 export class LeadsKanbanComponent extends AppComponentBase implements AfterViewInit,OnDestroy {
 	salesEnable: number;
-	@ViewChild('createSalesModal') createSalesModal: CreateSalesModalComponent;
 	@ViewChild('selectleadsDepartmentModal') selectleadsDepartmentModal :LeadsDepartmentSelectComponent;
 
 	public groups: Array<any> = [];
@@ -276,10 +274,9 @@ removeSalesman(data:any){
 	}
 	
 	createInquiry(): void {
-		this.router.navigate(["app/main/newSalesEnquiry"]);
+		this.router.navigate(["app/main/salesLead"]);
     }
 	editInquiry(id): void {
-		this.createSalesModal.show(id);
 	}
 	
 	changeStage(isQuotation,id,quotationId,statusId,name,StageName):void{

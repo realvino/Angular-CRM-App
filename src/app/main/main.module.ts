@@ -52,7 +52,6 @@ import { NewCustomerTypeComponent } from "app/main/newCustomerType/newCustomerTy
 import { CreateOrEditNewCustomerTypeComponent } from "app/main/newCustomerType/createEditNewCustomerType.component";
 import { ViewLinkedContactComponent } from "app/main/inquiry/viewLinkedContact.component";
 import { CreateOrEditContactNewModalComponent } from "app/main/newContact/create-edit-contact.component";
-import { ContactCompComponent } from "app/main/newCompany/contact.component";
 import { ContactAddressNewComponent } from "app/main/newContact/address.component";
 import { ContactConComponent } from "app/main/newContact/contact.component";
 import { CreateIncActivityModalComponent } from "app/main/inquiry/createActivityModelComponent";
@@ -144,10 +143,6 @@ import { QuotationPreviewModalComponent } from "app/main/quotation/quotation-pre
 import { ProductChangeModalComponent } from "app/main/quotation/unlock-product.component";
 /*Quotation Component End*/
 
-/*Sales Create Component Modal*/
-import { CreateSalesModalComponent } from "app/main/inquiry/create-sales.component";
-/*Sales Create Component Modal*/
-
 import { CreateOrEditNewEnQuotationModalComponent } from "app/main/quotation/create-or-edit-new-enquiry-quotation.component";
 import { EnquiryQuotationsComponent } from 'app/main/inquiry/editQuotedModal.component';
 import { TeamComponent } from 'app/main/team/team.component';
@@ -170,7 +165,6 @@ import { JobActivityComponent } from 'app/main/activity_enq/jobActivityComponent
 import { RevisedQuotationComponent } from 'app/main/quotation/revisedQuotationComponent';
 import { EnquiryStatusComponent } from '@app/main/enquiryStatus/EnquiryStatus.Component';
 import { createEnquiryStatusModalComponent } from '@app/main/enquiryStatus/create-or-edit-enquiryStatus.component';
-import { ArchievedInquiryComponent } from '@app/main/inquiry/archievedInquiry.component';
 import { DiscountModalComponent } from '@app/main/quotation/discount.component';
 import { ContactDesignationComponent } from '@app/main/contactDesignation/contactDesignation.component';
 import { CreateEditContactDesignationComponent } from '@app/main/contactDesignation/create-or-edit-contactDesignation.component';
@@ -200,6 +194,9 @@ import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { EditInquiryComponent } from '@app/main/inquiry/editInquiry.component';
 import { CreateSalesInquiryComponent } from '@app/main/inquiry/createSalesInquiry.component';
 import { ArchivedInquiryComponent } from '@app/main/inquiry/archivedInquiry.component';
+import { CreateLineItemModalComponent } from '@app/main/lineItem/createORedit_lineItem.component';
+import { LineItemComponent } from '@app/main/lineItem/lineItem.component';
+import { ContactCompComponent } from '@app/main/newCompany/contact.component';
 
 export function highchartsFactory() {
     const hc = require('highcharts');
@@ -333,7 +330,6 @@ export function highchartsFactory() {
         QuotationPreviewModalComponent,
         ProductChangeModalComponent,
         CreateOrEditTempProductModalComponent,
-        CreateSalesModalComponent,
         CreateOrEditNewEnQuotationModalComponent,
         EnquiryQuotationsComponent,
         TeamComponent,
@@ -354,7 +350,6 @@ export function highchartsFactory() {
         RevisedQuotationComponent,
         EnquiryStatusComponent,
         createEnquiryStatusModalComponent,
-        ArchievedInquiryComponent,
         DiscountModalComponent,
         ContactDesignationComponent,
         CreateEditContactDesignationComponent,
@@ -379,7 +374,9 @@ export function highchartsFactory() {
         ViewCreateComponent,
         EditInquiryComponent,      
         CreateSalesInquiryComponent,
-        ArchivedInquiryComponent
+        ArchivedInquiryComponent,
+        CreateLineItemModalComponent,
+        LineItemComponent
 
     ],
     providers: [{

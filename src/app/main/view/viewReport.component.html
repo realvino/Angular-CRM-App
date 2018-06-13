@@ -331,7 +331,7 @@
                 </div>
             </div>
     </div>
-    <creationDateFilterModal #creationDateFilter (onChange)="selectedCreationDate($event)" [(ngModel)]="filter.date"></creationDateFilterModal>
+    <creationDateFilterModal #creationDateFilter  [(ngModel)]="filter.date"></creationDateFilterModal>
     <stageFilterModal #stageFilter [options]="stages" (onChange)="selectedStage($event)" [(ngModel)]="filter.stage"></stageFilterModal>
     <percentageFilterModal #percentageFilter [options]="percentages.sort()" (onChange)="selectedPercentage($event)" [(ngModel)]="filter.percentage"></percentageFilterModal>
     <actionDateFilterModal #actionDateFilter [options]="newView" (onChange)="selectedActionDate($event)" [(ngModel)]="filter.actionDate"></actionDateFilterModal>
@@ -343,7 +343,7 @@
     <designerFilterModal #designerFilter [options]="designers" (onChange)="selectedDesigner($event)" [(ngModel)]="filter.designer"></designerFilterModal>
     <salesFilterModal #salesFilter [options]="salesmans" (onChange)="selectedSales($event)" [(ngModel)]="filter.salesman"></salesFilterModal>
     <teamFilterModal #teamFilter [options]="teamNames" (onChange)="selectedTeam($event)" [(ngModel)]="filter.teamName"></teamFilterModal>
-    <whybafcoFilterModal #whybafcoFilter [options]="whyBafcos" (onChange)="selectedWhybafco($event)" [(ngModel)]="filter.whyBafco"></whybafcoFilterModal>
+    <whybafcoFilterModal #whybafcoFilter [options]="whyBafcos" [(ngModel)]="filter.whyBafco"></whybafcoFilterModal>
     <statusFilterModal #statusFilter [options]="statuses" (onChange)="selectedStatus($event)" [(ngModel)]="filter.status"></statusFilterModal>
     <ViewcreateModal #ViewcreateModal (modalSave)="ngOnInit()"></ViewcreateModal> 
    

@@ -19,7 +19,7 @@ export interface SelectOption{
 export class ContactConComponent extends AppComponentBase implements OnInit{
     @Input('group')
     public contactForm: FormGroup;
-    private contacttypes:Array<any> = [];
+    public contacttypes:Array<any> = [];
     contactType:Datadto[]=[];
     active_con:SelectOption[];
     constructor(

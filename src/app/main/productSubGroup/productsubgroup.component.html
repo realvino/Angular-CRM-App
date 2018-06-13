@@ -82,7 +82,6 @@
                 <div class="primeng-paging-container">
                     <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
                                  #paginator
-                                 (onPageChange)="getUsers($event)"
                                  [totalRecords]="primengDatatableHelper.totalRecordsCount"
                                  [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
                     </p-paginator>

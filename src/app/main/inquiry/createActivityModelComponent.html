@@ -30,13 +30,13 @@
 
                             <div class="col-md-6">
                                 <label>Type <required_field></required_field></label>
-                                <ng-select #activitytypeCombobox [active]="active_tagActType" [allowClear]="true" [items]="types" [disabled]="disabled" (data)="refreshActTypeValue($event)" (selected)="selectedActTypeValue($event)" (removed)="removedActTypeValue($event)" (typed)="typedActTypeValue($event)"
+                                <ng-select #activitytypeCombobox [active]="active_tagActType" [allowClear]="true" [items]="types" [disabled]="false" (data)="refreshActTypeValue($event)" (selected)="selectedActTypeValue($event)" (removed)="removedActTypeValue($event)" (typed)="typedActTypeValue($event)"
                                     placeholder="No ActivityType selected"></ng-select>
                             </div>
 
                             <div class="col-md-6">
                                 <label>Contact <required_field></required_field></label>
-                                <ng-select #companyContactCombobox [active]="active_tagcontact" [allowClear]="true" [items]="contacts" [disabled]="disabled" (data)="refreshContactValue($event)" (selected)="selectedContactValue($event)" (removed)="removedContactValue($event)" (typed)="typedContactValue($event)"
+                                <ng-select #companyContactCombobox [active]="active_tagcontact" [allowClear]="true" [items]="contacts" [disabled]="false" (data)="refreshContactValue($event)" (selected)="selectedContactValue($event)" (removed)="removedContactValue($event)" (typed)="typedContactValue($event)"
                                     placeholder="No Contact selected"></ng-select>
                             </div>
 

@@ -36,7 +36,7 @@ export class newCompanyComponent extends AppComponentBase implements OnInit,Afte
   contact:CreateContactInfo = new CreateContactInfo();
   removed_address_arr:any=[];
   remove_contact_arr:any=[];
-  private companytypes:Array<any> = [];
+  public companytypes:Array<any> = [];
   companyType:Datadto[]=[];
   active_company:SelectOption[];
    public myForm: FormGroup;
@@ -63,10 +63,10 @@ export class newCompanyComponent extends AppComponentBase implements OnInit,Afte
     approved:number=0;
     isapproved:boolean= true;
 
-    private managedBy:Array<any> = [];
+    public managedBy:Array<any> = [];
     managedType:Datadto[]=[];
     AppInput:EntityDto = new  EntityDto();
-    private indus:Array<any>=[];
+    public indus:Array<any>=[];
     allIndustry:Datadto[];
     active_indus:SelectOption[];
 

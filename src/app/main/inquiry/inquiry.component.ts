@@ -76,7 +76,7 @@ export class InquiryComponent extends AppComponentBase implements AfterViewInit 
         this._chatSignalrService.setPageTitle('New');
         this._chatSignalrService.setPageTag('Details');
         this._chatSignalrService.sendInfo('pageInfo');
-        this.createInquiryModal.show(0);
+        this.router.navigate(['/app/main/enquiry-create']);
     }
 
     editInquiry(data): void {

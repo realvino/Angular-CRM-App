@@ -29,6 +29,10 @@ export class CreateSalesInquiryComponent extends AppComponentBase implements OnI
     @ViewChild('modal') modal: ModalDirective;
     @ViewChild('nameInput') nameInput: ElementRef;
 
+    public InqLeadStatus:Array<any>;
+    active_inqleadstatus:SelectOption[];
+    inqleadstatusData:Datadto[] = [];
+
     inquiryContact:NullableIdDto = new NullableIdDto();
     updateSalesmanInput: SalesmanChange = new SalesmanChange();    
     assignedDiff: boolean = false;
@@ -125,10 +129,10 @@ export class CreateSalesInquiryComponent extends AppComponentBase implements OnI
     coordinatorData:Datadto[] = [];
     designerData:Datadto[] = [];
 
-    private lead_category:Array<any>;
-    private competators:Array<any>;
-    private coordinators:Array<any>;
-    private designers:Array<any>;
+    public lead_category:Array<any>;
+    public competators:Array<any>;
+    public coordinators:Array<any>;
+    public designers:Array<any>;
     
     active_leadCategory:SelectOption[];
     active_Competitors:SelectOption[];
@@ -378,6 +382,22 @@ export class CreateSalesInquiryComponent extends AppComponentBase implements OnI
                     });
                    });
                  } });
+
+                 this._select2Service.getLeadStatus().subscribe((result)=>{
+                  this.InqLeadStatus = [];
+                  if(result.select2data!=null){
+                    this.inqleadstatusData = result.select2data;
+                    this.inqleadstatusData.forEach((lstatus:{id:number,name:string})=>{
+                      this.InqLeadStatus.push({
+                        id:lstatus.id,
+                        text: lstatus.name
+                      })
+                    });
+                    this.inquiry.leadStatusId = this.InqLeadStatus[0].id;
+                    this.active_inqleadstatus = [{"id":this.InqLeadStatus[0].id,"text":this.InqLeadStatus[0].text}];
+                  }
+                 });
+
                  this._select2Service.getCompatitorCompany().subscribe((result)=>{
                   this.competators = [];
                   if(result.select2data!=null){
@@ -534,7 +554,7 @@ export class CreateSalesInquiryComponent extends AppComponentBase implements OnI
   public selectedTeam(value:any):void {
     this.assignedBy = [];
     this.active_assigned =[];
-    this.active_team = [{id: value.id, text: value.text}];
+    // this.active_team = [{id: value.id, text: value.text}];
     this.inquiry.teamId = value.id;
     var index = this.team_list.findIndex(x=> x.id==value.id);
       if(this.team_list[index].departmentId){
@@ -573,21 +593,22 @@ this.active_assigned =[];
   }
 
   public typedCompany(event): void {
+    console.log(event);
     this.companyDetailsDto = new Select2CompanyDto();
-      this.CompanyText = event.target.value;
-      this.active_tags = [{id: 0, text: event.target.value}];
-      this.inquiry.companyName = event.target.value;
+      this.CompanyText = event;
+      this.active_tags = [{id: 0, text: event}];
+      this.inquiry.companyName = event;
       this.inquiry.cEmail = null;
       this.inquiry.cLandlineNumber = null;
       this.inquiry.cMbNo = null;
       this.inquiry.companyId = null;
       this.fname=[];
-      this.getCompanys(event.target.value);
+      this.getCompanys(event);
       if(this.contact_edit.id)
       {
         this.getContactdetails(0);
       }      
-      this._select2Service.getCompanyDetails(0,event.target.value).subscribe((result) => {
+      this._select2Service.getCompanyDetails(0,event).subscribe((result) => {
         if(result.select2Company != null){
           this.companyDetailsDto = result.select2Company;
           this.CompanyDuplicate = true;
@@ -674,8 +695,8 @@ public removedAssigned(value:any):void {
     //this.getContactdetails(0);
   }
   public typedFname(event):void{
-    this.active_fname = [{id: 0, text: event.target.value}];
-    this.contact_edit.name = event.target.value;
+    this.active_fname = [{id: 0, text: event}];
+    this.contact_edit.name = event;
     this.contact_edit.id = 0;
     this.inquiry.contactId = null;
     //this.getContactdetails(0);
@@ -692,7 +713,7 @@ public removedAssigned(value:any):void {
   }
  selectedOpportunitySource(data:any){
    this.inquiry.opportunitySourceId = data.id;
-    this.active_opportunity = [{"id":data.id,"text":data.text}];
+    // this.active_opportunity = [{"id":data.id,"text":data.text}];
   }
   removedOpportunitySource(data:any){
     this.inquiry.whyBafcoId = null;
@@ -700,7 +721,7 @@ public removedAssigned(value:any):void {
   }
   selectedWhyBafco(data:any){
     this.inquiry.whyBafcoId = data.id;
-    this.active_whybafco = [{"id":data.id,"text":data.text}];
+    // this.active_whybafco = [{"id":data.id,"text":data.text}];
   }
   removedWhyBafco(data:any){
     this.inquiry.whyBafcoId = null;
@@ -890,7 +911,7 @@ public removedAssigned(value:any):void {
   }
 
   
-   save(model): void {    
+   save(model:any): void {    
     this.saving = true;
     if(this.inquiry.id == null) {
       this.inquiry.id = 0;
@@ -984,7 +1005,9 @@ public removedAssigned(value:any):void {
               this.saveLeadInformation(result);
               this.updateSalesman();
               this.notify.info(this.l('Saved Successfully'));
-              this.close();
+              //this.close();
+              this.router.navigate(["/app/main/sales-enquiry",result]);
+
               this.modalSave.emit(this.inquiry);
             }
               
@@ -1005,7 +1028,8 @@ public removedAssigned(value:any):void {
               this.saveLeadInformation(result);
               this.updateSalesman();
               this.notify.info(this.l('Saved Successfully'));
-              this.close();
+              //this.close();
+              this.router.navigate(["/app/main/sales-enquiry",result]);
               this.modalSave.emit(this.inquiry);
             }
               
@@ -1272,52 +1296,60 @@ saveLeadInformation(InquiryId){
     }
     selectedLeadCategory(data:any){
       this.inquiry.leadTypeId = data.id;
-      this.active_leadCategory = [{id:data.id,text:data.text}];
+      // this.active_leadCategory = [{id:data.id,text:data.text}];
     }
     removedLeadCategory(data:any){
       this.inquiry.leadTypeId = null;
       this.active_leadCategory = [];
     }
     typedLeadCategory(data:any){
-      this.inquiry.leadTypeId = null;
-      this.active_leadCategory = [{id:0,text:data.target.value}];
+      //this.inquiry.leadTypeId = null;
+      //this.active_leadCategory = [{id:0,text:data}];
     }
     selectedCompetitor(data:any){
       this.inquiry.compatitorsId = data.id;
-      this.active_Competitors = [{id:data.id,text:data.text}];
+      // this.active_Competitors = [{id:data.id,text:data.text}];
     }
     removedCompetitor(data:any){
       this.inquiry.compatitorsId = null;
       this.active_Competitors = [];
     }
     typedCompetitor(event:any){
-      this.inquiry.compatitorsId = null;
-      this.active_Competitors = [{id:0,text:event.target.value}];
+      // this.inquiry.compatitorsId = null;
+      // this.active_Competitors = [{id:0,text:event}];
     }
     selectedCoord(data:any){
       this.saveLeadDetailInput.coordinatorId = data.id;
-      this.active_Coordinator = [{"id":data.id,"text":data.text}];
+      // this.active_Coordinator = [{"id":data.id,"text":data.text}];
     }
     removedCoord(data:any){
       this.saveLeadDetailInput.coordinatorId = null;
       this.active_Coordinator = [];
     }
     typedCoord(data:any){
-      this.saveLeadDetailInput.coordinatorId = null;
-      this.active_Coordinator = [{"id":0,"text":data.target.value}];
+      // this.saveLeadDetailInput.coordinatorId = null;
+      // this.active_Coordinator = [{"id":0,"text":data}];
     }
+    public refreshValue(data:any):void {
+      this.active_Coordinator = [{"id":data.id,"text":data.text}];
+    }
+ 
     selectedDesigner(data:any){
       this.saveLeadDetailInput.designerId = data.id;
-      this.active_designer = [{"id":data.id,"text":data.text}];
+      // this.active_designer = [{"id":data.id,"text":data.text}];
     }
     removedDesigner(data:any){
       this.saveLeadDetailInput.designerId = null;
       this.active_designer = [];
     }
     typedDesigner(event:any){
-      this.saveLeadDetailInput.designerId = null;
-      this.active_designer = [{"id":0,"text":event.target.value}];
+      // this.saveLeadDetailInput.designerId = null;
+      // this.active_designer = [{"id":0,"text":event}];
     }
 
+    selectedInqLeadStatus(data:any){
+      this.inquiry.leadStatusId = data.id;
+      this.active_inqleadstatus = [{"id":data.id,"text":data.text}];
+    }
 
 }

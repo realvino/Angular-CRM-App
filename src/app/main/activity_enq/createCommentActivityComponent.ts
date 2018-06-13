@@ -74,7 +74,7 @@ export class createCommentActivityModalComponent extends AppComponentBase implem
  
 
 
-   save(data): void {
+   save(): void {
 	   
 	   this.saving=true;
 	   this.EnqActCommentCreate.id=0;

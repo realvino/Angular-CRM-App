@@ -13,9 +13,8 @@
     
                 </div>
     
-                <form #createJobActivityForm="ngForm" novalidate (ngSubmit)="save()">
+                <form #createJobActivityForm="ngForm" novalidate>
                     <div class="modal-body">
-                        <div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group form-md-line-input form-md-floating-label no-hint">
@@ -27,12 +26,10 @@
                            
                           
  
-                            <div class="row">
+                            <!-- <div class="row">
                                     <div class="col-md-12">
-                                        <!-- <div class="form-group form-md-line-input form-md-floating-label no-hint"> -->
-                                             <label>Remark <required_field></required_field></label>
+                                     <label>Remark <required_field></required_field></label>
                                     <textarea class="form-control" placeholder="Remark" style="min-height: 100px;" name="notes" [(ngModel)]="activities.remark" required></textarea>
-                                           <!-- </div> -->
                                     </div>
                                 </div>
 
@@ -52,7 +49,7 @@
                                            <label>End Date</label>
                                          <p-calendar id="datetime" [(ngModel)]="endDate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
                                   </div>
-                            </div>
+                            </div> -->
                             <div class="row" style="margin-bottom:18px;">
                                 <div class="col-md-12" >
                               <label>IsOpen:</label>
@@ -67,9 +64,8 @@
                             </div>  
                             <div class="modal-footer">
                                 <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
-                                <button type="submit" class="btn btn-primary blue" [disabled]="!createJobActivityForm.form.valid " [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                                <button type="button" class="btn btn-primary blue" [disabled]="!createJobActivityForm.form.valid " [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="save()"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
                             </div>
-                        </div>
                     </div>
                 </form>
     

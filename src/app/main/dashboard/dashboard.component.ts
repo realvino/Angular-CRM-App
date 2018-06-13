@@ -10,6 +10,7 @@ declare let d3, Datamap: any;
 import * as _ from "lodash";
 import * as moment from "moment";
 import { AppConsts } from '@shared/AppConsts';
+import { Router } from '@angular/router';
 export interface SelectOption{
     id?: number;
     text?: string;
@@ -76,6 +77,7 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
         injector: Injector,
         private _dashboardService: TenantDashboardServiceProxy,
         private _select2Service: Select2ServiceProxy,
+        private router: Router
     ) {
         super(injector);
         this.dashdateRangePickerStartDate = moment().startOf('year');
@@ -150,7 +152,13 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
             this.loadslider(this.teamselect);
         }
     }
-    
+    GotoLead(enq_id):void{
+        if(enq_id > 0)
+        {
+            this.router.navigate(["/app/main/sales-enquiry",enq_id]);
+        }
+    }
+
     teamdetail():void{
         this._dashboardService.getDashboardTeam().takeUntil(this.destroy$).subscribe((result) => { 
             this.allteamselect ="";

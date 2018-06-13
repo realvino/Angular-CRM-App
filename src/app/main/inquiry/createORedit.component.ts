@@ -8,6 +8,7 @@ import { ChatSignalrService } from 'app/shared/layout/chat/chat-signalr.service'
 import { SignalRHelper } from 'shared/helpers/SignalRHelper';
 import { Subscription } from 'rxjs/Subscription';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 export interface SelectOption{
    id?: number;
@@ -111,8 +112,10 @@ export class CreateInquiryModalComponent extends AppComponentBase implements OnI
         private _jsonp: Jsonp,
         private _chatSignalrService: ChatSignalrService,
         private _newCompanyContactServiceProxy:NewCompanyContactServiceProxy,
-        private _industryServiceProxy:IndustryServiceProxy
-    ){
+        private _industryServiceProxy:IndustryServiceProxy,
+        private router: Router
+
+    ){ 
         super(injector);
         this.subscription = _chatSignalrService.getMessage().subscribe(message => { 
       if( message.eventName == 'pageInfo' ){
@@ -138,7 +141,7 @@ export class CreateInquiryModalComponent extends AppComponentBase implements OnI
     this.addAddress(1);
     }
     ngAfterViewInit(): void {
-      //console.log(this.contact_name.nativeElement.value);
+      this.show(0);
     }
 
    show(inquiryId?: number): void {
@@ -252,7 +255,6 @@ export class CreateInquiryModalComponent extends AppComponentBase implements OnI
            }
 
         this.active = true;
-        this.modal.show();
         });
     }
     getClientIp(data: string): void{
@@ -889,7 +891,7 @@ for(var i=0;i<model.value.contacts.length;i++){
       }
     }
 close(): void {
-        this.modal.hide();
+        this.router.navigate(["/app/main/kanban"]);
         this.inquiryDuplicate = false;
         this.active = false;
         this.active_tags=[];

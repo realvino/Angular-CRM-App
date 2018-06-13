@@ -1,4 +1,4 @@
-<div [busyIf]="loading" class="container" style="width:100%;margin-bottom: 25px;">
+<div [busyIf]="loading" class="container" style="width:100%;margin-bottom: 25px;background: #fff;">
     <div class="modal-header">
         <div class="row">
             <div class="col-md-2">
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="col-md-6" style="pointer-events: all;">
                                     <label>Stage <required_field></required_field></label>
-                                    <ng-select id="select" [active]="active_status" [allowClear]="true" [items]="statuses" [disabled]="status_enable" (selected)="selectedStatus($event)" (removed)="removedStatus($event)" (keyup)="typedStatus($event)" placeholder="Status"></ng-select>
+                                    <ng-select id="select" [active]="active_status" [allowClear]="true" [items]="statuses" [disabled]="status_enable" (selected)="selectedStatus($event)" (removed)="removedStatus($event)" (typed)="typedStatus($event)" placeholder="Status"></ng-select>
                                 </div>
                             </div>
                             <div class="row">
@@ -82,7 +82,13 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label>Project Location</label>
-                                    <ng-select [active]="active_location" [allowClear]="true" [items]="location" (selected)="selectedLocation($event)" (removed)="removedLocation($event)" (keyup)="typedLocation($event)" placeholder="No Location Selected"></ng-select>
+                                    <ng-select [active]="active_location" 
+                                               [allowClear]="true" 
+                                               [items]="location"
+                                               (selected)="selectedLocation($event)" 
+                                               (removed)="removedLocation($event)" 
+                                               (typed)="typedLocation($event)" 
+                                               placeholder="No Location Selected"></ng-select>
                                 </div>
                                 <div class="col-md-6">
                                     <label>Why Bafco</label>
@@ -289,12 +295,19 @@
                         </div>
                         <div class="col-md-3">
                             <label>Category</label>
-                            <ng-select [active]="active_lead_category" [allowClear]="true" [items]="lead_category" [disabled]="lead_category_enable" (selected)="selectedLeadCategory($event)" (removed)="removedLeadCategory($event)" (keyup)="typedLeadCategory($event)" placeholder="Lead Category">
+                            <ng-select [active]="active_lead_category" [allowClear]="true" [items]="lead_category" [disabled]="lead_category_enable" (selected)="selectedLeadCategory($event)" (removed)="removedLeadCategory($event)" (typed)="typedLeadCategory($event)" placeholder="Lead Category">
                             </ng-select>
                         </div>
                         <div class="col-md-3">
                             <label>Competitors</label>
-                            <ng-select [active]="active_competators" [allowClear]="true" [items]="competators" [disabled]="competator_enable" (selected)="selectedCompetitor($event)" (removed)="removedCompetitor($event)" (keyup)="typedCompetitor($event)" placeholder="Competitors">
+                            <ng-select [active]="active_competators" 
+                                       [allowClear]="true" 
+                                       [items]="competators" 
+                                       [disabled]="competator_enable" 
+                                       (selected)="selectedCompetitor($event)" 
+                                       (removed)="removedCompetitor($event)" 
+                                       (typed)="typedCompetitor($event)" 
+                                       placeholder="Competitors">
                             </ng-select>
                         </div>
                 </div> 
@@ -303,12 +316,12 @@
             <div class="row" *ngIf="which_located =='sales-enquiry' || which_located =='sales-grid'" style="background: #e2959545; margin-right: 0px;margin-left: 0px; padding: 10px;margin-top: 10px;">
                 <div class="col-md-3">
                        <label>Lead Category</label>
-                       <ng-select [active]="active_lead_save_category" [allowClear]="true" [items]="lead_category" [disabled]="lead_category_enable" (selected)="selectedLeadSaveCategory($event)" (removed)="removedLeadSaveCategory($event)" (keyup)="typedLeadSaveCategory($event)" placeholder="Lead Category">
+                       <ng-select [active]="active_lead_save_category" [allowClear]="true" [items]="lead_category" [disabled]="lead_category_enable" (selected)="selectedLeadSaveCategory($event)" (removed)="removedLeadSaveCategory($event)" (typed)="typedLeadSaveCategory($event)" placeholder="Lead Category">
                        </ng-select>
                  </div>
                  <div class="col-md-3">
                    <label>Opportunity Source</label>
-                   <ng-select [active]="active_lead_source" [allowClear]="true" [items]="lead_source" [disabled]="lead_source_enable" (selected)="selectedLeadSource($event)" (removed)="removedLeadSource($event)" (keyup)="typedLeadSource($event)" placeholder="Lead Source">
+                   <ng-select [active]="active_lead_source" [allowClear]="true" [items]="lead_source" [disabled]="lead_source_enable" (selected)="selectedLeadSource($event)" (removed)="removedLeadSource($event)" (typed)="typedLeadSource($event)" placeholder="Lead Source">
                    </ng-select>
                 </div> 
                 <div class="col-md-3">
@@ -330,19 +343,32 @@
                    </div>
                    <div class="col-md-3">
                        <label>Competitors</label>
-                       <ng-select [active]="active_competators" [allowClear]="true" [items]="competators" [disabled]="competator_enable" (selected)="selectedCompetitor($event)" (removed)="removedCompetitor($event)" (keyup)="typedCompetitor($event)" placeholder="Competitors">
+                       <ng-select [active]="active_competators" 
+                                  [allowClear]="true" [items]="competators" 
+                                  [disabled]="competator_enable" 
+                                  (selected)="selectedCompetitor($event)" 
+                                  (removed)="removedCompetitor($event)" 
+                                  (typed)="typedCompetitor($event)" 
+                                  placeholder="Competitors">
                        </ng-select>
                    </div> 
                    <div class="col-md-3">
                        <label>Co-ordinator</label>
-                           <ng-select [active]="active_coord" [allowClear]="true" [items]="coordinator" [disabled]="coordinator_enable" (selected)="selectedCoord($event)" (removed)="removedCoord($event)" (keyup)="typedCoord($event)" placeholder="Co-ordinator">
+                           <ng-select [active]="active_coord" 
+                                      [allowClear]="true" 
+                                      [items]="coordinator" 
+                                      [disabled]="coordinator_enable" 
+                                      (selected)="selectedCoord($event)" 
+                                      (removed)="removedCoord($event)" 
+                                      (typed)="typedCoord($event)" 
+                                      placeholder="Co-ordinator">
                        </ng-select>
                    </div> 
                               
             <div class="col-md-3">
                     <div>
                             <label>Designer</label>
-                            <ng-select [active]="active_designer" [allowClear]="true" [items]="designer" [disabled]="!designerr" (selected)="selectedDesigner($event)" (removed)="removedDesigner($event)" (keyup)="typedDesigner($event)" placeholder="Designer">
+                            <ng-select [active]="active_designer" [allowClear]="true" [items]="designer" [disabled]="!designerr" (selected)="selectedDesigner($event)" (removed)="removedDesigner($event)" (typed)="typedDesigner($event)" placeholder="Designer">
                                 </ng-select>
                     </div>  
                 </div>
@@ -352,6 +378,11 @@
                     <label>{{l("Size")}}</label>
                </div>
            </div>  
+           <div class="col-md-3">
+            <label>Lead Status</label>
+            <ng-select [active]="active_inqleadstatus" (selected)="selectedInqLeadStatus($event)" [items]="InqLeadStatus" placeholder="Lead Status">
+            </ng-select>
+            </div> 
            <div class="col-md-3" style="padding-top: 24px;">
             <label>Next Activity <required_field></required_field></label>
             <p-calendar id="datetime" [(ngModel)]="lastActivity" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
@@ -404,7 +435,7 @@
            <div class="row">
                 <div class="col-md-12 modal-footer" style="margin-bottom: -40px;">
                                <button [disabled]="saving" type="button" class="btn btn-default enq-btu" (click)="close()">{{l("Cancel")}}</button>
-                               <button type="button" class="btn btn-primary blue enq-btu" [disabled]="isValidEnquiry(myForm)" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="saveLeadDetails()"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>                                </div>
+                               <button type="button" class="btn btn-primary blue enq-btu" [disabled]="isValidEnquiry(myForm)" [buttonBusy]="loading" [busyText]="l('SavingWithThreeDot')" (click)="saveLeadDetails()"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>                                </div>
                </div>
             </div>
         </tab> 

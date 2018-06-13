@@ -35,7 +35,7 @@ export class newContactComponent extends AppComponentBase implements OnInit,Afte
   contact:CreateContactInfo = new CreateContactInfo();
   removed_address_arr:any=[];
   remove_contact_arr:any=[];
-  private companytypes:Array<any> = [];
+  public companytypes:Array<any> = [];
   companyType:Datadto[]=[];
   types:Datadto[];
   active_company:SelectOption[];
@@ -49,14 +49,14 @@ export class newContactComponent extends AppComponentBase implements OnInit,Afte
    dataCon: any=[];
    contact_remove_values:any=[];
    address_remove_values:any=[];
-   private items:Array<any> = [];
-   private title:Array<any> = [];
+   public items:Array<any> = [];
+   public title:Array<any> = [];
    new_company_id:number=0;
    new_title_id:number=0;
    id:number=0;
    enq_id:number=0;
    cmp_disabled:boolean=false;
-   private desg:Array<any>=[];
+   public desg:Array<any>=[];
    allDesgination:Datadto[];
    active_desg:SelectOption[];
    constructor(

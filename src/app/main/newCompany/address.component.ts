@@ -18,8 +18,8 @@ export interface SelectOption{
 export class AddressComponent extends AppComponentBase implements OnInit{
     @Input('group')
     public adressForm: FormGroup;
-    private companytypes:Array<any> = [];
-    private location:Array<any> = [];
+    public companytypes:Array<any> = [];
+    public location:Array<any> = [];
  	companyType:Datadto[]=[];
  	locations: Citydto[] = [];
  	active_location: SelectOption[];
