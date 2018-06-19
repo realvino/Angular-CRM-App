@@ -66,20 +66,20 @@
                             <p-column field="name" header="{{l('Title Of Enquiry')}}" [sortable]="true" [style]="{'width':'230px'}"></p-column>
                             <p-column field="companyName" header="{{l('Company Name')}}" [sortable]="true" [style]="{'width':'200px'}"></p-column>
                             <p-column field="mileStoneName" header="{{l('Milestone')}}" [sortable]="true" [style]="{'width':'150px'}"></p-column>
+                            <p-column field="won" header="{{l('Won')}}" [sortable]="false" [style]="{'width':'70px'}">
+                                    <ng-template let-record="rowData" pTemplate="body">
+                                        <span class="label label-success" *ngIf="record.won">{{l('Yes')}}</span>
+                                        <span class="label label-default" *ngIf="!record.won">{{l('No')}}</span>
+                                    </ng-template>
+                                </p-column>
+                            <p-column field="slastActivity" header="{{l('Next Activity')}}" [sortable]="true"  [style]="{'width':'200px'}"></p-column>
+                            <p-column field="sclosureDate" header="{{l('Closure Date')}}" [sortable]="true"  [style]="{'width':'200px'}"></p-column>
+                            <p-column field="createdBy" header="{{l('Created By')}}" [sortable]="true"  [style]="{'width':'150px'}"></p-column>
+                            <p-column field="salesMan" header="{{l('Assign To')}}" [sortable]="true"  [style]="{'width':'150px'}"></p-column>
                             <p-column field="departmentName" header="{{l('Department Name')}}" [sortable]="true" [style]="{'width':'200px'}"></p-column>
                             <p-column field="teamName" header="{{l('Team Name')}}" [sortable]="true" [style]="{'width':'200px'}"></p-column>
-                            <p-column field="won" header="{{l('Won')}}" [sortable]="false" [style]="{'width':'70px'}">
-                                <ng-template let-record="rowData" pTemplate="body">
-                                    <span class="label label-success" *ngIf="record.won">{{l('Yes')}}</span>
-                                    <span class="label label-default" *ngIf="!record.won">{{l('No')}}</span>
-                                </ng-template>
-                            </p-column>
-                            <p-column field="salesMan" header="{{l('Assign To')}}" [sortable]="true"  [style]="{'width':'150px'}"></p-column>
-                            <p-column field="createdBy" header="{{l('Created By')}}" [sortable]="true"  [style]="{'width':'150px'}"></p-column>
-                            <p-column field="sclosureDate" header="{{l('Closure Date')}}" [sortable]="false"  [style]="{'width':'200px'}"></p-column>
-                            <p-column field="slastActivity" header="{{l('Next Activity')}}" [sortable]="false"  [style]="{'width':'200px'}"></p-column>
-                            <p-column field="sCreationTime" header="Creation Time" [sortable]="false" [style]="{'width':'200px'}"></p-column>
-                           </p-dataTable>
+                            <p-column field="sCreationTime" header="Creation Time" [sortable]="true" [style]="{'width':'200px'}"></p-column>
+                           </p-dataTable> 
                         <div class="primeng-paging-container">
                             <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
                                  #paginator

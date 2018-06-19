@@ -199,10 +199,10 @@
                     <div class="row">
                         <div class="form-group col-xs-7" style="margin-top:5px;"></div>
                     </div>
-                    <div *ngFor="let contact of myForm.controls.contacts.controls; let j=index">
+                    <div *ngFor="let contact of myForm.controls.contacts['controls']; let j=index">
                         <div class="panel-body" [formGroupName]="j" style="padding:10px 0 0 0;">
                            <contact [group]="myForm.controls.contacts.controls[j]"></contact>
-                           <span style="margin-top: -33px;" class="fa fa-trash-o pull-right" *ngIf="myForm.controls.contacts.controls.length > 1" (click)="removeContacts(j,contact)">
+                           <span style="margin-top: -33px;" class="fa fa-trash-o pull-right" *ngIf="myForm.controls.contacts['controls'].length > 1" (click)="removeContacts(j,contact)">
                            </span>
                         </div>
                     </div>
@@ -220,12 +220,12 @@
                     </div>
                 </div>
                 <div class=" panel-default" style="padding-top: 5px;">
-                   <div *ngFor="let address_con of myForm.controls.addresses.controls; let i=index">
+                   <div *ngFor="let address_con of myForm.controls.addresses['controls']; let i=index">
                        <div class="panel-body" [formGroupName]="i" style="padding:10px 0 0 0;">
                         <div>
                             <address_con [group]="myForm.controls.addresses.controls[i]"></address_con>
                         </div>
-                        <span style="margin-top: -33px;" class="fa fa-trash-o pull-right" *ngIf="myForm.controls.addresses.controls.length > 1" (click)="removeAddress(i,address_con)">
+                        <span style="margin-top: -33px;" class="fa fa-trash-o pull-right" *ngIf="myForm.controls.addresses['controls'].length > 1" (click)="removeAddress(i,address_con)">
                         </span>
                         </div>
                     </div>
@@ -251,7 +251,7 @@
             </div>                   
         </div>
     </div>
-    </form>
+    <!-- </form> -->
     <div class="row" style="background: #cccccc; margin-right: 5px;margin-left: 5px; padding: 10px;margin-top: 10px;">
          <div class="col-md-3">
             <label>Lead Category</label>
@@ -266,7 +266,7 @@
         <div class="col-md-3">
             <label>Design</label>
                 <div class="onoffswitch">
-                    <input type="checkbox" name="onoffswitch2" class="onoffswitch-checkbox" id="myonoffswitch2" [(ngModel)]="designerr"  checked>
+                    <input type="checkbox" name="onoffswitch2" class="onoffswitch-checkbox" id="myonoffswitch2" [(ngModel)]="designerr" [ngModelOptions]="{standalone: true}" checked>
                         <label class="onoffswitch-label" for="myonoffswitch2">
                             <span class="onoffswitch-inner"></span>
                             <span class="onoffswitch-switch"></span>
@@ -275,7 +275,7 @@
             </div>
             <div class="col-md-3">
                <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                    <input class="form-control" type="number" name="estimatedValue" [ngClass]="{'edited':saveLeadDetailInput.estimationValue}" [(ngModel)]="saveLeadDetailInput.estimationValue" >
+                    <input class="form-control" type="number" name="estimatedValue" [ngClass]="{'edited':saveLeadDetailInput.estimationValue}" [(ngModel)]="saveLeadDetailInput.estimationValue" [ngModelOptions]="{standalone: true}">
                       <label>{{l("Estimated Value")}} </label>
                 </div>
             </div>
@@ -298,7 +298,7 @@
             </div>
             <div class="col-md-3">
                <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                  <input class="form-control" type="text" name="code" [ngClass]="{'edited':saveLeadDetailInput.size}" [(ngModel)]="saveLeadDetailInput.size" >
+                  <input class="form-control" type="text" name="code" [ngClass]="{'edited':saveLeadDetailInput.size}" [(ngModel)]="saveLeadDetailInput.size" [ngModelOptions]="{standalone: true}">
                    <label>{{l("Size")}}</label>
                </div>
             </div>  
@@ -313,6 +313,7 @@
                <p-calendar id="datetime2" [(ngModel)]="closedDate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
             </div> 
        </div>
+    </form>
     </div>
        </tab> 
        <tab heading="Quotations">

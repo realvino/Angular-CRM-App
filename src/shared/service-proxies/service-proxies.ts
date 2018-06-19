@@ -23485,8 +23485,10 @@ export class QuotationServiceProxy {
     /**
      * @return Success
      */
-    setDiscountForProducts(quotationId: number, newDiscount: number): Observable<void> {
+    setDiscountForProducts(typeId: number, quotationId: number, newDiscount: number): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Quotation/SetDiscountForProducts?";
+        if (typeId !== undefined)
+            url_ += "TypeId=" + encodeURIComponent("" + typeId) + "&"; 
         if (quotationId !== undefined)
             url_ += "QuotationId=" + encodeURIComponent("" + quotationId) + "&"; 
         if (newDiscount !== undefined)
@@ -41943,6 +41945,7 @@ export class InquiryListDto implements IInquiryListDto {
     coordinatorImage: string;
     quotationsNew: string;
     lost: boolean;
+    strike: boolean;
 
     constructor(data?: IInquiryListDto) {
         if (data) {
@@ -42060,6 +42063,7 @@ export class InquiryListDto implements IInquiryListDto {
             this.coordinatorImage = data["coordinatorImage"];
             this.quotationsNew = data["quotationsNew"];
             this.lost = data["lost"];
+            this.strike = data["strike"];
         }
     }
 
@@ -42176,6 +42180,7 @@ export class InquiryListDto implements IInquiryListDto {
         data["coordinatorImage"] = this.coordinatorImage;
         data["quotationsNew"] = this.quotationsNew;
         data["lost"] = this.lost;
+        data["strike"] = this.strike;
         return data; 
     }
 }
@@ -42274,6 +42279,7 @@ export interface IInquiryListDto {
     coordinatorImage: string;
     quotationsNew: string;
     lost: boolean;
+    strike: boolean;
 }
 
 export class ActivityColor implements IActivityColor {
@@ -43068,6 +43074,7 @@ export class QuotationListDto implements IQuotationListDto {
     paymentDate: moment.Moment;
     discountEmail: boolean;
     probability: number;
+    stotal: string;
 
     constructor(data?: IQuotationListDto) {
         if (data) {
@@ -43141,6 +43148,7 @@ export class QuotationListDto implements IQuotationListDto {
             this.paymentDate = data["paymentDate"] ? moment(data["paymentDate"].toString()) : <any>undefined;
             this.discountEmail = data["discountEmail"];
             this.probability = data["probability"];
+            this.stotal = data["stotal"];
         }
     }
 
@@ -43213,6 +43221,7 @@ export class QuotationListDto implements IQuotationListDto {
         data["paymentDate"] = this.paymentDate ? this.paymentDate.toISOString() : <any>undefined;
         data["discountEmail"] = this.discountEmail;
         data["probability"] = this.probability;
+        data["stotal"] = this.stotal;
         return data; 
     }
 }
@@ -43279,6 +43288,7 @@ export interface IQuotationListDto {
     paymentDate: moment.Moment;
     discountEmail: boolean;
     probability: number;
+    stotal: string;
 }
 
 export class ListResultDtoOfEnqActList implements IListResultDtoOfEnqActList {
@@ -49178,6 +49188,7 @@ export class ProductList implements IProductList {
     createdBy: string;
     lastModifiedBy: string;
     dCreationTime: moment.Moment;
+    refId: number;
     isDeleted: boolean;
     deleterUserId: number;
     deletionTime: moment.Moment;
@@ -49223,6 +49234,7 @@ export class ProductList implements IProductList {
             this.createdBy = data["createdBy"];
             this.lastModifiedBy = data["lastModifiedBy"];
             this.dCreationTime = data["dCreationTime"] ? moment(data["dCreationTime"].toString()) : <any>undefined;
+            this.refId = data["refId"];
             this.isDeleted = data["isDeleted"];
             this.deleterUserId = data["deleterUserId"];
             this.deletionTime = data["deletionTime"] ? moment(data["deletionTime"].toString()) : <any>undefined;
@@ -49267,6 +49279,7 @@ export class ProductList implements IProductList {
         data["createdBy"] = this.createdBy;
         data["lastModifiedBy"] = this.lastModifiedBy;
         data["dCreationTime"] = this.dCreationTime ? this.dCreationTime.toISOString() : <any>undefined;
+        data["refId"] = this.refId;
         data["isDeleted"] = this.isDeleted;
         data["deleterUserId"] = this.deleterUserId;
         data["deletionTime"] = this.deletionTime ? this.deletionTime.toISOString() : <any>undefined;
@@ -49305,6 +49318,7 @@ export interface IProductList {
     createdBy: string;
     lastModifiedBy: string;
     dCreationTime: moment.Moment;
+    refId: number;
     isDeleted: boolean;
     deleterUserId: number;
     deletionTime: moment.Moment;
@@ -49480,6 +49494,7 @@ export class ProductInput implements IProductInput {
     depth: number;
     height: number;
     productStateId: number;
+    refId: number;
 
     constructor(data?: IProductInput) {
         if (data) {
@@ -49504,6 +49519,7 @@ export class ProductInput implements IProductInput {
             this.depth = data["depth"];
             this.height = data["height"];
             this.productStateId = data["productStateId"];
+            this.refId = data["refId"];
         }
     }
 
@@ -49527,6 +49543,7 @@ export class ProductInput implements IProductInput {
         data["depth"] = this.depth;
         data["height"] = this.height;
         data["productStateId"] = this.productStateId;
+        data["refId"] = this.refId;
         return data; 
     }
 }
@@ -49544,6 +49561,7 @@ export interface IProductInput {
     depth: number;
     height: number;
     productStateId: number;
+    refId: number;
 }
 
 export class ProductImagesInput implements IProductImagesInput {
@@ -58397,7 +58415,7 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
     company: string;
     stageName: string;
     mileStone: string;
-    total: number;
+    total: string;
     stage: string;
 
     constructor(data?: IRecentInquiryClosureDto) {
@@ -58473,7 +58491,7 @@ export interface IRecentInquiryClosureDto {
     company: string;
     stageName: string;
     mileStone: string;
-    total: number;
+    total: string;
     stage: string;
 }
 

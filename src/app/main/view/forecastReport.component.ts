@@ -7,6 +7,7 @@ import { Paginator } from 'primeng/components/paginator/paginator';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { CreateOrEditNewQuotationModalComponent } from '@app/main/quotation/create-or-edit-new-quotation.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FileDownloadService } from '@shared/utils/file-download.service';
 
 export interface SelectOption{
     id?: number;
@@ -59,6 +60,8 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
         private _select2Service: Select2ServiceProxy,
         private _quoatationService: QuotationServiceProxy,
         private _inquiryProxyService: InquiryServiceProxy,
+        private _fileDownloadService: FileDownloadService
+
     )
     {
         super(injector);
@@ -107,6 +110,24 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
         this.active_view =[];
         this.viewId = 0;
         this.getInquiry();
+    }
+    exportToExcel(): void {
+        if(this.viewId > 0){
+            this._quoatationService.getTeamEnquiryReportExcel(this.viewId).subscribe(result => {
+                this._fileDownloadService.downloadTempFile(result);
+            });
+        }
+        else if(this.teamId > 0){
+            this._quoatationService.getTeamReportExcel(this.teamId).subscribe(result => {
+                this._fileDownloadService.downloadTempFile(result);
+            });
+        }
+        else{
+            this._quoatationService.getAllTeamReportExcel().subscribe(result => {
+                this._fileDownloadService.downloadTempFile(result);
+            });
+        }
+         
     }
     cellClicked(event:any)
     {

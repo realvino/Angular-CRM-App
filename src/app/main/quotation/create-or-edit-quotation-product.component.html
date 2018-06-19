@@ -249,7 +249,7 @@
                             <div class="col-md-6">
                                <div class="col-md-6"> 
                                 <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                    <input class="form-control" type="tel"  name="dis1" [ngClass]="{'edited':productInput.discount}" [(ngModel)]="productInput.discount"  (keyup)="getTotalAmount(productInput.unitOfPrice)" (keydown)="check($event)" maxlength="2"/>
+                                    <input class="form-control" type="tel"  name="dis1" [ngClass]="{'edited':productInput.discount}" [(ngModel)]="productInput.discount"  (ngModelChange)="getTotalAmount(productInput.unitOfPrice)" (keydown)="check($event)" maxlength="2"/>
                                     <label>{{l("Discount ")}} <small *ngIf="err_discount" style="color: red;"><u>(Discount is Excess)</u></small></label>
                                 </div>
                                 <!-- <div *ngIf="!productInput.discountable" class="form-group form-md-line-input form-md-floating-label no-hint">

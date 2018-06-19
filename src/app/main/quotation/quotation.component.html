@@ -85,7 +85,7 @@
                         <p-column  [filter]="true"field="statusName" header="Quotation Status" [sortable]="false" [style]="{'width':'150px'}"></p-column>
                         <p-column [filter]="true" field="total" header="Total" [sortable]="true" [style]="{'width':'150px'}">
                             <ng-template let-record="rowData" pTemplate="body">
-                                <span >{{record.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</span>
+                                <span >{{record.stotal}}</span>
                             </ng-template>                            
                         </p-column>
                         <p-column field="void" header="Void" [sortable]="true" [style]="{'width':'100px'}">

@@ -11,10 +11,23 @@
                     </h4>
                 </div>
                 <div class="modal-body">
-
-                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                        <input #nameInput class="form-control" type="text" name="name" [ngClass]="{'edited':discount}" [(ngModel)]="discount" required>
-                        <label>{{l("Discount %")}}  <required_field></required_field></label>
+                    <div class="row">
+                        <div class="col-md-6">
+                                <div class="selectivity-input example-input">
+                                        <h5>Product Type</h5>
+                                        <ng-select  [allowClear]="false"
+                                                    [active]="active_type"
+                                                    [items]="items"
+                                                    (selected)="selected($event)"
+                                                    placeholder="No type selected"></ng-select>
+                                </div>
+                        </div>
+                        <div class="col-md-6" style="margin-top: 15px;">
+                                <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input #nameInput class="form-control" type="text" name="name" [ngClass]="{'edited':discount}" [(ngModel)]="discount" required>
+                                        <label>{{l("Discount %")}}  <required_field></required_field></label>
+                                </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

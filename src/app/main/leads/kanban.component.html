@@ -83,7 +83,12 @@
                                     </div>
                                 </div>    
                                 </div>
-                                <span style="font-size: 20px;" (click) ="editSalesEnquiry(false,item.id,item.quotationId)">{{item.estimationValueformat}}</span>  
+                                <span *ngIf="item.strike == true" style="font-size: 20px;text-decoration: line-through;" (click) ="editSalesEnquiry(false,item.id,item.quotationId)">
+                                    {{item.estimationValueformat}}
+                                </span>
+                                <span *ngIf="item.strike == false" style="font-size: 20px;" (click) ="editSalesEnquiry(false,item.id,item.quotationId)">
+                                        {{item.estimationValueformat}}
+                                    </span>   
                                 <span style="font-size: 12px;" (click) ="editSalesEnquiry(false,item.id,item.quotationId)">{{item.address}}</span>  
                                 <p>
                                         <img (click) ="editSalesEnquiry(false,item.id,item.quotationId)" *ngIf="item.coordinatorName"  class="img-circle" height="30" id="HeaderProfilePicture" style="border: 1px solid #e0e6ec;float: right;margin-left: 5px" width="30" tooltip="{{item.coordinatorName}}" src="{{path+item.coordinatorImage}}">                              
@@ -121,7 +126,12 @@
                                         </p> 
                                     <div (click) ="editSalesEnquiry(true,item.id,item.quotationId)">
                                    
-                                <span style="font-size: 20px;">{{item.estimationValueformat}}</span>  
+                                    <span *ngIf="item.strike == true" style="font-size: 20px;text-decoration: line-through;">
+                                        {{item.estimationValueformat}}
+                                    </span>
+                                    <span *ngIf="item.strike == false" style="font-size: 20px;">
+                                            {{item.estimationValueformat}}
+                                    </span>   
                                 <span style="font-size: 12px;">{{item.address}}</span>  
                             
                             </div>

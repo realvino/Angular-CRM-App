@@ -118,6 +118,9 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
            
         this.arr = [{ 'id' : '1','name' : 'Standard Product' }, 
                     { 'id' : '2','name' : 'Non Standard Product' }];
+
+        this.type = 'Standard Product';
+        
         this.productInput.discountable = false;
         this.getDiscounts(companyId);
         if(this.productInput.discountable){
@@ -421,40 +424,42 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
       }
 
     getTotalAmount(price:number){
+        console.log(price);
+        console.log(this.dis);
+        console.log(this.productInput.discount);
+        console.log(price);
+
         if(price<1 || this.productInput.quantity<1){
             this.productInput.totalAmount = 0;
             this.productInput.overAllPrice = 0;
             this.productInput.overAllDiscount = 0;
 
-        }else{
-            if(!this.productInput.discount){
-                this.productInput.totalAmount = parseFloat((this.productInput.quantity*price).toFixed(2));
-                this.productInput.overAllPrice =  parseFloat((this.productInput.quantity*price).toFixed(2));
-                this.productInput.overAllDiscount = 0;
-            }else{
-
+        }else if(this.productInput.discount > 0){
                 if(this.dis != this.productInput.discount)
                 {
                     if(this.discount_enter<this.productInput.discount){
-                        // alert('not App');
                         this.err_discount = true;
                         this.productInput.approval = false;
                     }else{
-                        // alert('no plm');
                         this.productInput.approval = true;
                         this.err_discount = false;
                     }
                 }
+                if(this.dis == this.productInput.discount)
+                {
+                        this.err_discount = !this.product.approval;
+                        this.productInput.approval = this.product.approval;     
+                }
                 this.productInput.overAllPrice =  parseFloat((this.productInput.quantity*price).toFixed(2));
                 let percent_value = ((this.productInput.quantity*price)*this.productInput.discount/100);
                 this.productInput.totalAmount = parseFloat(((this.productInput.quantity*price)-percent_value).toFixed(2));
-                if(this.productInput.discount){
-                    this.productInput.overAllDiscount = parseFloat((percent_value).toFixed(2));
-                }else{
-                    this.productInput.overAllDiscount = 0;
-                }
+                this.productInput.overAllDiscount = parseFloat((percent_value).toFixed(2));
+            }else{
+                this.productInput.totalAmount = parseFloat((this.productInput.quantity*price).toFixed(2));
+                this.productInput.overAllPrice =  parseFloat((this.productInput.quantity*price).toFixed(2));
+                this.productInput.overAllDiscount = 0;
+               
             }
-        }
     }
 
   public typed(value:any):void {

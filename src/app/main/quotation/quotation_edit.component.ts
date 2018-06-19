@@ -366,7 +366,7 @@ filterText: string = '';
     }
   }
 
-  save() {
+  save(from) {
     this.quotation.negotiation = this.negotiationSwitch;
     this.quotation.name = this.quotation.name ? this.quotation.name : null;
     this.quotation.overAllDiscountAmount = this.quotation.overAllDiscountAmount ? this.quotation.overAllDiscountAmount : 0 ;
@@ -381,7 +381,13 @@ filterText: string = '';
         if(result){
           console.log(result);
           this.notify.success("Quotation Revised successfully");
-          this.redirectQuotation(result);
+          if(from == 1){
+            this.goToQuotation();
+          }
+          else{
+            this.redirectQuotation(result);
+          }
+          
         }
        });
     }
@@ -410,11 +416,20 @@ filterText: string = '';
          .subscribe((result) => {
           if(result){
            this.notify.success(this.l('SavedSuccessfully'));
-           this.ngOnInit();
+           if(from == 1){
+             this.goToQuotation();
+           }
+           else{
+            this.ngOnInit();
+           }
+           
           }
       });
     }
   }
+
+
+
   getContacts(companyId:number){
 	  this._select2Service.getCompanyContacts(companyId).subscribe(result=>{
 	      if(result.select2data!=null){

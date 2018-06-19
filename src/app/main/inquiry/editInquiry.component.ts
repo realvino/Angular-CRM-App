@@ -67,7 +67,7 @@ export class EditInquiryComponent extends AppComponentBase implements AfterViewI
     private InqLeadStatus:Array<any>;
     active_inqleadstatus:SelectOption[];
     inqleadstatusData:Datadto[] = [];
-
+    from:number = 0;
     company: CompanyCreateInput = new CompanyCreateInput();
     active_tagdept:SelectOption[]; departments:any=[]; depts: Datadto[] = [];
     companyInput: CreateCompanyOrContact = new CreateCompanyOrContact();
@@ -1285,21 +1285,6 @@ else{
             );
            this.update_details.compatitorsId = !this.inquiry.compatitorsId?null:this.inquiry.compatitorsId;
            this.update_details.leadTypeId = !this.inquiry.leadTypeId?null:this.inquiry.leadTypeId;
-          
-            //  if(!this.saveLeadDetailInput.leadTypeId && this.inquiry.leadTypeId)
-            //  this.saveLeadDetailInput.leadTypeId = this.inquiry.leadTypeId;
-            //  if(!this.saveLeadDetailInput.estimationValue && this.inquiry.estimationValue)
-            //  this.saveLeadDetailInput.estimationValue = this.inquiry.estimationValue;
-            //  if(!this.saveLeadDetailInput.size && this.inquiry.size)
-            //  this.saveLeadDetailInput.size = this.inquiry.size;
-
-            //  if(!this.saveLeadDetailInput.id){
-            //   this.saveLeadDetailInput.id = 0;
-            //   this.saveLeadDetailInput.inquiryId = this.inquiry.id;
-            //   }
-              
-            //   this._inquiryServiceProxy.createOrUpdateLeadDetails(this.saveLeadDetailInput).subscribe(result=>{
-            //   });
 
            this.update_details.size = this.inquiry.size;
            this.update_details.estimationValue = this.inquiry.estimationValue;
@@ -1456,7 +1441,10 @@ deleteJobActivity(job: JobActivityList): void {
               .subscribe(() => {
                 this.updateSalesman();
                this.notify.success(this.l('SavedSuccessfully'));
-               //this.close();
+               if(this.from == 1)
+               {
+                this.close();
+               }
                this.show(this.update_details.id);
              });
           }
@@ -1710,7 +1698,8 @@ initContact(){
       this.update_details.leadStatusId = data.id;
       this.active_inqleadstatus = [{"id":data.id,"text":data.text}];
     }     
-    saveLeadDetails(){
+    saveLeadDetails(from:any){
+      this.from = from;
       if(!this.saveLeadDetailInput.leadTypeId && this.inquiry.leadTypeId)
       this.saveLeadDetailInput.leadTypeId = this.inquiry.leadTypeId;
       if(!this.saveLeadDetailInput.estimationValue && this.inquiry.estimationValue)

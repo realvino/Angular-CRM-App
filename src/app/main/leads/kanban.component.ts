@@ -301,6 +301,7 @@ removeSalesman(data:any){
         });
             this._inquiryProxyService.getSalesInquiryTickets(filter,this.salesmanId).subscribe(inquiries => {
 			this.groups = inquiries;
+			console.log(this.groups);
 		    this.loading=false;
 		});
 

@@ -94,7 +94,7 @@
                                                                     <img class="item-pic rounded" src="{{path+clos.salesManImage}}">
                                                                 <a (click) = "GotoLead(clos.inquiryId)" class="item-name primary-link">{{clos.subMmissionId}}</a>
                                                                 <span class="item-label">{{clos.closureDate}} ({{clos.stageName}})</span>&nbsp;
-                                                                <span class="item-label" style="color: black;"><b>{{clos.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</b></span>&nbsp;
+                                                                <span class="item-label" style="color: black;"><b>{{clos.total}}</b></span>&nbsp;
                                                                 <span class="item-label"> inactive {{clos.lastActivity| amTimeAgo}} </span>
                                                             </div>
                                                             <span class="item-status">
@@ -114,7 +114,7 @@
                                                                     <img class="item-pic rounded" src="{{path+clst.salesManImage}}">
                                                                     <a (click) = "GotoLead(clst.inquiryId)" class="item-name primary-link">{{clst.subMmissionId}}</a>
                                                                     <span class="item-label">{{clst.closureDate}} ({{clst.stageName}})</span>&nbsp;
-                                                                    <span class="item-label" style="color: black;"><b>{{clst.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</b></span>&nbsp;
+                                                                    <span class="item-label" style="color: black;"><b>{{clst.total}}</b></span>&nbsp;
                                                                     <span class="item-label"> inactive {{clst.lastActivity| amTimeAgo}} </span>
                                                                 </div>
                                                                 <span class="item-status">
@@ -160,7 +160,7 @@
                                                                 <img width="20" *ngIf="oact.designerImage" height="20" class="item-pic rounded" src="{{path+oact.designerImage}}"> &nbsp; 
                                                                 <span class="item-status">
                                                                     <span class="badge badge-empty badge-danger"></span> &nbsp;
-                                                                    <span class="item-label" style="color: black;"><b>{{oact.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</b></span>&nbsp;
+                                                                    <span class="item-label" style="color: black;"><b>{{oact.total}}</b></span>&nbsp;
                                                                     &nbsp;{{oact.mileStone}} ({{oact.stage}} %)</span>                                                                                                   
                                                             </div>
                                                         </div>
@@ -186,7 +186,7 @@
                                                                         <img width="20" *ngIf="tact.designerImage" height="20" class="item-pic rounded" src="{{path+tact.designerImage}}">&nbsp;  
                                                                         <span class="item-status">
                                                                             <span class="badge badge-empty badge-danger"></span> &nbsp;
-                                                                            <span class="item-label" style="color: black;"><b>{{tact.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</b></span>&nbsp;
+                                                                            <span class="item-label" style="color: black;"><b>{{tact.total}}</b></span>&nbsp;
                                                                             &nbsp;{{tact.mileStone}} ({{tact.stage}} %)</span>    
                                                                     </div>
                                                                 </div>
@@ -213,7 +213,7 @@
                                                                         <img width="20" *ngIf="nact.designerImage" height="20" class="item-pic rounded" src="{{path+nact.designerImage}}">  &nbsp;  
                                                                         <span class="item-status">
                                                                             <span class="badge badge-empty badge-danger"></span> &nbsp;
-                                                                            <span class="item-label" style="color: black;"><b>{{nact.total.toLocaleString('en', { minimumFractionDigits: 2 })}}</b></span>&nbsp;
+                                                                            <span class="item-label" style="color: black;"><b>{{nact.total}}</b></span>&nbsp;
                                                                             &nbsp;{{nact.mileStone}} ({{nact.stage}} %)</span>                                          	                                	               
                                                                     </div>
                                                                 </div>                                                               

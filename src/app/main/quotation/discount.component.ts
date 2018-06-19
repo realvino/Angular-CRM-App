@@ -2,6 +2,7 @@ import { Component, ViewChild, Injector, ElementRef, Output, EventEmitter, OnIni
 import { ModalDirective } from 'ngx-bootstrap';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { QuotationServiceProxy, SectionListDto, CreateSectionInput } from 'shared/service-proxies/service-proxies';
+import { SelectOption } from '@app/main/city/create-or-edit-city.component';
 
 @Component({
     selector: 'discountModal',
@@ -16,8 +17,10 @@ export class DiscountModalComponent extends AppComponentBase {
     @ViewChild('nameInput') nameInput: ElementRef;
     section: SectionListDto = new SectionListDto();
     sectionInput : CreateSectionInput =new CreateSectionInput();
-    eventOriginal = this.section;
-     
+    eventOriginal = this.section;   
+    public items:Array<any> = [{id: 1, text: 'Discountable'},{id: 2, text: 'Non Discountable'}];
+    active_type:SelectOption[];
+    typeId:number;
     active = false;
     saving = false;
     constructor(
@@ -30,6 +33,9 @@ export class DiscountModalComponent extends AppComponentBase {
 
    show(quotationId?: number): void {
         this.active = true;
+        this.discount = 0;
+        this.active_type = [{id:1, text: 'Discountable'}];
+        this.typeId = 1;
         this.modal.show();
         this.quotationId = quotationId;
     }
@@ -37,7 +43,7 @@ export class DiscountModalComponent extends AppComponentBase {
  save(): void {
         this.saving = true;
            console.log(this.section);
-             this._quotationService.setDiscountForProducts(this.quotationId,this.discount)
+             this._quotationService.setDiscountForProducts(this.typeId,this.quotationId,this.discount)
             .finally(() => this.saving = false)
             .subscribe(() => {
                 this.notify.info(this.l('Saved Successfully'));
@@ -46,6 +52,11 @@ export class DiscountModalComponent extends AppComponentBase {
                 this.modalSave.emit(this.section);
             });
     }
+
+    public selected(value:any):void {
+        console.log('Selected value is: ', value);
+        this.typeId = value.id;
+      }
 
     onShown(): void {
         $(this.nameInput.nativeElement).focus();

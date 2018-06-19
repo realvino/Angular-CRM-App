@@ -379,9 +379,11 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 text-right">
-                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="goToQuotation()">{{l("Cancel")}}</button>
-                    <button type="button" class="btn btn-primary blue" [disabled]="isValidQuotation(createQuotationForm)" (click)="save()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
-                </div>    
+                        <button [disabled]="saving" type="button" class="btn btn-default" (click)="goToQuotation()">{{l("Cancel")}}</button>
+                        <button type="button" class="btn btn-primary blue" [disabled]="isValidQuotation(createQuotationForm)" (click)="save(0)" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>    
+                        <button type="button" class="btn btn-primary blue" [disabled]="isValidQuotation(createQuotationForm)" (click)="save(1)"><i class="fa fa-save"></i> <span>{{l("Save & Exit")}}</span></button>
+
+                    </div>    
             </div>    
         </form>    
         </div>

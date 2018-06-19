@@ -435,8 +435,10 @@
            <div class="row">
                 <div class="col-md-12 modal-footer" style="margin-bottom: -40px;">
                                <button [disabled]="saving" type="button" class="btn btn-default enq-btu" (click)="close()">{{l("Cancel")}}</button>
-                               <button type="button" class="btn btn-primary blue enq-btu" [disabled]="isValidEnquiry(myForm)" [buttonBusy]="loading" [busyText]="l('SavingWithThreeDot')" (click)="saveLeadDetails()"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>                                </div>
-               </div>
+                               <button type="button" class="btn btn-primary blue enq-btu" [disabled]="isValidEnquiry(myForm)" [buttonBusy]="loading" [busyText]="l('SavingWithThreeDot')" (click)="saveLeadDetails(0)"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>                             
+                               <button type="button" class="btn btn-primary blue enq-btu" [disabled]="isValidEnquiry(myForm)"  (click)="saveLeadDetails(1)"><i class="fa fa-save"></i> <span>{{l("Save & Exit")}}</span></button>                               
+                        </div>
+                    </div>
             </div>
         </tab> 
         <tab *ngIf="which_located!='leads' && which_located!='sales-enquiry' && which_located!='sales-grid'">
