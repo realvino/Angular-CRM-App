@@ -2,7 +2,7 @@
 import { Routes, RouterModule, Router, NavigationEnd } from '@angular/router';
 
 const routes: Routes = [
-    { path: '', redirectTo: '/app/main/dashboard', pathMatch: 'full' },
+    { path: '', redirectTo: '/app/main/salesdashboard', pathMatch: 'full' },
     {
         path: 'account',
         loadChildren: 'account/account.module#AccountModule', //Lazy load account module

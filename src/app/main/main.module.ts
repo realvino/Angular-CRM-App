@@ -197,6 +197,7 @@ import { ArchivedInquiryComponent } from '@app/main/inquiry/archivedInquiry.comp
 import { CreateLineItemModalComponent } from '@app/main/lineItem/createORedit_lineItem.component';
 import { LineItemComponent } from '@app/main/lineItem/lineItem.component';
 import { ContactCompComponent } from '@app/main/newCompany/contact.component';
+import { MdashboardComponent } from '@app/main/dashboard/mdashboard.component';
 
 export function highchartsFactory() {
     const hc = require('highcharts');
@@ -376,7 +377,8 @@ export function highchartsFactory() {
         CreateSalesInquiryComponent,
         ArchivedInquiryComponent,
         CreateLineItemModalComponent,
-        LineItemComponent
+        LineItemComponent,
+        MdashboardComponent
 
     ],
     providers: [{

@@ -285,7 +285,7 @@ else
 		setTimeout(() => {
 		    this.loading=true;
         });
-            this._inquiryProxyService.getInquiryTickets(filter,0).subscribe(inquiries => {
+            this._inquiryProxyService.getInquiryTickets(filter,0,0,0).subscribe(inquiries => {
 			this.groups = inquiries;
 			this.isJunk = false;
 			setTimeout(() => {

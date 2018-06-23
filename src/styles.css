@@ -799,3 +799,7 @@ box-shadow: 0 1px 5px #95959500;
     font-size: 18px;
     margin-top: -9px;
 }
+.highcharts-credits
+{
+    display:none !important;
+}

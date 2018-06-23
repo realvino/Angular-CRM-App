@@ -71,13 +71,15 @@ import { EditInquiryComponent } from '@app/main/inquiry/editInquiry.component';
 import { CreateSalesInquiryComponent } from '@app/main/inquiry/createSalesInquiry.component';
 import { ArchivedInquiryComponent } from '@app/main/inquiry/archivedInquiry.component';
 import { CreateInquiryModalComponent } from '@app/main/inquiry/createORedit.component';
+import { MdashboardComponent } from '@app/main/dashboard/mdashboard.component';
 @NgModule({
     imports: [
         RouterModule.forChild([
             {
                 path: '',
                children: [
-                    { path: 'dashboard', component: DashboardComponent, data: { permission: 'Pages.Tenant.Dashboard' }},
+                    { path: 'salesdashboard', component: DashboardComponent, data: { permission: 'Pages.Tenant.Dashboard' }},
+                    { path: 'marketingdashboard', component: MdashboardComponent, data: { permission: 'Pages.Tenant.Dashboard' }},
                     { path: 'city', component: CityBookComponent,data: { permission: 'Pages.Tenant.Geography.City' }},
                    { path: 'country', component: CountryComponent, data: { permission: 'Pages.Tenant.Geography.Country' }},
                     { path: 'location', component: LocationComponent, data: { permission: 'Pages.Tenant.Geography.Location' }},

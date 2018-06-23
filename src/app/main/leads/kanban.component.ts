@@ -20,6 +20,9 @@ animations: [appModuleAnimation()]
 })
 export class LeadsKanbanComponent extends AppComponentBase implements AfterViewInit,OnDestroy {
 	salesEnable: number;
+	designerEnable: number;
+	coordinatorEnable: number;
+
 	@ViewChild('selectleadsDepartmentModal') selectleadsDepartmentModal :LeadsDepartmentSelectComponent;
 
 	public groups: Array<any> = [];
@@ -40,11 +43,24 @@ export class LeadsKanbanComponent extends AppComponentBase implements AfterViewI
 	StageName:string;
 	UpdateStageName:string;
 	quotation:CreateQuotationInput = new CreateQuotationInput();
-    inquirydetailDto: Select2InquiryDto[];
+	inquirydetailDto: Select2InquiryDto[];
+	
 	salesmanId:number=0;
+	designerId:number=0;
+	coordinatorId:number=0;
+
 	active_salesman:SelectOption[];
+	active_designer:SelectOption[];
+	active_coordinator:SelectOption[];
+
 	salesman:Array<any>;
+	designer:Array<any>;
+	coordinator:Array<any>;
+
 	salesman_Arr:Userprofiledto[];
+	designer_Arr:Userprofiledto[];
+	coordinator_Arr:Userprofiledto[];
+
 	theHtmlString:string = `<li style="background: white;border: 0px solid #fff;border-radius: 8px;box-shadow: inset 0px 0px 1px 1px rgba(82, 82, 82, 0.48);margin-left: 3px;" class="carded"><div class="row"><div class="col-sm-12"><div><i class="fa fa-circle-o" style="color:red;padding-left: 5px;" aria-hidden="true"></i> Q20180319006-R0<span></span></div></div></div></li>`;
 	QRevisionInput: QuotationRevisionInput = new QuotationRevisionInput();
 	constructor(
@@ -239,8 +255,23 @@ removeSalesman(data:any){
 	this.salesmanId = 0;
 	this.getTickets('');
 }
-
-  ngAfterViewInit(): void {
+selectDesigner(data:any){
+	this.designerId = data.id;
+	this.getTickets('');
+}
+removeDesigner(data:any){
+	this.designerId = 0;
+	this.getTickets('');
+}
+selectCoordinator(data:any){
+	this.coordinatorId = data.id;
+	this.getTickets('');
+}
+removeCoordinator(data:any){
+	this.coordinatorId = 0;
+	this.getTickets('');
+}
+  ngAfterViewInit(): void { 
 	this._select2Service.getUserProfile().subscribe(result=>{			
 		if(result.select3data!=null){
 			this.salesman_Arr = result.select3data;
@@ -253,13 +284,42 @@ removeSalesman(data:any){
 					});
 				});
 				this.salesEnable = this.salesman_Arr.length;
-				if(this.salesman_Arr.length == 1 ){
-				  this.active_salesman = [{id:this.salesman_Arr[0].id,text:`<img class="img-circle" height="25" id="SalesmanProfilePicture" width="25" src="${this.path+this.salesman_Arr[0].profilePictureId}">&nbsp;&nbsp;${this.salesman_Arr[0].name}`}];
-				  this.salesmanId = this.salesman_Arr[0].id;
-				  this.getTickets('');
-				}
+				// if(this.salesman_Arr.length == 1 ){
+				//   this.active_salesman = [{id:this.salesman_Arr[0].id,text:`<img class="img-circle" height="25" id="SalesmanProfilePicture" width="25" src="${this.path+this.salesman_Arr[0].profilePictureId}">&nbsp;&nbsp;${this.salesman_Arr[0].name}`}];
+				//   this.salesmanId = this.salesman_Arr[0].id;
+				//   this.getTickets('');
+				// }
 		}
 	});
+	this._select2Service.getDesignerProfile().subscribe(result=>{			
+		if(result.select3data!=null){
+			this.designer_Arr = result.select3data;
+			console.log(this.designer_Arr);
+			  this.designer = [];
+				this.designer_Arr.forEach((sales:{id: number,name: string,profilePictureId: string})=>{
+					this.designer.push({
+						id:sales.id,
+						text:`<img class="img-circle" height="25" id="SalesmanProfilePicture" width="25" src="${this.path+sales.profilePictureId}">&nbsp;&nbsp;${sales.name}`
+					});
+				});
+				this.designerEnable = this.designer_Arr.length;
+		}
+	});
+	this._select2Service.getCoordinatrProfile().subscribe(result=>{			
+		if(result.select3data!=null){
+			this.coordinator_Arr = result.select3data;
+			console.log(this.coordinator_Arr);
+			  this.coordinator = [];
+				this.coordinator_Arr.forEach((sales:{id: number,name: string,profilePictureId: string})=>{
+					this.coordinator.push({
+						id:sales.id,
+						text:`<img class="img-circle" height="25" id="SalesmanProfilePicture" width="25" src="${this.path+sales.profilePictureId}">&nbsp;&nbsp;${sales.name}`
+					});
+				});
+				this.coordinatorEnable = this.coordinator_Arr.length;
+		}
+	});
+
     this.getTickets('');
 	}
 	
@@ -299,16 +359,15 @@ removeSalesman(data:any){
 		setTimeout(() => {
 		    this.loading=true;
         });
-            this._inquiryProxyService.getSalesInquiryTickets(filter,this.salesmanId).subscribe(inquiries => {
+            this._inquiryProxyService.getSalesInquiryTickets(filter,this.salesmanId,this.designerId, this.coordinatorId).subscribe(inquiries => {
 			this.groups = inquiries;
-			console.log(this.groups);
 		    this.loading=false;
 		});
 
     }
 	
     getSearch(event){
-    	if(event === 1){
+    	if(event === 1){ 
     		this.isShow = true;
     	}
 		else

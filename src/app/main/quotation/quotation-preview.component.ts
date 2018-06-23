@@ -54,6 +54,11 @@ export class QuotationPreviewModalComponent extends AppComponentBase {
               this.download_url = AppConsts.remoteServiceBaseUrl +'Pdf/PreviewDownload?QuotationId='+this.quotation_id;
               this.head_preview = 'Standard Optional';
             break;
+            case 5:
+            var url = AppConsts.remoteServiceBaseUrl + "Pdf/ExportStandardQuotation?QuotationId="+quotationId;
+            this.download_url = AppConsts.remoteServiceBaseUrl +'Pdf/StandardQuotationDownload?QuotationId='+this.quotation_id;
+            this.head_preview = 'Government';
+          break;
             default:
     
             break;    
@@ -73,7 +78,7 @@ export class QuotationPreviewModalComponent extends AppComponentBase {
                }
            }
            else if (xmlhttp.status == 400) {
-              alert('There was an error 400');
+              alert('There was an error 400');  
            }
            else {
                alert('something else other than 200 was returned');

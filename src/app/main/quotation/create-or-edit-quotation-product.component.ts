@@ -455,6 +455,8 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
                 this.productInput.totalAmount = parseFloat(((this.productInput.quantity*price)-percent_value).toFixed(2));
                 this.productInput.overAllDiscount = parseFloat((percent_value).toFixed(2));
             }else{
+                this.productInput.approval = true;
+                this.err_discount = false;
                 this.productInput.totalAmount = parseFloat((this.productInput.quantity*price).toFixed(2));
                 this.productInput.overAllPrice =  parseFloat((this.productInput.quantity*price).toFixed(2));
                 this.productInput.overAllDiscount = 0;

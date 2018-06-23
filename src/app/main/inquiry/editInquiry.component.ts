@@ -1419,7 +1419,10 @@ deleteJobActivity(job: JobActivityList): void {
                  this.updateInquiryIn.updateStatusName = 'Assigned';
                  this.updateInquiryIn.currentStatusName = 'Lead';          
                  this.enquiryStatusUpdate();
-                 //this.close();
+                 if(this.from == 1)
+                 {
+                  this.close();
+                 }
                });
               }
               else{
@@ -1432,7 +1435,10 @@ deleteJobActivity(job: JobActivityList): void {
             this.enquiryjunkinput.id = this.update_details.id;
             this.enquiryjunkinput.junk = true;
             this._enquiryUpdateServiceProxy.createORupdateInquiryJunk(this.enquiryjunkinput).subscribe(result=>{
-              this.close();
+              if(this.from == 1)
+              {
+               this.close();
+              }
             });
           }
           else{

@@ -32,6 +32,9 @@
                                     <li>
                                         <a href="javascript:;" (click)="quot_preview(3)">Product Category</a>
                                     </li>
+                                    <li>
+                                        <a href="javascript:;" (click)="quot_preview(5)">Government</a>
+                                    </li>
                                 </ul>
                             </div>
                                 <button type="button" (click)="sendDiscountMail()" tooltip="Discount Mail" *ngIf="quotationList.discountEmail" class="btn btn-circle btn-icon-only green edit-person" style="margin-left: 15px;">
@@ -53,8 +56,8 @@
                                     <i class="fa fa-thumbs-o-up"></i>
                                 </button>
                                  
-                                <img *ngIf="quotationList.designerImage" tooltip="Designer : {{quotationList.designerName}}" style="border: 2px solid #e0e6ec;float: right;margin-left: 10px" alt=""  width="35" height="35" class="img-circle" id="HeaderProfilePicture" src="{{quotationList.designerImage}}">                                                               
-                                <img *ngIf="quotationList.salespersonImage" tooltip="Salesperson : {{quotationList.salesPersonName}}" style="border: 2px solid #e0e6ec;float: right;margin-left: 10px" alt=""  width="35" height="35" class="img-circle" id="HeaderProfilePicture" src="{{quotationList.salespersonImage}}">
+                                <img *ngIf="quotationList.designerImage" tooltip="Designer : {{quotationList.designerName}}" style="border: 2px solid #e0e6ec;float: right;margin-left: 10px" alt=""  width="35" height="35" class="img-circle" id="HeaderProfilePicture" src="{{this.path+quotationList.designerImage}}">                                                               
+                                <img *ngIf="quotationList.salespersonImage" tooltip="Salesperson : {{quotationList.salesPersonName}}" style="border: 2px solid #e0e6ec;float: right;margin-left: 10px" alt=""  width="35" height="35" class="img-circle" id="HeaderProfilePicture" src="{{this.path+quotationList.salespersonImage}}">
                                                    
                         </div>    
                     </h3>
@@ -540,6 +543,8 @@
         </tab>
         </tabset>
     </div>
+    <div *ngIf="quotationList.leadStatusId > 1" id="watermark"><h2>{{quotationList.leadStatusName}}</h2></div>
+
     <RevisedQuotationModel #RevisedQuotationModel></RevisedQuotationModel>
     <createQuotationSectionModal #createQuotationSectionModal (modalSave)="getQuotationProduct()" ></createQuotationSectionModal>
     <createQuotationProductModal #createQuotationProductModal (modalSave)="ngOnInit()"></createQuotationProductModal>
@@ -549,6 +554,22 @@
     <discountModal #discountModal (modalSave)="ngOnInit()"></discountModal>
 
     <style>
+        #watermark
+        {
+            position: fixed;
+            bottom: 50%;
+            right: 45%;
+            opacity: 1.5;
+            z-index: 99;
+            color: white;
+            background: #444d58;
+            padding: 5px;
+            border: 1px solid #555;
+            border-radius: 9px;
+            width: 230px;
+            text-align: center;
+            text-transform: uppercase;
+        }
       .ribbon {
         position: absolute;
         left: -1px;
