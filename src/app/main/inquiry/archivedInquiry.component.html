@@ -301,16 +301,22 @@
                   <input class="form-control" type="text" name="code" [ngClass]="{'edited':saveLeadDetailInput.size}" [(ngModel)]="saveLeadDetailInput.size" [ngModelOptions]="{standalone: true}">
                    <label>{{l("Size")}}</label>
                </div>
-            </div>  
-            <div class="col-md-6" style="margin-top:8px">
-            </div>
+            </div> 
+            <div class="col-md-3">
+            </div> 
+            <div class="col-md-3">
+                <label>Lead Status</label>
+                <ng-select [active]="active_inqleadstatus"  placeholder="Lead Status">
+                </ng-select>
+            </div> 
+           
             <div class="col-md-3" style="padding-top: 10px;">
                <label>Next Activity</label>
-               <p-calendar id="datetime" [(ngModel)]="lastActivity" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
+               <p-calendar showButtonBar="true" id="datetime" [(ngModel)]="lastActivity" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
              </div>
             <div class="col-md-3" style="padding-top: 10px;">
                 <label>Expected Closure</label>
-               <p-calendar id="datetime2" [(ngModel)]="closedDate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
+               <p-calendar showButtonBar="true" id="datetime2" [(ngModel)]="closedDate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
             </div> 
        </div>
     </form>

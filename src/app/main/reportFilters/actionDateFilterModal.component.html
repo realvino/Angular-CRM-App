@@ -18,7 +18,7 @@
                            </label>
                   </div>
                 </div>
-                 <p-calendar id="datetime1" [(ngModel)]="filterDate1" [ngClass]="form-control" [showIcon]="true" [inline]="false" (onSelect)="onSelectMethod1($event)"
+                 <p-calendar showButtonBar="true" id="datetime1" [(ngModel)]="filterDate1" [ngClass]="form-control" [showIcon]="true" [inline]="false" (onSelect)="onSelectMethod1($event)"
                   [disabled]="dateFilterId != 7" [dataType]="date" [ngModelOptions]="{standalone: true}"></p-calendar>  
           </div>
           <div class="col-md-12"  style="width: 222px;" *ngIf="from == 2">
@@ -36,7 +36,7 @@
                            </label>
                   </div>
                 </div>
-                <p-calendar id="datetime2" [(ngModel)]="filterDate2" [ngClass]="form-control" [showIcon]="true" [inline]="false" (onSelect)="onSelectMethod2($event)"
+                <p-calendar showButtonBar="true" id="datetime2" [(ngModel)]="filterDate2" [ngClass]="form-control" [showIcon]="true" [inline]="false" (onSelect)="onSelectMethod2($event)"
                 [disabled]="clsdateFilterId != 7" [dataType]="date" [ngModelOptions]="{standalone: true}"></p-calendar>  
           </div>
           <div class="col-md-12" style="width: 222px;" *ngIf="from == 3">
@@ -54,7 +54,7 @@
                            </label>
                   </div>
                 </div>
-                <p-calendar id="datetime4" [(ngModel)]="filterDate3" [ngClass]="form-control" [showIcon]="true" [inline]="false" (onSelect)="onSelectMethod3($event)"
+                <p-calendar showButtonBar="true" id="datetime4" [(ngModel)]="filterDate3" [ngClass]="form-control" [showIcon]="true" [inline]="false" (onSelect)="onSelectMethod3($event)"
                  [disabled]="credateFilterId != 7" [dataType]="date" [ngModelOptions]="{standalone: true}"></p-calendar>  
           </div>
           <div style="width:200px">

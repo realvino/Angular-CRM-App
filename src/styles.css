@@ -803,3 +803,19 @@ box-shadow: 0 1px 5px #95959500;
 {
     display:none !important;
 }
+.ui-g
+{
+    height: 42px !important;
+}
+.ui-button-secondary
+{
+    background: #32c5d2 !important;
+    height: 31px !important;
+    width: 94px !important;
+} 
+body .ui-datatable .ui-datatable-thead > tr > th, body .ui-datatable .ui-datatable-tfoot > tr > td {
+    background-color: #f1f3f8;
+    padding: .75em;
+    border-color: #c7c7c7 !important;
+    color: #373a3c;
+}

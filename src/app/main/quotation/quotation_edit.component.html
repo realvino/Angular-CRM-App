@@ -308,7 +308,7 @@
                                     </div> 
                                     <div class="col-md-3" style="padding-top: 25px;" *ngIf="(statusId !=2 && quotation.quotationStatusId == 2) || (statusId !=3 && quotation.quotationStatusId == 3)">
                                         <label>Next Activity <required_field></required_field></label>
-                                           <p-calendar id="datetime" [(ngModel)]="nextActivity" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
+                                           <p-calendar showButtonBar="true" id="datetime" [(ngModel)]="nextActivity" [ngClass]="form-control" [ngModelOptions]="{standalone: true}" showButtonBar="true"></p-calendar>  
                                     </div> 
                                     <div class="col-md-3" *ngIf="negotiationSwitch == true">
                                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
@@ -328,7 +328,7 @@
                                             <label>{{l("PO Number")}} <required_field></required_field></label>
                                     </div>
                                    </div>  
-                        </div>
+                        </div> 
                             <div class="row" *ngIf="quotation.lost == true">
                                      <div class="col-md-6">
                                      <div class="form-group form-md-line-input form-md-floating-label no-hint">

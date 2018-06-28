@@ -10819,62 +10819,6 @@ export class InquiryServiceProxy {
     /**
      * @return Success
      */
-    getClosureDateInquiryTickets(filter: string, closureDate: string): Observable<any[]> {
-        let url_ = this.baseUrl + "/api/services/app/Inquiry/GetClosureDateInquiryTickets?";
-        if (filter !== undefined)
-            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
-        if (closureDate !== undefined)
-            url_ += "ClosureDate=" + encodeURIComponent("" + closureDate) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = "";
-        
-        let options_ = {
-            body: content_,
-            method: "get",
-            headers: new Headers({
-                "Content-Type": "application/json; charset=UTF-8", 
-                "Accept": "application/json; charset=UTF-8"
-            })
-        };
-
-        return this.http.request(url_, options_).flatMap((response_) => {
-            return this.processGetClosureDateInquiryTickets(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof Response) {
-                try {
-                    return this.processGetClosureDateInquiryTickets(response_);
-                } catch (e) {
-                    return <Observable<any[]>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<any[]>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processGetClosureDateInquiryTickets(response: Response): Observable<any[]> {
-        const status = response.status; 
-
-        if (status === 200) {
-            const responseText = response.text();
-            let result200: any[] = null;
-            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
-            if (resultData200 && resultData200.constructor === Array) {
-                result200 = [];
-                for (let item of resultData200)
-                    result200.push(item);
-            }
-            return Observable.of(result200);
-        } else if (status !== 200 && status !== 204) {
-            const responseText = response.text();
-            return throwException("An unexpected server error occurred.", status, responseText);
-        }
-        return Observable.of<any[]>(<any>null);
-    }
-
-    /**
-     * @return Success
-     */
     getOverallJobActivity(filter: string, designerId: number, sorting: string, maxResultCount: number, skipCount: number): Observable<PagedResultDtoOfJobActivityList> {
         let url_ = this.baseUrl + "/api/services/app/Inquiry/GetOverallJobActivity?";
         if (filter !== undefined)
@@ -11345,6 +11289,62 @@ export class InquiryServiceProxy {
             return throwException("An unexpected server error occurred.", status, responseText);
         }
         return Observable.of<PagedResultDtoOfCompanyEnquiryList>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getClosureDateInquiryTickets(filter: string, closureDate: string): Observable<any[]> {
+        let url_ = this.baseUrl + "/api/services/app/Inquiry/GetClosureDateInquiryTickets?";
+        if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (closureDate !== undefined)
+            url_ += "ClosureDate=" + encodeURIComponent("" + closureDate) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetClosureDateInquiryTickets(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetClosureDateInquiryTickets(response_);
+                } catch (e) {
+                    return <Observable<any[]>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<any[]>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetClosureDateInquiryTickets(response: Response): Observable<any[]> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: any[] = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(item);
+            }
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<any[]>(<any>null);
     }
 }
 
@@ -24207,8 +24207,8 @@ export class QuotationServiceProxy {
     /**
      * @return Success
      */
-    standardPreviewExcel(input: NullableIdDto): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Quotation/StandardPreviewExcel";
+    standardPreviewExcelNew(input: NullableIdDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Quotation/StandardPreviewExcelNew";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input ? input.toJSON() : null);
@@ -24223,11 +24223,11 @@ export class QuotationServiceProxy {
         };
 
         return this.http.request(url_, options_).flatMap((response_) => {
-            return this.processStandardPreviewExcel(response_);
+            return this.processStandardPreviewExcelNew(response_);
         }).catch((response_: any) => {
             if (response_ instanceof Response) {
                 try {
-                    return this.processStandardPreviewExcel(response_);
+                    return this.processStandardPreviewExcelNew(response_);
                 } catch (e) {
                     return <Observable<void>><any>Observable.throw(e);
                 }
@@ -24236,7 +24236,7 @@ export class QuotationServiceProxy {
         });
     }
 
-    protected processStandardPreviewExcel(response: Response): Observable<void> {
+    protected processStandardPreviewExcelNew(response: Response): Observable<void> {
         const status = response.status; 
 
         if (status === 200) {
@@ -25241,6 +25241,350 @@ export class Select2ServiceProxy {
     constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getUserSalesPersonfromTeam(id: number): Observable<Select3UserResult> {
+        let url_ = this.baseUrl + "/api/services/app/Select2/GetUserSalesPersonfromTeam?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetUserSalesPersonfromTeam(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetUserSalesPersonfromTeam(response_);
+                } catch (e) {
+                    return <Observable<Select3UserResult>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<Select3UserResult>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetUserSalesPersonfromTeam(response: Response): Observable<Select3UserResult> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: Select3UserResult = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Select3UserResult.fromJS(resultData200) : new Select3UserResult();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<Select3UserResult>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getUserSalesPersontoTeam(): Observable<Select3UserResult> {
+        let url_ = this.baseUrl + "/api/services/app/Select2/GetUserSalesPersontoTeam";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetUserSalesPersontoTeam(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetUserSalesPersontoTeam(response_);
+                } catch (e) {
+                    return <Observable<Select3UserResult>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<Select3UserResult>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetUserSalesPersontoTeam(response: Response): Observable<Select3UserResult> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: Select3UserResult = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Select3UserResult.fromJS(resultData200) : new Select3UserResult();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<Select3UserResult>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getSalesExecutive(id: number): Observable<SliderDataList[]> {
+        let url_ = this.baseUrl + "/api/services/app/Select2/GetSalesExecutive?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetSalesExecutive(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetSalesExecutive(response_);
+                } catch (e) {
+                    return <Observable<SliderDataList[]>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<SliderDataList[]>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetSalesExecutive(response: Response): Observable<SliderDataList[]> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: SliderDataList[] = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(SliderDataList.fromJS(item));
+            }
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<SliderDataList[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getDashboardTeam(): Observable<SelectDResult> {
+        let url_ = this.baseUrl + "/api/services/app/Select2/GetDashboardTeam";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetDashboardTeam(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetDashboardTeam(response_);
+                } catch (e) {
+                    return <Observable<SelectDResult>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<SelectDResult>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetDashboardTeam(response: Response): Observable<SelectDResult> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: SelectDResult = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? SelectDResult.fromJS(resultData200) : new SelectDResult();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<SelectDResult>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getDesigners(): Observable<Select3Result> {
+        let url_ = this.baseUrl + "/api/services/app/Select2/GetDesigners";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetDesigners(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetDesigners(response_);
+                } catch (e) {
+                    return <Observable<Select3Result>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<Select3Result>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetDesigners(response: Response): Observable<Select3Result> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: Select3Result = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Select3Result.fromJS(resultData200) : new Select3Result();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<Select3Result>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getDesignerProfile(): Observable<Select3UserResult> {
+        let url_ = this.baseUrl + "/api/services/app/Select2/GetDesignerProfile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetDesignerProfile(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetDesignerProfile(response_);
+                } catch (e) {
+                    return <Observable<Select3UserResult>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<Select3UserResult>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetDesignerProfile(response: Response): Observable<Select3UserResult> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: Select3UserResult = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Select3UserResult.fromJS(resultData200) : new Select3UserResult();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<Select3UserResult>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getCoordinatrProfile(): Observable<Select3UserResult> {
+        let url_ = this.baseUrl + "/api/services/app/Select2/GetCoordinatrProfile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetCoordinatrProfile(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetCoordinatrProfile(response_);
+                } catch (e) {
+                    return <Observable<Select3UserResult>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<Select3UserResult>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetCoordinatrProfile(response: Response): Observable<Select3UserResult> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: Select3UserResult = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Select3UserResult.fromJS(resultData200) : new Select3UserResult();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<Select3UserResult>(<any>null);
     }
 
     /**
@@ -29012,350 +29356,6 @@ export class Select2ServiceProxy {
     }
 
     protected processGetUserSalesPerson(response: Response): Observable<Select3UserResult> {
-        const status = response.status; 
-
-        if (status === 200) {
-            const responseText = response.text();
-            let result200: Select3UserResult = null;
-            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
-            result200 = resultData200 ? Select3UserResult.fromJS(resultData200) : new Select3UserResult();
-            return Observable.of(result200);
-        } else if (status !== 200 && status !== 204) {
-            const responseText = response.text();
-            return throwException("An unexpected server error occurred.", status, responseText);
-        }
-        return Observable.of<Select3UserResult>(<any>null);
-    }
-
-    /**
-     * @return Success
-     */
-    getUserSalesPersonfromTeam(id: number): Observable<Select3UserResult> {
-        let url_ = this.baseUrl + "/api/services/app/Select2/GetUserSalesPersonfromTeam?";
-        if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = "";
-        
-        let options_ = {
-            body: content_,
-            method: "get",
-            headers: new Headers({
-                "Content-Type": "application/json; charset=UTF-8", 
-                "Accept": "application/json; charset=UTF-8"
-            })
-        };
-
-        return this.http.request(url_, options_).flatMap((response_) => {
-            return this.processGetUserSalesPersonfromTeam(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof Response) {
-                try {
-                    return this.processGetUserSalesPersonfromTeam(response_);
-                } catch (e) {
-                    return <Observable<Select3UserResult>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<Select3UserResult>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processGetUserSalesPersonfromTeam(response: Response): Observable<Select3UserResult> {
-        const status = response.status; 
-
-        if (status === 200) {
-            const responseText = response.text();
-            let result200: Select3UserResult = null;
-            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
-            result200 = resultData200 ? Select3UserResult.fromJS(resultData200) : new Select3UserResult();
-            return Observable.of(result200);
-        } else if (status !== 200 && status !== 204) {
-            const responseText = response.text();
-            return throwException("An unexpected server error occurred.", status, responseText);
-        }
-        return Observable.of<Select3UserResult>(<any>null);
-    }
-
-    /**
-     * @return Success
-     */
-    getUserSalesPersontoTeam(): Observable<Select3UserResult> {
-        let url_ = this.baseUrl + "/api/services/app/Select2/GetUserSalesPersontoTeam";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = "";
-        
-        let options_ = {
-            body: content_,
-            method: "get",
-            headers: new Headers({
-                "Content-Type": "application/json; charset=UTF-8", 
-                "Accept": "application/json; charset=UTF-8"
-            })
-        };
-
-        return this.http.request(url_, options_).flatMap((response_) => {
-            return this.processGetUserSalesPersontoTeam(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof Response) {
-                try {
-                    return this.processGetUserSalesPersontoTeam(response_);
-                } catch (e) {
-                    return <Observable<Select3UserResult>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<Select3UserResult>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processGetUserSalesPersontoTeam(response: Response): Observable<Select3UserResult> {
-        const status = response.status; 
-
-        if (status === 200) {
-            const responseText = response.text();
-            let result200: Select3UserResult = null;
-            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
-            result200 = resultData200 ? Select3UserResult.fromJS(resultData200) : new Select3UserResult();
-            return Observable.of(result200);
-        } else if (status !== 200 && status !== 204) {
-            const responseText = response.text();
-            return throwException("An unexpected server error occurred.", status, responseText);
-        }
-        return Observable.of<Select3UserResult>(<any>null);
-    }
-
-    /**
-     * @return Success
-     */
-    getSalesExecutive(id: number): Observable<SliderDataList[]> {
-        let url_ = this.baseUrl + "/api/services/app/Select2/GetSalesExecutive?";
-        if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = "";
-        
-        let options_ = {
-            body: content_,
-            method: "get",
-            headers: new Headers({
-                "Content-Type": "application/json; charset=UTF-8", 
-                "Accept": "application/json; charset=UTF-8"
-            })
-        };
-
-        return this.http.request(url_, options_).flatMap((response_) => {
-            return this.processGetSalesExecutive(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof Response) {
-                try {
-                    return this.processGetSalesExecutive(response_);
-                } catch (e) {
-                    return <Observable<SliderDataList[]>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<SliderDataList[]>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processGetSalesExecutive(response: Response): Observable<SliderDataList[]> {
-        const status = response.status; 
-
-        if (status === 200) {
-            const responseText = response.text();
-            let result200: SliderDataList[] = null;
-            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
-            if (resultData200 && resultData200.constructor === Array) {
-                result200 = [];
-                for (let item of resultData200)
-                    result200.push(SliderDataList.fromJS(item));
-            }
-            return Observable.of(result200);
-        } else if (status !== 200 && status !== 204) {
-            const responseText = response.text();
-            return throwException("An unexpected server error occurred.", status, responseText);
-        }
-        return Observable.of<SliderDataList[]>(<any>null);
-    }
-
-    /**
-     * @return Success
-     */
-    getDashboardTeam(): Observable<SelectDResult> {
-        let url_ = this.baseUrl + "/api/services/app/Select2/GetDashboardTeam";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = "";
-        
-        let options_ = {
-            body: content_,
-            method: "get",
-            headers: new Headers({
-                "Content-Type": "application/json; charset=UTF-8", 
-                "Accept": "application/json; charset=UTF-8"
-            })
-        };
-
-        return this.http.request(url_, options_).flatMap((response_) => {
-            return this.processGetDashboardTeam(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof Response) {
-                try {
-                    return this.processGetDashboardTeam(response_);
-                } catch (e) {
-                    return <Observable<SelectDResult>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<SelectDResult>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processGetDashboardTeam(response: Response): Observable<SelectDResult> {
-        const status = response.status; 
-
-        if (status === 200) {
-            const responseText = response.text();
-            let result200: SelectDResult = null;
-            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
-            result200 = resultData200 ? SelectDResult.fromJS(resultData200) : new SelectDResult();
-            return Observable.of(result200);
-        } else if (status !== 200 && status !== 204) {
-            const responseText = response.text();
-            return throwException("An unexpected server error occurred.", status, responseText);
-        }
-        return Observable.of<SelectDResult>(<any>null);
-    }
-
-    /**
-     * @return Success
-     */
-    getDesigners(): Observable<Select3Result> {
-        let url_ = this.baseUrl + "/api/services/app/Select2/GetDesigners";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = "";
-        
-        let options_ = {
-            body: content_,
-            method: "get",
-            headers: new Headers({
-                "Content-Type": "application/json; charset=UTF-8", 
-                "Accept": "application/json; charset=UTF-8"
-            })
-        };
-
-        return this.http.request(url_, options_).flatMap((response_) => {
-            return this.processGetDesigners(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof Response) {
-                try {
-                    return this.processGetDesigners(response_);
-                } catch (e) {
-                    return <Observable<Select3Result>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<Select3Result>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processGetDesigners(response: Response): Observable<Select3Result> {
-        const status = response.status; 
-
-        if (status === 200) {
-            const responseText = response.text();
-            let result200: Select3Result = null;
-            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
-            result200 = resultData200 ? Select3Result.fromJS(resultData200) : new Select3Result();
-            return Observable.of(result200);
-        } else if (status !== 200 && status !== 204) {
-            const responseText = response.text();
-            return throwException("An unexpected server error occurred.", status, responseText);
-        }
-        return Observable.of<Select3Result>(<any>null);
-    }
-
-    /**
-     * @return Success
-     */
-    getDesignerProfile(): Observable<Select3UserResult> {
-        let url_ = this.baseUrl + "/api/services/app/Select2/GetDesignerProfile";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = "";
-        
-        let options_ = {
-            body: content_,
-            method: "get",
-            headers: new Headers({
-                "Content-Type": "application/json; charset=UTF-8", 
-                "Accept": "application/json; charset=UTF-8"
-            })
-        };
-
-        return this.http.request(url_, options_).flatMap((response_) => {
-            return this.processGetDesignerProfile(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof Response) {
-                try {
-                    return this.processGetDesignerProfile(response_);
-                } catch (e) {
-                    return <Observable<Select3UserResult>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<Select3UserResult>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processGetDesignerProfile(response: Response): Observable<Select3UserResult> {
-        const status = response.status; 
-
-        if (status === 200) {
-            const responseText = response.text();
-            let result200: Select3UserResult = null;
-            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
-            result200 = resultData200 ? Select3UserResult.fromJS(resultData200) : new Select3UserResult();
-            return Observable.of(result200);
-        } else if (status !== 200 && status !== 204) {
-            const responseText = response.text();
-            return throwException("An unexpected server error occurred.", status, responseText);
-        }
-        return Observable.of<Select3UserResult>(<any>null);
-    }
-
-    /**
-     * @return Success
-     */
-    getCoordinatrProfile(): Observable<Select3UserResult> {
-        let url_ = this.baseUrl + "/api/services/app/Select2/GetCoordinatrProfile";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = "";
-        
-        let options_ = {
-            body: content_,
-            method: "get",
-            headers: new Headers({
-                "Content-Type": "application/json; charset=UTF-8", 
-                "Accept": "application/json; charset=UTF-8"
-            })
-        };
-
-        return this.http.request(url_, options_).flatMap((response_) => {
-            return this.processGetCoordinatrProfile(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof Response) {
-                try {
-                    return this.processGetCoordinatrProfile(response_);
-                } catch (e) {
-                    return <Observable<Select3UserResult>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<Select3UserResult>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processGetCoordinatrProfile(response: Response): Observable<Select3UserResult> {
         const status = response.status; 
 
         if (status === 200) {
@@ -42240,6 +42240,7 @@ export class InquiryListDto implements IInquiryListDto {
     quotationsNew: string;
     lost: boolean;
     strike: boolean;
+    revision: string;
 
     constructor(data?: IInquiryListDto) {
         if (data) {
@@ -42358,6 +42359,7 @@ export class InquiryListDto implements IInquiryListDto {
             this.quotationsNew = data["quotationsNew"];
             this.lost = data["lost"];
             this.strike = data["strike"];
+            this.revision = data["revision"];
         }
     }
 
@@ -42475,6 +42477,7 @@ export class InquiryListDto implements IInquiryListDto {
         data["quotationsNew"] = this.quotationsNew;
         data["lost"] = this.lost;
         data["strike"] = this.strike;
+        data["revision"] = this.revision;
         return data; 
     }
 }
@@ -42574,6 +42577,7 @@ export interface IInquiryListDto {
     quotationsNew: string;
     lost: boolean;
     strike: boolean;
+    revision: string;
 }
 
 export class ActivityColor implements IActivityColor {
@@ -54569,6 +54573,319 @@ export interface ICreateOrUpdateRoleInput {
     grantedPermissionNames: string[];
 }
 
+export class Select3UserResult implements ISelect3UserResult {
+    select3data: Userprofiledto[];
+
+    constructor(data?: ISelect3UserResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (data["select3data"] && data["select3data"].constructor === Array) {
+                this.select3data = [];
+                for (let item of data["select3data"])
+                    this.select3data.push(Userprofiledto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Select3UserResult {
+        let result = new Select3UserResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.select3data && this.select3data.constructor === Array) {
+            data["select3data"] = [];
+            for (let item of this.select3data)
+                data["select3data"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ISelect3UserResult {
+    select3data: Userprofiledto[];
+}
+
+export class Userprofiledto implements IUserprofiledto {
+    id: number;
+    name: string;
+    profilePictureId: string;
+
+    constructor(data?: IUserprofiledto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.profilePictureId = data["profilePictureId"];
+        }
+    }
+
+    static fromJS(data: any): Userprofiledto {
+        let result = new Userprofiledto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["profilePictureId"] = this.profilePictureId;
+        return data; 
+    }
+}
+
+export interface IUserprofiledto {
+    id: number;
+    name: string;
+    profilePictureId: string;
+}
+
+export class SliderDataList implements ISliderDataList {
+    id: number;
+    name: string;
+    profilePicture: string;
+    email: string;
+    phone: string;
+    teamId: number;
+
+    constructor(data?: ISliderDataList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.profilePicture = data["profilePicture"];
+            this.email = data["email"];
+            this.phone = data["phone"];
+            this.teamId = data["teamId"];
+        }
+    }
+
+    static fromJS(data: any): SliderDataList {
+        let result = new SliderDataList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["profilePicture"] = this.profilePicture;
+        data["email"] = this.email;
+        data["phone"] = this.phone;
+        data["teamId"] = this.teamId;
+        return data; 
+    }
+}
+
+export interface ISliderDataList {
+    id: number;
+    name: string;
+    profilePicture: string;
+    email: string;
+    phone: string;
+    teamId: number;
+}
+
+export class SelectDResult implements ISelectDResult {
+    selectDdata: Datadtoes[];
+
+    constructor(data?: ISelectDResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (data["selectDdata"] && data["selectDdata"].constructor === Array) {
+                this.selectDdata = [];
+                for (let item of data["selectDdata"])
+                    this.selectDdata.push(Datadtoes.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): SelectDResult {
+        let result = new SelectDResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.selectDdata && this.selectDdata.constructor === Array) {
+            data["selectDdata"] = [];
+            for (let item of this.selectDdata)
+                data["selectDdata"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ISelectDResult {
+    selectDdata: Datadtoes[];
+}
+
+export class Datadtoes implements IDatadtoes {
+    id: number;
+    name: string;
+    photo: string;
+    isSales: boolean;
+
+    constructor(data?: IDatadtoes) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.photo = data["photo"];
+            this.isSales = data["isSales"];
+        }
+    }
+
+    static fromJS(data: any): Datadtoes {
+        let result = new Datadtoes();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["photo"] = this.photo;
+        data["isSales"] = this.isSales;
+        return data; 
+    }
+}
+
+export interface IDatadtoes {
+    id: number;
+    name: string;
+    photo: string;
+    isSales: boolean;
+}
+
+export class Select3Result implements ISelect3Result {
+    select3data: Datadtos[];
+
+    constructor(data?: ISelect3Result) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (data["select3data"] && data["select3data"].constructor === Array) {
+                this.select3data = [];
+                for (let item of data["select3data"])
+                    this.select3data.push(Datadtos.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Select3Result {
+        let result = new Select3Result();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.select3data && this.select3data.constructor === Array) {
+            data["select3data"] = [];
+            for (let item of this.select3data)
+                data["select3data"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ISelect3Result {
+    select3data: Datadtos[];
+}
+
+export class Datadtos implements IDatadtos {
+    id: number;
+    name: string;
+
+    constructor(data?: IDatadtos) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+        }
+    }
+
+    static fromJS(data: any): Datadtos {
+        let result = new Datadtos();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data; 
+    }
+}
+
+export interface IDatadtos {
+    id: number;
+    name: string;
+}
+
 export class Select2City implements ISelect2City {
     select2data: Citydto[];
 
@@ -54827,88 +55144,6 @@ export class Datadto implements IDatadto {
 }
 
 export interface IDatadto {
-    id: number;
-    name: string;
-}
-
-export class Select3Result implements ISelect3Result {
-    select3data: Datadtos[];
-
-    constructor(data?: ISelect3Result) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            if (data["select3data"] && data["select3data"].constructor === Array) {
-                this.select3data = [];
-                for (let item of data["select3data"])
-                    this.select3data.push(Datadtos.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): Select3Result {
-        let result = new Select3Result();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (this.select3data && this.select3data.constructor === Array) {
-            data["select3data"] = [];
-            for (let item of this.select3data)
-                data["select3data"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface ISelect3Result {
-    select3data: Datadtos[];
-}
-
-export class Datadtos implements IDatadtos {
-    id: number;
-    name: string;
-
-    constructor(data?: IDatadtos) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-            this.name = data["name"];
-        }
-    }
-
-    static fromJS(data: any): Datadtos {
-        let result = new Datadtos();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        return data; 
-    }
-}
-
-export interface IDatadtos {
     id: number;
     name: string;
 }
@@ -56191,237 +56426,6 @@ export interface IColumnDto {
     id: number;
     code: string;
     name: string;
-}
-
-export class Select3UserResult implements ISelect3UserResult {
-    select3data: Userprofiledto[];
-
-    constructor(data?: ISelect3UserResult) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            if (data["select3data"] && data["select3data"].constructor === Array) {
-                this.select3data = [];
-                for (let item of data["select3data"])
-                    this.select3data.push(Userprofiledto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): Select3UserResult {
-        let result = new Select3UserResult();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (this.select3data && this.select3data.constructor === Array) {
-            data["select3data"] = [];
-            for (let item of this.select3data)
-                data["select3data"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface ISelect3UserResult {
-    select3data: Userprofiledto[];
-}
-
-export class Userprofiledto implements IUserprofiledto {
-    id: number;
-    name: string;
-    profilePictureId: string;
-
-    constructor(data?: IUserprofiledto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-            this.name = data["name"];
-            this.profilePictureId = data["profilePictureId"];
-        }
-    }
-
-    static fromJS(data: any): Userprofiledto {
-        let result = new Userprofiledto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["profilePictureId"] = this.profilePictureId;
-        return data; 
-    }
-}
-
-export interface IUserprofiledto {
-    id: number;
-    name: string;
-    profilePictureId: string;
-}
-
-export class SliderDataList implements ISliderDataList {
-    id: number;
-    name: string;
-    profilePicture: string;
-    email: string;
-    phone: string;
-    teamId: number;
-
-    constructor(data?: ISliderDataList) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-            this.name = data["name"];
-            this.profilePicture = data["profilePicture"];
-            this.email = data["email"];
-            this.phone = data["phone"];
-            this.teamId = data["teamId"];
-        }
-    }
-
-    static fromJS(data: any): SliderDataList {
-        let result = new SliderDataList();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["profilePicture"] = this.profilePicture;
-        data["email"] = this.email;
-        data["phone"] = this.phone;
-        data["teamId"] = this.teamId;
-        return data; 
-    }
-}
-
-export interface ISliderDataList {
-    id: number;
-    name: string;
-    profilePicture: string;
-    email: string;
-    phone: string;
-    teamId: number;
-}
-
-export class SelectDResult implements ISelectDResult {
-    selectDdata: Datadtoes[];
-
-    constructor(data?: ISelectDResult) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            if (data["selectDdata"] && data["selectDdata"].constructor === Array) {
-                this.selectDdata = [];
-                for (let item of data["selectDdata"])
-                    this.selectDdata.push(Datadtoes.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): SelectDResult {
-        let result = new SelectDResult();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (this.selectDdata && this.selectDdata.constructor === Array) {
-            data["selectDdata"] = [];
-            for (let item of this.selectDdata)
-                data["selectDdata"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface ISelectDResult {
-    selectDdata: Datadtoes[];
-}
-
-export class Datadtoes implements IDatadtoes {
-    id: number;
-    name: string;
-    photo: string;
-    isSales: boolean;
-
-    constructor(data?: IDatadtoes) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-            this.name = data["name"];
-            this.photo = data["photo"];
-            this.isSales = data["isSales"];
-        }
-    }
-
-    static fromJS(data: any): Datadtoes {
-        let result = new Datadtoes();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["photo"] = this.photo;
-        data["isSales"] = this.isSales;
-        return data; 
-    }
-}
-
-export interface IDatadtoes {
-    id: number;
-    name: string;
-    photo: string;
-    isSales: boolean;
 }
 
 export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInformationsOutput {

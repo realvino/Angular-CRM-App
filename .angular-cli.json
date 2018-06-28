@@ -55,8 +55,8 @@
         "../node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css",
 
         "../node_modules/primeng/resources/primeng.min.css",
+        "../node_modules/primeicons/primeicons.css",
         "../node_modules/primeng/resources/themes/bootstrap/theme.css",
-        "../src/assets/primeng/datatable/css/primeng.datatable.css",
         "../src/assets/primeng/file-upload/css/primeng.file-upload.css",
 
         "../node_modules/quill/dist/quill.core.css",

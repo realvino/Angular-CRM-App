@@ -1,17 +1,17 @@
-<div [busyIf]="loading" class="container" style="width:100%;margin-bottom: 25px;background: #fff;">
+<div [busyIf]="loading" class="container" style="width:100%;margin-bottom: 25px;">
     <div class="modal-header">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <h4 class="modal-title">
                     <span>{{l("Edit")}} - {{inquiry.subMmissionId}}</span>
                 </h4>
             </div>
             <div *ngIf="which_located !='sales-enquiry' && which_located !='sales-grid'" class="col-md-3">
             </div>
-            <div *ngIf="which_located =='sales-enquiry' || which_located =='sales-grid'" class="col-md-1" style="text-align: right;margin-top: 8px;">
+            <!-- <div *ngIf="which_located =='sales-enquiry' || which_located =='sales-grid'" class="col-md-1" style="text-align: right;margin-top: 8px;">
                 <span>Close</span>                  
-            </div>
-            <div *ngIf="which_located =='sales-enquiry' || which_located =='sales-grid'" class="col-md-2" title="Close Inquiry"> 
+            </div> -->
+            <!-- <div *ngIf="which_located =='sales-enquiry' || which_located =='sales-grid'" class="col-md-2" title="Close Inquiry"> 
                 <div class="onoffswitch">
                     <input type="checkbox" name="close" class="onoffswitch-checkbox" id="myclose" [(ngModel)]="inquiry.isClosed"  (change)="InqClosed(inquiry.id)">
                         <label class="onoffswitch-label" for="myclose">
@@ -19,8 +19,8 @@
                             <span class="onoffswitch-switch"></span>
                         </label>
                 </div>
-            </div>
-            <div class="col-md-6" style="right:80px;">
+            </div> -->
+            <div class="col-md-8" style="right:80px;">
                 <a style="float: right;margin-left: 10px"  (click)="changeStage()" class="btn green-haze btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">Probability : {{inquiry.opportunity}} %
                     <i class="fa fa-angle-down"></i>
                 </a>
@@ -280,7 +280,7 @@
                                 <ng-select [active]="active_assigned" [allowClear]="true" [items]="assignedBy" [disabled]="!isGranted('Pages.Tenant.Enquiry.SalesEnquiry.Edit.Team') || Enabled_Assigned" (selected)="selectAssigned($event)"></ng-select>
                         </div>                   
                     </div>
-                <div class="row"  *ngIf="inquiry.mileStoneId > 1 && which_located!='sales-enquiry' && which_located!='sales-grid'" style="background: #e2959545; margin-right: 0px;margin-left: 0px; padding: 10px;margin-top: 10px;">
+                <div class="row"  *ngIf="inquiry.mileStoneId > 1 && which_located!='sales-enquiry' && which_located!='sales-grid'" style="background: #e3e4e6; margin-right: 0px;margin-left: 0px; padding: 10px;margin-top: 10px;">
                         <div class="col-md-3">
                             <div class="form-group form-md-line-input form-md-floating-label no-hint">
                                 <input class="form-control" type="number" name="estimationValue" [ngClass]="{'edited':inquiry.estimationValue}" [(ngModel)]="inquiry.estimationValue" [ngModelOptions]="{standalone: true}">
@@ -313,7 +313,7 @@
                 </div> 
                 </div>
             </form>
-            <div class="row" *ngIf="which_located =='sales-enquiry' || which_located =='sales-grid'" style="background: #e2959545; margin-right: 0px;margin-left: 0px; padding: 10px;margin-top: 10px;">
+            <div class="row" *ngIf="which_located =='sales-enquiry' || which_located =='sales-grid'" style="background: #e3e4e6; margin-right: 0px;margin-left: 0px; padding: 10px;margin-top: 10px;">
                 <div class="col-md-3">
                        <label>Lead Category</label>
                        <ng-select [active]="active_lead_save_category" [allowClear]="true" [items]="lead_category" [disabled]="lead_category_enable" (selected)="selectedLeadSaveCategory($event)" (removed)="removedLeadSaveCategory($event)" (typed)="typedLeadSaveCategory($event)" placeholder="Lead Category">
@@ -385,11 +385,11 @@
             </div> 
            <div class="col-md-3" style="padding-top: 24px;">
             <label>Next Activity <required_field></required_field></label>
-            <p-calendar id="datetime" [(ngModel)]="lastActivity" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
+            <p-calendar showButtonBar="true" id="datetime" [(ngModel)]="lastActivity" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
      </div>
     <div class="col-md-3" style="padding-top: 24px;">
         <label>Expected Closure <required_field></required_field></label>
-        <p-calendar id="datetime2" [(ngModel)]="closedDate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
+        <p-calendar showButtonBar="true" id="datetime2" [(ngModel)]="closedDate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
     </div> 
     <!-- <div class="col-md-2">
         <label>Disable Quote</label>

@@ -1,7 +1,7 @@
 <p-overlayPanel #menu showCloseIcon="true">
     <!-- <p-listbox multiple="true" checkbox="true" [options]="options" filter="true" defaultLabel="" [(ngModel)]="value" (blur)="onBlur()" (onChange)="onMenuChange($event)"></p-listbox> -->
     <div class="row" style="margin: 10px;">
-      <p-calendar id="datetime" [(ngModel)]="filterDate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}" (onSelect)="onMenuChange(filterDate)"></p-calendar>  
+      <p-calendar showButtonBar="true" id="datetime" [(ngModel)]="filterDate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}" (onSelect)="onMenuChange(filterDate)"></p-calendar>  
     </div>
 </p-overlayPanel>
   

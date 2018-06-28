@@ -103,7 +103,7 @@ filterText: string = '';
   QRevisionInput: QuotationRevisionInput = new QuotationRevisionInput();
 
   enq_id: number;
-
+  en: any;
    constructor(
         injector: Injector,
         private _http: Http,
@@ -126,6 +126,17 @@ filterText: string = '';
 
     }
   ngOnInit() {
+    this.en = {
+      firstDayOfWeek: 0,
+      dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      dayNamesMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+      monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      today: 'Today',
+      clear: 'Clear it !!!'
+    };
+
     this.pointenable ="yes";
     var the_arr = this.router.url.split('/');
     the_arr.pop();
@@ -344,7 +355,7 @@ filterText: string = '';
 
   }
   ngAfterViewInit(): void {
-
+   
   }
   getQuotationProduct(){
     this._quoatationService.getQuotationProduct(this.id).subscribe(result=>{

@@ -210,7 +210,7 @@ export function highchartsFactory() {
 @NgModule({
     imports: [
         CommonModule,
-        FormsModule,
+        FormsModule, 
         ModalModule.forRoot(),
         TabsModule.forRoot(),
         TooltipModule.forRoot(),

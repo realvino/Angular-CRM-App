@@ -39,7 +39,7 @@ import { Ng2MultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 @NgModule({
     declarations: [
         AppComponent,
-        HeaderComponent,
+        HeaderComponent,  
         HeaderNotificationsComponent,
         SideBarComponent,
         FooterComponent,

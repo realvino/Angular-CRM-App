@@ -224,6 +224,7 @@ export class EditInquiryComponent extends AppComponentBase implements AfterViewI
     teams:Array<any>;
     team_list: Select2TeamDto[];
     active_department:SelectOption[]=[];
+  leadstatusId: number;
 
     constructor(
         injector: Injector,
@@ -520,6 +521,7 @@ editEnqActivity(companyId,data): void {
            if(result.inquirys.leadStatusId !=0)
            {
             this.update_details.leadStatusId = result.inquirys.leadStatusId;
+            this.leadstatusId = result.inquirys.leadStatusId;
             this.active_inqleadstatus = [{"id":result.inquirys.leadStatusId,"text":result.inquirys.leadStatusName}];
            }
            if(result.inquiryDetails!=null){
@@ -1446,6 +1448,12 @@ deleteJobActivity(job: JobActivityList): void {
               .finally(() => this.saving = false)
               .subscribe(() => {
                 this.updateSalesman();
+                if(this.update_details.leadStatusId == 4 && (this.leadstatusId != this.update_details.leadStatusId))
+                {
+                  this._enquiryUpdateServiceProxy.inquiryClosed(this.update_details.id).subscribe(result=>{
+                    this.notify.success(" Inquiry Closed ");
+                  this.close();
+                });                }
                this.notify.success(this.l('SavedSuccessfully'));
                if(this.from == 1)
                {

@@ -26,6 +26,7 @@ export class ArchivedInquiryComponent extends AppComponentBase implements AfterV
 
     lead_source_enable: boolean = false;
     designerr: boolean = false;
+    active_inqleadstatus:SelectOption[];
     companyDetailsDto:Select2CompanyDto = new Select2CompanyDto();
     activities:any=[];
       @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
@@ -206,6 +207,10 @@ export class ArchivedInquiryComponent extends AppComponentBase implements AfterV
          this._inquiryServiceProxy.getInquiryForEdit(inquiryId).subscribe((result) => {
           
              this.Sources = result.selectedSource;
+          if(result.inquirys.leadStatusId !=0)
+           {
+            this.active_inqleadstatus = [{"id":result.inquirys.leadStatusId,"text":result.inquirys.leadStatusName}];
+           }
              if(result.inquiryDetails!=null){
   
                   this.co_ordimg = result.inquiryDetails.coordinatorImage;
