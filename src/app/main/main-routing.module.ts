@@ -72,6 +72,7 @@ import { CreateSalesInquiryComponent } from '@app/main/inquiry/createSalesInquir
 import { ArchivedInquiryComponent } from '@app/main/inquiry/archivedInquiry.component';
 import { CreateInquiryModalComponent } from '@app/main/inquiry/createORedit.component';
 import { MdashboardComponent } from '@app/main/dashboard/mdashboard.component';
+import { FinishedComponent } from '@app/main/finished/finishedComponent';
 @NgModule({
     imports: [
         RouterModule.forChild([
@@ -84,7 +85,8 @@ import { MdashboardComponent } from '@app/main/dashboard/mdashboard.component';
                    { path: 'country', component: CountryComponent, data: { permission: 'Pages.Tenant.Geography.Country' }},
                     { path: 'location', component: LocationComponent, data: { permission: 'Pages.Tenant.Geography.Location' }},
                     { path: 'product', component: ProductComponent, data: { permission: "Pages.Tenant.ProductFamily.Products" }},
-					{ path: 'productGroup', component: ProductGroupComponent},
+                    { path: 'productGroup', component: ProductGroupComponent},
+                    { path: 'finish', component: FinishedComponent},
                     // { path: 'productSubGroup', component: ProductSubGroupComponent, data: { permission: 'Pages.Tenant.ProductFamily.ProductSubGroup' }},
                      { path: 'region', component: RegionComponent, data: { permission: 'Pages.Tenant.Geography.Region' }},
                    // { path: 'newcompany', component: CompanyComponent, data: { permission: 'Pages.Tenant.AddressBook.Company' }},

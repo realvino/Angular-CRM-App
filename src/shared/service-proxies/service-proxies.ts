@@ -7443,6 +7443,592 @@ export class EnquiryUpdateServiceProxy {
 }
 
 @Injectable()
+export class FinishedServiceProxy {
+    private http: Http;
+    private baseUrl: string;
+    protected jsonParseReviver: (key: string, value: any) => any = undefined;
+
+    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getFinished(filter: string, sorting: string, maxResultCount: number, skipCount: number): Observable<PagedResultDtoOfFinishedList> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/GetFinished?";
+        if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetFinished(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetFinished(response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfFinishedList>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfFinishedList>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetFinished(response: Response): Observable<PagedResultDtoOfFinishedList> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: PagedResultDtoOfFinishedList = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfFinishedList.fromJS(resultData200) : new PagedResultDtoOfFinishedList();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<PagedResultDtoOfFinishedList>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getFinishedForEdit(id: number): Observable<FinishedList> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/GetFinishedForEdit?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetFinishedForEdit(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetFinishedForEdit(response_);
+                } catch (e) {
+                    return <Observable<FinishedList>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<FinishedList>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetFinishedForEdit(response: Response): Observable<FinishedList> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: FinishedList = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? FinishedList.fromJS(resultData200) : new FinishedList();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<FinishedList>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    createOrUpdateFinished(input: FinishedInput): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/CreateOrUpdateFinished";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input ? input.toJSON() : null);
+        
+        let options_ = {
+            body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processCreateOrUpdateFinished(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processCreateOrUpdateFinished(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processCreateOrUpdateFinished(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    createFinishedAsync(input: FinishedInput): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/CreateFinishedAsync";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input ? input.toJSON() : null);
+        
+        let options_ = {
+            body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processCreateFinishedAsync(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processCreateFinishedAsync(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processCreateFinishedAsync(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    updateFinishedAsync(input: FinishedInput): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/UpdateFinishedAsync";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input ? input.toJSON() : null);
+        
+        let options_ = {
+            body: content_,
+            method: "put",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processUpdateFinishedAsync(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processUpdateFinishedAsync(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdateFinishedAsync(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getDeleteFinished(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/GetDeleteFinished?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetDeleteFinished(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetDeleteFinished(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetDeleteFinished(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getFinishedDetail(id: number): Observable<FinishedDetailList[]> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/GetFinishedDetail?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetFinishedDetail(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetFinishedDetail(response_);
+                } catch (e) {
+                    return <Observable<FinishedDetailList[]>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<FinishedDetailList[]>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetFinishedDetail(response: Response): Observable<FinishedDetailList[]> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: FinishedDetailList[] = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(FinishedDetailList.fromJS(item));
+            }
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<FinishedDetailList[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getFinishedDetailForEdit(id: number): Observable<FinishedDetailList> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/GetFinishedDetailForEdit?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetFinishedDetailForEdit(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetFinishedDetailForEdit(response_);
+                } catch (e) {
+                    return <Observable<FinishedDetailList>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<FinishedDetailList>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetFinishedDetailForEdit(response: Response): Observable<FinishedDetailList> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: FinishedDetailList = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? FinishedDetailList.fromJS(resultData200) : new FinishedDetailList();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<FinishedDetailList>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    createOrUpdateFinishedDetail(input: FinishedDetailInput): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/CreateOrUpdateFinishedDetail";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input ? input.toJSON() : null);
+        
+        let options_ = {
+            body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processCreateOrUpdateFinishedDetail(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processCreateOrUpdateFinishedDetail(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processCreateOrUpdateFinishedDetail(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    createFinishedDetailAsync(input: FinishedDetailInput): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/CreateFinishedDetailAsync";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input ? input.toJSON() : null);
+        
+        let options_ = {
+            body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processCreateFinishedDetailAsync(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processCreateFinishedDetailAsync(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processCreateFinishedDetailAsync(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    updateFinishedDetailAsync(input: FinishedDetailInput): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/UpdateFinishedDetailAsync";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input ? input.toJSON() : null);
+        
+        let options_ = {
+            body: content_,
+            method: "put",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processUpdateFinishedDetailAsync(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processUpdateFinishedDetailAsync(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdateFinishedDetailAsync(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    deleteFinishedDetail(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/DeleteFinishedDetail?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "delete",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processDeleteFinishedDetail(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processDeleteFinishedDetail(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processDeleteFinishedDetail(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
+}
+
+@Injectable()
 export class FriendshipServiceProxy {
     private http: Http;
     private baseUrl: string;
@@ -9241,6 +9827,141 @@ export class InquiryServiceProxy {
     }
 
     protected processUpdateInquiryDetailAsync(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    inquiryDesignerApproval(input: EntityDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Inquiry/InquiryDesignerApproval";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input ? input.toJSON() : null);
+        
+        let options_ = {
+            body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processInquiryDesignerApproval(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processInquiryDesignerApproval(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processInquiryDesignerApproval(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    inquiryDesignerReject(input: EntityDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Inquiry/InquiryDesignerReject";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input ? input.toJSON() : null);
+        
+        let options_ = {
+            body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processInquiryDesignerReject(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processInquiryDesignerReject(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processInquiryDesignerReject(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    inquiryRevisionApproval(input: EntityDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Inquiry/InquiryRevisionApproval";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input ? input.toJSON() : null);
+        
+        let options_ = {
+            body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processInquiryRevisionApproval(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processInquiryRevisionApproval(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processInquiryRevisionApproval(response: Response): Observable<void> {
         const status = response.status; 
 
         if (status === 200) {
@@ -11345,6 +12066,54 @@ export class InquiryServiceProxy {
             return throwException("An unexpected server error occurred.", status, responseText);
         }
         return Observable.of<any[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getSalesManagerNotifications(): Observable<ListResultDtoOfNotificationListDto> {
+        let url_ = this.baseUrl + "/api/services/app/Inquiry/GetSalesManagerNotifications";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetSalesManagerNotifications(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetSalesManagerNotifications(response_);
+                } catch (e) {
+                    return <Observable<ListResultDtoOfNotificationListDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ListResultDtoOfNotificationListDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetSalesManagerNotifications(response: Response): Observable<ListResultDtoOfNotificationListDto> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: ListResultDtoOfNotificationListDto = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ListResultDtoOfNotificationListDto.fromJS(resultData200) : new ListResultDtoOfNotificationListDto();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<ListResultDtoOfNotificationListDto>(<any>null);
     }
 }
 
@@ -24248,6 +25017,51 @@ export class QuotationServiceProxy {
         }
         return Observable.of<void>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    quotationRevaluation(input: QuotationRevaluationInput): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Quotation/QuotationRevaluation";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input ? input.toJSON() : null);
+        
+        let options_ = {
+            body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processQuotationRevaluation(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processQuotationRevaluation(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processQuotationRevaluation(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -25246,6 +26060,54 @@ export class Select2ServiceProxy {
     /**
      * @return Success
      */
+    getUserSalesPerson(): Observable<Select3UserResult> {
+        let url_ = this.baseUrl + "/api/services/app/Select2/GetUserSalesPerson";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetUserSalesPerson(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetUserSalesPerson(response_);
+                } catch (e) {
+                    return <Observable<Select3UserResult>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<Select3UserResult>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetUserSalesPerson(response: Response): Observable<Select3UserResult> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: Select3UserResult = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Select3UserResult.fromJS(resultData200) : new Select3UserResult();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<Select3UserResult>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
     getUserSalesPersonfromTeam(id: number): Observable<Select3UserResult> {
         let url_ = this.baseUrl + "/api/services/app/Select2/GetUserSalesPersonfromTeam?";
         if (id !== undefined)
@@ -25633,6 +26495,54 @@ export class Select2ServiceProxy {
             return throwException("An unexpected server error occurred.", status, responseText);
         }
         return Observable.of<Select2City>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getFinishes(): Observable<Select2Result> {
+        let url_ = this.baseUrl + "/api/services/app/Select2/GetFinishes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetFinishes(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetFinishes(response_);
+                } catch (e) {
+                    return <Observable<Select2Result>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<Select2Result>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetFinishes(response: Response): Observable<Select2Result> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: Select2Result = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Select2Result.fromJS(resultData200) : new Select2Result();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<Select2Result>(<any>null);
     }
 
     /**
@@ -29322,54 +30232,6 @@ export class Select2ServiceProxy {
         }
         return Observable.of<Select3UserResult>(<any>null);
     }
-
-    /**
-     * @return Success
-     */
-    getUserSalesPerson(): Observable<Select3UserResult> {
-        let url_ = this.baseUrl + "/api/services/app/Select2/GetUserSalesPerson";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = "";
-        
-        let options_ = {
-            body: content_,
-            method: "get",
-            headers: new Headers({
-                "Content-Type": "application/json; charset=UTF-8", 
-                "Accept": "application/json; charset=UTF-8"
-            })
-        };
-
-        return this.http.request(url_, options_).flatMap((response_) => {
-            return this.processGetUserSalesPerson(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof Response) {
-                try {
-                    return this.processGetUserSalesPerson(response_);
-                } catch (e) {
-                    return <Observable<Select3UserResult>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<Select3UserResult>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processGetUserSalesPerson(response: Response): Observable<Select3UserResult> {
-        const status = response.status; 
-
-        if (status === 200) {
-            const responseText = response.text();
-            let result200: Select3UserResult = null;
-            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
-            result200 = resultData200 ? Select3UserResult.fromJS(resultData200) : new Select3UserResult();
-            return Observable.of(result200);
-        } else if (status !== 200 && status !== 204) {
-            const responseText = response.text();
-            return throwException("An unexpected server error occurred.", status, responseText);
-        }
-        return Observable.of<Select3UserResult>(<any>null);
-    }
 }
 
 @Injectable()
@@ -31812,6 +32674,62 @@ export class TenantDashboardServiceProxy {
             return throwException("An unexpected server error occurred.", status, responseText);
         }
         return Observable.of<any[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getConversionRatioGraph(userId: string, teamId: string, startDate: moment.Moment, endDate: moment.Moment): Observable<GetConvertionratio> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetConversionRatioGraph?";
+        if (userId !== undefined)
+            url_ += "UserId=" + encodeURIComponent("" + userId) + "&"; 
+        if (teamId !== undefined)
+            url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
+        if (startDate !== undefined)
+            url_ += "StartDate=" + encodeURIComponent("" + startDate.toJSON()) + "&"; 
+        if (endDate !== undefined)
+            url_ += "EndDate=" + encodeURIComponent("" + endDate.toJSON()) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetConversionRatioGraph(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetConversionRatioGraph(response_);
+                } catch (e) {
+                    return <Observable<GetConvertionratio>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<GetConvertionratio>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetConversionRatioGraph(response: Response): Observable<GetConvertionratio> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: GetConvertionratio = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? GetConvertionratio.fromJS(resultData200) : new GetConvertionratio();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<GetConvertionratio>(<any>null);
     }
 
     /**
@@ -40860,6 +41778,285 @@ export interface INullableIdDto {
     id: number;
 }
 
+export class PagedResultDtoOfFinishedList implements IPagedResultDtoOfFinishedList {
+    totalCount: number;
+    items: FinishedList[];
+
+    constructor(data?: IPagedResultDtoOfFinishedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(FinishedList.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfFinishedList {
+        let result = new PagedResultDtoOfFinishedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfFinishedList {
+    totalCount: number;
+    items: FinishedList[];
+}
+
+export class FinishedList implements IFinishedList {
+    id: number;
+    code: string;
+    name: string;
+    description: string;
+
+    constructor(data?: IFinishedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.code = data["code"];
+            this.name = data["name"];
+            this.description = data["description"];
+        }
+    }
+
+    static fromJS(data: any): FinishedList {
+        let result = new FinishedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        return data; 
+    }
+}
+
+export interface IFinishedList {
+    id: number;
+    code: string;
+    name: string;
+    description: string;
+}
+
+export class FinishedInput implements IFinishedInput {
+    id: number;
+    code: string;
+    name: string;
+    description: string;
+
+    constructor(data?: IFinishedInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.code = data["code"];
+            this.name = data["name"];
+            this.description = data["description"];
+        }
+    }
+
+    static fromJS(data: any): FinishedInput {
+        let result = new FinishedInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        return data; 
+    }
+}
+
+export interface IFinishedInput {
+    id: number;
+    code: string;
+    name: string;
+    description: string;
+}
+
+export class FinishedDetailList implements IFinishedDetailList {
+    id: number;
+    gpCode: string;
+    price: number;
+    finishedId: number;
+    finishedCode: string;
+    finishedName: string;
+    finishedDescription: string;
+    productId: number;
+    productCode: string;
+    productName: string;
+    productSuspectCode: string;
+    productGpcode: string;
+    productDescription: string;
+    productPrice: number;
+
+    constructor(data?: IFinishedDetailList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.gpCode = data["gpCode"];
+            this.price = data["price"];
+            this.finishedId = data["finishedId"];
+            this.finishedCode = data["finishedCode"];
+            this.finishedName = data["finishedName"];
+            this.finishedDescription = data["finishedDescription"];
+            this.productId = data["productId"];
+            this.productCode = data["productCode"];
+            this.productName = data["productName"];
+            this.productSuspectCode = data["productSuspectCode"];
+            this.productGpcode = data["productGpcode"];
+            this.productDescription = data["productDescription"];
+            this.productPrice = data["productPrice"];
+        }
+    }
+
+    static fromJS(data: any): FinishedDetailList {
+        let result = new FinishedDetailList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["gpCode"] = this.gpCode;
+        data["price"] = this.price;
+        data["finishedId"] = this.finishedId;
+        data["finishedCode"] = this.finishedCode;
+        data["finishedName"] = this.finishedName;
+        data["finishedDescription"] = this.finishedDescription;
+        data["productId"] = this.productId;
+        data["productCode"] = this.productCode;
+        data["productName"] = this.productName;
+        data["productSuspectCode"] = this.productSuspectCode;
+        data["productGpcode"] = this.productGpcode;
+        data["productDescription"] = this.productDescription;
+        data["productPrice"] = this.productPrice;
+        return data; 
+    }
+}
+
+export interface IFinishedDetailList {
+    id: number;
+    gpCode: string;
+    price: number;
+    finishedId: number;
+    finishedCode: string;
+    finishedName: string;
+    finishedDescription: string;
+    productId: number;
+    productCode: string;
+    productName: string;
+    productSuspectCode: string;
+    productGpcode: string;
+    productDescription: string;
+    productPrice: number;
+}
+
+export class FinishedDetailInput implements IFinishedDetailInput {
+    id: number;
+    finishedId: number;
+    productId: number;
+    gpCode: string;
+    price: number;
+
+    constructor(data?: IFinishedDetailInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.finishedId = data["finishedId"];
+            this.productId = data["productId"];
+            this.gpCode = data["gpCode"];
+            this.price = data["price"];
+        }
+    }
+
+    static fromJS(data: any): FinishedDetailInput {
+        let result = new FinishedDetailInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["finishedId"] = this.finishedId;
+        data["productId"] = this.productId;
+        data["gpCode"] = this.gpCode;
+        data["price"] = this.price;
+        return data; 
+    }
+}
+
+export interface IFinishedDetailInput {
+    id: number;
+    finishedId: number;
+    productId: number;
+    gpCode: string;
+    price: number;
+}
+
 export class CreateFriendshipRequestInput implements ICreateFriendshipRequestInput {
     userId: number;
     tenantId: number;
@@ -42241,6 +43438,10 @@ export class InquiryListDto implements IInquiryListDto {
     lost: boolean;
     strike: boolean;
     revision: string;
+    designerApproval: boolean;
+    revisionApproval: boolean;
+    stared: boolean;
+    weightedvalue: number;
 
     constructor(data?: IInquiryListDto) {
         if (data) {
@@ -42360,6 +43561,10 @@ export class InquiryListDto implements IInquiryListDto {
             this.lost = data["lost"];
             this.strike = data["strike"];
             this.revision = data["revision"];
+            this.designerApproval = data["designerApproval"];
+            this.revisionApproval = data["revisionApproval"];
+            this.stared = data["stared"];
+            this.weightedvalue = data["weightedvalue"];
         }
     }
 
@@ -42478,6 +43683,10 @@ export class InquiryListDto implements IInquiryListDto {
         data["lost"] = this.lost;
         data["strike"] = this.strike;
         data["revision"] = this.revision;
+        data["designerApproval"] = this.designerApproval;
+        data["revisionApproval"] = this.revisionApproval;
+        data["stared"] = this.stared;
+        data["weightedvalue"] = this.weightedvalue;
         return data; 
     }
 }
@@ -42578,6 +43787,10 @@ export interface IInquiryListDto {
     lost: boolean;
     strike: boolean;
     revision: string;
+    designerApproval: boolean;
+    revisionApproval: boolean;
+    stared: boolean;
+    weightedvalue: number;
 }
 
 export class ActivityColor implements IActivityColor {
@@ -42965,6 +44178,10 @@ export class InquiryInputDto implements IInquiryInputDto {
     total: number;
     disableQuotation: boolean;
     lost: boolean;
+    designerApproval: boolean;
+    revisionApproval: boolean;
+    stared: boolean;
+    weightedvalue: number;
 
     constructor(data?: IInquiryInputDto) {
         if (data) {
@@ -43023,6 +44240,10 @@ export class InquiryInputDto implements IInquiryInputDto {
             this.total = data["total"];
             this.disableQuotation = data["disableQuotation"];
             this.lost = data["lost"];
+            this.designerApproval = data["designerApproval"];
+            this.revisionApproval = data["revisionApproval"];
+            this.stared = data["stared"];
+            this.weightedvalue = data["weightedvalue"];
         }
     }
 
@@ -43080,6 +44301,10 @@ export class InquiryInputDto implements IInquiryInputDto {
         data["total"] = this.total;
         data["disableQuotation"] = this.disableQuotation;
         data["lost"] = this.lost;
+        data["designerApproval"] = this.designerApproval;
+        data["revisionApproval"] = this.revisionApproval;
+        data["stared"] = this.stared;
+        data["weightedvalue"] = this.weightedvalue;
         return data; 
     }
 }
@@ -43127,6 +44352,10 @@ export interface IInquiryInputDto {
     total: number;
     disableQuotation: boolean;
     lost: boolean;
+    designerApproval: boolean;
+    revisionApproval: boolean;
+    stared: boolean;
+    weightedvalue: number;
 }
 
 export class LinkedCompanyInput implements ILinkedCompanyInput {
@@ -43261,6 +44490,41 @@ export interface ILeadDetailInputDto {
     inquiryId: number;
     estimationValue: number;
     size: string;
+}
+
+export class EntityDto implements IEntityDto {
+    id: number;
+
+    constructor(data?: IEntityDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): EntityDto {
+        let result = new EntityDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IEntityDto {
+    id: number;
 }
 
 export class PagedResultDtoOfQuotationListDto implements IPagedResultDtoOfQuotationListDto {
@@ -44667,6 +45931,100 @@ export class PagedResultDtoOfCompanyEnquiryList implements IPagedResultDtoOfComp
 export interface IPagedResultDtoOfCompanyEnquiryList {
     totalCount: number;
     items: CompanyEnquiryList[];
+}
+
+export class ListResultDtoOfNotificationListDto implements IListResultDtoOfNotificationListDto {
+    items: NotificationListDto[];
+
+    constructor(data?: IListResultDtoOfNotificationListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(NotificationListDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfNotificationListDto {
+        let result = new ListResultDtoOfNotificationListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IListResultDtoOfNotificationListDto {
+    items: NotificationListDto[];
+}
+
+export class NotificationListDto implements INotificationListDto {
+    id: number;
+    submissionId: string;
+    name: string;
+    designerApproval: boolean;
+    revisionApproval: boolean;
+
+    constructor(data?: INotificationListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.submissionId = data["submissionId"];
+            this.name = data["name"];
+            this.designerApproval = data["designerApproval"];
+            this.revisionApproval = data["revisionApproval"];
+        }
+    }
+
+    static fromJS(data: any): NotificationListDto {
+        let result = new NotificationListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["submissionId"] = this.submissionId;
+        data["name"] = this.name;
+        data["designerApproval"] = this.designerApproval;
+        data["revisionApproval"] = this.revisionApproval;
+        return data; 
+    }
+}
+
+export interface INotificationListDto {
+    id: number;
+    submissionId: string;
+    name: string;
+    designerApproval: boolean;
+    revisionApproval: boolean;
 }
 
 export class GetLanguagesOutput implements IGetLanguagesOutput {
@@ -47059,41 +48417,6 @@ export interface IContactInputDto {
     firstName: string;
     lastName: string;
     newCompanyId: number;
-}
-
-export class EntityDto implements IEntityDto {
-    id: number;
-
-    constructor(data?: IEntityDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-        }
-    }
-
-    static fromJS(data: any): EntityDto {
-        let result = new EntityDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface IEntityDto {
-    id: number;
 }
 
 export class EnquiryContactInput implements IEnquiryContactInput {
@@ -53814,6 +55137,45 @@ export interface ITeamReportListDto {
     total12ValueFormat: string;
 }
 
+export class QuotationRevaluationInput implements IQuotationRevaluationInput {
+    id: number;
+    type: number;
+
+    constructor(data?: IQuotationRevaluationInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.type = data["type"];
+        }
+    }
+
+    static fromJS(data: any): QuotationRevaluationInput {
+        let result = new QuotationRevaluationInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["type"] = this.type;
+        return data; 
+    }
+}
+
+export interface IQuotationRevaluationInput {
+    id: number;
+    type: number;
+}
+
 export class ListResultDtoOfQuotationStatusList implements IListResultDtoOfQuotationStatusList {
     items: QuotationStatusList[];
 
@@ -54972,6 +56334,88 @@ export interface ICitydto {
     country: string;
 }
 
+export class Select2Result implements ISelect2Result {
+    select2data: Datadto[];
+
+    constructor(data?: ISelect2Result) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (data["select2data"] && data["select2data"].constructor === Array) {
+                this.select2data = [];
+                for (let item of data["select2data"])
+                    this.select2data.push(Datadto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Select2Result {
+        let result = new Select2Result();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.select2data && this.select2data.constructor === Array) {
+            data["select2data"] = [];
+            for (let item of this.select2data)
+                data["select2data"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ISelect2Result {
+    select2data: Datadto[];
+}
+
+export class Datadto implements IDatadto {
+    id: number;
+    name: string;
+
+    constructor(data?: IDatadto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+        }
+    }
+
+    static fromJS(data: any): Datadto {
+        let result = new Datadto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data; 
+    }
+}
+
+export interface IDatadto {
+    id: number;
+    name: string;
+}
+
 export class Select2product implements ISelect2product {
     select2data: Productdto[];
 
@@ -55064,88 +56508,6 @@ export interface IProductdto {
     prize: number;
     specId: number;
     discount: boolean;
-}
-
-export class Select2Result implements ISelect2Result {
-    select2data: Datadto[];
-
-    constructor(data?: ISelect2Result) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            if (data["select2data"] && data["select2data"].constructor === Array) {
-                this.select2data = [];
-                for (let item of data["select2data"])
-                    this.select2data.push(Datadto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): Select2Result {
-        let result = new Select2Result();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (this.select2data && this.select2data.constructor === Array) {
-            data["select2data"] = [];
-            for (let item of this.select2data)
-                data["select2data"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface ISelect2Result {
-    select2data: Datadto[];
-}
-
-export class Datadto implements IDatadto {
-    id: number;
-    name: string;
-
-    constructor(data?: IDatadto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-            this.name = data["name"];
-        }
-    }
-
-    static fromJS(data: any): Datadto {
-        let result = new Datadto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        return data; 
-    }
-}
-
-export interface IDatadto {
-    id: number;
-    name: string;
 }
 
 export class Select2sales implements ISelect2sales {
@@ -58653,6 +60015,61 @@ export interface ICreateDiscountInput {
     unDiscountable: number;
     quotationDescription: string;
     vat: number;
+}
+
+export class GetConvertionratio implements IGetConvertionratio {
+    conversionRatio: any[];
+    catagries: any[];
+
+    constructor(data?: IGetConvertionratio) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (data["conversionRatio"] && data["conversionRatio"].constructor === Array) {
+                this.conversionRatio = [];
+                for (let item of data["conversionRatio"])
+                    this.conversionRatio.push(item);
+            }
+            if (data["catagries"] && data["catagries"].constructor === Array) {
+                this.catagries = [];
+                for (let item of data["catagries"])
+                    this.catagries.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): GetConvertionratio {
+        let result = new GetConvertionratio();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.conversionRatio && this.conversionRatio.constructor === Array) {
+            data["conversionRatio"] = [];
+            for (let item of this.conversionRatio)
+                data["conversionRatio"].push(item);
+        }
+        if (this.catagries && this.catagries.constructor === Array) {
+            data["catagries"] = [];
+            for (let item of this.catagries)
+                data["catagries"].push(item);
+        }
+        return data; 
+    }
+}
+
+export interface IGetConvertionratio {
+    conversionRatio: any[];
+    catagries: any[];
 }
 
 export class RecentInquiryClosureList implements IRecentInquiryClosureList {

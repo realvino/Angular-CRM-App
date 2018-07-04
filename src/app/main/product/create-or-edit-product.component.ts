@@ -1,13 +1,14 @@
 import { Component, ViewChild, Injector, ElementRef, Output, EventEmitter, OnInit } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective, TabsetComponent } from 'ngx-bootstrap';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { Select2ServiceProxy, Datadto, ProductServiceProxy, ProductInput, ProductPriceLevelInput,Proddto,ProductImagesInput, TemporaryProductServiceProxy, TemporaryProductList, TemporaryProdImages, ProductLinkInput, NullableIdDto, TemporaryProductInput, Productdetailsdto } from "shared/service-proxies/service-proxies";
+import { Select2ServiceProxy, Datadto, ProductServiceProxy, ProductInput, ProductPriceLevelInput,Proddto,ProductImagesInput, TemporaryProductServiceProxy, TemporaryProductList, TemporaryProdImages, ProductLinkInput, NullableIdDto, TemporaryProductInput, Productdetailsdto, FinishedDetailList, FinishedServiceProxy } from "shared/service-proxies/service-proxies";
 import { FileUploader, FileUploaderOptions, Headers } from '@node_modules/ng2-file-upload';
 import { AppConsts } from "shared/AppConsts";
 import { IAjaxResponse } from "abp-ng2-module/src/abpHttp";
 import { TokenService } from "abp-ng2-module/src/auth/token.service";
 import { EditPriceModalComponent } from "app/main/product/create-or-edit-price.component";
 import { Select2Option } from 'app/main/attributeGroup/create-or-edit-attributeGroup.component';
+import { CreateEditFinishedDetailComponent } from '@app/main/finished/createOReditFinishedDetailComponent';
 
 
 export interface SelectOption {
@@ -26,6 +27,9 @@ export class CreateEditProductComponent extends AppComponentBase  {
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
     @ViewChild('modal') modal: ModalDirective;
     @ViewChild('nameInput') nameInput: ElementRef;
+    
+    @ViewChild('tabsActive') tabsActive: TabsetComponent;
+    @ViewChild('createEditFinishedDetailModal') createEditFinishedDetailModal: CreateEditFinishedDetailComponent;
     
     @ViewChild('EditPriceModal') EditPriceModal : EditPriceModalComponent;    
     public active: boolean = false;
@@ -72,13 +76,16 @@ export class CreateEditProductComponent extends AppComponentBase  {
     standardProduct:Array<any>;
     standardProductSelected:boolean = false;
     tempProductInput:TemporaryProductInput =new TemporaryProductInput();
+
+    finishedDetails: FinishedDetailList[];
     
     constructor(
         injector: Injector,
         private _selectProxyService: Select2ServiceProxy,
         private _productServiceProxy:ProductServiceProxy,
         private _tokenService: TokenService,
-        private _temporaryProductServiceProxy: TemporaryProductServiceProxy
+        private _temporaryProductServiceProxy: TemporaryProductServiceProxy,
+        private _finishedService: FinishedServiceProxy
         
     ) {
         super(injector);
@@ -192,7 +199,7 @@ export class CreateEditProductComponent extends AppComponentBase  {
             }
 
         }); */
-
+        
         this.productEdit(product,1);
         this.modal.show();
         this.active= true;
@@ -368,6 +375,7 @@ export class CreateEditProductComponent extends AppComponentBase  {
                    this.active_ProductState = [{id: this.product_input.productStateId, text: result.productLists.productState}];
                }     
              this.initializeModal(this.product_input);
+             this.getFinishedDetails(result.productLists.id);
             }
             if(result.images!=null){
                 this.imageList = result.images;
@@ -571,4 +579,30 @@ export class CreateEditProductComponent extends AppComponentBase  {
             this.productEdit(this.product_input.id,0);
         });
     }
+
+    getFinishedDetails(pId) {
+        this._finishedService.getFinishedDetail(pId).subscribe((result) => {
+            this.finishedDetails = result;
+        });
+    }
+
+    createFinishedDetails(){
+        this.createEditFinishedDetailModal.show(0,this.product_input.id);
+    }
+    editFinishedDetails(data){
+        this.createEditFinishedDetailModal.show(data.id,this.product_input.id);
+    }
+    deleteFinishedDetails(data) {
+        this.message.confirm(
+            this.l('Are you sure to Delete the Finished Details', data.gpCode),
+                isConfirmed => {
+                    if (isConfirmed) {
+                         this._finishedService.deleteFinishedDetail(data.id).subscribe(() => {
+                          this.notify.success(this.l('Deleted Successfully'));
+                          this.getFinishedDetails(data.productId);
+                      });
+                  }
+              }); 
+      }
+
 }

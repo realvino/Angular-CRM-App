@@ -251,3 +251,69 @@ nested-repeat-example .dndcontainer span {
     display: block;
     background: #d42020;
 }
+#propic {
+    border: 1px solid #e0e6ec;
+    float: right;
+    margin-left: 1px;
+}
+.mes{
+    background: #fff;
+    padding: 2px;
+    border: 1px solid #000;
+    border-radius: 3px;
+}
+.mes2{
+    background: #fff;
+    padding: 2px;
+    border: 1px solid #000;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.mes3{
+    background: #000;
+    color: #fff;
+    padding: 2px;
+    border: 1px solid #000;
+    border-radius: 3px;
+}
+#quotlist{
+    margin-top:-6px;
+    margin-left: -43px; 
+    margin-bottom: -9px;
+    margin-right: 0px;
+}
+#textdeco{
+    font-size: 20px;
+    text-decoration: line-through;
+}
+#propic3{
+    border: 1px solid #e0e6ec;
+    float: right;
+    margin-left: 5px;
+}
+.bell.on {
+    background-position: -82px -73px;
+    transform: scale(0.3);}
+.bell {
+    width: 72px;
+    height: 69px;
+    display: block;
+    position: absolute;
+    top: -13px;
+    left: -15px;
+    background: url(/assets/common/images/star-sprite.png) no-repeat 0 -10px;}
+.star {
+        width: 50px;
+        height: 50px;
+        display: block;
+        position: absolute;
+        background: url(/assets/common/images/star-sign.svg) no-repeat 0 -10px;}
+
+    .newq
+    {
+    background: #fff;
+    padding: 2px;
+    border: 1px solid #fffafa;
+    border-radius: 34px;
+    margin-left: 4px;
+    }

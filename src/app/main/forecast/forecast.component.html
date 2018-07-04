@@ -38,10 +38,12 @@
                         <span style="font-size: 12px;">{{item.address}}</span>
                         
                         <p>
-                            <img *ngIf="item.assignedbyImage"  class="img-circle" height="20" id="HeaderProfilePicture" style="border: 1px solid #e0e6ec;float: right;margin-left: 10px" width="20"  tooltip="{{item.salesMan}}" src="{{item.assignedbyImage}}">
-                            <img *ngIf="item.designerImage"  class="img-circle" height="20" id="HeaderProfilePicture" style="border: 1px solid #e0e6ec;float: right;margin-left: 10px" width="20"  tooltip="{{item.designerName}}" src="{{item.designerImage}}">                  
-                            <small  style="background: #fff;padding: 2px;border: 1px solid #000;border-radius: 3px;" class="statusmessage">{{getTime(item.creationTime| amTimeAgo:true)}}</small>
-                            <small   style="background: #fff;padding: 2px;border: 1px solid #000;border-radius: 3px;cursor: pointer;" class="statusmessage">{{item.percentage}} %</small>
+                            <img *ngIf="item.coordinatorName"  class="img-circle" height="25" id="HeaderProfilePicture" style="border: 1px solid #e0e6ec;float: right;margin-left: 10px" width="25"  tooltip="{{item.coordinatorName}}" src="{{path+item.coordinatorImage}}">                  
+                            <img *ngIf="item.assignedbyImage"  class="img-circle" height="25" id="HeaderProfilePicture" style="border: 1px solid #e0e6ec;float: right;margin-left: 10px" width="25"  tooltip="{{item.salesMan}}" src="{{path+item.assignedbyImage}}">
+                            <img *ngIf="item.designerName"  class="img-circle" height="25" id="HeaderProfilePicture" style="border: 1px solid #e0e6ec;float: right;margin-left: 10px" width="25"  tooltip="{{item.designerName}}" src="{{path+item.designerImage}}">                  
+                            <small style="background: #fff;padding: 2px;border: 1px solid #000;border-radius: 3px;" class="statusmessage">{{getTime(item.creationTime| amTimeAgo:true)}}</small>
+                            <small style="background: #fff;padding: 2px;border: 1px solid #000;border-radius: 3px;cursor: pointer;" class="statusmessage">{{item.percentage}} %</small>
+                            <small *ngIf="item.designerName" style="background: #000;color: #fff;padding: 2px;border: 1px solid #000;border-radius: 3px;" class="statusmessage">{{item.revision}}</small>
                             <i style="color: green;" *ngIf="item.isExpire == true" class="fa fa-exclamation-triangle"></i>
                             
                         </p>
@@ -74,8 +76,8 @@
            
     </div>
 
-    <createInquiryModal #createInquiryModal (modalSave)="getTickets('')">
-    </createInquiryModal>
+    <!-- <createInquiryModal #createInquiryModal (modalSave)="getTickets('')">
+    </createInquiryModal> -->
     
 </div> 
 

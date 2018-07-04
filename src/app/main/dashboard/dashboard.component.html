@@ -55,10 +55,7 @@
                                         <img class="slide-img" src="{{slide.src}}" width= "310" height= "220" style="width: 50%;height: 100%;float: left;" alt=""/>
                                         <div style="width: 50%;height: 100%;float: right;background-color: #444d58;text-align: center;color: white;line-height: 23px;">
                                             <br><h4><b>{{slide.name}}</b></h4>
-                                            <!-- <h5 style="margin: 0">Email:</h5> -->
                                             <h5 style="margin: 0">{{slide.email}}</h5>
-                                            <!-- <h5 style="margin: 0">Won:</h5>
-                                            <h5 style="margin: 0">121123</h5> -->
                                             <br>
                                         </div>
                                     </ng2-carousel-3d-slide>
@@ -263,6 +260,25 @@
                                     </div>
                                 </div>
                                 <!-- END PORTLET-->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet light ">
+                <div class="portlet-title">
+                    <div class="caption caption-md">
+                        <i class="icon-bar-chart font-green-haze hide"></i>
+                        <span class="caption-subject font-green-haze bold uppercase">Conversion Ratio Graph</span>
+                    </div>
+        
+                </div>
+                <div class="portlet-body">
+        
+                    <div class="table-scrollable table-scrollable-borderless">
+                        <chart type="Chart" [options]="conoption"></chart>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -10,7 +10,8 @@ import {
     ChangeUserLanguageDto,
     TenantLoginInfoDto,
     GetCurrentLoginInformationsOutput,
-    SessionServiceProxy
+    SessionServiceProxy,
+    InquiryServiceProxy
 } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 
@@ -77,7 +78,9 @@ export class HeaderComponent extends AppComponentBase implements OnInit {
         private _linkedAccountService: LinkedAccountService,
         private _userNotificationHelper: UserNotificationHelper,
         private _sessionService: SessionServiceProxy,
-        private _appSessionService: AppSessionService
+        private _appSessionService: AppSessionService,
+        private _inquiryServiceProxy: InquiryServiceProxy,
+
     ) {
         super(injector);
     }
@@ -102,15 +105,24 @@ export class HeaderComponent extends AppComponentBase implements OnInit {
         this.data = '';
     }
 
+    salesManagerNotifications(){
+
+        this._inquiryServiceProxy.getSalesManagerNotifications().subscribe(result=>{
+            this.unreadChatMessageCount = result.items.length;
+        });
+      
+     }
     registerToEvents() {
+        this.salesManagerNotifications();
         abp.event.on("profilePictureChanged", () => {
             this.getProfilePicture();
         });
 
         abp.event.on('app.chat.unreadMessageCountChanged', messageCount => {
-            this.unreadChatMessageCount = messageCount;
+            //this.unreadChatMessageCount = messageCount;
         });
 
+        
         abp.event.on('app.chat.connected', () => {
             this.chatConnected = true;
         });

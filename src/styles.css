@@ -819,3 +819,32 @@ body .ui-datatable .ui-datatable-thead > tr > th, body .ui-datatable .ui-datatab
     border-color: #c7c7c7 !important;
     color: #373a3c;
 }
+#note1{
+    padding: 0px 0 !important;
+    border-bottom: 0px solid #F1F4F7 !important;
+}
+#note2{
+    width: 100%; 
+    border: 2px solid;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: #fff;
+}
+#note3{
+    float: right;
+    margin-top: -7px;
+}
+#note4{
+    background: green;
+    height: 26px;
+    font-size: 10px;
+}
+#note5{
+    background: red;
+    height: 26px;
+    font-size: 10px;
+}
+#note6{
+    padding-left: 10px;
+    padding-right: 10px;
+}

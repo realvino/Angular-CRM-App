@@ -198,6 +198,10 @@ import { CreateLineItemModalComponent } from '@app/main/lineItem/createORedit_li
 import { LineItemComponent } from '@app/main/lineItem/lineItem.component';
 import { ContactCompComponent } from '@app/main/newCompany/contact.component';
 import { MdashboardComponent } from '@app/main/dashboard/mdashboard.component';
+import { FinishedComponent } from '@app/main/finished/finishedComponent';
+import { CreateEditFinishedComponent } from '@app/main/finished/createOReditFinishedComponent';
+import { CreateEditFinishedDetailComponent } from '@app/main/finished/createOReditFinishedDetailComponent';
+import { QuotationRevisionModalComponent } from '@app/main/quotation/quotationRevisionModalComponent';
 
 export function highchartsFactory() {
     const hc = require('highcharts');
@@ -378,8 +382,11 @@ export function highchartsFactory() {
         ArchivedInquiryComponent,
         CreateLineItemModalComponent,
         LineItemComponent,
-        MdashboardComponent
-
+        MdashboardComponent,
+        FinishedComponent,
+        CreateEditFinishedComponent,
+        CreateEditFinishedDetailComponent,
+        QuotationRevisionModalComponent
     ],
     providers: [{
         provide: HighchartsStatic,

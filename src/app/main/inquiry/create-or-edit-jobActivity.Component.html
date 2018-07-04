@@ -13,7 +13,7 @@
     
                 </div>
     
-                <form #createJobActivityForm="ngForm" novalidate>
+                <form *ngIf="active" #createJobActivityForm="ngForm" novalidate>
                     <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-12">

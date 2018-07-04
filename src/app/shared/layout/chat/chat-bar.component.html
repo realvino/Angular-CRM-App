@@ -1,15 +1,46 @@
 ﻿<!-- BEGIN QUICK SIDEBAR -->
 <div class="page-quick-sidebar-wrapper" data-close-on-body-click="false">
-    <a class="page-quick-sidebar-pinner" (click)="reversePinned()">
-        <i class="icon-pin" [ngClass]="{'pinned':pinned, 'unpinned':!pinned}"></i>
-    </a>
-    <a class="page-quick-sidebar-toggler">
-        <i class="icon-close"></i>
-    </a>
+    <div class="page-quick-sidebar" style="height: 30px;text-align: center;">
+        <span>Designer Approval</span>
+            <a class="page-quick-sidebar-pinner" (click)="reversePinned()">
+                    <i class="icon-pin" [ngClass]="{'pinned':pinned, 'unpinned':!pinned}"></i>
+                </a>
+                <a class="page-quick-sidebar-toggler">
+                    <i class="icon-close"></i>
+                </a>
+    </div>
+    
     <div class="page-quick-sidebar">
         <div class="tab-content">
             <div class="tab-pane active page-quick-sidebar-chat" id="quick_sidebar_tab_1">
-                <div class="page-quick-sidebar-chat-users" data-rail-color="#ddd" data-wrapper-class="page-quick-sidebar-list">
+                    <div id="note6" class="page-quick-sidebar-chat-users" data-rail-color="#ddd" data-wrapper-class="page-quick-sidebar-list">
+                            <!-- <div class="row">
+                                <div class="list-group">
+                                        <a *ngFor="let act of NotificationList" class="list-group-item">
+                                            <h4>{{act.submissionId}}&nbsp; &nbsp;<span style="font-size: 10px;">{{act.name}}</span></h4>
+                                            <h4 class="list-group-item-text">
+                                                <small  style="background: green" class="statusmessage">Accept</small>   
+                                                <small  style="background: red" class="statusmessage">Reject</small>
+                                            </h4>
+                                            
+                                        </a>
+                                    </div>
+                            </div> -->
+                            <div class="general-item-list">
+                                <div *ngFor="let act of NotificationList" class="item" id="note1">
+                                    <div class="item-head">
+                                        <div class="item-details" id="note2">
+                                                <h4><a (click)="gotoInquiry(act.id)">{{act.submissionId}}&nbsp; &nbsp;<span style="font-size: 10px;">{{act.name}}</span></a></h4>
+                                                <h4 class="list-group-item-text" id="note3">
+                                                    <small id="note4" class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle" (click)="approve(act.id)">Accept</small>   
+                                                    <small id="note5" class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle" (click)="reject(act.id)">Reject</small>
+                                                </h4>
+                                          </div>
+                                        </div>
+                                </div>
+                                </div>
+                                </div>
+                <!-- <div class="page-quick-sidebar-chat-users" data-rail-color="#ddd" data-wrapper-class="page-quick-sidebar-list">
                     <div class="row">
                         <div class="col-md-12" style="padding-top: 30px; margin: 5px; padding-right: 25px;">
                             <div class="input-icon input-icon-sm right">
@@ -55,7 +86,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="page-quick-sidebar-item">
                     <div class="page-quick-sidebar-chat-user">
                         <div class="page-quick-sidebar-nav">

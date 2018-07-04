@@ -320,19 +320,25 @@
                        </ng-select>
                  </div>
                  <div class="col-md-3">
-                   <label>Opportunity Source</label>
-                   <ng-select [active]="active_lead_source" [allowClear]="true" [items]="lead_source" [disabled]="lead_source_enable" (selected)="selectedLeadSource($event)" (removed)="removedLeadSource($event)" (typed)="typedLeadSource($event)" placeholder="Lead Source">
+                        <label>Opportunity Source<required_field></required_field></label>
+                        <ng-select [active]="active_lead_source" [allowClear]="true" [items]="lead_source" [disabled]="lead_source_enable" (selected)="selectedLeadSource($event)" (removed)="removedLeadSource($event)" (typed)="typedLeadSource($event)" placeholder="Lead Source">
                    </ng-select>
                 </div> 
                 <div class="col-md-3">
-                        <label>Design</label>
+                        <div class="col-md-4">
+                                <label>Design</label>
                        
-                        <div class="onoffswitch">
-                            <input type="checkbox" name="onoffswitch21" class="onoffswitch-checkbox" id="myonoffswitch21" [(ngModel)]="designerr"  checked>
-                            <label class="onoffswitch-label" for="myonoffswitch21">
-                                <span class="onoffswitch-inner"></span>
-                                <span class="onoffswitch-switch"></span>
-                            </label>
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="onoffswitch21" class="onoffswitch-checkbox" id="myonoffswitch21" [(ngModel)]="designerr"  checked>
+                                    <label class="onoffswitch-label" for="myonoffswitch21">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                        </div>
+                        <div class="col-md-8">
+                            <br>
+                                <button *ngIf="unapproved" type="button" class="btn btn-dark red"> <span>{{l("UnApproved")}}</span></button>                               
                         </div>
                     </div>
                    <div class="col-md-3">
@@ -383,14 +389,41 @@
             <ng-select [active]="active_inqleadstatus" (selected)="selectedInqLeadStatus($event)" [items]="InqLeadStatus" placeholder="Lead Status">
             </ng-select>
             </div> 
+             <div class="col-md-3">
+                <div class="col-md-6">
+                <label>Stared</label>
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="staredSwitch" [(ngModel)]="inquiry.stared" [ngModelOptions]="{standalone: true}" checked>
+                            <label class="onoffswitch-label" for="staredSwitch">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                    </div>                    
+                </div>
+                <div class="col-md-6" *ngIf="inquiry.stared">
+                            <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                            <input class="form-control" type="number" name="weightedvalue" [ngClass]="{'edited':inquiry.weightedvalue}" [(ngModel)]="inquiry.weightedvalue" [ngModelOptions]="{standalone: true}" (keydown)="check($event)" (keyup)="checkValue()">
+                                <label>{{l("Weighted %")}}<required_field></required_field></label>
+                            </div>
+                        </div> 
+                </div>
+           <!-- <div class="col-md-2" *ngIf="inquiry.stared">
+                <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                <input class="form-control" type="number" name="weightedvalue" [ngClass]="{'edited':inquiry.weightedvalue}" [(ngModel)]="inquiry.weightedvalue" [ngModelOptions]="{standalone: true}" (keydown)="check($event)" (keyup)="checkValue()">
+                    <label>{{l("Weighted Value")}}<required_field></required_field></label>
+                </div>
+            </div> 
+            <div class="col-md-2" *ngIf="!inquiry.stared">
+            </div> -->
+
            <div class="col-md-3" style="padding-top: 24px;">
             <label>Next Activity <required_field></required_field></label>
             <p-calendar showButtonBar="true" id="datetime" [(ngModel)]="lastActivity" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
-     </div>
-    <div class="col-md-3" style="padding-top: 24px;">
-        <label>Expected Closure <required_field></required_field></label>
-        <p-calendar showButtonBar="true" id="datetime2" [(ngModel)]="closedDate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
-    </div> 
+            </div>
+            <div class="col-md-3" style="padding-top: 24px;">
+                <label>Expected Closure <required_field></required_field></label>
+                <p-calendar showButtonBar="true" id="datetime2" [(ngModel)]="closedDate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
+            </div> 
     <!-- <div class="col-md-2">
         <label>Disable Quote</label>
        

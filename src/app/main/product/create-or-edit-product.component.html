@@ -10,98 +10,8 @@
                         <span *ngIf="!product_input.id">{{l("Create Product")}}</span>
                     </h4>
                 </div>
-                <form *ngIf="active" #createCompanyForm="ngForm" novalidate (ngSubmit)="save()">                        
+                <form *ngIf="active && !product_input.id" #createCompanyForm="ngForm" novalidate (ngSubmit)="save()">                        
                     <div class="modal-body">
-                        <div class="modal_processing" *ngIf="processed_image">
-                          <span class="fa fa-2x fa-spinner loader">
-                          </span>
-                        </div>
-                        <div class="row" *ngIf="product_input.id">
-                            <div class="col-md-2" >
-                                <div id="style-1" class="col-md-12 imgCont"> 
-                                    <span *ngFor="let item of imageList">
-                                        <img *ngIf="item.imageUrl" src="{{path+item.imageUrl}}" class="img-product" />
-                                            <span class="delete-pic" (click)="deleteImg(item.id)">
-                                                <i class="fa fa-trash"></i>
-                                            </span>
-                                    </span>
-                                </div>
-                                <div class="col-md-6" style="margin-left: -14px">
-                                    <div class="form-group" style="margin-top: 27px;">
-                                        <div class="box">
-                                            <input type="file" name="file-1[]" id="file-1" class="inputfile inputfile-1" ng2FileSelect [uploader]="imguploader"/>
-                                                <label for="file-1"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg> <span>Choose a file&hellip;</span></label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-10">
-							    <div class="col-md-6"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <input class="form-control" type="text" name="productName"  [ngClass]="{'edited':product_input.productName}" [(ngModel)]="product_input.productName" required>
-                                             <label>{{l("Product Name")}} <required_field></required_field></label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                         <input class="form-control" type="text" name="product_code" [disabled]="1" [ngClass]="{'edited':product_input.productCode}" [(ngModel)]="product_input.productCode" required>
-                                             <label>{{l("Product Code")}} <required_field></required_field></label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <input class="form-control" type="text" name="diemension" [ngClass]="{'edited':product_input.gpcode}" [(ngModel)]="product_input.gpcode" required>
-                                            <label>{{l("GPCode")}} <required_field></required_field></label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <input class="form-control" type="text" name="price" [ngClass]="{'edited':product_input.price}" [(ngModel)]="product_input.price" required>
-                                        <label>{{l("Price")}} <required_field></required_field></label>
-                                   </div>
-                                </div>
-                                <div class="col-md-6"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <!-- <input class="form-control" type="text" name="suspectCode" [ngClass]="{'edited':product_input.suspectCode}" [(ngModel)]="product_input.suspectCode" required> -->
-                                        <label>{{l("SupplierCode")}} <required_field></required_field></label>
-                                        <ng-select [active]="active_suspectCode" [allowClear]="true" [items]="suspectCode" (data)="refreshSuspectCode($event)" (selected)="selectedSuspectCode($event)" (removed)="removedSuspectCode($event)" (typed)="typedSuspectCode($event)" placeholder="Enter  a SupplierCode">
-                                        </ng-select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6" *ngIf="product_input.id"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                            <label>{{l("Product Specification")}} <required_field></required_field></label>
-                                        <ng-select [active]="active_product" [allowClear]="true" [items]="product_group" (selected)="selectedProductgroup($event)" (removed)="removeProductgroup($event)" [disabled]="1" placeholder="Product group">
-                                        </ng-select>
-                                    </div>
-                                </div> 
-                                <div class="col-md-2"> 
-                                <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <input class="form-control" type="text" name="width" [ngClass]="{'edited':product_input.width}" [(ngModel)]="product_input.width">
-                                            <label>{{l("Width")}} </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-2"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <input class="form-control" type="text" name="depth" [ngClass]="{'edited':product_input.depth}" [(ngModel)]="product_input.depth">
-                                            <label>{{l("Depth")}} </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-2"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <input class="form-control" type="text" name="height" [ngClass]="{'edited':product_input.height}" [(ngModel)]="product_input.height">
-                                            <label>{{l("Height")}} </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6" style="margin-top: -24px"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <label>{{l("Fast Moving State")}} </label>
-                                        <ng-select [active]="active_ProductState" [allowClear]="true" [items]="productState" (selected)="selectedProductState($event)" (removed)="removedProductState($event)" placeholder="Nothing is selected">
-                                        </ng-select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row" *ngIf="!product_input.id"> 
                             <div class="col-md-3"></div>
                             <div class="col-md-6" style="background: #e4e2e2; border: 1px solid #d6d6d6;border-radius: 10px;padding: 10px; margin-bottom: 10px;">
@@ -256,6 +166,141 @@
                         </div>
                     </div>
                 </form>
+                <tabset  class="tab-container tabbable-line" #tabsActive *ngIf="product_input.id">
+                <tab heading="Product Details"> 
+                    <form *ngIf="active" #createCompanyForm="ngForm" novalidate (ngSubmit)="save()">                        
+                        <div class="modal-body">
+                            <div class="modal_processing" *ngIf="processed_image">
+                              <span class="fa fa-2x fa-spinner loader">
+                              </span>
+                            </div>
+                            <div class="row" *ngIf="product_input.id">
+                                <div class="col-md-2" >
+                                    <div id="style-1" class="col-md-12 imgCont"> 
+                                        <span *ngFor="let item of imageList">
+                                            <img *ngIf="item.imageUrl" src="{{path+item.imageUrl}}" class="img-product" />
+                                                <span class="delete-pic" (click)="deleteImg(item.id)">
+                                                    <i class="fa fa-trash"></i>
+                                                </span>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6" style="margin-left: -14px">
+                                        <div class="form-group" style="margin-top: 27px;">
+                                            <div class="box">
+                                                <input type="file" name="file-1[]" id="file-1" class="inputfile inputfile-1" ng2FileSelect [uploader]="imguploader"/>
+                                                    <label for="file-1"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg> <span>Choose a file&hellip;</span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="col-md-6"> 
+                                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                            <input class="form-control" type="text" name="productName"  [ngClass]="{'edited':product_input.productName}" [(ngModel)]="product_input.productName" required>
+                                                 <label>{{l("Product Name")}} <required_field></required_field></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6"> 
+                                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                             <input class="form-control" type="text" name="product_code" [disabled]="1" [ngClass]="{'edited':product_input.productCode}" [(ngModel)]="product_input.productCode" required>
+                                                 <label>{{l("Product Code")}} <required_field></required_field></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6"> 
+                                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                            <input class="form-control" type="text" name="diemension" [ngClass]="{'edited':product_input.gpcode}" [(ngModel)]="product_input.gpcode" required>
+                                                <label>{{l("GPCode")}} <required_field></required_field></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6"> 
+                                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                            <input class="form-control" type="text" name="price" [ngClass]="{'edited':product_input.price}" [(ngModel)]="product_input.price" required>
+                                            <label>{{l("Price")}} <required_field></required_field></label>
+                                       </div>
+                                    </div>
+                                    <div class="col-md-6"> 
+                                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                            <!-- <input class="form-control" type="text" name="suspectCode" [ngClass]="{'edited':product_input.suspectCode}" [(ngModel)]="product_input.suspectCode" required> -->
+                                            <label>{{l("SupplierCode")}} <required_field></required_field></label>
+                                            <ng-select [active]="active_suspectCode" [allowClear]="true" [items]="suspectCode" (data)="refreshSuspectCode($event)" (selected)="selectedSuspectCode($event)" (removed)="removedSuspectCode($event)" (typed)="typedSuspectCode($event)" placeholder="Enter  a SupplierCode">
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" *ngIf="product_input.id"> 
+                                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                                <label>{{l("Product Specification")}} <required_field></required_field></label>
+                                            <ng-select [active]="active_product" [allowClear]="true" [items]="product_group" (selected)="selectedProductgroup($event)" (removed)="removeProductgroup($event)" [disabled]="1" placeholder="Product group">
+                                            </ng-select>
+                                        </div>
+                                    </div> 
+                                    <div class="col-md-2"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                            <input class="form-control" type="text" name="width" [ngClass]="{'edited':product_input.width}" [(ngModel)]="product_input.width">
+                                                <label>{{l("Width")}} </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"> 
+                                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                            <input class="form-control" type="text" name="depth" [ngClass]="{'edited':product_input.depth}" [(ngModel)]="product_input.depth">
+                                                <label>{{l("Depth")}} </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"> 
+                                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                            <input class="form-control" type="text" name="height" [ngClass]="{'edited':product_input.height}" [(ngModel)]="product_input.height">
+                                                <label>{{l("Height")}} </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: -24px"> 
+                                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                            <label>{{l("Fast Moving State")}} </label>
+                                            <ng-select [active]="active_ProductState" [allowClear]="true" [items]="productState" (selected)="selectedProductState($event)" (removed)="removedProductState($event)" placeholder="Nothing is selected">
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>Description <required_field></required_field></label>
+                                        <p-editor [(ngModel)]="product_input.description" name="HtmlEditorInput" [style]="{'min-height':'100px'}"></p-editor>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                                <button type="submit" class="btn btn-primary blue" [disabled]="!createCompanyForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                                <button *ngIf="product_input.id" type="button" class="btn btn-primary blue" [disabled]="!createCompanyForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="saveAs()" style="float:  left;"><i class="fa fa-save"></i> <span>{{l("Save As")}}</span></button>
+                            </div>
+                        </div>
+                    </form>
+                </tab>
+                <tab heading="Finishes" *ngIf="product_input.id">
+                    <div class="modal-body">
+                        <div class= "row">
+                            <div class="col-xs-12 text-right" style="top: -20px;left: -10px;">
+                                <button title="Create New" (click)="createFinishedDetails()" class="btn btn-circle btn-icon-only blue"><i class="fa fa-plus"></i></button>
+                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="list-group">
+                                    <a *ngFor="let item of finishedDetails" href="javascript:;" class="list-group-item">
+                                        <h4 class="list-group-item-heading">
+                                            {{item.gpCode}} - Price : {{item.price}} 
+                                            <button (click)="editFinishedDetails(item)"  title="{{l('Edit')}}" class="btn btn-circle btn-icon-only green edit-person"><i class="icon-pencil"></i></button>
+                                            <button (click)="deleteFinishedDetails(item)"title="{{l('Delete')}}" class="btn btn-circle btn-icon-only red delete-person" href="javascript:;"><i class="icon-trash"></i></button>
+                                        </h4>
+                                        <p class="list-group-item-text">
+                                             {{item.finishedName}} - {{item.finishedCode}}
+                                        </p>
+                                    </a>
+                                </div>	
+                            </div>
+                         </div>
+                    </div>
+                </tab>
+            </tabset>
         </div>
     </div>
 </div>
+<createEditFinishedDetailModal #createEditFinishedDetailModal (modalSave)="getFinishedDetails(product_input.id)"></createEditFinishedDetailModal> 

@@ -77,7 +77,8 @@ import * as ApiServiceProxies from './service-proxies';
         ApiServiceProxies.LeadStatusServiceProxy,
         ApiServiceProxies.UserDesignationServiceProxy,
         ApiServiceProxies.ContactDesignationServiceProxy,
-        ApiServiceProxies.ViewServiceProxy
+        ApiServiceProxies.ViewServiceProxy,
+        ApiServiceProxies.FinishedServiceProxy
 
 
     ]

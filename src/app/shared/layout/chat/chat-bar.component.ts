@@ -7,7 +7,7 @@ import {
     FriendshipServiceProxy, ChatServiceProxy, CommonLookupServiceProxy, ProfileServiceProxy,
     FriendDto, UserLoginInfoDto, BlockUserInput, UnblockUserInput, ChatMessageDto, ChatMessageDtoReadState,
     MarkAllUnreadMessagesOfUserAsReadInput, NameValueDto, FindUsersInput, CreateFriendshipRequestInput,
-    CreateFriendshipRequestByUserNameInput, FriendDtoState, ChatMessageDtoSide
+    CreateFriendshipRequestByUserNameInput, FriendDtoState, ChatMessageDtoSide, QuotationServiceProxy, NotificationListDto, InquiryServiceProxy, EntityDto
 } from '@shared/service-proxies/service-proxies';
 import { ChatFriendDto } from './ChatFriendDto';
 import { CommonLookupModalComponent } from '@app/shared/common/lookup/common-lookup-modal.component';
@@ -17,6 +17,7 @@ import { AppChatMessageReadState, AppChatSide, AppFriendshipState } from '@share
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { Router } from '@angular/router';
 
 @Component({
     templateUrl: './chat-bar.component.html',
@@ -34,6 +35,9 @@ export class ChatBarComponent extends AppComponentBase implements OnInit, AfterV
         private _localStorageService: LocalStorageService,
         private _chatSignalrService: ChatSignalrService,
         private _profileService: ProfileServiceProxy,
+        private _quoatationService: QuotationServiceProxy,
+        private _inquiryServiceProxy: InquiryServiceProxy,
+        private router: Router,
         private _quickSideBarChat: QuickSideBarChat) {
         super(injector);
     }
@@ -56,7 +60,8 @@ export class ChatBarComponent extends AppComponentBase implements OnInit, AfterV
     userNameFilter: string = '';
     serverClientTimeDifference: number = 0;
     isMultiTenancyEnabled: boolean = this.multiTenancy.isEnabled;
-
+    NotificationList:any;
+    InputData:EntityDto = new EntityDto();
     _isOpen: boolean;
     set isOpen(newValue: boolean) {
         if (newValue === this._isOpen) {
@@ -110,6 +115,50 @@ export class ChatBarComponent extends AppComponentBase implements OnInit, AfterV
 
     ngOnInit(): void {
         this.init();
+        this.salesManagerNotifications();
+    }
+
+    salesManagerNotifications(){
+
+         this._inquiryServiceProxy.getSalesManagerNotifications().subscribe(result=>{
+             this.NotificationList = result.items;
+             console.log(this.NotificationList);
+         });
+       
+      }
+
+      gotoInquiry(inqId){
+            this.router.navigate(['app/main/sales-enquiry/'+ inqId]);
+      }
+
+      approve(dataid){
+        this.InputData.id = dataid;
+        this.message.confirm(
+            this.l('To Accept the Opportunity'),
+                isConfirmed => {
+                if (isConfirmed) {
+                    this._inquiryServiceProxy.inquiryDesignerApproval(this.InputData).subscribe(result=>{
+                        this.salesManagerNotifications();
+                        this.notify.success("Approved successfully");
+                    });
+                }
+            }
+        );
+    }
+
+     reject(dataid){
+        this.InputData.id = dataid;
+        this.message.confirm(
+            this.l('To Reject the Opportunity'),
+                isConfirmed => {
+                if (isConfirmed) {
+                    this._inquiryServiceProxy.inquiryDesignerReject(this.InputData).subscribe(result=>{
+                        this.salesManagerNotifications();
+                        this.notify.success("Rejected successfully");
+                    });
+                }
+            }
+        );
     }
 
     getShownUserName(tenanycName: string, userName: string): string {

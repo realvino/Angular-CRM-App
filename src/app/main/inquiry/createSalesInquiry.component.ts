@@ -140,7 +140,8 @@ export class CreateSalesInquiryComponent extends AppComponentBase implements OnI
     active_designer:SelectOption[];
     designerr: boolean = false;
     saveLeadDetailInput:LeadDetailInputDto = new LeadDetailInputDto();
-   
+    allowedChars = new Set('0123456789'.split('').map(c => c.charCodeAt(0)));
+
     constructor(
         injector: Injector,
         private _inquiryServiceProxy: InquiryServiceProxy,
@@ -637,15 +638,36 @@ this.active_assigned =[];
   }
   
   isValidInquiry(data){
-    if(!data.valid || !this.inquiry.name || !this.inquiry.statusId || !this.inquiry.companyName || !this.inquiry.cEmail || !this.inquiry.cLandlineNumber || !this.inquiry.departmentId || !this.inquiry.teamId || !this.inquiry.assignedbyId || !this.inquiry.email || !this.inquiry.mbNo  || !this.contact_edit.titleId || !this.contact_edit.name || this.CompanyDuplicate || !this.inquiry.estimationValue || !this.inquiry.remarks)
+    if(this.inquiry.stared){
+      if(!data.valid || !this.inquiry.name || !this.inquiry.statusId || !this.inquiry.companyName || !this.inquiry.cEmail || !this.inquiry.cLandlineNumber || !this.inquiry.departmentId || !this.inquiry.teamId || !this.inquiry.assignedbyId || !this.inquiry.email || !this.inquiry.mbNo  || !this.contact_edit.titleId || !this.contact_edit.name || this.CompanyDuplicate || !this.inquiry.estimationValue || !this.inquiry.remarks || !this.inquiry.opportunitySourceId || !this.inquiry.weightedvalue)
       {      
       return true;
     }else{
         return false;
         }
     }
+    else{
+      if(!data.valid || !this.inquiry.name || !this.inquiry.statusId || !this.inquiry.companyName || !this.inquiry.cEmail || !this.inquiry.cLandlineNumber || !this.inquiry.departmentId || !this.inquiry.teamId || !this.inquiry.assignedbyId || !this.inquiry.email || !this.inquiry.mbNo  || !this.contact_edit.titleId || !this.contact_edit.name || this.CompanyDuplicate || !this.inquiry.estimationValue || !this.inquiry.remarks || !this.inquiry.opportunitySourceId)
+      {      
+      return true;
+    }else{
+        return false;
+        }
+    }
+  }
 
-    
+  check(event: KeyboardEvent) {
+    if (event.keyCode > 31 && !this.allowedChars.has(event.keyCode)) {
+      event.preventDefault();
+    }
+  }
+  checkValue(){
+    if(this.inquiry.weightedvalue > 100){
+      this.notify.warn("Weighted Value must be less than 100");
+    }
+  }
+
+  
 public removedAssigned(value:any):void {
   this.inquiry.assignedbyId = null;
   this.active_assigned =[];
@@ -716,7 +738,7 @@ public removedAssigned(value:any):void {
     // this.active_opportunity = [{"id":data.id,"text":data.text}];
   }
   removedOpportunitySource(data:any){
-    this.inquiry.whyBafcoId = null;
+    this.inquiry.opportunitySourceId = null;
     this.active_opportunity = [];
   }
   selectedWhyBafco(data:any){
@@ -916,6 +938,9 @@ public removedAssigned(value:any):void {
     if(this.inquiry.id == null) {
       this.inquiry.id = 0;
       this.inquiry.mileStoneId = 4;
+    }
+    if(!this.inquiry.stared){
+      this.inquiry.weightedvalue=0;
     }
     if(this.closedDate){
       let stdate= moment(moment(this.closedDate).toDate().toString());
@@ -1335,12 +1360,13 @@ saveLeadInformation(InquiryId){
     }
  
     selectedDesigner(data:any){
-      this.saveLeadDetailInput.designerId = data.id;
-      // this.active_designer = [{"id":data.id,"text":data.text}];
-    }
+         this.saveLeadDetailInput.designerId = data.id;
+         this.inquiry.designerApproval = true;
+        }
     removedDesigner(data:any){
       this.saveLeadDetailInput.designerId = null;
       this.active_designer = [];
+      this.inquiry.designerApproval = false;
     }
     typedDesigner(event:any){
       // this.saveLeadDetailInput.designerId = null;

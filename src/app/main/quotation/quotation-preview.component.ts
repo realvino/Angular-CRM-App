@@ -52,13 +52,18 @@ export class QuotationPreviewModalComponent extends AppComponentBase {
             case 4:
               var url = AppConsts.remoteServiceBaseUrl + "Pdf/StandardQuotation?QuotationId="+quotationId;
               this.download_url = AppConsts.remoteServiceBaseUrl +'Pdf/PreviewDownload?QuotationId='+this.quotation_id;
-              this.head_preview = 'Standard Optional';
+              this.head_preview = 'Standard Optional 1';
             break;
             case 5:
             var url = AppConsts.remoteServiceBaseUrl + "Pdf/ExportStandardQuotation?QuotationId="+quotationId;
             this.download_url = AppConsts.remoteServiceBaseUrl +'Pdf/StandardQuotationDownload?QuotationId='+this.quotation_id;
             this.head_preview = 'Government';
-          break;
+            break;
+            case 6:
+            var url = AppConsts.remoteServiceBaseUrl + "Pdf/OptionalQuotation?QuotationId="+quotationId;
+            this.download_url = AppConsts.remoteServiceBaseUrl +'Pdf/OptionalQuotationDownload?QuotationId='+this.quotation_id;
+            this.head_preview = 'Standard Optional 2';
+            break;
             default:
     
             break;    

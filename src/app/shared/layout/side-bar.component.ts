@@ -22,8 +22,8 @@ export class SideBarComponent extends AppComponentBase {
     menu: SideBarMenu = new SideBarMenu("MainMenu", "MainMenu", [
         new SideBarMenuItem("Dashboard",'',"Pages.Administration.Host.Dashboard", "icon-home", "/app/admin/hostDashboard"),
         new SideBarMenuItem("Dashboard",'', "Pages.Tenant.Dashboard", "icon-home", "",[
-            new SideBarMenuItem("Marketing Dashboard",'', "Pages.Tenant.Dashboard", "fa fa-dashboard", "/app/main/marketingdashboard"),
-            new SideBarMenuItem("Sales Dashboard",'', "Pages.Tenant.Dashboard", "fa fa-shopping-cart", "/app/main/salesdashboard"),  
+            new SideBarMenuItem("Marketing Dashboard",'', "Pages.Tenant.Dashboard.Marketing", "fa fa-dashboard", "/app/main/marketingdashboard"),
+            new SideBarMenuItem("Sales Dashboard",'', "Pages.Tenant.Dashboard.Sales", "fa fa-shopping-cart", "/app/main/salesdashboard"),   
         ]),
         new SideBarMenuItem("Tenants",'', "Pages.Tenants", "icon-globe", "/app/admin/tenants"),
         new SideBarMenuItem("Editions",'',"Pages.Editions", "icon-grid", "/app/admin/editions"),
@@ -57,6 +57,7 @@ export class SideBarComponent extends AppComponentBase {
                 new SideBarMenuItem("Product Group",'',"Pages.Tenant.ProductFamily.ProductGroup","fa fa-clone", "/app/main/productGroup"),
                 new SideBarMenuItem("Product Specification",'', "Pages.Tenant.ProductFamily.ProductSpecification", "fa fa-users", "/app/main/product-specification"),
                 new SideBarMenuItem("Product",'', "Pages.Tenant.ProductFamily.Products", "fa fa-cube", "/app/main/product"),
+                new SideBarMenuItem("Finish",'',"","fa fa-money", "/app/main/finish")
                 ]),
         new SideBarMenuItem("AddressBook",'', "Pages.Tenant.AddressBook", "fa fa-address-book", "", [
             new SideBarMenuItem("Company",'', "Pages.Tenant.AddressBook.Company", "fa fa-university", "/app/main/company"),

@@ -22,18 +22,21 @@
                                 <ul class="dropdown-menu text-right">
                                     <li>
                                         <a href="javascript:;" (click)="quot_preview(1)">Standard</a>
+                                    </li>                                 
+                                    <li>
+                                        <a href="javascript:;" (click)="quot_preview(4)">Standard Optional 1</a>
+                                    </li>  
+                                    <li>
+                                        <a href="javascript:;" (click)="quot_preview(6)">Standard Optional 2</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:;" (click)="quot_preview(4)">Standard Optional</a>
+                                        <a href="javascript:;" (click)="quot_preview(5)">Government</a>
                                     </li>
                                     <li>
                                         <a href="javascript:;" (click)="quot_preview(2)">PhotoEmphasis</a>
                                     </li>
                                     <li>
                                         <a href="javascript:;" (click)="quot_preview(3)">Product Category</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;" (click)="quot_preview(5)">Government</a>
                                     </li>
                                 </ul>
                             </div>
@@ -52,6 +55,26 @@
                                 <button  [ngClass]="{'no-edit':quotationList.submitted}" type="button" *ngIf="isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.AddQuotationProduct')" (click)="setDiscount()" tooltip="{{l('Set Discount')}}" class="btn btn-circle btn-icon-only white delete-person" >
                                     <i class="fa fa-eyedropper" aria-hidden="true"></i>
                                 </button>  
+                                <!-- <button  [ngClass]="{'no-edit':quotationList.submitted}" type="button" (click)="QuotationRevaluation(1)" tooltip="{{l('Revaluation')}}" class="btn btn-circle btn-icon-only white delete-person" >
+                                    <i class="fa fa-exchange" aria-hidden="true"></i>
+                                </button>   -->
+                                <!-- <div class="btn-group mydropdown" [ngClass]="{'no-edit':quotationList.submitted}">
+                                    <a class="btn green-haze btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
+                                        <i class="fa fa-exchange" aria-hidden="true"></i> <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu text-right">
+                                        <li>
+                                            <a href="javascript:;" (click)="QuotationRevaluation(3)">Basic Revaluation</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;" (click)="QuotationRevaluation(1)">UnitPrice Revaluation</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;" (click)="QuotationRevaluation(2)">Discountable Revaluation</a>
+                                        </li>
+                                        
+                                    </ul>
+                                </div> -->
                                 <button type="button" (click)="discountApproveAll()" tooltip="Discount Approve" *ngIf="quotationList.discountEmail && isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.DiscountApprove')" class="btn btn-circle btn-icon-only green edit-person" style="margin-left: 15px;">
                                     <i class="fa fa-thumbs-o-up"></i>
                                 </button>
@@ -196,15 +219,16 @@
                                                 <!-- <div class="ribbon"><span>POPULAR</span></div>                                                 -->
                                                
                                                 <div class="col-md-1">
-                                                        <button type="button" *ngIf="isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.QuotationProductLink') && products.locked" tooltip="{{l('Un Link')}}" (click)="relock(products.id)" class="btn btn-circle btn-icon-only green edit-person" style="margin-top: -9px;background: transparent;border: 1px solid #ffffff;color: black;font-size: 14px;box-shadow: none">
+                                                        <button type="button" *ngIf="isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.QuotationProductLink') && products.locked" tooltip="{{l('Un Link')}}"  class="btn btn-circle btn-icon-only green edit-person" style="margin-top: -9px;background: transparent;border: 1px solid #ffffff;color: black;font-size: 14px;box-shadow: none">
                                                                 <i class="fa fa-lock" aria-hidden="true"></i>
                                                         </button> 
                                                    </div>
                                                 <div class="col-md-3 text-center">
+                                                    <img *ngIf="products.discountable == true" style="border: 0px dotted #444d58;border-radius: 10px;" src="{{path + DiscountImg}}" alt="product-pic" tooltip="{{l('Discountable')}}" class="poduct-img" width="25" height="25" />
                                                     <label><b>{{products.productCode}}</b></label>
                                                 </div>
                                                 <div class="col-md-1" style="margin-top: -20px">
-                                                    <img *ngIf="!products.imageUrl" style="border: 1px dotted #444d58;border-radius: 10px;" src="/assets/common/images/img-not-available.png" alt="product-pic" class="poduct-img" width="60" height="60" />
+                                                    <img *ngIf="!products.imageUrl" style="border: 1px dotted #444d58;border-radius: 10px;" src="{{path + DefaultImg}}" alt="product-pic" class="poduct-img" width="60" height="60" />
                                                     <img *ngIf="products.imageUrl" style="border: 1px dotted #444d58;border-radius: 10px;" src="{{path+products.imageUrl}}" alt="product-pic" class="poduct-img" width="60" height="60" />
                                                 </div>
                                                 <div class="col-md-2 text-center">
@@ -552,7 +576,7 @@
     <quotationPreviewModal #quotationPreviewModal></quotationPreviewModal>
     <productChangeModal #productChangeModal (modalSave)="ngOnInit()"></productChangeModal>
     <discountModal #discountModal (modalSave)="ngOnInit()"></discountModal>
-
+    <QuotationRevisionModal #QuotationRevisionModal></QuotationRevisionModal>
     <style>
         #watermark
         {

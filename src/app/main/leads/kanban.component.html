@@ -81,19 +81,22 @@
                                 <div class="ddns">
                                         <small  data-placement="bottom" tooltip="Key Account" *ngIf="item.designationId == 7" style="font-weight: 600;color: #0a39ec;">{{item.companyName}}</small>
                                         <small *ngIf="item.designationId != 7" style="font-weight: 600;">{{item.companyName}}</small>
+                                        <span  *ngIf="item.stared == true" style="cursor: pointer;"  data-placement="left" tooltip="Stared">
+                                            <i class="fa fa-star" style="color: yellow;" aria-hidden="true"></i>
+                                        </span>
                                         <br>
                                         <p class="ddns">
                                                     {{item.subMmissionId}}-                      
                                             <small style="font-weight: 400;" class="name">{{item.name}}</small><br>
                                     </p> 
-                                    <div class="ddns"  class="row" style="margin-top:-6px;margin-left: -43px; margin-bottom: -9px;margin-right: 0px;">
+                                    <div class="ddns"  class="row" Id="quotlist">
                                             <ul>                                     
                                                 <div [innerHTML]="item.quotationsNew"></div>
                                             </ul> 
                                     </div>
                                 </div>    
                                 </div>
-                                <span *ngIf="item.strike == true" style="font-size: 20px;text-decoration: line-through;" (click) ="editSalesEnquiry(false,item.id,item.quotationId)">
+                                <span *ngIf="item.strike == true" id="textdeco" (click) ="editSalesEnquiry(false,item.id,item.quotationId)">
                                     {{item.estimationValueformat}}
                                 </span>
                                 <span *ngIf="item.strike == false" style="font-size: 20px;" (click) ="editSalesEnquiry(false,item.id,item.quotationId)">
@@ -101,25 +104,30 @@
                                     </span>   
                                 <span style="font-size: 12px;" (click) ="editSalesEnquiry(false,item.id,item.quotationId)">{{item.address}}</span>  
                                 <p>
-                                        <img (click) ="editSalesEnquiry(false,item.id,item.quotationId)" *ngIf="item.coordinatorName"  class="img-circle" height="30" id="HeaderProfilePicture" style="border: 1px solid #e0e6ec;float: right;margin-left: 5px" width="30" tooltip="{{item.coordinatorName}}" src="{{path+item.coordinatorImage}}">                              
-                                        <img (click) ="editSalesEnquiry(false,item.id,item.quotationId)" *ngIf="item.assignedbyImage"  class="img-circle" height="30" id="HeaderProfilePicture" style="border: 1px solid #e0e6ec;float: right;margin-left: 5px" width="30"  tooltip="{{item.salesMan}}" src="{{path+item.assignedbyImage}}">
-                                        <img (click) ="editSalesEnquiry(false,item.id,item.quotationId)" *ngIf="item.designerName"  class="img-circle" height="30" id="HeaderProfilePicture" style="border: 1px solid #e0e6ec;float: right;margin-left: 5px" width="30"  tooltip="{{item.designerName}}" src="{{path+item.designerImage}}">                  
-                                        <small (click) ="editSalesEnquiry(false,item.id,item.quotationId)" style="background: #fff;padding: 2px;border: 1px solid #000;border-radius: 3px;" class="statusmessage">{{item.browcerinfo}}</small>
-                                        <small   style="background: #fff;padding: 2px;border: 1px solid #000;border-radius: 3px;cursor: pointer;" class="statusmessage" (click)="changeStage(group.isQuotation,item.id,item.quotationId,group.statusId,group.name,item.statusName)">{{item.percentage}} %</small>     
+                                        <img (click) ="editSalesEnquiry(false,item.id,item.quotationId)" *ngIf="item.coordinatorName"  class="img-circle" height="25" id="propic" width="25" tooltip="{{item.coordinatorName}}" src="{{path+item.coordinatorImage}}">                              
+                                        <img (click) ="editSalesEnquiry(false,item.id,item.quotationId)" *ngIf="item.assignedbyImage"  class="img-circle" height="25" id="propic"  width="25"  tooltip="{{item.salesMan}}" src="{{path+item.assignedbyImage}}">
+                                        <img (click) ="editSalesEnquiry(false,item.id,item.quotationId)" *ngIf="item.designerName"  class="img-circle" height="25" id="propic"  width="25"  tooltip="{{item.designerName}}" src="{{path+item.designerImage}}">                  
+                                       
+                                        <small (click) ="editSalesEnquiry(false,item.id,item.quotationId)"  class="statusmessage mes">{{item.browcerinfo}}</small>
+                                        <small class="statusmessage mes2" (click)="changeStage(group.isQuotation,item.id,item.quotationId,group.statusId,group.name,item.statusName)">{{item.percentage}} %</small>     
+                                        <small *ngIf="item.designerName" class="statusmessage mes3">{{item.revision}}</small>
                                         <i (click) ="editSalesEnquiry(false,item.id,item.quotationId)" style="color: green;cursor: pointer;"  data-placement="right" tooltip="Closure date will expire soon" *ngIf="item.isExpire == true" class="fa fa-exclamation-triangle"></i>
                                         <i style="color: red;cursor: pointer;"  data-placement="right" tooltip="Activity Date Expired" *ngIf="item.isLast == true" class="fa fa-exclamation-circle"></i>
                                 </p>
                     </div>
                     <div *ngIf= "item.quotationId">
                                 <div (click) ="editSalesEnquiry(true,item.id,item.quotationId)">
-                                <span  *ngIf="item.isOptional" style="cursor: pointer;" class="star on" data-placement="right" tooltip="System Generated"></span>
+                                <span  *ngIf="item.isOptional" style="cursor: pointer;" class="bell on" data-placement="right" tooltip="System Generated"></span>
                                 <div class="row"  style="margin-right: 0px;">
-                                        <img *ngIf="item.assignedbyImage"  class="img-circle" height="30" id="HeaderProfilePicture" style="border: 1px solid #e0e6ec;float: right;margin-left: 5px" width="30" data-placement="bottom" tooltip="{{item.salesMan}}" src="{{path+item.assignedbyImage}}">
-                                        <img *ngIf="item.designerName"  class="img-circle" height="30" id="HeaderProfilePicture" style="border: 1px solid #e0e6ec;float: right;margin-left: 5px" width="30" data-placement="bottom" tooltip="{{item.designerName}}" src="{{path+item.designerImage}}">                              
-                                        <img *ngIf="item.coordinatorName"  class="img-circle" height="30" id="HeaderProfilePicture" style="border: 1px solid #e0e6ec;float: right;margin-left: 5px" width="30" data-placement="bottom" tooltip="{{item.coordinatorName}}" src="{{path+item.coordinatorImage}}">                              
+                                        <img *ngIf="item.assignedbyImage"  class="img-circle" height="30" id="propic3"  width="30" data-placement="bottom" tooltip="{{item.salesMan}}" src="{{path+item.assignedbyImage}}">
+                                        <img *ngIf="item.designerName"  class="img-circle" height="30" id="propic3"  width="30" data-placement="bottom" tooltip="{{item.designerName}}" src="{{path+item.designerImage}}">                              
+                                        <img *ngIf="item.coordinatorName"  class="img-circle" height="30" id="propic3"  width="30" data-placement="bottom" tooltip="{{item.coordinatorName}}" src="{{path+item.coordinatorImage}}">                              
                                 </div>
                                 <small  data-placement="bottom" tooltip="Key Account" *ngIf="item.designationId == 7" style="font-weight: 600;color: #0a39ec;">{{item.companyName}}</small>
-                                <small *ngIf="item.designationId != 7" style="font-weight: 600;">{{item.companyName}}</small>
+                                <small  class="ddns" *ngIf="item.designationId != 7" style="font-weight: 600;">{{item.companyName}}</small>
+                                <span  *ngIf="item.stared == true" style="cursor: pointer;"  data-placement="left" tooltip="Stared">
+                                    <i class="fa fa-star" style="color: yellow;" aria-hidden="true"></i>
+                                </span>
                                 </div>
                                     <p  class="ddns">
                                         <a *ngIf="group.name != 'Closed'" (click) ="editSalesEnquiry(false,item.id,item.quotationId)"> 
@@ -136,7 +144,7 @@
                                         </p> 
                                     <div (click) ="editSalesEnquiry(true,item.id,item.quotationId)">
                                    
-                                    <span *ngIf="item.strike == true" style="font-size: 20px;text-decoration: line-through;">
+                                    <span *ngIf="item.strike == true" id="textdeco">
                                         {{item.estimationValueformat}}
                                     </span>
                                     <span *ngIf="item.strike == false" style="font-size: 20px;">
@@ -149,9 +157,10 @@
                                 <small style="font-weight: 400;color: red" class="name" (click) ="editSalesEnquiry(true,item.id,item.quotationId)"><b>{{item.quotationsNew}}</b></small>                           
                                 <small  style="background: #fff;padding: 2px;border: 1px solid #000;border-radius: 3px;" class="statusmessage" (click) ="editSalesEnquiry(true,item.id,item.quotationId)">{{item.browcerinfo}}</small>
                                 <small   style="background: #fff;padding: 2px;border: 1px solid #000;border-radius: 3px;cursor: pointer;" class="statusmessage" (click)="changeStage(group.isQuotation,item.id,item.quotationId,group.statusId,group.name,item.statusName)">{{item.percentage}} %</small>     
-                        </p>
+                                <small *ngIf="item.designerName" style="background: #000;color: #fff;padding: 2px;border: 1px solid #000;border-radius: 3px;" class="statusmessage">{{item.revision}}</small>
+                            </p>
                     </div>
-            </a>
+            </a> 
             </div>
 
             <div class="desk-items" [attr.data-type]="non-status" [attr.data-milestoneId]="group.statusId" [attr.data-milestoneName]="group.name" [attr.data-isQuotation]="group.isQuotation" [attr.data-StatusId]="group.statusId" *ngIf="!isGranted('Pages.Tenant.Enquiry.SalesEnquiry.Edit')">
@@ -197,25 +206,3 @@
 
 <router-outlet (deactivate)="kanbanActivate($event)"></router-outlet>
 
-<style>
-.star.on {
-    background-position: -82px -73px;
-    transform: scale(0.3);}
-.star {
-    width: 72px;
-    height: 69px;
-    display: block;
-    position: absolute;
-    top: -13px;
-    left: -15px;
-    background: url(/assets/common/images/star-sprite.png) no-repeat 0 -10px;}
-
-    .newq
-    {
-    background: #fff;
-    padding: 2px;
-    border: 1px solid #fffafa;
-    border-radius: 34px;
-    margin-left: 4px;
-    }
-</style> 

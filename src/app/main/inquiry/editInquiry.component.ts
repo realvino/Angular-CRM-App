@@ -1,7 +1,7 @@
 import { Component, ViewChild, Injector, Renderer,ElementRef,Input, Output, EventEmitter, OnInit, AfterViewInit ,OnDestroy,NgZone } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { Select2ServiceProxy, Datadto, InquiryServiceProxy, InquiryListDto,QuotationListDto, InquiryInputDto, EnqActList, Sourcelist, CompanyServiceProxy, CompanyCreateInput, DesignationInputDto, LocationInputDto, EnquiryContactServiceProxy,EnquiryUpdateInputDto,EnquiryUpdateServiceProxy,NewCompanyContactServiceProxy,CreateAddressInfo,CreateContactInfo,CreateCompanyOrContact,IndustryInputDto,IndustryServiceProxy,LeadDetailInputDto, Select2TeamDto, CheckInquiryInput, JobActivityList, QuotationServiceProxy, Datadto3, Select2CompanyDto, NullableIdDto, SalesmanChange, EnquiryJunkUpdateInputDto, Stagedto } from "shared/service-proxies/service-proxies";
+import { Select2ServiceProxy, Datadto, InquiryServiceProxy, InquiryListDto,QuotationListDto, InquiryInputDto, EnqActList, Sourcelist, CompanyServiceProxy, CompanyCreateInput, DesignationInputDto, LocationInputDto, EnquiryContactServiceProxy,EnquiryUpdateInputDto,EnquiryUpdateServiceProxy,NewCompanyContactServiceProxy,CreateAddressInfo,CreateContactInfo,CreateCompanyOrContact,IndustryInputDto,IndustryServiceProxy,LeadDetailInputDto, Select2TeamDto, CheckInquiryInput, JobActivityList, QuotationServiceProxy, Datadto3, Select2CompanyDto, NullableIdDto, SalesmanChange, EnquiryJunkUpdateInputDto, Stagedto, EntityDto } from "shared/service-proxies/service-proxies";
 import {Jsonp} from '@angular/http';
 import { ActivatedRoute,Router } from '@angular/router';
 import * as _ from "lodash";
@@ -41,6 +41,7 @@ export class EditInquiryComponent extends AppComponentBase implements AfterViewI
   designerr: boolean = false;
   inquiryDuplicate: boolean = false;
   companyDetailsDto:Select2CompanyDto = new Select2CompanyDto();
+  InputDto:EntityDto = new EntityDto();
   assignedDiff:boolean = false;
   checkInquiry: CheckInquiryInput = new CheckInquiryInput();
   @ViewChild('createLinkedModal') createLinkedModal: LinkedContactComponent;
@@ -225,6 +226,8 @@ export class EditInquiryComponent extends AppComponentBase implements AfterViewI
     team_list: Select2TeamDto[];
     active_department:SelectOption[]=[];
   leadstatusId: number;
+  unapproved: number = null;
+  allowedChars = new Set('0123456789'.split('').map(c => c.charCodeAt(0)));
 
     constructor(
         injector: Injector,
@@ -514,7 +517,6 @@ editEnqActivity(companyId,data): void {
            this.Sources = result.selectedSource;
            if(result.inquiryLock !=null)
            {
-             console.log(result.inquiryLock);
              this.lqref = result.inquiryLock.quotationRefno;
              this.lqtot = result.inquiryLock.quotationTotal;
            }
@@ -575,6 +577,12 @@ editEnqActivity(companyId,data): void {
                 this.saveLeadDetailInput.inquiryId = result.inquiryDetails.inquiryId?result.inquiryDetails.inquiryId:null;;
                 this.saveLeadDetailInput.estimationValue = result.inquiryDetails.estimationValue;
                 this.saveLeadDetailInput.size = result.inquiryDetails.size;
+                this.saveLeadDetailInput.size = result.inquiryDetails.size;
+                if( result.inquirys.designerApproval == false && result.inquiryDetails.designerId > 0)
+                {
+                  this.unapproved = 1;
+                }
+
 
            }
            if (result.inquirys != null) {
@@ -597,7 +605,6 @@ editEnqActivity(companyId,data): void {
             }  
             this.salesimg = result.inquirys.assignedbyImage;
             this.inquiry = result.inquirys;
-            console.log(this.inquiry);
             
             if(this.which_located=='leads'){
               if(!this.inquiry.assignedbyId && this.inquiry.companyId > 0){
@@ -623,14 +630,12 @@ editEnqActivity(companyId,data): void {
             this.active_tagCompany = [{id:this.inquiry.companyId,text:this.inquiry.companyName}];
             this.active_indus = [{id:this.inquiry.industryId,text:this.inquiry.industryName}];
             this.active_desg = [{id:this.inquiry.designationId,text:this.inquiry.designationName}];
-            console.log(this.active_desg);
             if(this.inquiry.statusId){
               this.active_status = [{id:this.inquiry.statusId,text:this.inquiry.statusName}];
               this.update_details.statusId = this.inquiry.statusId;
             }
             if(this.inquiry.compatitorName){
               this.active_competators = [{id:this.inquiry.compatitorsId,text:this.inquiry.compatitorName}];
-              console.log('competetor is',this.inquiry.compatitorName);
             }else{
               this.active_competators =[];
             }
@@ -662,7 +667,6 @@ editEnqActivity(companyId,data): void {
             var index = this.companies.findIndex(x => x.text==this.inquiry.companyName);
             //console.log(this.companies[index],'its ok for');
             if(result.contactEdit!=null){
-              console.log(result.contactEdit[0],'ok ok ok');
                 this.formdata=result.contactEdit[0].addressInfo;
               this.dataCon = result.contactEdit[0].contactinfo;
               this.cmpname = result.contactEdit[0].name;
@@ -802,7 +806,6 @@ editEnqActivity(companyId,data): void {
             var the_arr = this.router.url.split('/');
                         the_arr.pop();
                         var from_location = the_arr[3];
-                        console.log(from_location);
                        if(this.inquiry.mileStoneId>=3){
                           this.assigned = true;
                           this._select2Service.getTeamSalesman(this.inquiry.teamId).subscribe(result=>{
@@ -821,7 +824,6 @@ editEnqActivity(companyId,data): void {
                             });
                           }
                           });
-                          console.log(this.active_assigned);
                        }
                        if(this.assigned){    
            this._select2Service.getDepartment().subscribe(result => {
@@ -899,7 +901,6 @@ editEnqActivity(companyId,data): void {
         this.loading = false;
         });
       
-       console.log(this.CompanyText);
     }
     showConDetails(){
       return  this._fb.group({
@@ -913,12 +914,10 @@ editEnqActivity(companyId,data): void {
         });
 }
 onRadioChange(name:string){
-  console.log(name,' activity');
   this.radio_val = name;
 }
 
 private selectAssigned(data):void{
-  console.log(data.id);
    this._select2Service.getCompanyDetails(this.inquiry.companyId,this.inquiry.companyName).subscribe((result) => {
     if(result.select2Company != null){
       this.companyDetailsDto = result.select2Company;
@@ -947,7 +946,6 @@ private selectAssigned(data):void{
 
 sel(value,id){
   this.inquiry.companyId = id;
-  console.log(value,'value is');
   this.CompanyText=value;
 
 }
@@ -959,7 +957,6 @@ expandJob(){
 }
 selDesc(value,id){
   this.inquiry.designationId = id;
-  console.log(value,'value is');
   this.descText=value;
 }
 
@@ -994,6 +991,12 @@ getEnquiryActivity():void{
     }
     
   }
+  updateDesignApproval(data:any){
+    this.InputDto.id = data;
+     this._inquiryServiceProxy.inquiryDesignerApproval(this.InputDto).subscribe(result=>{
+    });
+  }
+  
 	createComActivity(data): void {
 
         this.createCommentModal.show(data);
@@ -1056,21 +1059,17 @@ getEnquiryActivity():void{
     }
 
     public removedTeam(value:any):void {
-      console.log('Removed value is: ', value);
-      console.log('Removed value is: ', value);
       this.inquiry.teamId = value.id;
       this.active_team = [{"id":value.id,"text":value.text}];
     }
 
  public selectedCompany(value:any):void {
-    console.log('Selected value is: ', value);
     this.inquiry.companyId = value.id;
     this.inquiry.companyName = value.text;
     this.CompanyText = null;
   }
 
   public removedCompany(value:any):void {
-    console.log('Removed value is: ', value);
   }
   public typedCompany(value:any):void {
       this.CompanyText = value;
@@ -1098,11 +1097,9 @@ getEnquiryActivity():void{
  
   refreshCompanyValue(value:any):void {
     this.value = this.companies;
-        console.log('refresh company input: ', this.companies);
   }
 
     saveCompany(form): void {
-      console.log(this.company);
        this.message.confirm(
                 this.l('Are You Sure To Add Company', this.company.companyName),
                 (isConfirmed) => {
@@ -1126,12 +1123,10 @@ getEnquiryActivity():void{
       this.descText = null;
      this.inquiry.designationId = value.id;
      this.contact_edit.designationId=value.id;
-     console.log('Selected value is: ', value);
    }
  
    public removeddesc(value: any): void {
      this.contact_edit.designationId=null;
-     console.log('Removed value is: ', value);
    }
 
 public typeddesc(event):void {
@@ -1162,7 +1157,6 @@ public refreshTitle(value:any,model):void{
     this.contact_edit.titleId=value.id;
   }
   public removedTitle(value,model):void{
-    console.log(value);
     this.contact_edit.titleId=0;
   }
 
@@ -1217,6 +1211,11 @@ else{
            if(this.lastActivity){
             let lst= moment(moment(this.lastActivity).toDate().toString());
             this.update_details.lastActivity = moment(lst).add(6, 'hours');
+           }
+           this.update_details.weightedvalue = this.inquiry.weightedvalue;
+           this.update_details.stared = this.inquiry.stared;
+           if(!this.update_details.stared){
+            this.update_details.weightedvalue =0;
            }
            this.update_details.id = this.inquiry.id;
            this.update_details.name = this.inquiry.name;
@@ -1282,6 +1281,12 @@ else{
            this.update_details.companyName = this.inquiry.companyName;
            this.update_details.companyId = this.inquiry.companyId?this.inquiry.companyId:null;
            this.update_details.assignedbyId = this.inquiry.assignedbyId?this.inquiry.assignedbyId:null;
+
+           this.update_details.designerApproval = this.inquiry.designerApproval;
+           this.update_details.revisionApproval = this.inquiry.revisionApproval;
+           this.update_details.weightedvalue = this.inquiry.weightedvalue;
+           this.update_details.stared = this.inquiry.stared;
+
            this.update_details.sourceId =  _.map(
                 _.filter(this.Sources, { isAssigned: true }), Source => Source.sourceId
             );
@@ -1292,13 +1297,11 @@ else{
            this.update_details.estimationValue = this.inquiry.estimationValue;
            this.update_details.summary = this.inquiry.summary;
 
-           console.log(this.update_details,model);
                     
           this.contact_edit.name = model._value.companyName;
           this.contact_edit.lastName = model._value.lastName;
           this.contact_edit.newCompanyId = this.inquiry.companyId;
           this.contact_edit.newCustomerTypeId = 4;
-        console.log(this.contact_edit);
         
         if(!this.contact_edit.industryId && this.newIndustry){
             this.industryInput.id = 0;
@@ -1306,7 +1309,6 @@ else{
             this.industryInput.industryName = this.newIndustry;
             this._industryServiceProxy.createNewIndustry(this.industryInput).subscribe(result=>{
               if(result){
-                console.log(result);
                 this.contact_edit.industryId = result;
                 this.updateInquiryDetails(model);
               }
@@ -1318,9 +1320,7 @@ else{
     }
 
     enquiryStatusUpdate(){
-      console.log(this.updateInquiryIn);
       this._enquiryUpdateServiceProxy.createORupdateInquiry(this.updateInquiryIn).subscribe(result => {
-      console.log(result);
       if( !result ){
         //this.getTickets('');
       }else{
@@ -1351,7 +1351,6 @@ changeStage():void{
  getJobActivity(): void {
   this._inquiryServiceProxy.getJobActivity(this.inquiryId).subscribe(results=> {
     this.activities=results.items;
-    console.log(11,this.activities)
   });
 }
 
@@ -1409,7 +1408,6 @@ deleteJobActivity(job: JobActivityList): void {
           
           if(this.inquiry.mileStoneId === 3 && this.inquiry.assignedbyId !== null && this.inquiry.assignedbyId !== 0){
             this._select2Service.getEnquiryStages(4).subscribe((result)=>{
-              console.log(result);
               if(result.select2data !=null){
                 this.updateInquiryIn.stageId = result.select2data[1].id;
                 this._inquiryServiceProxy.createOrUpdateInquiry(this.update_details)
@@ -1448,6 +1446,7 @@ deleteJobActivity(job: JobActivityList): void {
               .finally(() => this.saving = false)
               .subscribe(() => {
                 this.updateSalesman();
+                this.updateDesignApproval(this.update_details.id);
                 if(this.update_details.leadStatusId == 4 && (this.leadstatusId != this.update_details.leadStatusId))
                 {
                   this._enquiryUpdateServiceProxy.inquiryClosed(this.update_details.id).subscribe(result=>{
@@ -1487,7 +1486,7 @@ deleteJobActivity(job: JobActivityList): void {
     }
 close() {
   var self = this;
-
+        this.unapproved = null;
         this.assignedDiff = false;
         this.inquiryDuplicate = false;
         this.active = false;
@@ -1495,7 +1494,6 @@ close() {
         var the_arr = the_url.split('/');
         the_arr.pop();
         var located = the_arr.join('/');
-        console.log(located);
        // this._location.go("app/main/sales-enquiry");
         this.router.navigate([located],{ relativeTo: this.route });
         // this.router.navigate([located], { relativeTo: this.route });
@@ -1580,10 +1578,7 @@ initContact(){
     removeAddress(i: number,data:any) {
         const control = <FormArray>this.myForm.controls['addresses'];
         this.removed_address_arr.push(data._value);
-        this.address_remove_values.push(data._value);
-        
-        console.log(this.address_remove_values.id);
-
+        this.address_remove_values.push(data._value);       
         control.removeAt(i);
     }
     refreshIndus(value:any){
@@ -1635,17 +1630,14 @@ initContact(){
       // this.active_lead_save_category = [{"id":0,"text":data}];
     }
     selectedCompetitor(data:any){
-      console.log(data);
       this.inquiry.compatitorsId = data.id;
       // this.active_competators = [{id:data.id,text:data.text}];
     }
     removedCompetitor(data:any){
-      console.log(data);
       this.inquiry.compatitorsId = null;
       this.active_competators = [];
     }
     typedCompetitor(event:any){
-      console.log(event);
       // this.inquiry.compatitorsId = null;
       // this.active_competators = [{id:0,text:event}];
     }
@@ -1654,6 +1646,7 @@ initContact(){
       // this.active_lead_source = [{"id":data.id,"text":data.text}];
     }
     removedLeadSource(data:any){
+      this.inquiry.opportunitySourceId = null;
       this.saveLeadDetailInput.leadSourceId = null;
       this.active_lead_source = [];
     }
@@ -1757,7 +1750,6 @@ initContact(){
             data,
             this.primengDatatableHelper.getSkipCount(this.paginator, event)
         ).subscribe(result => {
-			console.log(result,11);
             this.primengDatatableHelper.totalRecordsCount = result.totalCount;
             this.primengDatatableHelper.records = result.items;
             this.primengDatatableHelper.hideLoadingIndicator();
@@ -1805,6 +1797,16 @@ initContact(){
     //   return true;
     //  }
     }
+    check(event: KeyboardEvent) {
+      if (event.keyCode > 31 && !this.allowedChars.has(event.keyCode)) {
+        event.preventDefault();
+      }
+    }
+    checkValue(){
+      if(this.inquiry.weightedvalue > 100){
+        this.notify.warn("Weighted Value must be less than 100");
+      }
+    }
 
     isValidEnquiry(data){ 
       if(this.inquiry.mileStoneId == 1){
@@ -1833,12 +1835,22 @@ initContact(){
       }
       else{
         if(this.which_located =='sales-enquiry' || this.which_located =='sales-grid'){
-          if(!data.valid || !this.inquiry.name || !this.inquiry.remarks || !this.update_details.statusId || !this.inquiry.cEmail || !this.inquiry.cLandlineNumber || !this.inquiry.mbNo || !this.inquiry.email || !this.contact_edit.titleId || !this.saveLeadDetailInput.estimationValue || !this.inquiry.teamId || !this.inquiry.departmentId || !this.inquiry.assignedbyId || !this.closedDate || !this.lastActivity)
+          if(this.inquiry.stared){
+            if(!data.valid || !this.inquiry.name || !this.inquiry.remarks || !this.update_details.statusId || !this.inquiry.cEmail || !this.inquiry.cLandlineNumber || !this.inquiry.mbNo || !this.inquiry.email || !this.contact_edit.titleId || !this.saveLeadDetailInput.estimationValue || !this.inquiry.teamId || !this.inquiry.departmentId || !this.inquiry.assignedbyId || !this.closedDate || !this.lastActivity || !this.inquiry.weightedvalue || !this.inquiry.opportunitySourceId)
+            {      
+               return true;
+            }else{
+                return false;
+             }
+          }
+          else{
+            if(!data.valid || !this.inquiry.name || !this.inquiry.remarks || !this.update_details.statusId || !this.inquiry.cEmail || !this.inquiry.cLandlineNumber || !this.inquiry.mbNo || !this.inquiry.email || !this.contact_edit.titleId || !this.saveLeadDetailInput.estimationValue || !this.inquiry.teamId || !this.inquiry.departmentId || !this.inquiry.assignedbyId || !this.closedDate || !this.lastActivity || !this.inquiry.opportunitySourceId)
           {      
              return true;
           }else{
               return false;
            }
+          }
         }
         else{
           if(!data.valid || !this.inquiry.name || !this.inquiry.remarks || !this.update_details.statusId || !this.inquiry.cEmail || !this.inquiry.cLandlineNumber || !this.inquiry.mbNo || !this.inquiry.email || !this.contact_edit.titleId || !this.inquiry.estimationValue || !this.inquiry.teamId || !this.inquiry.departmentId || !this.inquiry.assignedbyId)

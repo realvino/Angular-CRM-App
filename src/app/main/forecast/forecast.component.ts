@@ -13,6 +13,7 @@ import 'rxjs/add/operator/takeUntil';
 import {Subject} from 'rxjs/Subject';
 import { StageSelectComponent } from 'app/main/kanban/stage.component';
 import {MonthPicker} from 'app/main/monthPicker/month';
+import { AppConsts } from '@shared/AppConsts';
 
 @Component({
 templateUrl: './forecast.component.html',
@@ -31,6 +32,8 @@ export class ForecastComponent extends AppComponentBase implements AfterViewInit
 	closureUpdateDateInput:ClosureUpdateDateInput = new ClosureUpdateDateInput();
 	closureDate:string;
 	loading:boolean;
+	path : string = AppConsts.remoteServiceBaseUrl;
+
 	constructor(
 		injector: Injector,
 		private _inquiryProxyService: InquiryServiceProxy,

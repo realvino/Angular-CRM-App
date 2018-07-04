@@ -3,7 +3,7 @@ import { appModuleAnimation } from "shared/animations/routerTransition";
 import { AppComponentBase } from "shared/common/app-component-base";
 import { Router,ActivatedRoute } from "@angular/router";
 import { Http } from "@angular/http";
-import { Select2ServiceProxy, Datadto, QuotationServiceProxy, QuotationListDto, Select2salesDto, Contactdto, QuotationProductListDto, CreateQuotationInput, TenantDashboardServiceProxy, CreateDiscountInput,QuotationStatusServiceProxy,QuotationStatusList, NullableIdDto, EnquiryUpdateServiceProxy, QuotationStatusUpdateInput, EnquiryUpdateInputDto, QuotationRevisionInput } from "shared/service-proxies/service-proxies";
+import { Select2ServiceProxy, Datadto, QuotationServiceProxy, QuotationListDto, Select2salesDto, Contactdto, QuotationProductListDto, CreateQuotationInput, TenantDashboardServiceProxy, CreateDiscountInput,QuotationStatusServiceProxy,QuotationStatusList, NullableIdDto, EnquiryUpdateServiceProxy, QuotationStatusUpdateInput, EnquiryUpdateInputDto, QuotationRevisionInput, QuotationRevaluationInput } from "shared/service-proxies/service-proxies";
 import { CreateQuotationSectionModalComponent } from "./create-or-edit-quotation-section.component";
 import { CreateQuotationProductModalComponent } from "./create-or-edit-quotation-product.component";
 import { ProductImportModalComponent } from "./product-import-modal.component";
@@ -17,6 +17,7 @@ import { AppConsts } from "shared/AppConsts";
 import { RevisedQuotationComponent } from 'app/main/quotation/revisedQuotationComponent';
 import { DiscountModalComponent } from '@app/main/quotation/discount.component';
 import * as moment from "moment";
+import { QuotationRevisionModalComponent } from '@app/main/quotation/quotationRevisionModalComponent';
 
 export interface SelectOption{
   id?:number,
@@ -42,9 +43,13 @@ export class QuotationEditComponent extends AppComponentBase implements OnInit,A
 @ViewChild('discountModal') discountModal: DiscountModalComponent;
 @ViewChild('dataTable') dataTable: DataTable;
 @ViewChild('paginator') paginator: Paginator;
+@ViewChild('QuotationRevisionModal') QuotationRevisionModal: QuotationRevisionModalComponent;
 disemailinput:NullableIdDto=new NullableIdDto();
 negotiationSwitch:boolean = false;
 filterText: string = '';
+DefaultImg: string = '/Common/Images/defaultImg.png';
+DiscountImg: string = '/Common/Images/discount.svg';
+
   competitor_data:Datadto[];
   competators:Array<any>;
   active_competators:SelectOption[]=[];
@@ -101,7 +106,7 @@ filterText: string = '';
   QStatusUpdateInput: QuotationStatusUpdateInput = new QuotationStatusUpdateInput();
   updateInquiryIn: EnquiryUpdateInputDto = new EnquiryUpdateInputDto();
   QRevisionInput: QuotationRevisionInput = new QuotationRevisionInput();
-
+  RevaluationInput: QuotationRevaluationInput = new QuotationRevaluationInput();
   enq_id: number;
   en: any;
    constructor(
@@ -126,16 +131,6 @@ filterText: string = '';
 
     }
   ngOnInit() {
-    this.en = {
-      firstDayOfWeek: 0,
-      dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-      dayNamesMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
-      monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      today: 'Today',
-      clear: 'Clear it !!!'
-    };
 
     this.pointenable ="yes";
     var the_arr = this.router.url.split('/');
@@ -215,6 +210,8 @@ filterText: string = '';
           this.quotation.refQNo = this.quotationList.refQNo;
           this.quotation.rfqNo = this.quotationList.rfqNo;
           this.quotation.total = this.quotationList.total;
+          this.quotation.negotiationDate = this.quotationList.negotiationDate;
+
           this.quotation.discountEmail = this.quotationList.discountEmail;
 
           if(this.quotationList.compatitorId)
@@ -257,7 +254,9 @@ filterText: string = '';
           this.quotation.won = this.quotationList.won;
           this.quotation.lost = this.quotationList.lost;
           this.quotation.submitted = this.quotationList.submitted;
-          
+          this.quotation.submittedDate = this.quotationList.submittedDate;
+          this.quotation.wonDate = this.quotationList.wonDate;
+
 
           this._quotationStatusService.getQuotationStatus(this.filterText).subscribe(result=>{
           if(result.items!=null){
@@ -385,22 +384,22 @@ filterText: string = '';
 
     if(this.statusId != 3 && this.quotation.quotationStatusId == 3)
     {
-       this.QRevisionInput.id = this.id;
-       let lst= moment(moment(this.nextActivity).toDate().toString());
-       this.QRevisionInput.nextActivity = moment(lst).add(6,'hours');
-      this._quoatationService.quotationRevision(this.QRevisionInput).subscribe(result=>{
-        if(result){
-          console.log(result);
-          this.notify.success("Quotation Revised successfully");
-          if(from == 1){
-            this.goToQuotation();
-          }
-          else{
-            this.redirectQuotation(result);
-          }
+      //  this.QRevisionInput.id = this.id;
+      //  let lst= moment(moment(this.nextActivity).toDate().toString());
+      //  this.QRevisionInput.nextActivity = moment(lst).add(6,'hours');
+      // this._quoatationService.quotationRevision(this.QRevisionInput).subscribe(result=>{
+      //   if(result){
+      //     console.log(result);
+      //     this.notify.success("Quotation Revised successfully");
+      //     if(from == 1){
+      //       this.goToQuotation();
+      //     }
+      //     else{
+      //       this.redirectQuotation(result);
+      //     }
           
-        }
-       });
+      //   }
+      //  });
     }
     
     else
@@ -427,6 +426,7 @@ filterText: string = '';
          .subscribe((result) => {
           if(result){
            this.notify.success(this.l('SavedSuccessfully'));
+           this.QuotationRevaluation(3);
            if(from == 1){
              this.goToQuotation();
            }
@@ -685,6 +685,19 @@ filterText: string = '';
     setDiscount(){
       this.discountModal.show(this.id)
     }
+    
+    QuotationRevaluation(data:any){
+      this.RevaluationInput.id = this.id;
+      this.RevaluationInput.type = data;
+      this._quoatationService.quotationRevaluation(this.RevaluationInput)
+            .finally(() => this.saving = false)
+            .subscribe(() => {
+                this.notify.info(this.l('Reevaluated Successfully'));
+                this.ngOnInit();
+            });
+    }
+
+
     getData(event?: LazyLoadEvent){
       let data;
         if(this.primengDatatableHelper.getMaxResultCount(this.paginator, event)==0){
@@ -796,6 +809,7 @@ filterText: string = '';
         this.stat_all[lost_index].switch_disable = false;
         this.stat_all[submitted_index].stat_switch = false;
         document.getElementById('Revised').click();
+        this.QuotationRevisionModal.show(this.id);
       }
       
       if(this.stat_all[won_index].stat_switch && this.stat_all[lost_index].stat_switch && name=='Won'){

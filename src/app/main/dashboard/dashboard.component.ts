@@ -40,6 +40,8 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     chart : any;
     lrgoption: Object;
     lsgoption: Object;
+    conoption: Object;
+    cardIndex:number = 0;
     teamIdselect: string;
     IsSales:boolean = false;
     SliderCount:number;
@@ -92,11 +94,13 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
         this.clsdata = value;
     }
     slideClicked(index): void  {
-        this.carousel.slideClicked(index);
-        this.lostreasonpiegraph(this.slides[index]);
-        this.leadsummaryfunnelgraph(this.slides[index]);
-        this.Closuresoon(this.slides[index]);
-        this.LastActivity(this.slides[index]);
+        this.cardIndex = index;
+        this.carousel.slideClicked(this.cardIndex);
+        this.lostreasonpiegraph(this.slides[this.cardIndex]);
+        this.leadsummaryfunnelgraph(this.slides[this.cardIndex]);
+        this.conversionRatiograph(this.slides[this.cardIndex]);
+        this.Closuresoon(this.slides[this.cardIndex]);
+        this.LastActivity(this.slides[this.cardIndex]);
     }
     getDashboardStatisticsData(datePeriod): void {
         this._dashboardService
@@ -111,7 +115,6 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
             .getInquiryRecentClosure(this.teamselect,data.id)
             .subscribe(result => {
                 this.Closure = result;
-                console.log(this.Closure);
                 //nextWeekClosureInquiry
                 //thisWeekClosureInquiry
       });
@@ -121,7 +124,6 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
             .getInquiryRecentActivity(this.teamselect,data.id)
             .subscribe(result => {
                 this.Activity = result;
-                console.log(this.Activity);
       });
     };
 
@@ -205,10 +207,11 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
                 newSlide.push({src: item['profilePicture'],name: item['name'],id: item['id'],email: item['email']})
             });
             this.slides = newSlide.concat(this.slides);
-            this.lostreasonpiegraph(this.slides[0]);
-            this.leadsummaryfunnelgraph(this.slides[0]);
-            this.Closuresoon(this.slides[0]);
-            this.LastActivity(this.slides[0]);
+            this.lostreasonpiegraph(this.slides[this.cardIndex]);
+            this.leadsummaryfunnelgraph(this.slides[this.cardIndex]);
+            this.Closuresoon(this.slides[this.cardIndex]);
+            this.LastActivity(this.slides[this.cardIndex]);
+            this.conversionRatiograph(this.slides[this.cardIndex]);
         });
     }
     
@@ -217,15 +220,14 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     dashsubmitDateRange(): void {
         // console.log(this.dashdateRangePickerStartDate);
         // console.log(this.dashdateRangePickerEndDate);
-        this.lostreasonpiegraph(this.slides[0]);
-        this.leadsummaryfunnelgraph(this.slides[0]);
+        this.lostreasonpiegraph(this.slides[this.cardIndex]);
+        this.leadsummaryfunnelgraph(this.slides[this.cardIndex]);
+        this.conversionRatiograph(this.slides[this.cardIndex]);
     }
 
     lostreasonpiegraph(value:any):void{
         var scorelrp = []; 
-        var colorlrp = [];
-
-             
+        var colorlrp = [];        
         this._dashboardService.getLostReasonGraph(value.id,this.teamselect, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
         .subscribe((result) => {
             for (var i = 0; i < result.length; i++) {
@@ -278,19 +280,6 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
             this.lsgoption = {
                 chart: { type: 'funnel' },
                 title: { text : 'Lead Summary Graph'},
-                // plotOptions: {
-                //     series: {
-                //         dataLabels: {
-                //             enabled: true,
-                //             format: '<b>{point.name} %</b> ({point.y:,.2f})',
-                //             softConnector: true
-                //         },
-                //         center: ['40%', '50%'],
-                //         neckWidth: '30%',
-                //         neckHeight: '25%',
-                //         width: '80%'
-                //     }
-                // },
                 plotOptions: {
                     series: {
                         allowPointSelect: true,
@@ -317,9 +306,53 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
                 credits: {
                     enabled: false
                 },
+            };        
+         });
+    }
+    conversionRatiograph(value:any):void{
+
+        this._dashboardService.getConversionRatioGraph(value.id,this.teamselect, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
+        .subscribe((result) => {
+           
+            this.conoption = {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'CONVERSION RATIO GRAPH'
+                },
+                subtitle: {
+                    text: 'Source: Quotation'
+                },
+                xAxis: {
+                    categories: result.catagries,
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total (AED)'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} AED</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: result.conversionRatio
             };
          });
     }
+
 
     ngOnDestroy() {
     }

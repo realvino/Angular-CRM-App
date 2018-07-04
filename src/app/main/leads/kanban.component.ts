@@ -90,7 +90,6 @@ export class LeadsKanbanComponent extends AppComponentBase implements AfterViewI
 			this.onDrop(value);
 		});
 		salesdragulaService.over.subscribe((value) => {
-			//console.log('over funct called');
 			this.isJunk = true;
 			//this.onOver(value.slice(1));
 		});
@@ -127,7 +126,6 @@ export class LeadsKanbanComponent extends AppComponentBase implements AfterViewI
 			this.getTickets('');			
 		} else {
 		this._select2Service.getEnquiryStages(eu.getAttribute("data-StatusId")).subscribe((result)=>{
-			console.log(result);
 			if(result.select2data !=null){
 			  if(result.select2data.length == 1)
 			  {
@@ -147,7 +145,6 @@ export class LeadsKanbanComponent extends AppComponentBase implements AfterViewI
 					{
 						this.QRevisionInput.id = this.QStatusUpdateInput.quotationId;
 						this.QRevisionInput.nextActivity = moment();
-						console.log(this.QRevisionInput);
 						this._quotationService.quotationRevision(this.QRevisionInput).subscribe(result=>{
 							if(result){
 								this.getTickets('');			
@@ -275,7 +272,6 @@ removeCoordinator(data:any){
 	this._select2Service.getUserProfile().subscribe(result=>{			
 		if(result.select3data!=null){
 			this.salesman_Arr = result.select3data;
-			console.log(this.salesman_Arr);
 			  this.salesman = [];
 				this.salesman_Arr.forEach((sales:{id: number,name: string,profilePictureId: string})=>{
 					this.salesman.push({
@@ -294,7 +290,6 @@ removeCoordinator(data:any){
 	this._select2Service.getDesignerProfile().subscribe(result=>{			
 		if(result.select3data!=null){
 			this.designer_Arr = result.select3data;
-			console.log(this.designer_Arr);
 			  this.designer = [];
 				this.designer_Arr.forEach((sales:{id: number,name: string,profilePictureId: string})=>{
 					this.designer.push({
@@ -308,7 +303,6 @@ removeCoordinator(data:any){
 	this._select2Service.getCoordinatrProfile().subscribe(result=>{			
 		if(result.select3data!=null){
 			this.coordinator_Arr = result.select3data;
-			console.log(this.coordinator_Arr);
 			  this.coordinator = [];
 				this.coordinator_Arr.forEach((sales:{id: number,name: string,profilePictureId: string})=>{
 					this.coordinator.push({
