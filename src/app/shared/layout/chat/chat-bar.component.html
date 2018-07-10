@@ -1,7 +1,6 @@
 ﻿<!-- BEGIN QUICK SIDEBAR -->
 <div class="page-quick-sidebar-wrapper" data-close-on-body-click="false">
     <div class="page-quick-sidebar" style="height: 30px;text-align: center;">
-        <span>Designer Approval</span>
             <a class="page-quick-sidebar-pinner" (click)="reversePinned()">
                     <i class="icon-pin" [ngClass]="{'pinned':pinned, 'unpinned':!pinned}"></i>
                 </a>
@@ -27,6 +26,7 @@
                                     </div>
                             </div> -->
                             <div class="general-item-list">
+                                    <span>Designer Approval</span><br><br>
                                 <div *ngFor="let act of NotificationList" class="item" id="note1">
                                     <div class="item-head">
                                         <div class="item-details" id="note2">
@@ -34,6 +34,18 @@
                                                 <h4 class="list-group-item-text" id="note3">
                                                     <small id="note4" class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle" (click)="approve(act.id)">Accept</small>   
                                                     <small id="note5" class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle" (click)="reject(act.id)">Reject</small>
+                                                </h4>
+                                          </div>
+                                        </div>
+                                </div><br>
+                                <span>Revision Approval</span><br><br>
+                                <div *ngFor="let ract of RevisionList" class="item" id="note1">
+                                    <div class="item-head">
+                                        <div class="item-details" id="note22">
+                                                <h4><a (click)="gotoInquiry(ract.id)">{{ract.submissionId}}&nbsp; &nbsp;<span style="font-size: 10px;">{{ract.name}}</span></a></h4>
+                                                <h4 class="list-group-item-text" id="note3">
+                                                    <small id="note4" class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle" (click)="dapprove(ract.id,1)">Accept</small>   
+                                                    <small id="note5" class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle" (click)="dapprove(ract.id,2)">Reject</small>
                                                 </h4>
                                           </div>
                                         </div>

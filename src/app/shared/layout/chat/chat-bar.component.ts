@@ -7,7 +7,7 @@ import {
     FriendshipServiceProxy, ChatServiceProxy, CommonLookupServiceProxy, ProfileServiceProxy,
     FriendDto, UserLoginInfoDto, BlockUserInput, UnblockUserInput, ChatMessageDto, ChatMessageDtoReadState,
     MarkAllUnreadMessagesOfUserAsReadInput, NameValueDto, FindUsersInput, CreateFriendshipRequestInput,
-    CreateFriendshipRequestByUserNameInput, FriendDtoState, ChatMessageDtoSide, QuotationServiceProxy, NotificationListDto, InquiryServiceProxy, EntityDto
+    CreateFriendshipRequestByUserNameInput, FriendDtoState, ChatMessageDtoSide, QuotationServiceProxy, NotificationListDto, InquiryServiceProxy, EntityDto, RevisionInput
 } from '@shared/service-proxies/service-proxies';
 import { ChatFriendDto } from './ChatFriendDto';
 import { CommonLookupModalComponent } from '@app/shared/common/lookup/common-lookup-modal.component';
@@ -61,7 +61,10 @@ export class ChatBarComponent extends AppComponentBase implements OnInit, AfterV
     serverClientTimeDifference: number = 0;
     isMultiTenancyEnabled: boolean = this.multiTenancy.isEnabled;
     NotificationList:any;
+    RevisionList:any;
+
     InputData:EntityDto = new EntityDto();
+    RevisionInputData:RevisionInput = new RevisionInput();
     _isOpen: boolean;
     set isOpen(newValue: boolean) {
         if (newValue === this._isOpen) {
@@ -122,8 +125,10 @@ export class ChatBarComponent extends AppComponentBase implements OnInit, AfterV
 
          this._inquiryServiceProxy.getSalesManagerNotifications().subscribe(result=>{
              this.NotificationList = result.items;
-             console.log(this.NotificationList);
          });
+         this._inquiryServiceProxy.getRevisionNotifications().subscribe(result=>{
+            this.RevisionList = result.items;
+        });
        
       }
 
@@ -160,6 +165,41 @@ export class ChatBarComponent extends AppComponentBase implements OnInit, AfterV
             }
         );
     }
+
+    dapprove(dataid,typeid){
+        this.RevisionInputData.id = dataid;
+        this.RevisionInputData.typeId = typeid;
+        if(typeid == 1)
+        {
+         this.message.confirm(
+                this.l('To Accept the Designer Revision'),
+                    isConfirmed => {
+                    if (isConfirmed) {
+                        this._inquiryServiceProxy.inquiryRevisionApproval(this.RevisionInputData).subscribe(result=>{
+                            this.salesManagerNotifications();
+                            this.notify.success("Approved successfully");
+                        });
+                    }
+                }
+            );
+        }
+        if(typeid == 2)
+        {
+         this.message.confirm(
+                this.l('To Reject the Designer Revision'),
+                    isConfirmed => {
+                    if (isConfirmed) {
+                        this._inquiryServiceProxy.inquiryRevisionApproval(this.RevisionInputData).subscribe(result=>{
+                            this.salesManagerNotifications();
+                            this.notify.success("Rejected successfully");
+                        });
+                    }
+                }
+            );
+        }
+        
+    }
+
 
     getShownUserName(tenanycName: string, userName: string): string {
         if (!this.isMultiTenancyEnabled) {

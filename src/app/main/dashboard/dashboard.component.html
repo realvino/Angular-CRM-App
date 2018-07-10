@@ -63,7 +63,85 @@
                         </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row margin-top-10">
+        <!-- <div class="col-lg-1 col-md-3 col-sm-6 col-xs-12"></div> -->
+        <div id="aaa" class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat2">
+                <div class="display" style="margin-bottom: 0px;">
+                    <div class="number">
+                        <small>Total Opportunities </small>
+                    </div>
+                    <br>
+                    <div style="margin-top: 20px;">
+                       <button class="btn btn-icon-only blue size"><i class="fa fa-briefcase"></i></button>
+                       <span style="font-size: 25px;">{{AllOutput.inquiryCount}}</span>
+                       <span style="font-size: 14px;">({{AllOutput.salesman}} AED)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="aaa" class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat2" >
+                <div class="display" style="margin-bottom: 0px;">
+                    <div class="number">
+                        <small>Quoted Opportunities</small>
+                    </div>
+                    <br>
+                    <div style="margin-top: 20px;">
+                        <button class="btn btn-icon-only gray size"><i class="fa fa-handshake-o"></i></button>
+                        <span style="font-size: 25px;">{{QuotOutput.inquiryCount}}</span>
+                        <span style="font-size: 14px;">({{QuotOutput.salesman}} AED)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="aaa" class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat2">
+                <div class="display" style="margin-bottom: 0px;">
+                    <div class="number">
+                        <small>Opportunities Won</small>
+                    </div>
+                    <br>
+                    <div style="margin-top: 20px;"> 
+                        <button class="btn btn-icon-only green size"><i class="fa fa-thumbs-o-up"></i></button>
+                        <span style="font-size: 25px;">{{WonOutput.inquiryCount}}</span>
+                        <span style="font-size: 14px;">({{WonOutput.salesman}} AED)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="aaa" class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat2">
+                <div class="display" style="margin-bottom: 0px;">
+                    <div class="number">
+                        <small>Opportunities Lost</small>
+                    </div>
+                    <br>
+                    <div style="margin-top: 20px;">  
+                      <button class="btn btn-icon-only red size"><i class="fa fa-thumbs-down"></i></button>
+                      <span style="font-size: 25px;">{{LostOutput.inquiryCount}}</span>
+                      <span style="font-size: 14px;">({{LostOutput.salesman}} AED)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="aaa" class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat2">
+                <div class="display" style="margin-bottom: 0px;">
+                    <div class="number">
+                        <small>Conversion Ratio</small>
+                    </div>
+                    <br>
+                    <div style="margin-top: 20px;"> 
+                      <button class="btn btn-icon-only yellow size"><i class="fa fa-newspaper-o"></i></button>
+                      <span style="font-size: 25px;">{{Concersionratio}} %</span>
+                    </div>
+                </div> 
+            </div>
+        </div>   
+     </div>
+
+     <div class="row">
         <div class="col-md-6">
                             <div class="portlet light ">
                                 <div class="portlet-title tabbable-line">

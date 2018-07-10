@@ -5,29 +5,41 @@
                 <a class="close" (click)="close()">
                     <span aria-hidden="true">&times;</span>
                  </a>
-                <h4 class="modal-title">Revaluation</h4>
+                <h4 class="modal-title">Revision</h4>
             </div>
             <div class="modal-body">
-                <h5 class="modal-title"> Please click any one <required_field></required_field></h5>
-                <br>
-                <div class="md-radio-list">
-                    <div class="md-radio" *ngFor="let option  of arr">
-                        <input id="EditUser_{{option.name}}"  type="radio" class="md-radio" name="revision" 
-                            [(ngModel)]="type"
-                            [checked]="option.name == type"
-                            value= {{option.name}} (click)=changeRevalution(option.id)>
-                                <label for="EditUser_{{option.name}}">
-                                    <span class="inc"></span>
-                                    <span class="check"></span>
-                                    <span class="box"></span>
-                                       {{option.name}}
-                                 </label>
+                <div class="row">       
+                    <div class="col-md-6">
+                        <h5 class="modal-title"> Please click any one <required_field></required_field></h5>
+                        <br>
+                        <div class="md-radio-list">
+                            <div class="md-radio" *ngFor="let option  of arr">
+                                <input id="EditUser_{{option.name}}"  type="radio" class="md-radio" name="revision" 
+                                    [(ngModel)]="type"
+                                    [checked]="option.name == type"
+                                    value= {{option.name}} (click)=changeRevision(option.id)>
+                                        <label for="EditUser_{{option.name}}">
+                                            <span class="inc"></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span>
+                                               {{option.name}}
+                                         </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Next Activity <required_field></required_field></label>
+                        <br>
+                        <div class="md-radio-list">
+                        <p-calendar showButtonBar="true" id="datetime" [(ngModel)]="nextActivity" [ngClass]="form-control" [ngModelOptions]="{standalone: true}" showButtonBar="true"></p-calendar>  
                     </div>
                 </div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
-                <button type="submit" class="btn btn-primary blue" [disabled]="!selectedTypeId"  [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="save()"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                <button type="submit" class="btn btn-primary blue" [disabled]="!selectedTypeId || !nextActivity"  [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="save()"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
             </div>
         </div>
     </div>

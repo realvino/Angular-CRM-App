@@ -108,8 +108,18 @@ export class HeaderComponent extends AppComponentBase implements OnInit {
     salesManagerNotifications(){
 
         this._inquiryServiceProxy.getSalesManagerNotifications().subscribe(result=>{
+           
+            if(result.items.length > 0)
             this.unreadChatMessageCount = result.items.length;
+
+            this._inquiryServiceProxy.getRevisionNotifications().subscribe(result=>{
+               
+                if(result.items.length > 0)
+                this.unreadChatMessageCount = this.unreadChatMessageCount + result.items.length;
+           
+            });
         });
+       
       
      }
     registerToEvents() {

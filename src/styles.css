@@ -848,3 +848,13 @@ body .ui-datatable .ui-datatable-thead > tr > th, body .ui-datatable .ui-datatab
     padding-left: 10px;
     padding-right: 10px;
 }
+#note22{
+    width: 100%; 
+    border: 2px solid;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: #b1f9ff;
+}
+#aaa{
+    width: 20%;
+}

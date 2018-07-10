@@ -54,7 +54,12 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     selectedItems = [];
     teamselect: string;
     allteamselect: string;
-    
+    AllOutput = [];
+    QuotOutput = [];
+    WonOutput = [];
+    LostOutput = [];
+    Concersionratio:number = 0;
+
     @ViewChild('carousel')carousel:any;
     slides : Array<Object> = [];
     Closure : RecentInquiryClosureList = new RecentInquiryClosureList();
@@ -99,6 +104,7 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
         this.lostreasonpiegraph(this.slides[this.cardIndex]);
         this.leadsummaryfunnelgraph(this.slides[this.cardIndex]);
         this.conversionRatiograph(this.slides[this.cardIndex]);
+        this.leadQuotationCount(this.slides[this.cardIndex]);
         this.Closuresoon(this.slides[this.cardIndex]);
         this.LastActivity(this.slides[this.cardIndex]);
     }
@@ -212,6 +218,8 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
             this.Closuresoon(this.slides[this.cardIndex]);
             this.LastActivity(this.slides[this.cardIndex]);
             this.conversionRatiograph(this.slides[this.cardIndex]);
+            this.leadQuotationCount(this.slides[this.cardIndex]);
+
         });
     }
     
@@ -223,6 +231,7 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
         this.lostreasonpiegraph(this.slides[this.cardIndex]);
         this.leadsummaryfunnelgraph(this.slides[this.cardIndex]);
         this.conversionRatiograph(this.slides[this.cardIndex]);
+        this.leadQuotationCount(this.slides[this.cardIndex]);
     }
 
     lostreasonpiegraph(value:any):void{
@@ -268,7 +277,6 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
          }); 
     }
     leadsummaryfunnelgraph(value:any):void{
-        console.log(value);
         var scorelsp = [];
         var colorlsp = [];
         this._dashboardService.getLeadSummaryGraph(value.id,this.teamselect, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
@@ -353,6 +361,20 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
          });
     }
 
+    leadQuotationCount(value:any):void{
+        this._dashboardService.getLeadQuotationGraph(value.id,this.teamIdselect,this.dashdateRangePickerStartDate,this.dashdateRangePickerEndDate)
+        .subscribe((result)=>{
+            if(result != null){
+                this.AllOutput = result[0];
+                this.QuotOutput =result[1];
+                this.WonOutput = result[2];
+                this.LostOutput = result[3];
+                this.Concersionratio = Math.round((result[2].quotationCount/result[1].quotationCount)*100);
+                console.log(result);
+                console.log(this.AllOutput);
+            }
+        });
+    }
 
     ngOnDestroy() {
     }

@@ -144,6 +144,7 @@ export class LeadsKanbanComponent extends AppComponentBase implements AfterViewI
 					if(this.updateInquiryIn.updateStatusName = 'Revision')
 					{
 						this.QRevisionInput.id = this.QStatusUpdateInput.quotationId;
+						this.QRevisionInput.typeId = 1;
 						this.QRevisionInput.nextActivity = moment();
 						this._quotationService.quotationRevision(this.QRevisionInput).subscribe(result=>{
 							if(result){

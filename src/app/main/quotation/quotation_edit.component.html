@@ -283,19 +283,7 @@
                                                   </div>
                  
                                         </div>
-                               </div>
-                               <div class="col-md-2" [ngClass]="{'no-edit':non_editable||this.quotationList.won || this.quotationList.lost}">
-                                <div style="width: 100px;margin: auto;" >
-                                    <label>Negotiation</label>
-                                        <div class="onoffswitch">
-                                            <input type="checkbox" name="negotiation" class="onoffswitch-checkbox" id="negotiation" [(ngModel)]="negotiationSwitch" [disabled]="quotationList.quotationStatusId == 1|| quotationList.negotiation"> 
-                                            <label class="onoffswitch-label" for="negotiation">
-                                                    <span class="onoffswitch-inner"></span>
-                                                    <span class="onoffswitch-switch"></span>
-                                                </label>
-                                        </div>
-                                </div>
-                            </div>
+                               </div> 
                             <div *ngFor="let status of stat_all">
                                 <div class="col-md-2" *ngIf="status.name!='New'" [ngStyle]="{'pointer-events': pointenable == 'yes' ? 'auto' : 'none' }">
                                 
@@ -310,7 +298,18 @@
                                 </div>
                                 </div>
                             </div>
-                            
+                            <div class="col-md-2" [ngClass]="{'no-edit':non_editable||this.quotationList.won || this.quotationList.lost}">
+                                <div style="width: 100px;margin: auto;" >
+                                    <label>Negotiation</label>
+                                        <div class="onoffswitch">
+                                            <input type="checkbox" name="negotiation" class="onoffswitch-checkbox" id="negotiation" [(ngModel)]="negotiationSwitch" [disabled]="quotationList.quotationStatusId == 1|| quotationList.negotiation"> 
+                                            <label class="onoffswitch-label" for="negotiation">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                        </div>
+                                </div>
+                            </div>
                         </div>
                     </div> 
                     <div class="portlet-body" [ngClass]="{'no-edit':non_editable||this.quotationList.won || this.quotationList.lost}">
@@ -330,10 +329,20 @@
                                             <label>{{l("Subject")}}</label>
                                         </div>
                                     </div> 
-                                    <div class="col-md-3" style="padding-top: 25px;" *ngIf="(statusId !=2 && quotation.quotationStatusId == 2) || (statusId !=3 && quotation.quotationStatusId == 3)">
+                                    <div class="col-md-2" style="padding-top: 25px;" *ngIf="(statusId !=2 && quotation.quotationStatusId == 2) || (statusId !=3 && quotation.quotationStatusId == 3)">
                                         <label>Next Activity <required_field></required_field></label>
                                            <p-calendar showButtonBar="true" id="datetime" [(ngModel)]="nextActivity" [ngClass]="form-control" [ngModelOptions]="{standalone: true}" showButtonBar="true"></p-calendar>  
                                     </div> 
+                                    <div class="col-md-3" style="padding-top: 30px;" *ngIf="(statusId !=3 && quotation.quotationStatusId == 3 && quotationList.designerName != null)">
+                                        <div class="md-checkbox">
+                                            <input id="QuotationRevision" class="md-check" type="checkbox" name="QuotationRevision" [(ngModel)]="QRevisionInput.typeId">
+                                            <label for="QuotationRevision">Request Design Revision 
+                                            <span class="inc"></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span>  
+                                            </label>
+                                        </div>                                       
+                                    </div>
                                     <div class="col-md-3" *ngIf="negotiationSwitch == true">
                                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
                                             <input #nameInput class="form-control"  type="number" name="amount" [ngClass]="{'edited':quotation.overAllDiscountAmount}" [(ngModel)]="quotation.overAllDiscountAmount" (keyup)="getAmount(quotation.overAllDiscountAmount,1)" (keydown)="check($event)">
@@ -576,7 +585,7 @@
     <quotationPreviewModal #quotationPreviewModal></quotationPreviewModal>
     <productChangeModal #productChangeModal (modalSave)="ngOnInit()"></productChangeModal>
     <discountModal #discountModal (modalSave)="ngOnInit()"></discountModal>
-    <QuotationRevisionModal #QuotationRevisionModal></QuotationRevisionModal>
+    <!-- <QuotationRevisionModal #QuotationRevisionModal (modalSave)="redirectQuotation($event)"></QuotationRevisionModal>     -->
     <style>
         #watermark
         {

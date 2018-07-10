@@ -9932,7 +9932,7 @@ export class InquiryServiceProxy {
     /**
      * @return Success
      */
-    inquiryRevisionApproval(input: EntityDto): Observable<void> {
+    inquiryRevisionApproval(input: RevisionInput): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Inquiry/InquiryRevisionApproval";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -12101,6 +12101,54 @@ export class InquiryServiceProxy {
     }
 
     protected processGetSalesManagerNotifications(response: Response): Observable<ListResultDtoOfNotificationListDto> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: ListResultDtoOfNotificationListDto = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ListResultDtoOfNotificationListDto.fromJS(resultData200) : new ListResultDtoOfNotificationListDto();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<ListResultDtoOfNotificationListDto>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getRevisionNotifications(): Observable<ListResultDtoOfNotificationListDto> {
+        let url_ = this.baseUrl + "/api/services/app/Inquiry/GetRevisionNotifications";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetRevisionNotifications(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetRevisionNotifications(response_);
+                } catch (e) {
+                    return <Observable<ListResultDtoOfNotificationListDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ListResultDtoOfNotificationListDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetRevisionNotifications(response: Response): Observable<ListResultDtoOfNotificationListDto> {
         const status = response.status; 
 
         if (status === 200) {
@@ -25062,6 +25110,53 @@ export class QuotationServiceProxy {
         }
         return Observable.of<void>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    sendLostMail(input: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Quotation/SendLostMail?";
+        if (input !== undefined)
+            url_ += "input=" + encodeURIComponent("" + input) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processSendLostMail(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processSendLostMail(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processSendLostMail(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -33021,6 +33116,66 @@ export class TenantDashboardServiceProxy {
     }
 
     protected processGetSalesLeadBreakdown(response: Response): Observable<any[]> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: any[] = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(item);
+            }
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<any[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getLeadQuotationGraph(userId: string, teamId: string, startDate: moment.Moment, endDate: moment.Moment): Observable<any[]> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetLeadQuotationGraph?";
+        if (userId !== undefined)
+            url_ += "UserId=" + encodeURIComponent("" + userId) + "&"; 
+        if (teamId !== undefined)
+            url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
+        if (startDate !== undefined)
+            url_ += "StartDate=" + encodeURIComponent("" + startDate.toJSON()) + "&"; 
+        if (endDate !== undefined)
+            url_ += "EndDate=" + encodeURIComponent("" + endDate.toJSON()) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetLeadQuotationGraph(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetLeadQuotationGraph(response_);
+                } catch (e) {
+                    return <Observable<any[]>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<any[]>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetLeadQuotationGraph(response: Response): Observable<any[]> {
         const status = response.status; 
 
         if (status === 200) {
@@ -44527,6 +44682,45 @@ export interface IEntityDto {
     id: number;
 }
 
+export class RevisionInput implements IRevisionInput {
+    id: number;
+    typeId: number;
+
+    constructor(data?: IRevisionInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.typeId = data["typeId"];
+        }
+    }
+
+    static fromJS(data: any): RevisionInput {
+        let result = new RevisionInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["typeId"] = this.typeId;
+        return data; 
+    }
+}
+
+export interface IRevisionInput {
+    id: number;
+    typeId: number;
+}
+
 export class PagedResultDtoOfQuotationListDto implements IPagedResultDtoOfQuotationListDto {
     totalCount: number;
     items: QuotationListDto[];
@@ -45439,6 +45633,7 @@ export class JobActivityList implements IJobActivityList {
     sendDate: string;
     sstartDate: string;
     screationTime: string;
+    notApproved: boolean;
     isDeleted: boolean;
     deleterUserId: number;
     deletionTime: moment.Moment;
@@ -45474,6 +45669,7 @@ export class JobActivityList implements IJobActivityList {
             this.sendDate = data["sendDate"];
             this.sstartDate = data["sstartDate"];
             this.screationTime = data["screationTime"];
+            this.notApproved = data["notApproved"];
             this.isDeleted = data["isDeleted"];
             this.deleterUserId = data["deleterUserId"];
             this.deletionTime = data["deletionTime"] ? moment(data["deletionTime"].toString()) : <any>undefined;
@@ -45508,6 +45704,7 @@ export class JobActivityList implements IJobActivityList {
         data["sendDate"] = this.sendDate;
         data["sstartDate"] = this.sstartDate;
         data["screationTime"] = this.screationTime;
+        data["notApproved"] = this.notApproved;
         data["isDeleted"] = this.isDeleted;
         data["deleterUserId"] = this.deleterUserId;
         data["deletionTime"] = this.deletionTime ? this.deletionTime.toISOString() : <any>undefined;
@@ -45536,6 +45733,7 @@ export interface IJobActivityList {
     sendDate: string;
     sstartDate: string;
     screationTime: string;
+    notApproved: boolean;
     isDeleted: boolean;
     deleterUserId: number;
     deletionTime: moment.Moment;
@@ -45591,6 +45789,7 @@ export class CreateJobActivityInput implements ICreateJobActivityInput {
     endDate: moment.Moment;
     jobNumber: string;
     startDate: moment.Moment;
+    notApproved: boolean;
 
     constructor(data?: ICreateJobActivityInput) {
         if (data) {
@@ -45613,6 +45812,7 @@ export class CreateJobActivityInput implements ICreateJobActivityInput {
             this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
             this.jobNumber = data["jobNumber"];
             this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
+            this.notApproved = data["notApproved"];
         }
     }
 
@@ -45634,6 +45834,7 @@ export class CreateJobActivityInput implements ICreateJobActivityInput {
         data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
         data["jobNumber"] = this.jobNumber;
         data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["notApproved"] = this.notApproved;
         return data; 
     }
 }
@@ -45649,6 +45850,7 @@ export interface ICreateJobActivityInput {
     endDate: moment.Moment;
     jobNumber: string;
     startDate: moment.Moment;
+    notApproved: boolean;
 }
 
 export class PagedResultDtoOfJobActivityList implements IPagedResultDtoOfJobActivityList {
@@ -54426,6 +54628,7 @@ export interface IListResultDtoOfQuotationListDto {
 
 export class QuotationRevisionInput implements IQuotationRevisionInput {
     id: number;
+    typeId: number;
     nextActivity: moment.Moment;
 
     constructor(data?: IQuotationRevisionInput) {
@@ -54440,6 +54643,7 @@ export class QuotationRevisionInput implements IQuotationRevisionInput {
     init(data?: any) {
         if (data) {
             this.id = data["id"];
+            this.typeId = data["typeId"];
             this.nextActivity = data["nextActivity"] ? moment(data["nextActivity"].toString()) : <any>undefined;
         }
     }
@@ -54453,6 +54657,7 @@ export class QuotationRevisionInput implements IQuotationRevisionInput {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["typeId"] = this.typeId;
         data["nextActivity"] = this.nextActivity ? this.nextActivity.toISOString() : <any>undefined;
         return data; 
     }
@@ -54460,6 +54665,7 @@ export class QuotationRevisionInput implements IQuotationRevisionInput {
 
 export interface IQuotationRevisionInput {
     id: number;
+    typeId: number;
     nextActivity: moment.Moment;
 }
 

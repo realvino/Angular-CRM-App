@@ -384,24 +384,29 @@ DiscountImg: string = '/Common/Images/discount.svg';
 
     if(this.statusId != 3 && this.quotation.quotationStatusId == 3)
     {
-      //  this.QRevisionInput.id = this.id;
-      //  let lst= moment(moment(this.nextActivity).toDate().toString());
-      //  this.QRevisionInput.nextActivity = moment(lst).add(6,'hours');
-      // this._quoatationService.quotationRevision(this.QRevisionInput).subscribe(result=>{
-      //   if(result){
-      //     console.log(result);
-      //     this.notify.success("Quotation Revised successfully");
-      //     if(from == 1){
-      //       this.goToQuotation();
-      //     }
-      //     else{
-      //       this.redirectQuotation(result);
-      //     }
+       this.QRevisionInput.id = this.id;
+       let lst= moment(moment(this.nextActivity).toDate().toString());
+       this.QRevisionInput.nextActivity = moment(lst).add(6,'hours');
+       if(this.QRevisionInput.typeId){
+         this.QRevisionInput.typeId = 3;
+       }
+       else{
+        this.QRevisionInput.typeId = 1;
+       }
+      this._quoatationService.quotationRevision(this.QRevisionInput).subscribe(result=>{
+        if(result){
+          console.log(result);
+          this.notify.success("Quotation Revised successfully");
+          if(from == 1){
+            this.goToQuotation();
+          }
+          else{
+            this.redirectQuotation(result);
+          }
           
-      //   }
-      //  });
-    }
-    
+        }
+       });
+    }  
     else
     {
       this.saving = true;
@@ -731,6 +736,33 @@ DiscountImg: string = '/Common/Images/discount.svg';
         //console.log(this.discountInput.unDiscountable, "GetDiscounts");
     }
     
+    // isValidQuotation(data){
+    //   if(this.quotation.lost == true){
+    //     if(!data.form.valid || !this.quotation.compatitorId || !this.quotation.reasonId || !this.quotation.reasonRemark){
+    //       return true;
+    //     }
+    //     else{
+    //       return false;
+    //     }
+    //   }
+    //   else if((this.statusId !=2 && this.quotation.quotationStatusId == 2) || (this.statusId !=3 && this.quotation.quotationStatusId == 3)){
+    //     if(!data.form.valid || !this.nextActivity){
+    //       return true;
+    //     }
+    //     else{
+    //       return false;
+    //     }
+    //   }
+    //   else{
+    //     if(!data.form.valid){
+    //       return true;
+    //     }
+    //     else{
+    //       return false;
+    //     }
+    //   }
+      
+    // }
     isValidQuotation(data){
       if(this.quotation.lost == true){
         if(!data.form.valid || !this.quotation.compatitorId || !this.quotation.reasonId || !this.quotation.reasonRemark){
@@ -740,13 +772,32 @@ DiscountImg: string = '/Common/Images/discount.svg';
           return false;
         }
       }
-      else if((this.statusId !=2 && this.quotation.quotationStatusId == 2) || (this.statusId !=3 && this.quotation.quotationStatusId == 3)){
+      else if(this.statusId !=2 && this.quotation.quotationStatusId == 2){
         if(!data.form.valid || !this.nextActivity){
           return true;
         }
         else{
           return false;
         }
+      }
+      else if(this.statusId !=3 && this.quotation.quotationStatusId == 3){
+        if(this.quotationList.designerName != null){
+          if(!data.form.valid || !this.nextActivity || !this.QRevisionInput.typeId){
+            return true;
+          }
+          else{
+            return false;
+          }
+        }
+        else{
+          if(!data.form.valid || !this.nextActivity){
+            return true;
+          }
+          else{
+            return false;
+          }
+        }
+        
       }
       else{
         if(!data.form.valid){
@@ -809,7 +860,7 @@ DiscountImg: string = '/Common/Images/discount.svg';
         this.stat_all[lost_index].switch_disable = false;
         this.stat_all[submitted_index].stat_switch = false;
         document.getElementById('Revised').click();
-        this.QuotationRevisionModal.show(this.id);
+        // this.QuotationRevisionModal.show(this.id);
       }
       
       if(this.stat_all[won_index].stat_switch && this.stat_all[lost_index].stat_switch && name=='Won'){

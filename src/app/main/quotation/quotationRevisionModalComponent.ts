@@ -1,9 +1,9 @@
 import { Component, ViewChild, Injector, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import {  QuotationServiceProxy, QuotationRevaluationInput} from 'shared/service-proxies/service-proxies';
-import * as moment from "moment";
+import {  QuotationServiceProxy, QuotationRevisionInput} from 'shared/service-proxies/service-proxies';
 import { Router } from '@angular/router';
+import * as moment from "moment";
 
 @Component({
     selector: 'QuotationRevisionModal',
@@ -15,19 +15,17 @@ export class QuotationRevisionModalComponent extends AppComponentBase implements
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
     @ViewChild('modal') modal: ModalDirective;
     QuotationId: number;
-    InquiryId: number;
     active = false;
     saving = false;
     arr:Array<any>;
     type : string;
-    selectedTypeId: number;
+    selectedTypeId: number = 0;
     nextActivity:string;
-    QRevaluationInput: QuotationRevaluationInput = new QuotationRevaluationInput();
+    QRevisionInput: QuotationRevisionInput = new QuotationRevisionInput();
     
     constructor(
         injector: Injector,
         private _quoatationService: QuotationServiceProxy,
-        private router: Router
     ){
         super(injector);
     }
@@ -37,48 +35,45 @@ export class QuotationRevisionModalComponent extends AppComponentBase implements
     
     show(QuotationId?:number){ 
         console.log(QuotationId); 
-        this.QuotationId = QuotationId;   
-        this.arr = [{ 'id' : '1','name' : 'Revaluation 1' }, 
-                    { 'id' : '2','name' : 'Revaluation 2' },
-                    { 'id' : '3','name' : 'Revaluation 3' }
+        this.QuotationId = QuotationId; 
+        this.arr = [{ 'id' : '1','name' : 'Quotation Revision' }, 
+                    { 'id' : '3','name' : 'Quotation with Designer Revision' }
                    ];
 
         this.modal.show();
         this.active = true;
     }
 
-    changeRevalution(typeId):void{
-        console.log(typeId);
+    changeRevision(typeId):void{
         this.selectedTypeId = typeId;
+        this.QRevisionInput.typeId = typeId;
     }
-    /* isValidSave(){
-        if(!this.selectedTypeId){
-            return false;
-        }
-        else{
-            return true;
-        }
-    } */
 
     save() {
        this.saving = true;
-       this.QRevaluationInput.id = this.QuotationId;
-       this.QRevaluationInput.type = this.selectedTypeId;
-       console.log(this.QRevaluationInput);
-       this._quoatationService.quotationRevaluation(this.QRevaluationInput)
+       this.QRevisionInput.id = this.QuotationId;
+       let lst= moment(moment(this.nextActivity).toDate().toString());
+       this.QRevisionInput.nextActivity = moment(lst).add(6,'hours');
+       console.log(this.QRevisionInput);
+       this._quoatationService.quotationRevision(this.QRevisionInput)
        .finally(() => this.saving = false)
-       .subscribe(()=>{
-          this.notify.success("Quotation Revaluated successfully");
-          this.close();
+       .subscribe(result=>{
+        if(result){
+           console.log(result);
+           this.QuotationId = result;
+           this.notify.success("Quotation Revised Successfully");
+           this.close();
+         }
        });
-     }
+    }
 
 
 	close(): void {
         this.type = '';
         this.selectedTypeId = null;
-		this.modalSave.emit();
+        this.nextActivity = "";
+		this.modalSave.emit(this.QuotationId);
 		this.modal.hide();
         this.active = false;
     }
-}
+} 

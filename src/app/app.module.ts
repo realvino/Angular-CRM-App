@@ -34,6 +34,7 @@ import { QuickSideBarChat } from '@app/shared/layout/chat/QuickSideBarChat';
 import { DataTableModule } from 'primeng/primeng';
 import { PaginatorModule } from 'primeng/primeng';
 import { Ng2MultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { Ng2Carousel3dModule }  from 'ng2-carousel-3d';
 
 
 @NgModule({
@@ -72,7 +73,8 @@ import { Ng2MultiSelectDropDownModule } from 'ng-multiselect-dropdown';
         AppCommonModule.forRoot(),
         ServiceProxyModule,
         DataTableModule,
-        PaginatorModule
+        PaginatorModule,
+        Ng2Carousel3dModule
 
     ],
     providers: [
