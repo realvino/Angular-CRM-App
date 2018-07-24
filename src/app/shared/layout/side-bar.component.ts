@@ -21,9 +21,10 @@ export class SideBarComponent extends AppComponentBase {
 
     menu: SideBarMenu = new SideBarMenu("MainMenu", "MainMenu", [
         new SideBarMenuItem("Dashboard",'',"Pages.Administration.Host.Dashboard", "icon-home", "/app/admin/hostDashboard"),
-        new SideBarMenuItem("Dashboard",'', "Pages.Tenant.Dashboard", "icon-home", "",[
+        new SideBarMenuItem("Dashboard",'', "Pages.Tenant.Dashboard", "icon-home", "/app/main/dashboard",[
             new SideBarMenuItem("Marketing Dashboard",'', "Pages.Tenant.Dashboard.Marketing", "fa fa-dashboard", "/app/main/marketingdashboard"),
-            new SideBarMenuItem("Sales Dashboard",'', "Pages.Tenant.Dashboard.Sales", "fa fa-shopping-cart", "/app/main/salesdashboard"),   
+            new SideBarMenuItem("Sales Dashboard",'', "Pages.Tenant.Dashboard.Sales", "fa fa-shopping-cart", "/app/main/salesdashboard"),  
+            new SideBarMenuItem("Designer Dashboard",'', "Pages.Tenant.Dashboard.Designer", "fa fa-shopping-cart", "/app/main/designerdashboard")    
         ]),
         new SideBarMenuItem("Tenants",'', "Pages.Tenants", "icon-globe", "/app/admin/tenants"),
         new SideBarMenuItem("Editions",'',"Pages.Editions", "icon-grid", "/app/admin/editions"),

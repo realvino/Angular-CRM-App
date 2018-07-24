@@ -4,6 +4,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { IAjaxResponse } from '@abp/abpHttp';
 import { TokenService } from '@abp/auth/token.service';
 import { AppConsts } from '@shared/AppConsts';
+import { QuotationServiceProxy, NullableIdDto } from '@shared/service-proxies/service-proxies';
 // import { HttpClient } from './http-client';
 
 @Component({
@@ -21,9 +22,11 @@ export class QuotationPreviewModalComponent extends AppComponentBase {
     active = false;
     saving = false;
     loading:boolean;
+    excelInput:NullableIdDto= new NullableIdDto();
+
     constructor(
         injector: Injector,
-        // private _quotationService: QuotationServiceProxy,
+        private _quotationService: QuotationServiceProxy,
         private _tokenService: TokenService,
         // private http: HttpClient
     ) {
@@ -109,5 +112,13 @@ export class QuotationPreviewModalComponent extends AppComponentBase {
     }
     load() {
       this.loading = false;
+    }
+    excel(){
+        this.excelInput.id = this.quotation_id;
+        console.log(this.excelInput);
+        this._quotationService.standardPreviewExcelNew(this.excelInput).subscribe(() => {
+            let d_url = AppConsts.remoteServiceBaseUrl +'Pdf/DownloadExcel?QuotationId='+this.quotation_id;
+            window.location.assign(d_url);
+        });
     }
 }

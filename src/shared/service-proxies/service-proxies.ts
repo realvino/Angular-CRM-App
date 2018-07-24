@@ -12163,6 +12163,51 @@ export class InquiryServiceProxy {
         }
         return Observable.of<ListResultDtoOfNotificationListDto>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    updateInquiryLCNumber(input: LCNumberInput): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Inquiry/UpdateInquiryLCNumber";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input ? input.toJSON() : null);
+        
+        let options_ = {
+            body: content_,
+            method: "put",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processUpdateInquiryLCNumber(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processUpdateInquiryLCNumber(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdateInquiryLCNumber(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -25114,10 +25159,16 @@ export class QuotationServiceProxy {
     /**
      * @return Success
      */
-    sendLostMail(input: number): Observable<void> {
+    sendLostMail(id: number, compatitorId: number, reasonId: number, reasonRemark: string): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Quotation/SendLostMail?";
-        if (input !== undefined)
-            url_ += "input=" + encodeURIComponent("" + input) + "&"; 
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        if (compatitorId !== undefined)
+            url_ += "CompatitorId=" + encodeURIComponent("" + compatitorId) + "&"; 
+        if (reasonId !== undefined)
+            url_ += "ReasonId=" + encodeURIComponent("" + reasonId) + "&"; 
+        if (reasonRemark !== undefined)
+            url_ += "ReasonRemark=" + encodeURIComponent("" + reasonRemark) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = "";
@@ -32982,12 +33033,16 @@ export class TenantDashboardServiceProxy {
     /**
      * @return Success
      */
-    getSalesExecutive(datainput: string, isSales: boolean): Observable<SliderDataList[]> {
+    getSalesExecutive(datainput: string, isSales: boolean, startDate: moment.Moment, endDate: moment.Moment): Observable<SliderDataList[]> {
         let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetSalesExecutive?";
         if (datainput !== undefined)
             url_ += "datainput=" + encodeURIComponent("" + datainput) + "&"; 
         if (isSales !== undefined)
             url_ += "IsSales=" + encodeURIComponent("" + isSales) + "&"; 
+        if (startDate !== undefined)
+            url_ += "StartDate=" + encodeURIComponent("" + startDate.toJSON()) + "&"; 
+        if (endDate !== undefined)
+            url_ += "EndDate=" + encodeURIComponent("" + endDate.toJSON()) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = "";
@@ -33193,6 +33248,334 @@ export class TenantDashboardServiceProxy {
             return throwException("An unexpected server error occurred.", status, responseText);
         }
         return Observable.of<any[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getUserDesignerSlider(): Observable<SliderDataList[]> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetUserDesignerSlider";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetUserDesignerSlider(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetUserDesignerSlider(response_);
+                } catch (e) {
+                    return <Observable<SliderDataList[]>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<SliderDataList[]>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetUserDesignerSlider(response: Response): Observable<SliderDataList[]> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: SliderDataList[] = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(SliderDataList.fromJS(item));
+            }
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<SliderDataList[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getDesignerRecentClosure(id: number): Observable<RecentInquiryClosureList> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetDesignerRecentClosure?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetDesignerRecentClosure(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetDesignerRecentClosure(response_);
+                } catch (e) {
+                    return <Observable<RecentInquiryClosureList>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<RecentInquiryClosureList>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetDesignerRecentClosure(response: Response): Observable<RecentInquiryClosureList> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: RecentInquiryClosureList = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? RecentInquiryClosureList.fromJS(resultData200) : new RecentInquiryClosureList();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<RecentInquiryClosureList>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getDesignerRecentActivity(id: number): Observable<RecentInquiryActivityList> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetDesignerRecentActivity?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetDesignerRecentActivity(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetDesignerRecentActivity(response_);
+                } catch (e) {
+                    return <Observable<RecentInquiryActivityList>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<RecentInquiryActivityList>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetDesignerRecentActivity(response: Response): Observable<RecentInquiryActivityList> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: RecentInquiryActivityList = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? RecentInquiryActivityList.fromJS(resultData200) : new RecentInquiryActivityList();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<RecentInquiryActivityList>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getDesignerLostReasonGraph(userId: string, teamId: string, startDate: moment.Moment, endDate: moment.Moment): Observable<any[]> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetDesignerLostReasonGraph?";
+        if (userId !== undefined)
+            url_ += "UserId=" + encodeURIComponent("" + userId) + "&"; 
+        if (teamId !== undefined)
+            url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
+        if (startDate !== undefined)
+            url_ += "StartDate=" + encodeURIComponent("" + startDate.toJSON()) + "&"; 
+        if (endDate !== undefined)
+            url_ += "EndDate=" + encodeURIComponent("" + endDate.toJSON()) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetDesignerLostReasonGraph(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetDesignerLostReasonGraph(response_);
+                } catch (e) {
+                    return <Observable<any[]>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<any[]>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetDesignerLostReasonGraph(response: Response): Observable<any[]> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: any[] = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(item);
+            }
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<any[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getDesignerLeadSummaryGraph(userId: string, teamId: string, startDate: moment.Moment, endDate: moment.Moment): Observable<any[]> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetDesignerLeadSummaryGraph?";
+        if (userId !== undefined)
+            url_ += "UserId=" + encodeURIComponent("" + userId) + "&"; 
+        if (teamId !== undefined)
+            url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
+        if (startDate !== undefined)
+            url_ += "StartDate=" + encodeURIComponent("" + startDate.toJSON()) + "&"; 
+        if (endDate !== undefined)
+            url_ += "EndDate=" + encodeURIComponent("" + endDate.toJSON()) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetDesignerLeadSummaryGraph(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetDesignerLeadSummaryGraph(response_);
+                } catch (e) {
+                    return <Observable<any[]>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<any[]>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetDesignerLeadSummaryGraph(response: Response): Observable<any[]> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: any[] = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(item);
+            }
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<any[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getRainflowGraph(userId: string, teamId: string, startDate: moment.Moment, endDate: moment.Moment): Observable<GetRaindto> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetRainflowGraph?";
+        if (userId !== undefined)
+            url_ += "UserId=" + encodeURIComponent("" + userId) + "&"; 
+        if (teamId !== undefined)
+            url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
+        if (startDate !== undefined)
+            url_ += "StartDate=" + encodeURIComponent("" + startDate.toJSON()) + "&"; 
+        if (endDate !== undefined)
+            url_ += "EndDate=" + encodeURIComponent("" + endDate.toJSON()) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetRainflowGraph(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetRainflowGraph(response_);
+                } catch (e) {
+                    return <Observable<GetRaindto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<GetRaindto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetRainflowGraph(response: Response): Observable<GetRaindto> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: GetRaindto = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? GetRaindto.fromJS(resultData200) : new GetRaindto();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<GetRaindto>(<any>null);
     }
 }
 
@@ -43597,6 +43980,8 @@ export class InquiryListDto implements IInquiryListDto {
     revisionApproval: boolean;
     stared: boolean;
     weightedvalue: number;
+    tenderProject: boolean;
+    lcNumber: string;
 
     constructor(data?: IInquiryListDto) {
         if (data) {
@@ -43720,6 +44105,8 @@ export class InquiryListDto implements IInquiryListDto {
             this.revisionApproval = data["revisionApproval"];
             this.stared = data["stared"];
             this.weightedvalue = data["weightedvalue"];
+            this.tenderProject = data["tenderProject"];
+            this.lcNumber = data["lcNumber"];
         }
     }
 
@@ -43842,6 +44229,8 @@ export class InquiryListDto implements IInquiryListDto {
         data["revisionApproval"] = this.revisionApproval;
         data["stared"] = this.stared;
         data["weightedvalue"] = this.weightedvalue;
+        data["tenderProject"] = this.tenderProject;
+        data["lcNumber"] = this.lcNumber;
         return data; 
     }
 }
@@ -43946,6 +44335,8 @@ export interface IInquiryListDto {
     revisionApproval: boolean;
     stared: boolean;
     weightedvalue: number;
+    tenderProject: boolean;
+    lcNumber: string;
 }
 
 export class ActivityColor implements IActivityColor {
@@ -44337,6 +44728,8 @@ export class InquiryInputDto implements IInquiryInputDto {
     revisionApproval: boolean;
     stared: boolean;
     weightedvalue: number;
+    tenderProject: boolean;
+    lcNumber: string;
 
     constructor(data?: IInquiryInputDto) {
         if (data) {
@@ -44399,6 +44792,8 @@ export class InquiryInputDto implements IInquiryInputDto {
             this.revisionApproval = data["revisionApproval"];
             this.stared = data["stared"];
             this.weightedvalue = data["weightedvalue"];
+            this.tenderProject = data["tenderProject"];
+            this.lcNumber = data["lcNumber"];
         }
     }
 
@@ -44460,6 +44855,8 @@ export class InquiryInputDto implements IInquiryInputDto {
         data["revisionApproval"] = this.revisionApproval;
         data["stared"] = this.stared;
         data["weightedvalue"] = this.weightedvalue;
+        data["tenderProject"] = this.tenderProject;
+        data["lcNumber"] = this.lcNumber;
         return data; 
     }
 }
@@ -44511,6 +44908,8 @@ export interface IInquiryInputDto {
     revisionApproval: boolean;
     stared: boolean;
     weightedvalue: number;
+    tenderProject: boolean;
+    lcNumber: string;
 }
 
 export class LinkedCompanyInput implements ILinkedCompanyInput {
@@ -44833,6 +45232,7 @@ export class QuotationListDto implements IQuotationListDto {
     stotal: string;
     leadStatusId: number;
     leadStatusName: string;
+    lcNumber: string;
 
     constructor(data?: IQuotationListDto) {
         if (data) {
@@ -44909,6 +45309,7 @@ export class QuotationListDto implements IQuotationListDto {
             this.stotal = data["stotal"];
             this.leadStatusId = data["leadStatusId"];
             this.leadStatusName = data["leadStatusName"];
+            this.lcNumber = data["lcNumber"];
         }
     }
 
@@ -44984,6 +45385,7 @@ export class QuotationListDto implements IQuotationListDto {
         data["stotal"] = this.stotal;
         data["leadStatusId"] = this.leadStatusId;
         data["leadStatusName"] = this.leadStatusName;
+        data["lcNumber"] = this.lcNumber;
         return data; 
     }
 }
@@ -45053,6 +45455,7 @@ export interface IQuotationListDto {
     stotal: string;
     leadStatusId: number;
     leadStatusName: string;
+    lcNumber: string;
 }
 
 export class ListResultDtoOfEnqActList implements IListResultDtoOfEnqActList {
@@ -46227,6 +46630,45 @@ export interface INotificationListDto {
     name: string;
     designerApproval: boolean;
     revisionApproval: boolean;
+}
+
+export class LCNumberInput implements ILCNumberInput {
+    inquiryId: number;
+    lcNumber: string;
+
+    constructor(data?: ILCNumberInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.inquiryId = data["inquiryId"];
+            this.lcNumber = data["lcNumber"];
+        }
+    }
+
+    static fromJS(data: any): LCNumberInput {
+        let result = new LCNumberInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["inquiryId"] = this.inquiryId;
+        data["lcNumber"] = this.lcNumber;
+        return data; 
+    }
+}
+
+export interface ILCNumberInput {
+    inquiryId: number;
+    lcNumber: string;
 }
 
 export class GetLanguagesOutput implements IGetLanguagesOutput {
@@ -56234,6 +56676,10 @@ export class SliderDataList implements ISliderDataList {
     email: string;
     phone: string;
     teamId: number;
+    conversionratio: number;
+    tConversionratio: number;
+    conversionCount: number;
+    tConversionCount: number;
 
     constructor(data?: ISliderDataList) {
         if (data) {
@@ -56252,6 +56698,10 @@ export class SliderDataList implements ISliderDataList {
             this.email = data["email"];
             this.phone = data["phone"];
             this.teamId = data["teamId"];
+            this.conversionratio = data["conversionratio"];
+            this.tConversionratio = data["tConversionratio"];
+            this.conversionCount = data["conversionCount"];
+            this.tConversionCount = data["tConversionCount"];
         }
     }
 
@@ -56269,6 +56719,10 @@ export class SliderDataList implements ISliderDataList {
         data["email"] = this.email;
         data["phone"] = this.phone;
         data["teamId"] = this.teamId;
+        data["conversionratio"] = this.conversionratio;
+        data["tConversionratio"] = this.tConversionratio;
+        data["conversionCount"] = this.conversionCount;
+        data["tConversionCount"] = this.tConversionCount;
         return data; 
     }
 }
@@ -56280,6 +56734,10 @@ export interface ISliderDataList {
     email: string;
     phone: string;
     teamId: number;
+    conversionratio: number;
+    tConversionratio: number;
+    conversionCount: number;
+    tConversionCount: number;
 }
 
 export class SelectDResult implements ISelectDResult {
@@ -60279,8 +60737,12 @@ export interface IGetConvertionratio {
 }
 
 export class RecentInquiryClosureList implements IRecentInquiryClosureList {
+    thisMonthClosureInquiry: RecentInquiryClosureDto[];
     thisWeekClosureInquiry: RecentInquiryClosureDto[];
     nextWeekClosureInquiry: RecentInquiryClosureDto[];
+    monthValue: string;
+    thisweekValue: string;
+    nextWeekValue: string;
 
     constructor(data?: IRecentInquiryClosureList) {
         if (data) {
@@ -60293,6 +60755,11 @@ export class RecentInquiryClosureList implements IRecentInquiryClosureList {
 
     init(data?: any) {
         if (data) {
+            if (data["thisMonthClosureInquiry"] && data["thisMonthClosureInquiry"].constructor === Array) {
+                this.thisMonthClosureInquiry = [];
+                for (let item of data["thisMonthClosureInquiry"])
+                    this.thisMonthClosureInquiry.push(RecentInquiryClosureDto.fromJS(item));
+            }
             if (data["thisWeekClosureInquiry"] && data["thisWeekClosureInquiry"].constructor === Array) {
                 this.thisWeekClosureInquiry = [];
                 for (let item of data["thisWeekClosureInquiry"])
@@ -60303,6 +60770,9 @@ export class RecentInquiryClosureList implements IRecentInquiryClosureList {
                 for (let item of data["nextWeekClosureInquiry"])
                     this.nextWeekClosureInquiry.push(RecentInquiryClosureDto.fromJS(item));
             }
+            this.monthValue = data["monthValue"];
+            this.thisweekValue = data["thisweekValue"];
+            this.nextWeekValue = data["nextWeekValue"];
         }
     }
 
@@ -60314,6 +60784,11 @@ export class RecentInquiryClosureList implements IRecentInquiryClosureList {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        if (this.thisMonthClosureInquiry && this.thisMonthClosureInquiry.constructor === Array) {
+            data["thisMonthClosureInquiry"] = [];
+            for (let item of this.thisMonthClosureInquiry)
+                data["thisMonthClosureInquiry"].push(item.toJSON());
+        }
         if (this.thisWeekClosureInquiry && this.thisWeekClosureInquiry.constructor === Array) {
             data["thisWeekClosureInquiry"] = [];
             for (let item of this.thisWeekClosureInquiry)
@@ -60324,17 +60799,25 @@ export class RecentInquiryClosureList implements IRecentInquiryClosureList {
             for (let item of this.nextWeekClosureInquiry)
                 data["nextWeekClosureInquiry"].push(item.toJSON());
         }
+        data["monthValue"] = this.monthValue;
+        data["thisweekValue"] = this.thisweekValue;
+        data["nextWeekValue"] = this.nextWeekValue;
         return data; 
     }
 }
 
 export interface IRecentInquiryClosureList {
+    thisMonthClosureInquiry: RecentInquiryClosureDto[];
     thisWeekClosureInquiry: RecentInquiryClosureDto[];
     nextWeekClosureInquiry: RecentInquiryClosureDto[];
+    monthValue: string;
+    thisweekValue: string;
+    nextWeekValue: string;
 }
 
 export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
     week: string;
+    month: string;
     closureDate: string;
     subMmissionId: string;
     inquiryName: string;
@@ -60350,6 +60833,7 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
     mileStone: string;
     total: string;
     stage: string;
+    value: number;
 
     constructor(data?: IRecentInquiryClosureDto) {
         if (data) {
@@ -60363,6 +60847,7 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
     init(data?: any) {
         if (data) {
             this.week = data["week"];
+            this.month = data["month"];
             this.closureDate = data["closureDate"];
             this.subMmissionId = data["subMmissionId"];
             this.inquiryName = data["inquiryName"];
@@ -60378,6 +60863,7 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
             this.mileStone = data["mileStone"];
             this.total = data["total"];
             this.stage = data["stage"];
+            this.value = data["value"];
         }
     }
 
@@ -60390,6 +60876,7 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["week"] = this.week;
+        data["month"] = this.month;
         data["closureDate"] = this.closureDate;
         data["subMmissionId"] = this.subMmissionId;
         data["inquiryName"] = this.inquiryName;
@@ -60405,12 +60892,14 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
         data["mileStone"] = this.mileStone;
         data["total"] = this.total;
         data["stage"] = this.stage;
+        data["value"] = this.value;
         return data; 
     }
 }
 
 export interface IRecentInquiryClosureDto {
     week: string;
+    month: string;
     closureDate: string;
     subMmissionId: string;
     inquiryName: string;
@@ -60426,12 +60915,16 @@ export interface IRecentInquiryClosureDto {
     mileStone: string;
     total: string;
     stage: string;
+    value: number;
 }
 
 export class RecentInquiryActivityList implements IRecentInquiryActivityList {
     thisWeekActivityInquiry: RecentInquiryClosureDto[];
     nextWeekActivityInquiry: RecentInquiryClosureDto[];
     overDueActivityInquiry: RecentInquiryClosureDto[];
+    overDueValue: string;
+    thisweekValue: string;
+    nextWeekValue: string;
 
     constructor(data?: IRecentInquiryActivityList) {
         if (data) {
@@ -60459,6 +60952,9 @@ export class RecentInquiryActivityList implements IRecentInquiryActivityList {
                 for (let item of data["overDueActivityInquiry"])
                     this.overDueActivityInquiry.push(RecentInquiryClosureDto.fromJS(item));
             }
+            this.overDueValue = data["overDueValue"];
+            this.thisweekValue = data["thisweekValue"];
+            this.nextWeekValue = data["nextWeekValue"];
         }
     }
 
@@ -60485,6 +60981,9 @@ export class RecentInquiryActivityList implements IRecentInquiryActivityList {
             for (let item of this.overDueActivityInquiry)
                 data["overDueActivityInquiry"].push(item.toJSON());
         }
+        data["overDueValue"] = this.overDueValue;
+        data["thisweekValue"] = this.thisweekValue;
+        data["nextWeekValue"] = this.nextWeekValue;
         return data; 
     }
 }
@@ -60493,6 +60992,9 @@ export interface IRecentInquiryActivityList {
     thisWeekActivityInquiry: RecentInquiryClosureDto[];
     nextWeekActivityInquiry: RecentInquiryClosureDto[];
     overDueActivityInquiry: RecentInquiryClosureDto[];
+    overDueValue: string;
+    thisweekValue: string;
+    nextWeekValue: string;
 }
 
 export class GetSalesLeadList implements IGetSalesLeadList {
@@ -60548,6 +61050,137 @@ export class GetSalesLeadList implements IGetSalesLeadList {
 export interface IGetSalesLeadList {
     leadDevelop: any[];
     catagries: any[];
+}
+
+export class GetRaindto implements IGetRaindto {
+    totalCount: number;
+    tenderCount: number;
+    qTotalCount: number;
+    qTenderCount: number;
+    wTotalCount: number;
+    wTenderCount: number;
+    lTotalCount: number;
+    lTenderCount: number;
+    strTotalCount: number;
+    strTenderCount: number;
+    liveTotalCount: number;
+    liveTenderCount: number;
+    totalvalue: number;
+    tendervalue: number;
+    qTotalvalue: number;
+    qTendervalue: number;
+    wTotalvalue: number;
+    wTendervalue: number;
+    lTotalvalue: number;
+    lTendervalue: number;
+    strTotalvalue: number;
+    strTendervalue: number;
+    liveTotalvalue: number;
+    liveTendervalue: number;
+    conversionRate: number;
+
+    constructor(data?: IGetRaindto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            this.tenderCount = data["tenderCount"];
+            this.qTotalCount = data["qTotalCount"];
+            this.qTenderCount = data["qTenderCount"];
+            this.wTotalCount = data["wTotalCount"];
+            this.wTenderCount = data["wTenderCount"];
+            this.lTotalCount = data["lTotalCount"];
+            this.lTenderCount = data["lTenderCount"];
+            this.strTotalCount = data["strTotalCount"];
+            this.strTenderCount = data["strTenderCount"];
+            this.liveTotalCount = data["liveTotalCount"];
+            this.liveTenderCount = data["liveTenderCount"];
+            this.totalvalue = data["totalvalue"];
+            this.tendervalue = data["tendervalue"];
+            this.qTotalvalue = data["qTotalvalue"];
+            this.qTendervalue = data["qTendervalue"];
+            this.wTotalvalue = data["wTotalvalue"];
+            this.wTendervalue = data["wTendervalue"];
+            this.lTotalvalue = data["lTotalvalue"];
+            this.lTendervalue = data["lTendervalue"];
+            this.strTotalvalue = data["strTotalvalue"];
+            this.strTendervalue = data["strTendervalue"];
+            this.liveTotalvalue = data["liveTotalvalue"];
+            this.liveTendervalue = data["liveTendervalue"];
+            this.conversionRate = data["conversionRate"];
+        }
+    }
+
+    static fromJS(data: any): GetRaindto {
+        let result = new GetRaindto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        data["tenderCount"] = this.tenderCount;
+        data["qTotalCount"] = this.qTotalCount;
+        data["qTenderCount"] = this.qTenderCount;
+        data["wTotalCount"] = this.wTotalCount;
+        data["wTenderCount"] = this.wTenderCount;
+        data["lTotalCount"] = this.lTotalCount;
+        data["lTenderCount"] = this.lTenderCount;
+        data["strTotalCount"] = this.strTotalCount;
+        data["strTenderCount"] = this.strTenderCount;
+        data["liveTotalCount"] = this.liveTotalCount;
+        data["liveTenderCount"] = this.liveTenderCount;
+        data["totalvalue"] = this.totalvalue;
+        data["tendervalue"] = this.tendervalue;
+        data["qTotalvalue"] = this.qTotalvalue;
+        data["qTendervalue"] = this.qTendervalue;
+        data["wTotalvalue"] = this.wTotalvalue;
+        data["wTendervalue"] = this.wTendervalue;
+        data["lTotalvalue"] = this.lTotalvalue;
+        data["lTendervalue"] = this.lTendervalue;
+        data["strTotalvalue"] = this.strTotalvalue;
+        data["strTendervalue"] = this.strTendervalue;
+        data["liveTotalvalue"] = this.liveTotalvalue;
+        data["liveTendervalue"] = this.liveTendervalue;
+        data["conversionRate"] = this.conversionRate;
+        return data; 
+    }
+}
+
+export interface IGetRaindto {
+    totalCount: number;
+    tenderCount: number;
+    qTotalCount: number;
+    qTenderCount: number;
+    wTotalCount: number;
+    wTenderCount: number;
+    lTotalCount: number;
+    lTenderCount: number;
+    strTotalCount: number;
+    strTenderCount: number;
+    liveTotalCount: number;
+    liveTenderCount: number;
+    totalvalue: number;
+    tendervalue: number;
+    qTotalvalue: number;
+    qTendervalue: number;
+    wTotalvalue: number;
+    wTendervalue: number;
+    lTotalvalue: number;
+    lTendervalue: number;
+    strTotalvalue: number;
+    strTendervalue: number;
+    liveTotalvalue: number;
+    liveTendervalue: number;
+    conversionRate: number;
 }
 
 export class RegisterTenantInput implements IRegisterTenantInput {

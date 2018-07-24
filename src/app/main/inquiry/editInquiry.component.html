@@ -400,58 +400,25 @@
                             </label>
                     </div>                    
                 </div>
-                <div class="col-md-6" *ngIf="inquiry.stared">
-                            <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                            <input class="form-control" type="number" name="weightedvalue" [ngClass]="{'edited':inquiry.weightedvalue}" [(ngModel)]="inquiry.weightedvalue" [ngModelOptions]="{standalone: true}" (keydown)="check($event)" (keyup)="checkValue()">
-                                <label>{{l("Weighted %")}}<required_field></required_field></label>
-                            </div>
-                        </div> 
+                <div class="col-md-6">
+                    <label>Tender</label>
+                        <div class="onoffswitch">
+                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="tenderSwitch" [(ngModel)]="inquiry.tenderProject" [ngModelOptions]="{standalone: true}" checked>
+                                <label class="onoffswitch-label" for="tenderSwitch">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                        </div>                    
+                    </div>
+               
                 </div>
-           <!-- <div class="col-md-2" *ngIf="inquiry.stared">
-                <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                <input class="form-control" type="number" name="weightedvalue" [ngClass]="{'edited':inquiry.weightedvalue}" [(ngModel)]="inquiry.weightedvalue" [ngModelOptions]="{standalone: true}" (keydown)="check($event)" (keyup)="checkValue()">
-                    <label>{{l("Weighted Value")}}<required_field></required_field></label>
-                </div>
-            </div> 
-            <div class="col-md-2" *ngIf="!inquiry.stared">
-            </div> -->
-
-           <div class="col-md-3" style="padding-top: 24px;">
-            <label>Next Activity <required_field></required_field></label>
-            <p-calendar showButtonBar="true" id="datetime" [(ngModel)]="lastActivity" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
-            </div>
-            <div class="col-md-3" style="padding-top: 24px;">
-                <label>Expected Closure <required_field></required_field></label>
-                <p-calendar showButtonBar="true" id="datetime2" [(ngModel)]="closedDate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
-            </div> 
-    <!-- <div class="col-md-2">
-        <label>Disable Quote</label>
-       
-        <div class="onoffswitch">
-                <input type="checkbox" name="onoffswitch3" class="onoffswitch-checkbox" id="myonoffswitch3" [(ngModel)]="inquiry.disableQuotation"  checked>
-                <label class="onoffswitch-label" for="myonoffswitch3">
-                    <span class="onoffswitch-inner"></span>
-                    <span class="onoffswitch-switch"></span>
-                </label>
-            </div>
-    </div> -->
-    <!-- <div class="col-md-2" *ngIf="inquiry.disableQuotation">
-        <label>Won Lead</label>
-       
-        <div class="onoffswitch">
-                <input type="checkbox" name="onoffswitch4" class="onoffswitch-checkbox" id="myonoffswitch4" [(ngModel)]="inquiry.won"  checked>
-                <label class="onoffswitch-label" for="myonoffswitch4">
-                    <span class="onoffswitch-inner"></span>
-                    <span class="onoffswitch-switch"></span>
-                </label>
-            </div>
-    </div> -->
-    <!-- <div class="col-md-2" *ngIf="inquiry.won && inquiry.disableQuotation">
+           
+    <div class="col-md-3" *ngIf="inquiry.stared">
         <div class="form-group form-md-line-input form-md-floating-label no-hint">
-            <input class="form-control" type="number" name="estimatedValue" [ngClass]="{'edited':inquiry.total}" [(ngModel)]="inquiry.total" >
-            <label>{{l("Final Value")}} </label>
-         </div>
-    </div> -->
+        <input class="form-control" type="number" name="weightedvalue" [ngClass]="{'edited':inquiry.weightedvalue}" [(ngModel)]="inquiry.weightedvalue" [ngModelOptions]="{standalone: true}" (keydown)="check($event)" (keyup)="checkValue()">
+            <label>{{l("Weighted %")}}<required_field></required_field></label>
+        </div>
+    </div> 
     <div class="col-md-3" *ngIf="lqref!='NoQuote'">
         <div class="form-group form-md-line-input form-md-floating-label no-hint">
             <input class="form-control" type="text" [disabled]="true" name="lockedQuote" [ngClass]="{'edited':lqref}" [(ngModel)]="lqref" >
@@ -464,6 +431,14 @@
             <label>{{l("LockedValue")}} </label>
          </div>
     </div>
+    <div class="col-md-3" style="padding-top: 24px;">
+        <label>Next Activity <required_field></required_field></label>
+        <p-calendar showButtonBar="true" id="datetime" [(ngModel)]="lastActivity" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
+</div>
+<div class="col-md-3" style="padding-top: 24px;">
+            <label>Expected Closure <required_field></required_field></label>
+            <p-calendar showButtonBar="true" id="datetime2" [(ngModel)]="closedDate" [ngClass]="form-control" [ngModelOptions]="{standalone: true}"></p-calendar>  
+</div> 
      </div>
            <div class="row">
                 <div class="col-md-12 modal-footer" style="margin-bottom: -40px;">

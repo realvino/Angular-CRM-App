@@ -1,5 +1,5 @@
 ﻿import { Component, AfterViewInit, Injector, ViewEncapsulation, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { TenantDashboardServiceProxy, Select2ServiceProxy, Select2Result, Datadto, Datadtoes, RecentInquiryClosureList, RecentInquiryActivityList } from '@shared/service-proxies/service-proxies';
+import { TenantDashboardServiceProxy, Select2ServiceProxy, Select2Result, Datadto, Datadtoes, RecentInquiryClosureList, RecentInquiryActivityList, GetRaindto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppSalesSummaryDatePeriod } from '@shared/AppEnums';
@@ -64,6 +64,9 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     slides : Array<Object> = [];
     Closure : RecentInquiryClosureList = new RecentInquiryClosureList();
     Activity : RecentInquiryActivityList = new RecentInquiryActivityList();
+
+    Cards : GetRaindto = new GetRaindto();
+
     ActivityInput : string;
     options : Object = {
     clicking: true,
@@ -79,6 +82,24 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     autoRotationSpeed: 1000 * 60 * 60 * 24,
     loop: true
 }
+
+bouncePercent = {
+    value: 0,
+    options: {
+        barColor: '#F3565D',
+        trackColor: '#f9f9f9',
+        scaleColor: '#dfe0e0',
+        scaleLength: 5,
+        lineCap: 'round',
+        lineWidth: 3,
+        size: 75,
+        rotate: 0,
+        animate: {
+            duration: 1000,
+            enabled: true
+        }
+    }
+};
 
     constructor(
         injector: Injector,
@@ -121,8 +142,6 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
             .getInquiryRecentClosure(this.teamselect,data.id)
             .subscribe(result => {
                 this.Closure = result;
-                //nextWeekClosureInquiry
-                //thisWeekClosureInquiry
       });
     };
     LastActivity(data:any): void {
@@ -163,10 +182,12 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     GotoLead(enq_id):void{
         if(enq_id > 0)
         {
-            this.router.navigate(["/app/main/sales-enquiry",enq_id]);
+            //this.router.navigate(["/app/main/sales-enquiry",enq_id]);
+            window.open('app/main/sales-enquiry/'+enq_id, "_blank");
+
         }
     }
-
+ 
     teamdetail():void{
         this._dashboardService.getDashboardTeam().takeUntil(this.destroy$).subscribe((result) => { 
             this.allteamselect ="";
@@ -201,16 +222,24 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
             }
         });
     }
-
     loadslider(value:any):void{
         this.teamIdselect = value;
         this.slides = [];
 
-        this._dashboardService.getSalesExecutive(this.teamIdselect,this.IsSales)
+        this._dashboardService.getSalesExecutive(this.teamIdselect,this.IsSales,this.dashdateRangePickerStartDate,this.dashdateRangePickerEndDate)
         .subscribe(result =>{
             let newSlide = new Array<object>()
             result.forEach((item) => {
-                newSlide.push({src: item['profilePicture'],name: item['name'],id: item['id'],email: item['email']})
+                newSlide.push({
+                    src: item['profilePicture'],
+                    name: item['name'],
+                    id: item['id'],
+                    email: item['email'],
+                    tConversionratio: item['tConversionratio'],
+                    conversionratio: item['conversionratio'],
+                    conversionCount: item['conversionCount'],
+                    tConversionCount: item['tConversionCount'],
+                })
             });
             this.slides = newSlide.concat(this.slides);
             this.lostreasonpiegraph(this.slides[this.cardIndex]);
@@ -221,19 +250,15 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
             this.leadQuotationCount(this.slides[this.cardIndex]);
 
         });
-    }
-    
-
-
+    }  
     dashsubmitDateRange(): void {
-        // console.log(this.dashdateRangePickerStartDate);
-        // console.log(this.dashdateRangePickerEndDate);
-        this.lostreasonpiegraph(this.slides[this.cardIndex]);
-        this.leadsummaryfunnelgraph(this.slides[this.cardIndex]);
-        this.conversionRatiograph(this.slides[this.cardIndex]);
-        this.leadQuotationCount(this.slides[this.cardIndex]);
-    }
+        this.loadslider(this.teamselect);
 
+        // this.lostreasonpiegraph(this.slides[this.cardIndex]);
+        // this.leadsummaryfunnelgraph(this.slides[this.cardIndex]);
+        // this.conversionRatiograph(this.slides[this.cardIndex]);
+        // this.leadQuotationCount(this.slides[this.cardIndex]);
+    }
     lostreasonpiegraph(value:any):void{
         var scorelrp = []; 
         var colorlrp = [];        
@@ -245,9 +270,9 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
             }
             this.lrgoption = {
                 chart: { type: 'pie' },
-                title: { text : 'Lost Reason Graph'},
+                title: { text : 'Lost Reason'},
                 series: [{
-                    name: 'Lost Reason Graph',
+                    name: 'Lost Reason',
                     showInLegend: true,
                     data: scorelrp
                     //data: [['Test1',2],['Test2',5],['Test3',8],['Test4',1],['Test5',5]],
@@ -287,7 +312,7 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
             }
             this.lsgoption = {
                 chart: { type: 'funnel' },
-                title: { text : 'Lead Summary Graph'},
+                title: { text : 'Lead Summary'},
                 plotOptions: {
                     series: {
                         allowPointSelect: true,
@@ -327,7 +352,7 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
                     type: 'column'
                 },
                 title: {
-                    text: 'CONVERSION RATIO GRAPH'
+                    text: 'SUBMITTED VS WON'
                 },
                 subtitle: {
                     text: 'Source: Quotation'
@@ -360,20 +385,23 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
             };
          });
     }
-
     leadQuotationCount(value:any):void{
-        this._dashboardService.getLeadQuotationGraph(value.id,this.teamIdselect,this.dashdateRangePickerStartDate,this.dashdateRangePickerEndDate)
+        this._dashboardService.getRainflowGraph(value.id,this.teamIdselect,this.dashdateRangePickerStartDate,this.dashdateRangePickerEndDate)
         .subscribe((result)=>{
-            if(result != null){
-                this.AllOutput = result[0];
-                this.QuotOutput =result[1];
-                this.WonOutput = result[2];
-                this.LostOutput = result[3];
-                this.Concersionratio = Math.round((result[2].quotationCount/result[1].quotationCount)*100);
-                console.log(result);
-                console.log(this.AllOutput);
-            }
+          this.Cards = result;
+          this.bouncePercent.value = result.conversionRate;
         });
+
+        // this._dashboardService.getLeadQuotationGraph(value.id,this.teamIdselect,this.dashdateRangePickerStartDate,this.dashdateRangePickerEndDate)
+        // .subscribe((result)=>{
+        //     if(result != null){
+        //         this.AllOutput = result[0];
+        //         this.QuotOutput =result[1];
+        //         this.WonOutput = result[2];
+        //         this.LostOutput = result[3];
+        //         this.Concersionratio = Math.round((result[4].inquiryCount/result[4].total)*100);
+        //     }
+        // });
     }
 
     ngOnDestroy() {
@@ -442,3 +470,4 @@ class MemberActivityTable extends DashboardChartBase {
             });
     }
 }
+

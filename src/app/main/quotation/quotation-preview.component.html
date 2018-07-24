@@ -9,6 +9,9 @@
                     <button type="btn btn" class="btn btn-circle btn-icon-only white" style="float: right;" (click)="download()" aria-label="Download">
                         <span class="fa fa-cloud-download"></span>
                     </button>
+                    <button *ngIf="head_preview == 'Standard'" type="btn btn" class="btn btn-primary blue" style="float: right;" (click)="excel()" aria-label="Excel">
+                        Request for Excel
+                    </button>
                     <h4 class="modal-title">
                         <span>{{l(head_preview+" Preview")}}</span>
                     </h4>

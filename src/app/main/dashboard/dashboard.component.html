@@ -54,9 +54,20 @@
                                     <ng2-carousel-3d-slide *ngFor="let slide of slides; let i = index" (click)="slideClicked(i)">
                                         <img class="slide-img" src="{{slide.src}}" width= "310" height= "220" style="width: 50%;height: 100%;float: left;" alt=""/>
                                         <div style="width: 50%;height: 100%;float: right;background-color: #444d58;text-align: center;color: white;line-height: 23px;">
-                                            <br><h4><b>{{slide.name}}</b></h4>
-                                            <h5 style="margin: 0">{{slide.email}}</h5>
-                                            <br>
+                                            <br><h4 style="font-size: 16px;"><b>{{slide.name}}</b></h4>
+                                            <h3 class="font-dark-sharp" style="font-size: 18px">
+                                                <span>
+                                                      {{slide.conversionratio}} %  <small style="color: #c0c9cc;">({{slide.conversionCount}})</small>                    
+                                                </span><br>
+                                                <span style="color: red;">
+                                                      {{slide.tConversionratio}} % <small style="color: #c0c9cc;">({{slide.tConversionCount}}) </small>                    
+                                                </span>
+                                            </h3><br>
+                                            <div class="your-div">
+                                                <span>
+                                                    {{(slide.conversionratio+slide.tConversionratio).toFixed(2)}} %  <small style="color: #c0c9cc;">({{slide.conversionCount+slide.tConversionCount}})</small>                    
+                                              </span><br>
+                                            </div>
                                         </div>
                                     </ng2-carousel-3d-slide>
                                 </ng2-carousel-3d>
@@ -64,83 +75,206 @@
         </div>
     </div>
     <div class="row margin-top-10">
-        <!-- <div class="col-lg-1 col-md-3 col-sm-6 col-xs-12"></div> -->
-        <div id="aaa" class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
-            <div class="dashboard-stat2">
-                <div class="display" style="margin-bottom: 0px;">
-                    <div class="number">
-                        <small>Total Opportunities </small>
+            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat2">
+                        <div class="display">
+                            <div class="number">
+                                <small>Total Opportunities</small>
+                                <h3 class="font-dark-sharp" style="text-align: right;float:right;">
+                                        <span>
+                                              {{(Cards.totalvalue + 0).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}} <small>({{Cards.totalCount}} ) </small>                    
+                                        </span><br>
+                                        <span style="color: red;">
+                                            {{(Cards.tendervalue + 0).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}} <small>({{Cards.tenderCount}} ) </small>                    
+                                        </span>
+                                    </h3>
+                            </div>
+                           
+                        </div>
+                        <div class="progress-info">
+                          <hr>
+                            <div class="status">
+                                <div class="status-title">
+                                   TOTAL
+                                </div>
+                                <div class="status-number">
+                                    <span>
+                                          {{((Cards.totalvalue + Cards.tendervalue)).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}} <small>({{Cards.totalCount + Cards.tenderCount}} ) </small> 
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <br>
-                    <div style="margin-top: 20px;">
-                       <button class="btn btn-icon-only blue size"><i class="fa fa-briefcase"></i></button>
-                       <span style="font-size: 25px;">{{AllOutput.inquiryCount}}</span>
-                       <span style="font-size: 14px;">({{AllOutput.salesman}} AED)</span>
+          </div>
+          <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                <div class="dashboard-stat2">
+                    <div class="display">
+                        <div class="number">
+                            <small>Quoted Opportunities</small>
+                            <h3 class="font-dark-sharp" style="text-align: right;float:right;">
+                                    <span>
+                                          {{(Cards.qTotalvalue + 0).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}} <small>({{Cards.qTotalCount}} ) </small>                    
+                                    </span><br>
+                                    <span style="color: red;">
+                                        {{(Cards.qTendervalue + 0).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}} <small>({{Cards.qTenderCount}} ) </small>                    
+                                    </span>
+                                </h3>
+                        </div>
+                       
+                    </div>
+                    <div class="progress-info">
+                      <hr>
+                        <div class="status">
+                            <div class="status-title">
+                               TOTAL
+                            </div>
+                            <div class="status-number">
+                                <span>
+                                      {{((Cards.qTotalvalue + Cards.qTendervalue)).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}} <small>({{Cards.qTotalCount + Cards.qTenderCount}} ) </small>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div id="aaa" class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
-            <div class="dashboard-stat2" >
-                <div class="display" style="margin-bottom: 0px;">
-                    <div class="number">
-                        <small>Quoted Opportunities</small>
-                    </div>
-                    <br>
-                    <div style="margin-top: 20px;">
-                        <button class="btn btn-icon-only gray size"><i class="fa fa-handshake-o"></i></button>
-                        <span style="font-size: 25px;">{{QuotOutput.inquiryCount}}</span>
-                        <span style="font-size: 14px;">({{QuotOutput.salesman}} AED)</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="aaa" class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+      </div>
+        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
             <div class="dashboard-stat2">
-                <div class="display" style="margin-bottom: 0px;">
+                <div class="display">
                     <div class="number">
-                        <small>Opportunities Won</small>
+                        <small>LIVE Opportunities</small>
+                        <h3 class="font-dark-sharp" style="text-align: right;float:right;">
+                                <span>
+                                      {{(Cards.liveTotalvalue + 0).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}} <small>({{Cards.liveTotalCount}} ) </small>                    
+                                </span><br>
+                                <span style="color: red;">
+                                    {{(Cards.liveTendervalue + 0).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}}<small>({{Cards.liveTenderCount}} ) </small>                    
+                                </span>
+                            </h3>
                     </div>
-                    <br>
-                    <div style="margin-top: 20px;"> 
-                        <button class="btn btn-icon-only green size"><i class="fa fa-thumbs-o-up"></i></button>
-                        <span style="font-size: 25px;">{{WonOutput.inquiryCount}}</span>
-                        <span style="font-size: 14px;">({{WonOutput.salesman}} AED)</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="aaa" class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
-            <div class="dashboard-stat2">
-                <div class="display" style="margin-bottom: 0px;">
-                    <div class="number">
-                        <small>Opportunities Lost</small>
-                    </div>
-                    <br>
-                    <div style="margin-top: 20px;">  
-                      <button class="btn btn-icon-only red size"><i class="fa fa-thumbs-down"></i></button>
-                      <span style="font-size: 25px;">{{LostOutput.inquiryCount}}</span>
-                      <span style="font-size: 14px;">({{LostOutput.salesman}} AED)</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="aaa" class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
-            <div class="dashboard-stat2">
-                <div class="display" style="margin-bottom: 0px;">
-                    <div class="number">
-                        <small>Conversion Ratio</small>
-                    </div>
-                    <br>
-                    <div style="margin-top: 20px;"> 
-                      <button class="btn btn-icon-only yellow size"><i class="fa fa-newspaper-o"></i></button>
-                      <span style="font-size: 25px;">{{Concersionratio}} %</span>
-                    </div>
-                </div> 
-            </div>
-        </div>   
-     </div>
 
+                </div>
+                <div class="progress-info">
+                  <hr>
+                    <div class="status">
+                        <div class="status-title">
+                           TOTAL
+                        </div>
+                        <div class="status-number">
+                                <span data-placement="top">
+                                        {{((Cards.liveTotalvalue + Cards.liveTendervalue)).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}} <small>({{Cards.liveTotalCount + Cards.liveTenderCount}} ) </small>
+                                  </span> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                <div class="dashboard-stat2">
+                    <div class="display">
+                        <div class="number">
+                            <small>Opportunities Won</small>
+                            <h3 class="font-dark-sharp" style="text-align: right;float:right;">
+                                    <span>
+                                          {{(Cards.wTotalvalue + 0).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}}  <small>({{Cards.wTotalCount}} ) </small>                    
+                                    </span><br>
+                                    <span style="color: red;">
+                                        {{(Cards.wTendervalue + 0).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}} <small>({{Cards.wTenderCount}} ) </small>                    
+                                    </span>
+                                </h3>
+                        </div>
+                    </div>
+                    <div class="progress-info">
+                      <hr>
+                        <div class="status">
+                            <div class="status-title">
+                               TOTAL
+                            </div>
+                            <div class="status-number">
+                                    <span>
+                                            {{((Cards.wTotalvalue + Cards.wTendervalue)).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}} <small>({{Cards.wTotalCount + Cards.wTenderCount}} ) </small>
+                                      </span> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat2">
+                        <div class="display">
+                            <div class="number">
+                                <small>Opportunities Lost</small>
+                                <h3 class="font-dark-sharp" style="text-align: right;float:right;">
+                                    <span>
+                                          {{(Cards.lTotalvalue + 0).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}} <small>({{Cards.lTotalCount}} ) </small>                    
+                                    </span><br>
+                                    <span style="color: red;">
+                                        {{(Cards.lTendervalue + 0).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}} <small>({{Cards.lTenderCount}} ) </small>                    
+                                    </span>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="progress-info">
+                          <hr>
+                            <div class="status">
+                                <div class="status-title">
+                                    TOTAL
+                                </div>
+                                <div class="status-number">
+                                    <span>
+                                          {{((Cards.lTotalvalue + Cards.lTendervalue)).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}} <small>({{Cards.lTotalCount + Cards.lTenderCount}} ) </small>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div> 
+            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                <div class="dashboard-stat2">
+                    <div class="display">
+                        <div class="number">
+                            <small> Starred Opportunities</small>
+                            <h3 class="font-dark-sharp" style="text-align: right;float:right;">
+                                <span>
+                                      {{(Cards.strTotalvalue + 0).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}} <small>({{Cards.strTotalCount}} ) </small>                    
+                                </span><br>
+                                <span style="color: red;">
+                                    {{(Cards.strTendervalue + 0).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}} <small>({{Cards.strTenderCount}} ) </small>                    
+                                </span>
+                            </h3>
+                        </div>
+                    </div> 
+                    <div class="progress-info">
+                      <hr>
+                        <div class="status">
+                            <div class="status-title">TOTAL
+                            </div>
+                            <div class="status-number">
+                                <span>
+                                      {{((Cards.strTotalvalue + Cards.strTendervalue)).toLocaleString('en', { minimumFractionDigits: 2 })}} <small>({{Cards.strTotalCount + Cards.strTenderCount}} ) </small>
+                                </span> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>                   
+     </div>
+<!-- <div class="row">
+    <div class="col-md-offset-4 col-md-4">
+            <div class="easy-pie-chart">
+                <div class="number">
+                    <span>{{Cards.conversionRate}}%</span>
+                    <easy-pie-chart [percent]="bouncePercent.value"
+                                    [options]="bouncePercent.options">
+                    </easy-pie-chart>
+                </div>
+
+                <a class="title" href="javascript:;"> 
+                    Conversion Rate
+                    <i class="icon-arrow-right"></i>
+                </a>
+            </div>
+    </div>
+</div> -->
      <div class="row">
         <div class="col-md-6">
                             <div class="portlet light ">
@@ -148,12 +282,17 @@
                                     <div class="caption">
                                         <i class="icon-bubbles font-dark hide"></i>
                                         <span class="caption-subject font-green-haze bold uppercase">CLOSING SOON</span>
+                                       <span *ngIf="clsdata == 1" class="caption-subject font-green-haze bold uppercase"> ({{Closure.thisWeekClosureInquiry?.length}}) : {{Closure.thisweekValue}} AED</span>
+                                        <span *ngIf="clsdata == 3" class="caption-subject font-green-haze bold uppercase"> ({{Closure.thisMonthClosureInquiry?.length}}) : {{Closure.monthValue}} AED</span>
+                                        <span *ngIf="clsdata == 2" class="caption-subject font-green-haze bold uppercase"> ({{Closure.nextWeekClosureInquiry?.length}}) : {{Closure.nextWeekValue}} AED</span>
                                     </div>                                  
                                     <div class="actions">
                                         <div class="btn-group btn-group-devided" data-toggle="buttons">
-                                            <label class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle btn-sm active" (click)="ClosureClick(1)">
+                                                <label class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle btn-sm" (click)="ClosureClick(3)">
+                                                <input type="radio" name="options" class="toggle" id="option2">This Month</label>
+                                                <label class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle btn-sm active" (click)="ClosureClick(1)">
                                                 <input type="radio" name="options" class="toggle" id="option2">This Week</label>
-                                            <label class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle btn-sm" (click)="ClosureClick(2)">
+                                                <label class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle btn-sm" (click)="ClosureClick(2)">
                                                 <input type="radio" name="options" class="toggle" id="option2">Next Week</label>
                                         </div>
                                     </div>
@@ -199,6 +338,25 @@
                                                         </div>
                                             </div>
                                         </div>
+                                        <div *ngIf="clsdata == 3">
+                                            <!-- BEGIN: Comments -->
+                                            <div class="general-item-list">
+                                                    <div *ngFor="let mlst of Closure.thisMonthClosureInquiry" class="item">
+                                                            <div class="item-head">
+                                                                <div class="item-details">
+                                                                    <img class="item-pic rounded" src="{{path+mlst.salesManImage}}">
+                                                                    <a (click) = "GotoLead(mlst.inquiryId)" class="item-name primary-link">{{mlst.subMmissionId}}</a>
+                                                                    <span class="item-label">{{mlst.closureDate}} ({{mlst.stageName}})</span>&nbsp;
+                                                                    <span class="item-label" style="color: black;"><b>{{mlst.total}}</b></span>&nbsp;
+                                                                    <span class="item-label"> inactive {{mlst.lastActivity| amTimeAgo}} </span>
+                                                                </div>
+                                                                <span class="item-status">
+                                                                    <span class="badge badge-empty badge-success"></span> &nbsp;{{mlst.mileStone}} ({{mlst.stage}} %)</span>                                                                                                                       
+                                                            </div> 
+                                                            <div class="item-body"> <b>{{mlst.inquiryName}}</b> <b class="font-green-haze">{{mlst.company}}</b> {{mlst.remarks}} </div>
+                                                        </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -216,7 +374,7 @@
                                 </div>
                                 
                                 <div id="style-4" class="portlet-body scrollab">
-                                    <div *ngIf="Activity.overDueActivityInquiry?.length > 0" class="item-body item-body1"> <b>Over Due</b><hr></div>         
+                                    <div *ngIf="Activity.overDueActivityInquiry?.length > 0" class="item-body item-body1"> <b>Over Due  <span class="caption-subject font-green-haze bold uppercase"> ({{Activity.overDueActivityInquiry?.length}}) : {{Activity.overDueValue}} AED</span></b><hr></div>         
                                     <div class=" table-scrollable table-scrollable-borderless">                                          
                                             <div class=" col-md-12 m-timeline-2">
                                                     <div class="m-timeline-2__items  m--padding-top-25 m--padding-bottom-30">                                                      
@@ -243,7 +401,7 @@
                                                     </div>
                                             </div>
                                     </div>
-                                    <div *ngIf="Activity.thisWeekActivityInquiry?.length > 0" class="item-body item-body1"> <b>Today</b><hr></div>         
+                                    <div *ngIf="Activity.thisWeekActivityInquiry?.length > 0" class="item-body item-body1"> <b>Today <span class="caption-subject font-green-haze bold uppercase"> ({{Activity.thisWeekActivityInquiry?.length}}) : {{Activity.thisweekValue}} AED</span></b><hr></div>         
                                     <div class=" table-scrollable table-scrollable-borderless">                                          
                                             <div class=" col-md-12 m-timeline-2">
                                                     <div class="m-timeline-2__items  m--padding-top-25 m--padding-bottom-30">                                                      
@@ -269,7 +427,7 @@
                                                     </div>
                                             </div>
                                     </div>
-                                    <div *ngIf="Activity.nextWeekActivityInquiry?.length > 0" class="item-body item-body2"> <b>Next Day</b><hr></div>         
+                                    <div *ngIf="Activity.nextWeekActivityInquiry?.length > 0" class="item-body item-body2"> <b>Next Day <span class="caption-subject font-green-haze bold uppercase"> ({{Activity.nextWeekActivityInquiry?.length}}) : {{Activity.nextWeekValue}} AED</span></b><hr></div>         
                                     <div class=" table-scrollable table-scrollable-borderless">                                          
                                             <div class=" col-md-12 m-timeline-2">
                                                     <div class="m-timeline-2__items  m--padding-top-25 m--padding-bottom-30">                                                      
@@ -346,7 +504,7 @@
                 <div class="portlet-title">
                     <div class="caption caption-md">
                         <i class="icon-bar-chart font-green-haze hide"></i>
-                        <span class="caption-subject font-green-haze bold uppercase">Conversion Ratio Graph</span>
+                        <span class="caption-subject font-green-haze bold uppercase">Submitted Vs Won Graph</span>
                     </div>
         
                 </div>
@@ -361,3 +519,16 @@
     </div>
 </div>
 
+<style>
+.your-div {
+    position: relative;
+    background: #333333;
+    margin-top: 5px;
+}
+
+.your-div span {
+   position: absolute;
+   bottom: 0;
+   right: 0;
+}
+</style>

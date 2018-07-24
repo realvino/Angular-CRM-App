@@ -1214,6 +1214,8 @@ else{
            }
            this.update_details.weightedvalue = this.inquiry.weightedvalue;
            this.update_details.stared = this.inquiry.stared;
+           this.update_details.tenderProject = this.inquiry.tenderProject;
+
            if(!this.update_details.stared){
             this.update_details.weightedvalue =0;
            }
@@ -1286,6 +1288,7 @@ else{
            this.update_details.revisionApproval = this.inquiry.revisionApproval;
            this.update_details.weightedvalue = this.inquiry.weightedvalue;
            this.update_details.stared = this.inquiry.stared;
+           this.update_details.tenderProject = this.inquiry.tenderProject;
 
            this.update_details.sourceId =  _.map(
                 _.filter(this.Sources, { isAssigned: true }), Source => Source.sourceId

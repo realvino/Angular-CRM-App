@@ -73,16 +73,20 @@ import { ArchivedInquiryComponent } from '@app/main/inquiry/archivedInquiry.comp
 import { CreateInquiryModalComponent } from '@app/main/inquiry/createORedit.component';
 import { MdashboardComponent } from '@app/main/dashboard/mdashboard.component';
 import { FinishedComponent } from '@app/main/finished/finishedComponent';
+import { DefaultDashboardComponent } from '@app/main/dashboard/defaultdashboard.component';
+import { DesignerDashboardComponent } from '@app/main/dashboard/designerdashboard.component';
 @NgModule({
     imports: [
         RouterModule.forChild([
             {
                 path: '',
                children: [
-                    { path: 'salesdashboard', component: DashboardComponent, data: { permission: 'Pages.Tenant.Dashboard' }},
-                    { path: 'marketingdashboard', component: MdashboardComponent, data: { permission: 'Pages.Tenant.Dashboard' }},
+                    { path: 'salesdashboard', component: DashboardComponent, data: { permission: 'Pages.Tenant.Dashboard.Sales'}},
+                    { path: 'designerdashboard', component: DesignerDashboardComponent, data: { permission: 'Pages.Tenant.Dashboard.Designer'}},
+                    { path: 'dashboard', component: DefaultDashboardComponent, data: { permission: 'Pages.Tenant.Dashboard'}},
+                    { path: 'marketingdashboard', component: MdashboardComponent, data: { permission: 'Pages.Tenant.Dashboard.Marketing'}},
                     { path: 'city', component: CityBookComponent,data: { permission: 'Pages.Tenant.Geography.City' }},
-                   { path: 'country', component: CountryComponent, data: { permission: 'Pages.Tenant.Geography.Country' }},
+                    { path: 'country', component: CountryComponent, data: { permission: 'Pages.Tenant.Geography.Country' }},
                     { path: 'location', component: LocationComponent, data: { permission: 'Pages.Tenant.Geography.Location' }},
                     { path: 'product', component: ProductComponent, data: { permission: "Pages.Tenant.ProductFamily.Products" }},
                     { path: 'productGroup', component: ProductGroupComponent},

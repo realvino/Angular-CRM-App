@@ -3,7 +3,7 @@ import { appModuleAnimation } from "shared/animations/routerTransition";
 import { AppComponentBase } from "shared/common/app-component-base";
 import { Router,ActivatedRoute } from "@angular/router";
 import { Http } from "@angular/http";
-import { Select2ServiceProxy, Datadto, QuotationServiceProxy, QuotationListDto, Select2salesDto, Contactdto, QuotationProductListDto, CreateQuotationInput, TenantDashboardServiceProxy, CreateDiscountInput,QuotationStatusServiceProxy,QuotationStatusList, NullableIdDto, EnquiryUpdateServiceProxy, QuotationStatusUpdateInput, EnquiryUpdateInputDto, QuotationRevisionInput, QuotationRevaluationInput } from "shared/service-proxies/service-proxies";
+import { Select2ServiceProxy, Datadto, QuotationServiceProxy, QuotationListDto, Select2salesDto, Contactdto, QuotationProductListDto, CreateQuotationInput, TenantDashboardServiceProxy, CreateDiscountInput,QuotationStatusServiceProxy,QuotationStatusList, NullableIdDto, EnquiryUpdateServiceProxy, QuotationStatusUpdateInput, EnquiryUpdateInputDto, QuotationRevisionInput, QuotationRevaluationInput, InquiryServiceProxy, LCNumberInput } from "shared/service-proxies/service-proxies";
 import { CreateQuotationSectionModalComponent } from "./create-or-edit-quotation-section.component";
 import { CreateQuotationProductModalComponent } from "./create-or-edit-quotation-product.component";
 import { ProductImportModalComponent } from "./product-import-modal.component";
@@ -45,6 +45,8 @@ export class QuotationEditComponent extends AppComponentBase implements OnInit,A
 @ViewChild('paginator') paginator: Paginator;
 @ViewChild('QuotationRevisionModal') QuotationRevisionModal: QuotationRevisionModalComponent;
 disemailinput:NullableIdDto=new NullableIdDto();
+UpdateLCNumberInput :LCNumberInput = new LCNumberInput();
+
 negotiationSwitch:boolean = false;
 filterText: string = '';
 DefaultImg: string = '/Common/Images/defaultImg.png';
@@ -119,7 +121,8 @@ DiscountImg: string = '/Common/Images/discount.svg';
         private cdr: ChangeDetectorRef,
         private _tenantDashboardService:TenantDashboardServiceProxy,
         private _quotationStatusService:QuotationStatusServiceProxy,
-        private _enquiryUpdateService: EnquiryUpdateServiceProxy
+        private _enquiryUpdateService: EnquiryUpdateServiceProxy,
+        private _inquiryService: InquiryServiceProxy
     )
     {
         super(injector); 
@@ -157,8 +160,9 @@ DiscountImg: string = '/Common/Images/discount.svg';
         this.quotations = result.items;
        });
   		this._quoatationService.getQuotationForEdit(this.id).subscribe(result=>{
-  			if(result.quotation!=null){         
+  			if(result.quotation!=null){  
           this.quotationList = result.quotation;
+          this.UpdateLCNumberInput.lcNumber = this.quotationList.lcNumber;       
           this.Totalamount = this.quotationList.total;
           if(this.quotationList.negotiation == true){
             this.negotiationSwitch = true;
@@ -431,7 +435,8 @@ DiscountImg: string = '/Common/Images/discount.svg';
          .subscribe((result) => {
           if(result){
            this.notify.success(this.l('SavedSuccessfully'));
-           this.QuotationRevaluation(3);
+           //this.QuotationRevaluation(3);
+            this.UpdateLcNumber();
            if(from == 1){
              this.goToQuotation();
            }
@@ -444,7 +449,11 @@ DiscountImg: string = '/Common/Images/discount.svg';
     }
   }
 
-
+  UpdateLcNumber(){
+    this.UpdateLCNumberInput.inquiryId= this.quotationList.inquiryId;
+    this._inquiryService.updateInquiryLCNumber(this.UpdateLCNumberInput)
+    .finally(() => this.saving = false).subscribe(() => { });
+  }
 
   getContacts(companyId:number){
 	  this._select2Service.getCompanyContacts(companyId).subscribe(result=>{
@@ -782,7 +791,7 @@ DiscountImg: string = '/Common/Images/discount.svg';
       }
       else if(this.statusId !=3 && this.quotation.quotationStatusId == 3){
         if(this.quotationList.designerName != null){
-          if(!data.form.valid || !this.nextActivity || !this.QRevisionInput.typeId){
+          if(!data.form.valid || !this.nextActivity){
             return true;
           }
           else{

@@ -202,6 +202,8 @@ import { FinishedComponent } from '@app/main/finished/finishedComponent';
 import { CreateEditFinishedComponent } from '@app/main/finished/createOReditFinishedComponent';
 import { CreateEditFinishedDetailComponent } from '@app/main/finished/createOReditFinishedDetailComponent';
 import { QuotationRevisionModalComponent } from '@app/main/quotation/quotationRevisionModalComponent';
+import { DefaultDashboardComponent } from '@app/main/dashboard/defaultdashboard.component';
+import { DesignerDashboardComponent } from '@app/main/dashboard/designerdashboard.component';
 
 export function highchartsFactory() {
     const hc = require('highcharts');
@@ -386,7 +388,9 @@ export function highchartsFactory() {
         FinishedComponent,
         CreateEditFinishedComponent,
         CreateEditFinishedDetailComponent,
-        QuotationRevisionModalComponent
+        QuotationRevisionModalComponent,
+        DefaultDashboardComponent,
+        DesignerDashboardComponent
     ],
     providers: [{
         provide: HighchartsStatic,
