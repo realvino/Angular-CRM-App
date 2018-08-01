@@ -42,10 +42,10 @@
                     <div style="margin-left: 25px;">
                          <h4 class="list-group-item-heading">
                         {{view.name }}
-                         <button *ngIf="view.isEditable" (click)="editview(view)" title="{{l('Edit')}}" class="btn btn-circle btn-icon-only green edit-person">
+                         <button *ngIf="view.isEditable" [disabled]="!isGranted('Pages.Tenant.Report.ViewEditor.Edit')" (click)="editview(view)" title="{{l('Edit')}}" class="btn btn-circle btn-icon-only green edit-person">
                                 <i class="icon-pencil"></i>
                             </button>
-                            <button *ngIf="view.isEditable" (click)="deleteview(view)" title="{{l('Delete')}}" class="btn btn-circle btn-icon-only red delete-person" href="javascript:;">
+                            <button *ngIf="view.isEditable" [disabled]="!isGranted('Pages.Tenant.Report.ViewEditor.Delete')" (click)="deleteview(view)" title="{{l('Delete')}}" class="btn btn-circle btn-icon-only red delete-person" href="javascript:;">
                                 <i class="icon-trash"></i>
                             </button> 
                     </h4>

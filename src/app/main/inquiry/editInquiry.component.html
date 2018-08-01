@@ -6,8 +6,8 @@
                     <span>{{l("Edit")}} - {{inquiry.subMmissionId}}</span>
                 </h4>
             </div>
-            <div *ngIf="which_located !='sales-enquiry' && which_located !='sales-grid'" class="col-md-3">
-            </div>
+            <!-- <div *ngIf="which_located !='sales-enquiry' && which_located !='sales-grid'" class="col-md-3">
+            </div> -->
             <!-- <div *ngIf="which_located =='sales-enquiry' || which_located =='sales-grid'" class="col-md-1" style="text-align: right;margin-top: 8px;">
                 <span>Close</span>                  
             </div> -->
@@ -17,16 +17,23 @@
                         <label class="onoffswitch-label" for="myclose">
                             <span class="onoffswitch-inner"></span>
                             <span class="onoffswitch-switch"></span>
-                        </label>
+                        </label> 
                 </div>
             </div> -->
-            <div class="col-md-8" style="right:80px;">
-                <a style="float: right;margin-left: 10px"  (click)="changeStage()" class="btn green-haze btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">Probability : {{inquiry.opportunity}} %
-                    <i class="fa fa-angle-down"></i>
-                </a>
+            <div class="col-md-8" style="right:-80px;">
                 <img *ngIf="salesimg" data-placement="bottom" tooltip="Salesperson : {{salesName}}" style="border: 2px solid #e0e6ec;float: right;margin-left: 10px" alt=""  width="35" height="35" class="img-circle" id="HeaderProfilePicture" src="{{salesimg}}">
                 <img *ngIf="co_ordimg" data-placement="bottom" tooltip="Co-Ordinator : {{co_ordName}}" style="border: 2px solid #e0e6ec;float: right;margin-left: 10px" alt=""  width="35" height="35" class="img-circle" id="HeaderProfilePicture" src="{{co_ordimg}}">
                 <img *ngIf="desimg" data-placement="bottom" tooltip="Designer : {{desName}}" style="border: 2px solid #e0e6ec;float: right;margin-left: 10px" alt=""  width="35" height="35" class="img-circle" id="HeaderProfilePicture" src="{{desimg}}">                                   
+       
+                <a style="float: right;margin-left: 10px"  (click)="changeStage()" class="btn green-haze btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">Probability : {{inquiry.opportunity}} %
+                    <i class="fa fa-angle-down"></i>
+                </a> 
+                <div class="btn-group mydropdown" style="float: right;margin-left: 10px" *ngIf="isGranted('Pages.Tenant.Quotation.Revision.Request') && lead_Designer">
+                    <a class="btn green-haze btn-outline btn-circle btn-sm" (click)="DesigerRequest()" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false"> Designer Revision
+                        <i class="fa fa-angle-down"></i>
+                    </a>    
+                </div>
+                    
             </div>
             <div class="col-md-1">
                 <a class="close" (click)="close()">
@@ -42,12 +49,15 @@
                 <b *ngIf="which_located =='sales-enquiry' || which_located =='sales-grid'">Lead Information</b>
             </span>     
             <div class="modal-body total">
-                <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                <!-- <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
                     <div class="col-sm-12">
-                        <div class="col-xs-6">
+                        <div class="btn-group mydropdown" style="pointer-events: all;" *ngIf="isGranted('Pages.Tenant.Quotation.Revision.Request')">
+                            <a class="btn green-haze btn-outline btn-circle btn-sm" (click)="DesigerRequest()" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false"> Designer Revision
+                                <i class="fa fa-angle-down"></i>
+                            </a>    
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <form *ngIf="active" [formGroup]="myForm" novalidate>
                     <div class="row" style="background: rgba(45, 87, 126, 0.15);padding: 14px;margin: 0px;">
                         <div class="col-sm-6">
@@ -391,7 +401,7 @@
             </div> 
              <div class="col-md-3">
                 <div class="col-md-6">
-                <label>Starred</label>
+                <label>Star Lead</label>
                     <div class="onoffswitch">
                         <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="staredSwitch" [(ngModel)]="inquiry.stared" [ngModelOptions]="{standalone: true}" checked>
                             <label class="onoffswitch-label" for="staredSwitch">
@@ -713,7 +723,7 @@
                                     </div>
                                     <div class="tools">
                                  
-                                    <button class="btn btn-primary blue btn-xs" (click)="createJobActivity()"><i class="fa fa-plus"></i> Create New </button>
+                                    <!-- <button class="btn btn-primary blue btn-xs" (click)="createJobActivity()"><i class="fa fa-plus"></i> Create New </button> -->
                                             &nbsp;&nbsp;
                                         <i *ngIf="linkedContacts.length" style="color:red;" class="fa fa-arrow-down" (click)="expandJob()"><a>
                                         </a></i>

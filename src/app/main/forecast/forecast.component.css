@@ -28,18 +28,33 @@
     padding: 0px;
     margin-top: 5px;
 }
-
+#quotlist{
+    margin-top:-6px;
+    margin-left: -43px; 
+    margin-bottom: -9px;
+    margin-right: 0px;
+}
 
 /* dragula-specific example page styles */
 
 .wrapper {
     height: 100vh;
-    overflow-x: hidden;
+    overflow-x: Auto;
     overflow-y: hidden;
     padding: 8px 0px;
     white-space: nowrap;
 }
-
+.star.on {
+    background-position: 0 0;
+}
+.star {
+    width: 20px;
+    height: 17px;
+    display: block;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: url(/assets/common/images/star-sprite2.png) no-repeat 0 -17px;}
 .dndcontainer {
     background-color: #e4e5e9;
     border-radius: 3px;
@@ -50,8 +65,8 @@
     overflow: hidden;
     padding-bottom: 20px;
     vertical-align: top;
-    width: 16.15%;
-    min-width: 150px;
+    width: 19.15%;
+    min-width: 300px;
 }
 
     #style-1::-webkit-scrollbar-thumb {

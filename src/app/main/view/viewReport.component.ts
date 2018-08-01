@@ -828,15 +828,62 @@ hideColumn(col){
     reloadPage(): void {
         this.paginator.changePage(this.paginator.getPage(),null);
     }
+   
     goToQuotation(event:any){
         console.log(event,event.data.quotationId);
-       if(event.data.quotationId > 0)
-       {
-        window.open('app/main/quotation/'+event.data.quotationId, "_blank");
-       }
-       else{
-        this.notify.error(this.l('No quotation in this Opportunity'));
-       }
+      
+
+    let x =  this.appSession.userId;
+    switch (x) {
+        case event.data.coordinatorId:
+        if(event.data.quotationId > 0)
+        {
+         window.open('app/main/quotation/'+event.data.quotationId, "_blank");
+        }
+        else{
+         this.notify.error(this.l('No quotation in this Opportunity'));
+        }        break;
+        case event.data.salesPersonId:
+        if(event.data.quotationId > 0)
+        {
+         window.open('app/main/quotation/'+event.data.quotationId, "_blank");
+        }
+        else{
+         this.notify.error(this.l('No quotation in this Opportunity'));
+        }        
+        break;
+        case event.data.salesManagerId:
+        if(event.data.quotationId > 0)
+        {
+         window.open('app/main/quotation/'+event.data.quotationId, "_blank");
+        }
+        else{
+         this.notify.error(this.l('No quotation in this Opportunity'));
+        }       
+        break;	
+        case event.data.designerId:
+        if(event.data.quotationId > 0)
+        {
+         window.open('app/main/quotation/'+event.data.quotationId, "_blank");
+        }
+        else{
+         this.notify.error(this.l('No quotation in this Opportunity'));
+        }        
+        break;	
+        case event.data.creatorUserId:
+        if(event.data.quotationId > 0)
+        {
+         window.open('app/main/quotation/'+event.data.quotationId, "_blank");
+        }
+        else{
+         this.notify.error(this.l('No quotation in this Opportunity'));
+        }  
+        break;
+
+        default:
+        this.notify.warn(this.l('You are not authorized to access this Quotation'));
+
+    }
 
     }
 

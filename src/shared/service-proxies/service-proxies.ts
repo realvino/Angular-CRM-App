@@ -12015,12 +12015,22 @@ export class InquiryServiceProxy {
     /**
      * @return Success
      */
-    getClosureDateInquiryTickets(filter: string, closureDate: string): Observable<any[]> {
+    getClosureDateInquiryTickets(filter: string, closureDate: string, teamId: number, salesId: number, typeId: number, from: number, to: number): Observable<any[]> {
         let url_ = this.baseUrl + "/api/services/app/Inquiry/GetClosureDateInquiryTickets?";
         if (filter !== undefined)
             url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
         if (closureDate !== undefined)
             url_ += "ClosureDate=" + encodeURIComponent("" + closureDate) + "&"; 
+        if (teamId !== undefined)
+            url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
+        if (salesId !== undefined)
+            url_ += "SalesId=" + encodeURIComponent("" + salesId) + "&"; 
+        if (typeId !== undefined)
+            url_ += "TypeId=" + encodeURIComponent("" + typeId) + "&"; 
+        if (from !== undefined)
+            url_ += "From=" + encodeURIComponent("" + from) + "&"; 
+        if (to !== undefined)
+            url_ += "To=" + encodeURIComponent("" + to) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = "";
@@ -26206,6 +26216,54 @@ export class Select2ServiceProxy {
     /**
      * @return Success
      */
+    getUserSalesManagerToTeam(): Observable<Select3UserResult> {
+        let url_ = this.baseUrl + "/api/services/app/Select2/GetUserSalesManagerToTeam";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetUserSalesManagerToTeam(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetUserSalesManagerToTeam(response_);
+                } catch (e) {
+                    return <Observable<Select3UserResult>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<Select3UserResult>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetUserSalesManagerToTeam(response: Response): Observable<Select3UserResult> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: Select3UserResult = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Select3UserResult.fromJS(resultData200) : new Select3UserResult();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<Select3UserResult>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
     getUserSalesPerson(): Observable<Select3UserResult> {
         let url_ = this.baseUrl + "/api/services/app/Select2/GetUserSalesPerson";
         url_ = url_.replace(/[?&]$/, "");
@@ -26593,6 +26651,54 @@ export class Select2ServiceProxy {
             return throwException("An unexpected server error occurred.", status, responseText);
         }
         return Observable.of<Select3UserResult>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getSalesPersonTeam(): Observable<SalesPersonTeamDto> {
+        let url_ = this.baseUrl + "/api/services/app/Select2/GetSalesPersonTeam";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetSalesPersonTeam(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetSalesPersonTeam(response_);
+                } catch (e) {
+                    return <Observable<SalesPersonTeamDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<SalesPersonTeamDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetSalesPersonTeam(response: Response): Observable<SalesPersonTeamDto> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: SalesPersonTeamDto = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? SalesPersonTeamDto.fromJS(resultData200) : new SalesPersonTeamDto();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<SalesPersonTeamDto>(<any>null);
     }
 
     /**
@@ -30286,6 +30392,56 @@ export class Select2ServiceProxy {
     /**
      * @return Success
      */
+    getTeamUserProfile(id: number): Observable<Select3UserResult> {
+        let url_ = this.baseUrl + "/api/services/app/Select2/GetTeamUserProfile?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetTeamUserProfile(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetTeamUserProfile(response_);
+                } catch (e) {
+                    return <Observable<Select3UserResult>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<Select3UserResult>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetTeamUserProfile(response: Response): Observable<Select3UserResult> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: Select3UserResult = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Select3UserResult.fromJS(resultData200) : new Select3UserResult();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<Select3UserResult>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
     getUserSalesManager(): Observable<Select3UserResult> {
         let url_ = this.baseUrl + "/api/services/app/Select2/GetUserSalesManager";
         url_ = url_.replace(/[?&]$/, "");
@@ -30316,54 +30472,6 @@ export class Select2ServiceProxy {
     }
 
     protected processGetUserSalesManager(response: Response): Observable<Select3UserResult> {
-        const status = response.status; 
-
-        if (status === 200) {
-            const responseText = response.text();
-            let result200: Select3UserResult = null;
-            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
-            result200 = resultData200 ? Select3UserResult.fromJS(resultData200) : new Select3UserResult();
-            return Observable.of(result200);
-        } else if (status !== 200 && status !== 204) {
-            const responseText = response.text();
-            return throwException("An unexpected server error occurred.", status, responseText);
-        }
-        return Observable.of<Select3UserResult>(<any>null);
-    }
-
-    /**
-     * @return Success
-     */
-    getUserSalesManagerToTeam(): Observable<Select3UserResult> {
-        let url_ = this.baseUrl + "/api/services/app/Select2/GetUserSalesManagerToTeam";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = "";
-        
-        let options_ = {
-            body: content_,
-            method: "get",
-            headers: new Headers({
-                "Content-Type": "application/json; charset=UTF-8", 
-                "Accept": "application/json; charset=UTF-8"
-            })
-        };
-
-        return this.http.request(url_, options_).flatMap((response_) => {
-            return this.processGetUserSalesManagerToTeam(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof Response) {
-                try {
-                    return this.processGetUserSalesManagerToTeam(response_);
-                } catch (e) {
-                    return <Observable<Select3UserResult>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<Select3UserResult>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processGetUserSalesManagerToTeam(response: Response): Observable<Select3UserResult> {
         const status = response.status; 
 
         if (status === 200) {
@@ -33576,6 +33684,122 @@ export class TenantDashboardServiceProxy {
             return throwException("An unexpected server error occurred.", status, responseText);
         }
         return Observable.of<GetRaindto>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getMIleStoneTotalGraph(userId: string, teamId: string, startDate: moment.Moment, endDate: moment.Moment): Observable<any[]> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetMIleStoneTotalGraph?";
+        if (userId !== undefined)
+            url_ += "UserId=" + encodeURIComponent("" + userId) + "&"; 
+        if (teamId !== undefined)
+            url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
+        if (startDate !== undefined)
+            url_ += "StartDate=" + encodeURIComponent("" + startDate.toJSON()) + "&"; 
+        if (endDate !== undefined)
+            url_ += "EndDate=" + encodeURIComponent("" + endDate.toJSON()) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetMIleStoneTotalGraph(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetMIleStoneTotalGraph(response_);
+                } catch (e) {
+                    return <Observable<any[]>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<any[]>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetMIleStoneTotalGraph(response: Response): Observable<any[]> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: any[] = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(item);
+            }
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<any[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getSalesPersonOpportunitiesStatus(userId: string, teamId: string, startDate: moment.Moment, endDate: moment.Moment): Observable<GetSalesLeadList> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetSalesPersonOpportunitiesStatus?";
+        if (userId !== undefined)
+            url_ += "UserId=" + encodeURIComponent("" + userId) + "&"; 
+        if (teamId !== undefined)
+            url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
+        if (startDate !== undefined)
+            url_ += "StartDate=" + encodeURIComponent("" + startDate.toJSON()) + "&"; 
+        if (endDate !== undefined)
+            url_ += "EndDate=" + encodeURIComponent("" + endDate.toJSON()) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetSalesPersonOpportunitiesStatus(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetSalesPersonOpportunitiesStatus(response_);
+                } catch (e) {
+                    return <Observable<GetSalesLeadList>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<GetSalesLeadList>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetSalesPersonOpportunitiesStatus(response: Response): Observable<GetSalesLeadList> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: GetSalesLeadList = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? GetSalesLeadList.fromJS(resultData200) : new GetSalesLeadList();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<GetSalesLeadList>(<any>null);
     }
 }
 
@@ -55193,6 +55417,11 @@ export class QuotationInquiryFilter implements IQuotationInquiryFilter {
     status: string;
     whyBafco: string;
     quotationId: number;
+    salesPersonId: number;
+    coordinatorId: number;
+    designerId: number;
+    salesManagerId: number;
+    creatorUserId: number;
 
     constructor(data?: IQuotationInquiryFilter) {
         if (data) {
@@ -55239,6 +55468,11 @@ export class QuotationInquiryFilter implements IQuotationInquiryFilter {
             this.status = data["status"];
             this.whyBafco = data["whyBafco"];
             this.quotationId = data["quotationId"];
+            this.salesPersonId = data["salesPersonId"];
+            this.coordinatorId = data["coordinatorId"];
+            this.designerId = data["designerId"];
+            this.salesManagerId = data["salesManagerId"];
+            this.creatorUserId = data["creatorUserId"];
         }
     }
 
@@ -55284,6 +55518,11 @@ export class QuotationInquiryFilter implements IQuotationInquiryFilter {
         data["status"] = this.status;
         data["whyBafco"] = this.whyBafco;
         data["quotationId"] = this.quotationId;
+        data["salesPersonId"] = this.salesPersonId;
+        data["coordinatorId"] = this.coordinatorId;
+        data["designerId"] = this.designerId;
+        data["salesManagerId"] = this.salesManagerId;
+        data["creatorUserId"] = this.creatorUserId;
         return data; 
     }
 }
@@ -55323,6 +55562,11 @@ export interface IQuotationInquiryFilter {
     status: string;
     whyBafco: string;
     quotationId: number;
+    salesPersonId: number;
+    coordinatorId: number;
+    designerId: number;
+    salesManagerId: number;
+    creatorUserId: number;
 }
 
 export class PagedResultDtoOfQuotationReportListDto implements IPagedResultDtoOfQuotationReportListDto {
@@ -55417,6 +55661,11 @@ export class QuotationReportListDto implements IQuotationReportListDto {
     total11ValueFormat: string;
     total12ValueFormat: string;
     closureDate: moment.Moment;
+    salesPersonId: number;
+    coordinatorId: number;
+    designerId: number;
+    salesManagerId: number;
+    creatorUserId: number;
 
     constructor(data?: IQuotationReportListDto) {
         if (data) {
@@ -55473,6 +55722,11 @@ export class QuotationReportListDto implements IQuotationReportListDto {
             this.total11ValueFormat = data["total11ValueFormat"];
             this.total12ValueFormat = data["total12ValueFormat"];
             this.closureDate = data["closureDate"] ? moment(data["closureDate"].toString()) : <any>undefined;
+            this.salesPersonId = data["salesPersonId"];
+            this.coordinatorId = data["coordinatorId"];
+            this.designerId = data["designerId"];
+            this.salesManagerId = data["salesManagerId"];
+            this.creatorUserId = data["creatorUserId"];
         }
     }
 
@@ -55528,6 +55782,11 @@ export class QuotationReportListDto implements IQuotationReportListDto {
         data["total11ValueFormat"] = this.total11ValueFormat;
         data["total12ValueFormat"] = this.total12ValueFormat;
         data["closureDate"] = this.closureDate ? this.closureDate.toISOString() : <any>undefined;
+        data["salesPersonId"] = this.salesPersonId;
+        data["coordinatorId"] = this.coordinatorId;
+        data["designerId"] = this.designerId;
+        data["salesManagerId"] = this.salesManagerId;
+        data["creatorUserId"] = this.creatorUserId;
         return data; 
     }
 }
@@ -55577,6 +55836,11 @@ export interface IQuotationReportListDto {
     total11ValueFormat: string;
     total12ValueFormat: string;
     closureDate: moment.Moment;
+    salesPersonId: number;
+    coordinatorId: number;
+    designerId: number;
+    salesManagerId: number;
+    creatorUserId: number;
 }
 
 export class PagedResultDtoOfTeamReportListDto implements IPagedResultDtoOfTeamReportListDto {
@@ -56788,6 +57052,7 @@ export class Datadtoes implements IDatadtoes {
     name: string;
     photo: string;
     isSales: boolean;
+    userId: number;
 
     constructor(data?: IDatadtoes) {
         if (data) {
@@ -56804,6 +57069,7 @@ export class Datadtoes implements IDatadtoes {
             this.name = data["name"];
             this.photo = data["photo"];
             this.isSales = data["isSales"];
+            this.userId = data["userId"];
         }
     }
 
@@ -56819,6 +57085,7 @@ export class Datadtoes implements IDatadtoes {
         data["name"] = this.name;
         data["photo"] = this.photo;
         data["isSales"] = this.isSales;
+        data["userId"] = this.userId;
         return data; 
     }
 }
@@ -56828,6 +57095,7 @@ export interface IDatadtoes {
     name: string;
     photo: string;
     isSales: boolean;
+    userId: number;
 }
 
 export class Select3Result implements ISelect3Result {
@@ -56910,6 +57178,92 @@ export class Datadtos implements IDatadtos {
 export interface IDatadtos {
     id: number;
     name: string;
+}
+
+export class SalesPersonTeamDto implements ISalesPersonTeamDto {
+    salesManagerTeam: Select2salesDto;
+    salesPerson: Datadtos;
+
+    constructor(data?: ISalesPersonTeamDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.salesManagerTeam = data["salesManagerTeam"] ? Select2salesDto.fromJS(data["salesManagerTeam"]) : <any>undefined;
+            this.salesPerson = data["salesPerson"] ? Datadtos.fromJS(data["salesPerson"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): SalesPersonTeamDto {
+        let result = new SalesPersonTeamDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["salesManagerTeam"] = this.salesManagerTeam ? this.salesManagerTeam.toJSON() : <any>undefined;
+        data["salesPerson"] = this.salesPerson ? this.salesPerson.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface ISalesPersonTeamDto {
+    salesManagerTeam: Select2salesDto;
+    salesPerson: Datadtos;
+}
+
+export class Select2salesDto implements ISelect2salesDto {
+    id: number;
+    name: string;
+    salesManId: number;
+    salesMan: string;
+
+    constructor(data?: ISelect2salesDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.salesManId = data["salesManId"];
+            this.salesMan = data["salesMan"];
+        }
+    }
+
+    static fromJS(data: any): Select2salesDto {
+        let result = new Select2salesDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["salesManId"] = this.salesManId;
+        data["salesMan"] = this.salesMan;
+        return data; 
+    }
+}
+
+export interface ISelect2salesDto {
+    id: number;
+    name: string;
+    salesManId: number;
+    salesMan: string;
 }
 
 export class Select2City implements ISelect2City {
@@ -57215,53 +57569,6 @@ export class Select2sales implements ISelect2sales {
 
 export interface ISelect2sales {
     selectCompdata: Select2salesDto[];
-}
-
-export class Select2salesDto implements ISelect2salesDto {
-    id: number;
-    name: string;
-    salesManId: number;
-    salesMan: string;
-
-    constructor(data?: ISelect2salesDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-            this.name = data["name"];
-            this.salesManId = data["salesManId"];
-            this.salesMan = data["salesMan"];
-        }
-    }
-
-    static fromJS(data: any): Select2salesDto {
-        let result = new Select2salesDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["salesManId"] = this.salesManId;
-        data["salesMan"] = this.salesMan;
-        return data; 
-    }
-}
-
-export interface ISelect2salesDto {
-    id: number;
-    name: string;
-    salesManId: number;
-    salesMan: string;
 }
 
 export class Select2Contact implements ISelect2Contact {
@@ -58504,6 +58811,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
     emailAddress: string;
     emailPassword: string;
     profilePictureId: string;
+    role: string;
     id: number;
 
     constructor(data?: IUserLoginInfoDto) {
@@ -58523,6 +58831,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
             this.emailAddress = data["emailAddress"];
             this.emailPassword = data["emailPassword"];
             this.profilePictureId = data["profilePictureId"];
+            this.role = data["role"];
             this.id = data["id"];
         }
     }
@@ -58541,6 +58850,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
         data["emailAddress"] = this.emailAddress;
         data["emailPassword"] = this.emailPassword;
         data["profilePictureId"] = this.profilePictureId;
+        data["role"] = this.role;
         data["id"] = this.id;
         return data; 
     }
@@ -58553,6 +58863,7 @@ export interface IUserLoginInfoDto {
     emailAddress: string;
     emailPassword: string;
     profilePictureId: string;
+    role: string;
     id: number;
 }
 
@@ -60743,6 +61054,8 @@ export class RecentInquiryClosureList implements IRecentInquiryClosureList {
     monthValue: string;
     thisweekValue: string;
     nextWeekValue: string;
+    overDueClosureInquiry: RecentInquiryClosureDto[];
+    overDueValue: string;
 
     constructor(data?: IRecentInquiryClosureList) {
         if (data) {
@@ -60773,6 +61086,12 @@ export class RecentInquiryClosureList implements IRecentInquiryClosureList {
             this.monthValue = data["monthValue"];
             this.thisweekValue = data["thisweekValue"];
             this.nextWeekValue = data["nextWeekValue"];
+            if (data["overDueClosureInquiry"] && data["overDueClosureInquiry"].constructor === Array) {
+                this.overDueClosureInquiry = [];
+                for (let item of data["overDueClosureInquiry"])
+                    this.overDueClosureInquiry.push(RecentInquiryClosureDto.fromJS(item));
+            }
+            this.overDueValue = data["overDueValue"];
         }
     }
 
@@ -60802,6 +61121,12 @@ export class RecentInquiryClosureList implements IRecentInquiryClosureList {
         data["monthValue"] = this.monthValue;
         data["thisweekValue"] = this.thisweekValue;
         data["nextWeekValue"] = this.nextWeekValue;
+        if (this.overDueClosureInquiry && this.overDueClosureInquiry.constructor === Array) {
+            data["overDueClosureInquiry"] = [];
+            for (let item of this.overDueClosureInquiry)
+                data["overDueClosureInquiry"].push(item.toJSON());
+        }
+        data["overDueValue"] = this.overDueValue;
         return data; 
     }
 }
@@ -60813,6 +61138,8 @@ export interface IRecentInquiryClosureList {
     monthValue: string;
     thisweekValue: string;
     nextWeekValue: string;
+    overDueClosureInquiry: RecentInquiryClosureDto[];
+    overDueValue: string;
 }
 
 export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
@@ -60834,6 +61161,7 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
     total: string;
     stage: string;
     value: number;
+    stared: boolean;
 
     constructor(data?: IRecentInquiryClosureDto) {
         if (data) {
@@ -60864,6 +61192,7 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
             this.total = data["total"];
             this.stage = data["stage"];
             this.value = data["value"];
+            this.stared = data["stared"];
         }
     }
 
@@ -60893,6 +61222,7 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
         data["total"] = this.total;
         data["stage"] = this.stage;
         data["value"] = this.value;
+        data["stared"] = this.stared;
         return data; 
     }
 }
@@ -60916,6 +61246,7 @@ export interface IRecentInquiryClosureDto {
     total: string;
     stage: string;
     value: number;
+    stared: boolean;
 }
 
 export class RecentInquiryActivityList implements IRecentInquiryActivityList {

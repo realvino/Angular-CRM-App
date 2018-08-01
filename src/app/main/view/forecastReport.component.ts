@@ -24,6 +24,8 @@ export interface SelectOption{
 export class ForecastReportComponent extends AppComponentBase implements OnInit {
 
     getId: any;
+    userRole: string = "";
+    showdata: boolean = true;
     @ViewChild('dataTable') dataTable: DataTable;
     @ViewChild('paginator') paginator: Paginator;
     @ViewChild('salesQuotdataTable') salesQuotdataTable: DataTable;
@@ -34,6 +36,8 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
     sales:Array<any>;
     filterText: string = '';
     active_view:SelectOption[];
+    active_team:SelectOption[] = [];
+
     gridColumn:ColumnList[];
     gridColumnCount:number=0;
     viewId:number;
@@ -44,7 +48,6 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
     quotation:QuotationReportListDto = new QuotationReportListDto();
     teams:Array<any>;
     team_list: Select2TeamDto[];
-    active_team:SelectOption[] = [];
     teamId:number;
     teamReportList:TeamReportListDto = new TeamReportListDto();
     teamArray: Array<any>;
@@ -93,10 +96,19 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
                 });
             }
          });
-        
+
+         this.userRole = this.appSession.getLoginRole();
+         console.log(this.userRole);
+         if(this.userRole == "Sales Coordinator" || this.userRole == "User" || this.userRole == "Designer")
+         {
+            this.showdata = false;
+         }
     }
     ngAfterViewInit(): void {
+
+        if( this.showdata == true)
         this.getAllTeamInquiry();
+        
     }
 
     selectSales(data:any){
@@ -109,7 +121,7 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
     removeSales(data:any){
         this.active_view =[];
         this.viewId = 0;
-        this.getInquiry();
+        //this.getInquiry();
     }
     exportToExcel(): void {
         if(this.viewId > 0){
@@ -131,7 +143,28 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
     }
     cellClicked(event:any)
     {
-        window.open('app/main/sales-enquiry/'+event.data.inquiryId, "_blank");
+        let x = abp.session.userId;
+		switch (x) {
+			case event.data.coordinatorId:
+            window.open('app/main/sales-enquiry/'+event.data.inquiryId, "_blank");
+			break;
+			case event.data.creatorUserId:
+            window.open('app/main/sales-enquiry/'+event.data.inquiryId, "_blank");
+			break;
+			case event.data.designerId:
+            window.open('app/main/sales-enquiry/'+event.data.inquiryId, "_blank");
+			break;	
+			case event.data.salesPersonId:
+            window.open('app/main/sales-enquiry/'+event.data.inquiryId, "_blank");
+			break;	
+			case event.data.salesManagerId:
+            window.open('app/main/sales-enquiry/'+event.data.inquiryId, "_blank");
+			break;
+
+			default:
+			this.notify.warn(this.l('You are not authorized to access this lead'));
+
+		}
     }
     getSalesman(teamId){
         this._select2Service.getTeamSalesman(teamId).subscribe(result=>{
@@ -155,14 +188,14 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
       this.getSalesman(this.teamId);
     }
     refreshTeam(value:any):void{
-      this.active_team = [{id: value.id, text: value.text}];
-      this.teamId = value.id;
-      if(this.teamId > 0){
-        this.getTeamInquiry();
-        this.getSalesman(this.teamId);
-        this.active_view =[];
-        this.viewId = 0;
-      }
+    //   this.active_team = [{id: value.id, text: value.text}];
+    //   this.teamId = value.id;
+    //   if(this.teamId > 0){
+    //     this.getTeamInquiry();
+    //     this.getSalesman(this.teamId);
+    //     this.active_view =[];
+    //     this.viewId = 0;
+    //   }
     }
     removedTeam(value:any):void {
         this.teamId = 0;
@@ -221,13 +254,6 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
             this.quotation.total12ValueFormat = result.items[0].total12ValueFormat;
         });
         
-        //  this._quoatationService.getTeamEnquiryReportTotal(this.viewId).subscribe(result => {
-        //      if(result != null)
-        //         {
-                  
-        //           this.quotation = result.forecast;
-        //         }
-        // });
     }
 
     getAllTeamInquiry(event?: LazyLoadEvent): void {
@@ -334,12 +360,7 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
             this.teamReportList.total12ValueFormat = result.items[0].total12ValueFormat;
         });
 
-        //  this._quoatationService.getTeamReportTotal(this.teamId).subscribe(result => {
-        //      if(result != null)
-        //         {
-        //           this.teamReportList = result.teamReport;
-        //         }
-        // });
+
     }
     
     reloadPage(): void {

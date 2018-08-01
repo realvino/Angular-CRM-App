@@ -69,7 +69,7 @@
                               <div class="col-md-2" *ngIf="this.viewId">
                                     <div class="col-md-8">
                                             <div class="btn-group mydropdown" style="float: right;">
-                                                    <a class="btn green-haze btn-outline btn-circle btn-sm" (click)="createview()" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false"> Save As
+                                                    <a *ngIf="isGranted('Pages.Tenant.Report.ReportGenerator.Create')" class="btn green-haze btn-outline btn-circle btn-sm" (click)="createview()" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false"> Save As
                                                     </a>      
                                                                       
                                                 </div>

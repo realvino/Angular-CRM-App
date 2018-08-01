@@ -6,6 +6,7 @@ import {Jsonp} from '@angular/http';
 import * as _ from "lodash";
 import * as moment from "moment";
 import { Router } from '@angular/router';
+import { AppConsts } from '@shared/AppConsts';
 export interface SelectOption{
    id?: number;
    text?: string;
@@ -350,7 +351,35 @@ removedReason(data:any){
      saveQuotation():void{
         this._quoatationService.updateQuotationWonorLost(this.QuotationInput).subscribe(result => {  
                  this.notify.success("Quotation Updated Successfully");	
+                 if(this.QuotationInput.lost == true)
+            {
+              let download_url = AppConsts.remoteServiceBaseUrl +'Email/SendLostMail?QuotationId='+this.QuotationInput.id;
+               var xmlhttp = new XMLHttpRequest();
+               xmlhttp.open("GET", download_url, true);
+               xmlhttp.send();
+
+               xmlhttp.onreadystatechange = function() {
+                 if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+                    
+                 }
+             };
+            }
+            if(this.QuotationInput.won == true)
+            {
+              let download_url = AppConsts.remoteServiceBaseUrl +'Email/SendWonMail?QuotationId='+this.QuotationInput.id;
+               var xmlhttp = new XMLHttpRequest();
+               xmlhttp.open("GET", download_url, true);
+               xmlhttp.send();
+
+               xmlhttp.onreadystatechange = function() {
+                 if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+                    
+                 }
+             };
+            }
                  this.close();
+
+
                  this.modalSave.emit(this.inquiry);    
         });
      }

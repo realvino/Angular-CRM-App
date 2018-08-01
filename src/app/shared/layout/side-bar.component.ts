@@ -82,10 +82,10 @@ export class SideBarComponent extends AppComponentBase {
             new SideBarMenuItem("Quotation",'',"Pages.Tenant.Quotation.Quotation","fa fa-newspaper-o","/app/main/quotation"),
             new SideBarMenuItem("Quotation Status",'',"Pages.Tenant.Quotation.QuotationStatus","fa fa-line-chart", "/app/main/quotation-status")
         ]),
-        new SideBarMenuItem("Report",'', "", "fa fa-cogs", "", [
-            new SideBarMenuItem("View Editor",'', "", "fa fa-eye", "/app/main/view"),
-            new SideBarMenuItem("Report Generator",'', "", "fa fa-list", "/app/main/viewReport"),
-            new SideBarMenuItem("Forecast Report",'', "", "fa fa-list-alt", "/app/main/forecastReport")
+        new SideBarMenuItem("Report",'', "Pages.Tenant.Report", "fa fa-cogs", "", [
+            new SideBarMenuItem("View Editor",'', "Pages.Tenant.Report.ViewEditor", "fa fa-eye", "/app/main/view"),
+            new SideBarMenuItem("Report Generator",'', "Pages.Tenant.Report.ReportGenerator", "fa fa-list", "/app/main/viewReport"),
+            new SideBarMenuItem("Forecast Report",'', "Pages.Tenant.Report.Forecast", "fa fa-list-alt", "/app/main/forecastReport")
         ]),
         new SideBarMenuItem("Administration",'', "", "icon-wrench", "", [
             new SideBarMenuItem("OrganizationUnits",'', "Pages.Administration.OrganizationUnits", "icon-layers", "/app/admin/organization-units"),

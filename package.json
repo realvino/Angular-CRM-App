@@ -47,6 +47,7 @@
     "codelyzer": "^2.1.1",
     "core-js": "^2.4.1",
     "datamaps": "^0.5.8",
+    "enhanced-resolve": "^3.3.0",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
     "famfamfam-flags": "^1.0.0",
     "flot": "^0.8.0-alpha",

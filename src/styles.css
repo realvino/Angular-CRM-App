@@ -583,7 +583,7 @@ display:none;
 
 
 /* custom*/
-.m-widget2 .m-widget2__item{disply:table;margin-bottom:1.4rem;position:relative}
+.m-widget2 .m-widget2__item{display:table;margin-bottom:1.4rem;position:relative}
 .m-widget2 .m-widget2__item:before{position:absolute;display:block;width:.3rem;border-radius:4px;width:4px;border-radius:4px;height:100%;left:.8rem;content:""}
 .m-widget2 .m-widget2__item .m-widget2__checkbox{display:table-cell;vertical-align:middle;padding-left:2.2rem;padding-top:1rem;vertical-align:top}
 .m-widget2 .m-widget2__item .m-widget2__desc{display:table-cell;width:100%;vertical-align:top;padding-left:.3rem;padding-top:.23rem;font-size:1rem}
@@ -858,3 +858,22 @@ body .ui-datatable .ui-datatable-thead > tr > th, body .ui-datatable .ui-datatab
 #aaa{
     width: 20%;
 }
+.sas
+{
+    color:cadetblue;
+}
+.sas1
+{
+    color:cadetblue;
+    text-decoration: line-through;
+}
+.sass{
+    color:red;
+}
+.carded {
+    background: white;
+border: 0px solid #fff;
+border-radius: 2px;
+margin-left: 3px;
+    }
+    

@@ -45,19 +45,20 @@ export class LeadsKanbanComponent extends AppComponentBase implements AfterViewI
 	quotation:CreateQuotationInput = new CreateQuotationInput();
 	inquirydetailDto: Select2InquiryDto[];
 	
-	salesmanId:number=0;
 	designerId:number=0;
 	coordinatorId:number=0;
 
-	active_salesman:SelectOption[];
 	active_designer:SelectOption[];
 	active_coordinator:SelectOption[];
 
-	salesman:Array<any>;
 	designer:Array<any>;
 	coordinator:Array<any>;
 
 	salesman_Arr:Userprofiledto[];
+	salesman:Array<any>;
+	active_salesman:SelectOption[];
+	salesmanId:number=0;
+
 	designer_Arr:Userprofiledto[];
 	coordinator_Arr:Userprofiledto[];
 
@@ -83,7 +84,7 @@ export class LeadsKanbanComponent extends AppComponentBase implements AfterViewI
 		salesdragulaService.setOptions('salesnested-bag', {
 			revertOnSpill: true,		
 			moves: function (el, container, handle) { 
-				return (container.getAttribute("data-milestoneName") =='Closed' && (el.getAttribute('data-StageName') == 'Lost' || el.getAttribute('data-StageName') == 'OE Processing')) || container.getAttribute("data-milestoneId") =='junk' ? false : true;
+				return (container.getAttribute("data-milestoneName") =='Confirmed' && (el.getAttribute('data-StageName') == 'Lost' || el.getAttribute('data-StageName') == 'OE Processing')) || container.getAttribute("data-milestoneId") =='junk' ? false : true;
 			}
 		});
 		salesdragulaService.drop.asObservable().takeUntil(this.destroy$).subscribe((value) => {
@@ -120,17 +121,23 @@ export class LeadsKanbanComponent extends AppComponentBase implements AfterViewI
 
 	if(CurMileIsQuotation == 'true' && UpMileIsQuotation == 'true')
 	{
-		if(QuotationStatusId == 3 && this.updateInquiryIn.updateStatusName == 'Closed')
+		if(QuotationStatusId == 3 && (this.updateInquiryIn.updateStatusName == 'Confirmed' || this.updateInquiryIn.updateStatusName == 'Lost'))
 		{
 			this.notify.error("Please First Submit the Quotation"); 
 			this.getTickets('');			
-		} else {
+		} 
+		else if(this.updateInquiryIn.updateStatusName == 'Lost')
+		{
+			this.selectStageModal.show(ei.getAttribute("data-itemQuotationId"),this.updateInquiryIn.currentStatusName,this.updateInquiryIn.updateStatusName,eu.getAttribute("data-StatusId"),ei.getAttribute("data-itemQuotationId"),this.StageName);
+			// this.getTickets('');			
+		}
+		else {
 		this._select2Service.getEnquiryStages(eu.getAttribute("data-StatusId")).subscribe((result)=>{
 			if(result.select2data !=null){
 			  if(result.select2data.length == 1)
 			  {
 					this.UpdateStageName = result.select2data[0].name;
-				if(parseInt(ei.getAttribute("data-itemQuotationId")) >0)
+				if(parseInt(ei.getAttribute("data-itemQuotationId")) > 0)
 				{
 					  this.QStatusUpdateInput.quotationId = ei.getAttribute("data-itemQuotationId");
 					  this.QStatusUpdateInput.statusId = eu.getAttribute("data-StatusId");
@@ -200,37 +207,39 @@ export class LeadsKanbanComponent extends AppComponentBase implements AfterViewI
 	}
 	if(CurMileIsQuotation == 'false' && UpMileIsQuotation == 'true')
 	{
-		if(ei.getAttribute("data-count") > 0)
-		{
 			this.notify.warn("This Enquiry can not move to Quotation Section");
 		    this.getTickets('');	
-		} else {
+		// if(ei.getAttribute("data-count") > 0)
+		// {
+		// 	this.notify.warn("This Enquiry can not move to Quotation Section");
+		//     this.getTickets('');	
+		// } else {
 
-		this.quotation.newCompanyId = ei.getAttribute("data-companyId");
-		this.quotation.attentionContactId = ei.getAttribute("data-contactId");
-		this.quotation.salesPersonId = ei.getAttribute("data-salesId");
-		this.quotation.inquiryId = ei.getAttribute("data-itemId");
-		this.quotation.total = ei.getAttribute("data-total");
+		// this.quotation.newCompanyId = ei.getAttribute("data-companyId");
+		// this.quotation.attentionContactId = ei.getAttribute("data-contactId");
+		// this.quotation.salesPersonId = ei.getAttribute("data-salesId");
+		// this.quotation.inquiryId = ei.getAttribute("data-itemId");
+		// this.quotation.total = ei.getAttribute("data-total");
 
-		this.quotation.quotationStatusId = 2;
-		this.quotation.submitted = true;
-		this.quotation.stageId = 5;
-		this.quotation.termsandCondition = "null";
-		this.quotation.customerId = "null";
-		this.quotation.refNo = "null";
-		this.quotation.mileStoneId = 6;           
-		this.quotation.optional = true;
+		// this.quotation.quotationStatusId = 2;
+		// this.quotation.submitted = true;
+		// this.quotation.stageId = 5;
+		// this.quotation.termsandCondition = "null";
+		// this.quotation.customerId = "null";
+		// this.quotation.refNo = "null";
+		// this.quotation.mileStoneId = 6;           
+		// this.quotation.optional = true;
 
-		this._quotationService.createOrUpdateQuotation(this.quotation)
-					 .subscribe((result) => {
-						 if(result){
-							this.notify.success("Auto Generated Quotation is Created Successfully");
-							this.UpdateStageName = "Quote 1 of 3";
-                            this.activityDefault();
-							this.getTickets('');
-						 }
-					 });      
-		}   
+		// this._quotationService.createOrUpdateQuotation(this.quotation)
+		// 			 .subscribe((result) => {
+		// 				 if(result){
+		// 					this.notify.success("Auto Generated Quotation is Created Successfully");
+		// 					this.UpdateStageName = "Quote 1 of 3";
+        //                     this.activityDefault();
+		// 					this.getTickets('');
+		// 				 }
+		// 			 });      
+		// }   
 		
 	}
     if(CurMileIsQuotation == 'true' && UpMileIsQuotation == 'false')

@@ -434,25 +434,52 @@ DiscountImg: string = '/Common/Images/discount.svg';
          .finally(() => this.saving = false)
          .subscribe((result) => {
           if(result){
+            if(this.quotation.quotationStatusId == 5)
+            {
+              let download_url = AppConsts.remoteServiceBaseUrl +'Email/SendLostMail?QuotationId='+this.quotation.id;
+               var xmlhttp = new XMLHttpRequest();
+               xmlhttp.open("GET", download_url, true);
+               xmlhttp.send();
+
+               xmlhttp.onreadystatechange = function() {
+                 if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+                    
+                 }
+             };
+            }
+            if(this.quotation.quotationStatusId == 4)
+            {
+              let download_url = AppConsts.remoteServiceBaseUrl +'Email/SendWonMail?QuotationId='+this.quotation.id;
+               var xmlhttp = new XMLHttpRequest();
+               xmlhttp.open("GET", download_url, true);
+               xmlhttp.send();
+
+               xmlhttp.onreadystatechange = function() {
+                 if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+                    
+                 }
+             };
+            }
            this.notify.success(this.l('SavedSuccessfully'));
            //this.QuotationRevaluation(3);
-            this.UpdateLcNumber();
-           if(from == 1){
-             this.goToQuotation();
-           }
-           else{
-            this.ngOnInit();
-           }
-           
+            this.UpdateLcNumber(from);
+
           }
       });
     }
   }
 
-  UpdateLcNumber(){
+  UpdateLcNumber(from){
     this.UpdateLCNumberInput.inquiryId= this.quotationList.inquiryId;
     this._inquiryService.updateInquiryLCNumber(this.UpdateLCNumberInput)
-    .finally(() => this.saving = false).subscribe(() => { });
+    .finally(() => this.saving = false).subscribe(() => {
+      if(from == 1){
+        this.goToQuotation();
+      }
+      else{
+       this.ngOnInit();
+      }
+     });
   }
 
   getContacts(companyId:number){
@@ -852,6 +879,40 @@ DiscountImg: string = '/Common/Images/discount.svg';
                   this.ngOnInit();
                  this.notify.success('Discount Approved Successfully');
                 }
+            });
+            }
+          }
+      );
+    }
+
+    
+
+    DesigerRequest(): void {
+      this.message.confirm(
+          this.l('to send the request for Designer Revision'),
+          isConfirmed => {
+              if (isConfirmed) {
+
+                let download_url = AppConsts.remoteServiceBaseUrl +'Email/SendMail?EnquiryId='+this.quotation.inquiryId;
+               // window.location.assign(download_url);
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.open("GET", download_url, true);
+                xmlhttp.send();
+
+                xmlhttp.onreadystatechange = function() {
+                  if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+                     
+                  }
+              };
+              this.QRevisionInput.id = this.id;
+              this.QRevisionInput.typeId = 2;
+              this.QRevisionInput.nextActivity = moment().endOf('day');
+              this._quoatationService.quotationRevision(this.QRevisionInput)
+            .finally(() => this.saving = false)
+            .subscribe(result=>{ 
+              if(result){
+                this.notify.success('Sent Successfully');
+              }
             });
             }
           }

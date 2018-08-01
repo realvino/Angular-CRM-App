@@ -18,6 +18,7 @@ import { AppChatMessageReadState, AppChatSide, AppFriendshipState } from '@share
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
+import { AppConsts } from '@shared/AppConsts';
 
 @Component({
     templateUrl: './chat-bar.component.html',
@@ -178,6 +179,17 @@ export class ChatBarComponent extends AppComponentBase implements OnInit, AfterV
                         this._inquiryServiceProxy.inquiryRevisionApproval(this.RevisionInputData).subscribe(result=>{
                             this.salesManagerNotifications();
                             this.notify.success("Approved successfully");
+                            let download_url = AppConsts.remoteServiceBaseUrl +'Email/SendResponceEmail?EnquiryId='+dataid+'&TypeId='+typeid;
+                             var xmlhttp = new XMLHttpRequest();
+                             xmlhttp.open("GET", download_url, true);
+                             xmlhttp.send();
+             
+                             xmlhttp.onreadystatechange = function() {
+                               if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+                
+                               }
+                           };
+
                         });
                     }
                 }
@@ -192,6 +204,15 @@ export class ChatBarComponent extends AppComponentBase implements OnInit, AfterV
                         this._inquiryServiceProxy.inquiryRevisionApproval(this.RevisionInputData).subscribe(result=>{
                             this.salesManagerNotifications();
                             this.notify.success("Rejected successfully");
+                            let download_url = AppConsts.remoteServiceBaseUrl +'Email/SendResponceEmail?EnquiryId='+dataid+'&TypeId='+typeid;
+                            var xmlhttp = new XMLHttpRequest();
+                            xmlhttp.open("GET", download_url, true);
+                            xmlhttp.send();          
+                            xmlhttp.onreadystatechange = function() {
+                              if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+               
+                              }
+                          };
                         });
                     }
                 }

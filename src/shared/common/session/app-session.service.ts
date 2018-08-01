@@ -33,7 +33,10 @@ export class AppSessionService {
     get tenantId(): number {
         return this.tenant ? this.tenant.id : null;
     }
-
+    getLoginRole(): string{
+        let role = this._user.role;
+        return role;
+    }
     getShownLoginName(): string {
         let userName = this._user.userName;
         if (!this._abpMultiTenancyService.isEnabled) {

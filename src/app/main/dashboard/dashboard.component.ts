@@ -22,7 +22,7 @@ export interface SelectOption{
 })
 export class DashboardComponent extends AppComponentBase implements AfterViewInit, OnDestroy {
 
-    clsdata: number = 1;
+    clsdata: number = 4;
     endata: number = 1;
     @ViewChild('DashDateRangePicker') sampleDateTimePicker: ElementRef;
 
@@ -41,6 +41,8 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     lrgoption: Object;
     lsgoption: Object;
     conoption: Object;
+    lmgoption: Object;
+
     cardIndex:number = 0;
     teamIdselect: string;
     IsSales:boolean = false;
@@ -123,6 +125,7 @@ bouncePercent = {
         this.cardIndex = index;
         this.carousel.slideClicked(this.cardIndex);
         this.lostreasonpiegraph(this.slides[this.cardIndex]);
+        this.leadmilestonepiegraph(this.slides[this.cardIndex]);
         this.leadsummaryfunnelgraph(this.slides[this.cardIndex]);
         this.conversionRatiograph(this.slides[this.cardIndex]);
         this.leadQuotationCount(this.slides[this.cardIndex]);
@@ -242,7 +245,8 @@ bouncePercent = {
                 })
             });
             this.slides = newSlide.concat(this.slides);
-            this.lostreasonpiegraph(this.slides[this.cardIndex]);
+            this.lostreasonpiegraph(this.slides[this.cardIndex]);          
+            this.leadmilestonepiegraph(this.slides[this.cardIndex]);
             this.leadsummaryfunnelgraph(this.slides[this.cardIndex]);
             this.Closuresoon(this.slides[this.cardIndex]);
             this.LastActivity(this.slides[this.cardIndex]);
@@ -273,6 +277,48 @@ bouncePercent = {
                 title: { text : 'Lost Reason'},
                 series: [{
                     name: 'Lost Reason',
+                    showInLegend: true,
+                    data: scorelrp
+                    //data: [['Test1',2],['Test2',5],['Test3',8],['Test4',1],['Test5',5]],
+                }],
+                plotOptions: {
+                    pie: {
+                        cursor: 'pointer',
+                        allowPointSelect: false,
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>({point.percentage:.1f} %)</b>'
+                            }
+                            //colors: colorlrp
+                        }
+                    },
+                tooltip: {
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f} AED</b><br/>'
+                },
+                legend: {
+                    enabled: true
+                },
+                credits: {
+                    enabled: false
+                },
+                showInLegend: true,
+            };
+         }); 
+    }
+    leadmilestonepiegraph(value:any):void{
+        var scorelrp = []; 
+        var colorlrp = [];        
+        this._dashboardService.getMIleStoneTotalGraph(value.id,this.teamselect, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
+        .subscribe((result) => {
+            for (var i = 0; i < result.length; i++) {
+                scorelrp.push([result[i].reason, result[i].total]);
+                colorlrp.push([result[i].color]);
+            }
+            this.lmgoption = {
+                chart: { type: 'pie' },
+                title: { text : 'Lead Milestone'},
+                series: [{
+                    name: 'Lead Milestone',
                     showInLegend: true,
                     data: scorelrp
                     //data: [['Test1',2],['Test2',5],['Test3',8],['Test4',1],['Test5',5]],
@@ -344,44 +390,75 @@ bouncePercent = {
     }
     conversionRatiograph(value:any):void{
 
-        this._dashboardService.getConversionRatioGraph(value.id,this.teamselect, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
+        this._dashboardService.getSalesPersonOpportunitiesStatus(value.id,this.teamselect, this.dashdateRangePickerStartDate, this.dashdateRangePickerEndDate)
         .subscribe((result) => {
            
+            // this.conoption = {
+            //     chart: {
+            //         type: 'column'
+            //     },
+            //     title: {
+            //         text: 'SUBMITTED VS WON'
+            //     },
+            //     subtitle: {
+            //         text: 'Source: Quotation'
+            //     },
+            //     xAxis: {
+            //         categories: result.catagries,
+            //         crosshair: true
+            //     },
+            //     yAxis: {
+            //         min: 0,
+            //         title: {
+            //             text: 'Total (AED)'
+            //         }
+            //     },
+            //     tooltip: {
+            //         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            //         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            //             '<td style="padding:0"><b>{point.y:.1f} AED</b></td></tr>',
+            //         footerFormat: '</table>',
+            //         shared: true,
+            //         useHTML: true
+            //     },
+            //     plotOptions: {
+            //         column: {
+            //             pointPadding: 0.2,
+            //             borderWidth: 0
+            //         }
+            //     },
+            //     series: result.conversionRatio
+            // };
             this.conoption = {
                 chart: {
                     type: 'column'
                 },
                 title: {
-                    text: 'SUBMITTED VS WON'
+                    text: 'Sales Lead Performance'
                 },
                 subtitle: {
-                    text: 'Source: Quotation'
+                    text: 'Quotation Status'
                 },
                 xAxis: {
-                    categories: result.catagries,
-                    crosshair: true
+                    categories: result.catagries
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total (AED)'
+                        text: 'Total Leads'
                     }
                 },
                 tooltip: {
-                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                        '<td style="padding:0"><b>{point.y:.1f} AED</b></td></tr>',
-                    footerFormat: '</table>',
-                    shared: true,
-                    useHTML: true
+                    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
+                    shared: true
                 },
                 plotOptions: {
                     column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
+                        stacking: 'normal'
                     }
                 },
-                series: result.conversionRatio
+                colors:['#7CA3E4','#90ed7d','#F15C84'],
+                series: result.leadDevelop
             };
          });
     }

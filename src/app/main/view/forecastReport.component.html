@@ -11,19 +11,23 @@
             </div>
         </div>
         <div class="col-md-4 text-right">
+                <button class="btn btn-primary blue" [routerLink]="['/app/main/forecast']" ><i class="fa fa-list"></i>{{l("Forecast Kanban")}} </button>
                 <button title="Export" (click)="exportToExcel()" class="btn btn-circle btn-icon-only blue"><i class="fa fa-download"></i></button>
              </div> 
     </div>
-    <div class="portlet light margin-bottom-0">
+    <div class="portlet light margin-bottom-0" *ngIf="this.showdata==false">
+        <p>You dont have permission to see data</p>
+    </div>
+    <div *ngIf="this.showdata==true" class="portlet light margin-bottom-0">
             <div class="portlet-body">
                 <form class="horizontal-form">
                     <div class="form-body">                       
                         <div class="row margin-bottom-10">
                              <div class="col-md-4">
-                                <ng-select [active]="active_team" [allowClear]="true" [items]="teams" (selected)="selectedTeam($event)" (removed)="removedTeam($event)" (data)="refreshTeam($event)" placeholder="Select A Team"></ng-select>
+                                <ng-select [active]="active_team" [allowClear]="true" [disabled]="!isGranted('Pages.Tenant.Report.Forecast.Grid.Team')" [items]="teams" (selected)="selectedTeam($event)" (removed)="removedTeam($event)" (data)="refreshTeam($event)" placeholder="Select A Team"></ng-select>
                              </div>
                              <div class="col-md-4">
-                                     <ng-select [active]="active_view" [allowClear]="true" [disabled]="!teamId" [items]="sales" (selected)="selectSales($event)" (removed)="removeSales($event)" placeholder="Select A Account Manager">
+                                     <ng-select [active]="active_view" [allowClear]="true" [disabled]="!isGranted('Pages.Tenant.Report.Forecast.Grid.Sales')" [items]="sales" (selected)="selectSales($event)" (removed)="removeSales($event)" placeholder="Select A Account Manager">
                                     </ng-select> 
                              </div>   
                         </div>

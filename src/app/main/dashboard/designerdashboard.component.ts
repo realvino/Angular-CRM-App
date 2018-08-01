@@ -17,13 +17,11 @@ import { Router } from '@angular/router';
 })
 export class DesignerDashboardComponent extends AppComponentBase implements AfterViewInit, OnDestroy {
 
-    clsdata: number = 1;
+    clsdata: number = 4;
     endata: number = 1;
-    @ViewChild('DashDateRangePicker') sampleDateTimePicker: ElementRef;
-
+    @ViewChild('DesignerDashDateRangePicker') sampleDateTimePicker: ElementRef;
     dashdateRangePickerStartDate: moment.Moment;
     dashdateRangePickerEndDate: moment.Moment;
-    
     appSalesSummaryDateInterval = AppSalesSummaryDatePeriod;
     private destroy$ = new Subject();
     selectedSalesSummaryDatePeriod: any = AppSalesSummaryDatePeriod.Daily;

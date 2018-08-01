@@ -1,7 +1,7 @@
 import { Component, ViewChild, Injector, Renderer,ElementRef,Input, Output, EventEmitter, OnInit, AfterViewInit ,OnDestroy,NgZone } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { Select2ServiceProxy, Datadto, InquiryServiceProxy, InquiryListDto,QuotationListDto, InquiryInputDto, EnqActList, Sourcelist, CompanyServiceProxy, CompanyCreateInput, DesignationInputDto, LocationInputDto, EnquiryContactServiceProxy,EnquiryUpdateInputDto,EnquiryUpdateServiceProxy,NewCompanyContactServiceProxy,CreateAddressInfo,CreateContactInfo,CreateCompanyOrContact,IndustryInputDto,IndustryServiceProxy,LeadDetailInputDto, Select2TeamDto, CheckInquiryInput, JobActivityList, QuotationServiceProxy, Datadto3, Select2CompanyDto, NullableIdDto, SalesmanChange, EnquiryJunkUpdateInputDto, Stagedto, EntityDto } from "shared/service-proxies/service-proxies";
+import { Select2ServiceProxy, Datadto, InquiryServiceProxy, InquiryListDto,QuotationListDto, InquiryInputDto, EnqActList, Sourcelist, CompanyServiceProxy, CompanyCreateInput, DesignationInputDto, LocationInputDto, EnquiryContactServiceProxy,EnquiryUpdateInputDto,EnquiryUpdateServiceProxy,NewCompanyContactServiceProxy,CreateAddressInfo,CreateContactInfo,CreateCompanyOrContact,IndustryInputDto,IndustryServiceProxy,LeadDetailInputDto, Select2TeamDto, CheckInquiryInput, JobActivityList, QuotationServiceProxy, Datadto3, Select2CompanyDto, NullableIdDto, SalesmanChange, EnquiryJunkUpdateInputDto, Stagedto, EntityDto, QuotationRevisionInput } from "shared/service-proxies/service-proxies";
 import {Jsonp} from '@angular/http';
 import { ActivatedRoute,Router } from '@angular/router';
 import * as _ from "lodash";
@@ -21,6 +21,7 @@ import { CreateOrEditNewEnQuotationModalComponent } from "app/main/quotation/cre
 import { CreateJobActivityModalComponent } from 'app/main/inquiry/create-or-edit-jobActivity.Component';
 import { StageSelectComponent } from 'app/main/kanban/stage.component';
 import {Location} from '@angular/common';
+import { AppConsts } from '@shared/AppConsts';
 
 export interface SelectOption{
    id?: number;
@@ -124,6 +125,7 @@ export class EditInquiryComponent extends AppComponentBase implements AfterViewI
   address:CreateAddressInfo =new CreateAddressInfo();
   contact:CreateContactInfo = new CreateContactInfo();
   enquiryjunkinput:EnquiryJunkUpdateInputDto = new EnquiryJunkUpdateInputDto();
+  QRevisionInput: QuotationRevisionInput = new QuotationRevisionInput();
 
     values_company: Datadto[] = [];
     reasons: Datadto[] = [];
@@ -1809,6 +1811,37 @@ initContact(){
       if(this.inquiry.weightedvalue > 100){
         this.notify.warn("Weighted Value must be less than 100");
       }
+    }
+    DesigerRequest(): void {
+      this.message.confirm(
+          this.l('to send the request for Designer Revision'),
+          isConfirmed => {
+              if (isConfirmed) {
+
+                let download_url = AppConsts.remoteServiceBaseUrl +'Email/SendMail?EnquiryId='+this.id;
+               // window.location.assign(download_url);
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.open("GET", download_url, true);
+                xmlhttp.send();
+
+                xmlhttp.onreadystatechange = function() {
+                  if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+                    
+                  }
+              };
+              this.QRevisionInput.id = this.id;
+              this.QRevisionInput.typeId = 4;
+              this.QRevisionInput.nextActivity = moment().endOf('day');
+              this._quoatationService.quotationRevision(this.QRevisionInput)
+            .finally(() => this.saving = false)
+            .subscribe(result=>{ 
+              if(result){
+                this.notify.success('Sent Successfully');
+              }
+            });
+            }
+          }
+      );
     }
 
     isValidEnquiry(data){ 
