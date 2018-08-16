@@ -242,6 +242,9 @@ DiscountImg: string = '/Common/Images/discount.svg';
           if(this.quotationList.total){
             this.quotationTotal = this.quotationList.total;
             this.squotationTotal = this.quotationList.totalFormat;
+            if(this.quotationList.overAllDiscountAmount > 0 && this.quotationList.negotiation == true){
+              this.quotationTotal = this.quotationTotal-this.quotationList.overAllDiscountAmount;
+            }
           }else{
             this.quotationTotal = 0;
           }
@@ -383,8 +386,8 @@ DiscountImg: string = '/Common/Images/discount.svg';
   save(from) {
     this.quotation.negotiation = this.negotiationSwitch;
     this.quotation.name = this.quotation.name ? this.quotation.name : null;
-    this.quotation.overAllDiscountAmount = this.quotation.overAllDiscountAmount ? this.quotation.overAllDiscountAmount : 0 ;
-    this.quotation.overAllDiscountPercentage = this.quotation.overAllDiscountPercentage ? this.quotation.overAllDiscountPercentage : 0;
+    // this.quotation.overAllDiscountAmount = this.quotation.overAllDiscountAmount ? this.quotation.overAllDiscountAmount : 0 ;
+    // this.quotation.overAllDiscountPercentage = this.quotation.overAllDiscountPercentage ? this.quotation.overAllDiscountPercentage : 0;
 
     if(this.statusId != 3 && this.quotation.quotationStatusId == 3)
     {
@@ -986,18 +989,11 @@ DiscountImg: string = '/Common/Images/discount.svg';
     }
 
     getAmount(value,data){
-      let tot ;
-      if(this.quotationList.isVat==true){
-        tot= (this.quotationList.vatAmount)+(this.quotationList.total);
-        }
-        else
-        {
-          tot=this.quotationList.total;
-        }  
+      let tot = this.quotationList.total;
       if(data == 1)
       {
         if(value < tot){
-          this.quotation.overAllDiscountPercentage = Math.round((value * 100) / tot);
+          this.quotation.overAllDiscountPercentage = parseFloat(((value * 100) / tot).toFixed(2));
          }
          else{
           this.notify.warn("DiscountAmount must be less than TotalAmount");
@@ -1005,7 +1001,7 @@ DiscountImg: string = '/Common/Images/discount.svg';
       }
       else{
         if(value < 100){
-          this.quotation.overAllDiscountAmount = Math.round((tot * value)/100);
+          this.quotation.overAllDiscountAmount = parseFloat(((tot * value)/100).toFixed(2));
         }
         else{
           this.notify.warn("DiscountPercentage must be less than 100");

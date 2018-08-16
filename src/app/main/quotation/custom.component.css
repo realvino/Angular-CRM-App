@@ -42,6 +42,11 @@ button.delete-person {
     font-weight: 400;
     font-family: times new roman;
 }
+.main-total_content{
+    font-size: 23px;
+    font-weight: 400;
+    font-family: times new roman;
+}
 .sub-total{
     margin-top: 25px;
 }

@@ -170,7 +170,7 @@
                         </p-dataTable>
                         <div class="primeng-paging-container">
                             <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
-                                 #paginator
+                                 #ClosedPaginator
                                  (onPageChange)="getclosedInquiry($event)"
                                  [totalRecords]="closedinquiryArrayCount"
                                  [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
@@ -256,7 +256,7 @@
                                </p-dataTable>
                             <div class="primeng-paging-container">
                                 <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
-                                     #paginator
+                                     #QuotationPaginator
                                      (onPageChange)="getQuotation($event)"
                                      [totalRecords]="quotationArrayCount"
                                      [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">

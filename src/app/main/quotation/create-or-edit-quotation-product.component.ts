@@ -1,7 +1,7 @@
 import { Component, ViewChild, Injector, ElementRef, Output, EventEmitter, OnInit } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { QuotationServiceProxy, TemporaryProductServiceProxy, Select2ServiceProxy, Datadto,Productdto,Productdetailsdto, QuotationProductListDto,QuotationProductInput, TenantDashboardServiceProxy,CreateDiscountInput, Discountdatadto, TemporaryProductInput, ProductServiceProxy, Categorydto } from 'shared/service-proxies/service-proxies';
+import { QuotationServiceProxy, TemporaryProductServiceProxy, Select2ServiceProxy, Datadto,Productdto,Productdetailsdto, QuotationProductListDto,QuotationProductInput, TenantDashboardServiceProxy,CreateDiscountInput, Discountdatadto, TemporaryProductInput, ProductServiceProxy, Categorydto, FinishedDetailDto, FinishedServiceProxy, TemporaryFinishedDetailList } from 'shared/service-proxies/service-proxies';
 import { AppConsts } from "shared/AppConsts";
 import { CreateOrEditTempProductModalComponent } from 'app/main/temporaryProducts/create-or-edit-tempProducts.component';
 import { CreateEditProductComponent } from '@app/main/product/create-or-edit-product.component';
@@ -42,6 +42,8 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
     active_temproduct:SelectOption[];
     activeTempProduct:boolean = false;
 
+    active_finish:SelectOption[];
+
     tempProductInput:TemporaryProductInput = new TemporaryProductInput();
     non_editable:boolean=false;
 
@@ -72,6 +74,11 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
     productCategoryId:number=0;	
     productSpecificationId:number=0;
     categorydto: Categorydto[];
+    finish: FinishedDetailDto[];
+    /* tempfinish: TemporaryFinishedDetailList[]; */
+    tempfinish: FinishedDetailDto[];
+    finish_arr:Array<any>;
+
     productCategory:Array<any>;
     specificationDto: Datadto[];
     productSpecification:Array<any>;
@@ -84,6 +91,7 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
         injector: Injector,
         private _quotationService: QuotationServiceProxy,
         private _select2Service : Select2ServiceProxy,
+        private _finishedService : FinishedServiceProxy,
         private _tenantDashboardService:TenantDashboardServiceProxy,
         private _temporaryProductService:TemporaryProductServiceProxy,
         private _productService:ProductServiceProxy
@@ -134,6 +142,7 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
                if (result.product != null) {
                     this.tempProductInput.id = this.product.temporaryProductId;
                     this.product = result.product;
+                    console.log(this.product);
                     this.productInput.id =this.product.id;
                     this.productInput.quantity = this.product.quantity;
                     this.productInput.discount = this.product.discount;
@@ -150,8 +159,19 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
                     this.productInput.temporaryCode = this.product.temporaryCode;
                     this.productInput.locked = this.product.locked;
                     this.productInput.temporaryProductId = this.product.temporaryProductId;
+                    this.productInput.finishedDetailId = this.product.finishedDetailId;
+                    this.productInput.temporaryFinishedDetailId = this.product.temporaryFinishedDetailId;
+                    this.productInput.locked = this.product.locked;
+
                     this.err_discount = !this.product.approval;
-                    if(this.productInput.unitOfPrice)
+                    if(this.product.finishedDetailId > 0)
+                    {
+                        this.active_finish =[{id: this.productInput.finishedDetailId, text:this.product.finishName}];
+                    }
+                    if(this.product.temporaryFinishedDetailId > 0){
+                       this.active_finish = [{id: this.productInput.temporaryFinishedDetailId, text: this.product.finishName}];
+                    }
+                    if(this.productInput.unitOfPrice > 0)
                     {
                         this.getTotalAmount(this.productInput.unitOfPrice);
                     }
@@ -174,24 +194,26 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
                     }
                 
                    if(this.productInput.temporaryProductId && !this.productInput.productId){
+                       this.tempproductFinish(this.productInput.temporaryProductId);
                     this.activeTempProduct = true;
                     this.type = 'Non Standard Product';
                     this.non_editable = true;
                     if(this.product.imageUrl){
-                        this.active_temproduct =[{id: this.productInput.temporaryProductId, text:`<colorbox style="background:url('${this.path}${this.product.imageUrl}');background-size: contain;background-repeat: no-repeat;width:60px;height:60px;display:block;float:left;margin-right:5px;border: 1px dotted #444d58;border-radius: 10px;background-size: cover;background-clip: border-box;"></colorbox>${this.productInput.temporaryCode}</br><custom style="color:red;">Non Standard Product</custom></br> Price:${this.productInput.unitOfPrice} AED`}];
+                        this.active_temproduct =[{id: this.productInput.temporaryProductId, text:`<colorbox style="background:url('${this.path}${this.product.imageUrl}');background-size: contain;background-repeat: no-repeat;width:60px;height:60px;display:block;float:left;margin-right:5px;border: 1px dotted #444d58;border-radius: 10px;background-size: cover;background-clip: border-box;"></colorbox></br>${this.productInput.temporaryCode}</br><custom style="color:red;">Non Standard Product</custom>`}];
                     }
                     else{
-                        this.active_temproduct =[{id: this.productInput.temporaryProductId, text:`<colorbox style="background:url('${AppConsts.appBaseUrl+"assets/common/images/download.png"}');background-size: contain;background-repeat: no-repeat;width:60px;height:60px;dispaly:block;float:left;margin-right:5px;border: 1px dotted #444d58;border-radius: 10px;background-size: cover;background-clip: border-box;"></colorbox>${this.productInput.temporaryCode}</br><custom style="color:red;">Non Standard Product</custom></br>Price:${this.productInput.unitOfPrice} AED`}];
+                        this.active_temproduct =[{id: this.productInput.temporaryProductId, text:`<colorbox style="background:url('${AppConsts.appBaseUrl+"assets/common/images/download.png"}');background-size: contain;background-repeat: no-repeat;width:60px;height:60px;dispaly:block;float:left;margin-right:5px;border: 1px dotted #444d58;border-radius: 10px;background-size: cover;background-clip: border-box;"></colorbox></br>${this.productInput.temporaryCode}</br><custom style="color:red;">Non Standard Product</custom>`}];
                     }
                     //this.active_temproduct =[{id: this.productInput.temporaryProductId, text: this.productInput.temporaryCode}];
                    }
 
                    if(this.productInput.productId){
+                    this.productFinish(this.productInput.productId);
                     this.type = 'Standard Product';
                     if(this.product.imageUrl){
-                        this.active_product = [{id:this.product.productId,text:`<colorbox style="background:url('${this.path}${this.product.imageUrl}');background-size: contain;background-repeat: no-repeat;width:60px;height:60px;dispaly:block;float:left;margin-right:5px;border: 1px dotted #444d58;border-radius: 10px;background-size: cover;background-clip: border-box;"></colorbox>${this.product.productCode}</br>${this.product.productName} </br>Price:${this.product.unitOfPrice} AED`}];
+                        this.active_product = [{id:this.product.productId,text:`<colorbox style="background:url('${this.path}${this.product.imageUrl}');background-size: contain;background-repeat: no-repeat;width:60px;height:60px;dispaly:block;float:left;margin-right:5px;border: 1px dotted #444d58;border-radius: 10px;background-size: cover;background-clip: border-box;"></colorbox></br>${this.product.productCode}</br>${this.product.productName}`}];
                    }else{
-                        this.active_product = [{id:this.product.productId,text:`<colorbox style="background:url('${AppConsts.appBaseUrl+"assets/common/images/download.png"}');background-size: contain;background-repeat: no-repeat;width:60px;height:60px;dispaly:block;float:left;margin-right:5px;border: 1px dotted #444d58;border-radius: 10px;background-size: cover;background-clip: border-box;"></colorbox>${this.product.productCode}</br>${this.product.productName} </br>Price:${this.product.unitOfPrice} AED`}];
+                        this.active_product = [{id:this.product.productId,text:`<colorbox style="background:url('${AppConsts.appBaseUrl+"assets/common/images/download.png"}');background-size: contain;background-repeat: no-repeat;width:60px;height:60px;dispaly:block;float:left;margin-right:5px;border: 1px dotted #444d58;border-radius: 10px;background-size: cover;background-clip: border-box;"></colorbox></br>${this.product.productCode}</br>${this.product.productName}`}];
                    }
                    }
                   this.active_section = [{id: this.product.sectionId, text: this.product.sectionName}];
@@ -200,6 +222,8 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
                     }else{
                         this.discount_enter = this.discountInput.unDiscountable;
                     }
+                    
+
                }
             });
         }else{
@@ -230,11 +254,12 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
         }
 
     }
- editTempProduct(): void {
-    this.createTempProductModal.show(this.product);
-  }
 
-  getProducts(data): void {
+    editTempProduct(): void {
+    this.createTempProductModal.show(this.product);
+    }
+
+    getProducts(data): void {
 
     this._select2Service.getProductDetails(data).subscribe(result=>{			
         if(result.select2data!=null){
@@ -262,26 +287,26 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
                      }
                 this.product_arr.push({
                     id:product.id,
-                    text:`<colorbox style="background:url('${product.imageUrl}');background-size: contain;background-repeat: no-repeat;width:60px;height:60px;display:block;float:left;margin-right:5px;border: 1px dotted #444d58;border-radius: 10px;background-size: cover;background-clip: border-box;"></colorbox>${product.productCode}</br>${product.specificationName}</br> Price:${product.price} AED`					
+                    text:`<colorbox style="background:url('${product.imageUrl}');background-size: contain;background-repeat: no-repeat;width:60px;height:60px;display:block;float:left;margin-right:5px;border: 1px dotted #444d58;border-radius: 10px;background-size: cover;background-clip: border-box;"></colorbox></br>${product.productCode}</br>${product.specificationName}`					
                     
                 });
             });
-           if(!this.productInput.unitOfPrice){
+        //    if(!this.productInput.unitOfPrice){
 
-                    var index = this.products_dto.findIndex(x=> x.id==this.productInput.productId); 
-                    if(index!=-1){ 
-                        this.productInput.unitOfPrice = this.products_dto[index].price;
-                        this.productInput.discountable = this.products_dto[index].discount;
-                        this.getDiscounts(this.companyId);
-                        this.getTotalAmount(this.products_dto[index].price);
-                    }
+        //             var index = this.products_dto.findIndex(x=> x.id==this.productInput.productId); 
+        //             if(index!=-1){ 
+        //                 this.productInput.unitOfPrice = this.products_dto[index].price;
+        //                 this.productInput.discountable = this.products_dto[index].discount;
+        //                 this.getDiscounts(this.companyId);
+        //                 this.getTotalAmount(this.products_dto[index].price);
+        //             }
                     
-                }  
+        //         }  
         }
     });
-  }
+    }
 
- save(): void {
+    save(): void {
         this.saving = true;
            if (this.productInput.id == null) {
                this.productInput.id = 0;
@@ -309,7 +334,7 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
               });
            }
            else{
-            //    console.log(this.productInput);
+              console.log(this.productInput);
             this._quotationService.createOrUpdateQuotationProduct(this.productInput)
             .finally(() => this.saving = false)
             .subscribe(() => {
@@ -325,62 +350,154 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
     onShown(): void {
         // $(this.nameInput.nativeElement).focus();
     }
+
     close(): void {
+        this.finish_arr = [];
         this.activeTempProduct = false;
         this.active_temproduct = [];
+        this.active_finish =[];
         this.non_editable = false;
         this.err_discount = false;
-        this.type = 'Standard Product';
+        this.type = 'Standard Product'; 
         this.modalSave.emit(this.productInput);
         this.modal.hide();
         this.active = false;
     }
+    
     selectProduct(data:any){
-        this.productInput.productId = data.id;
-        var index = this.products_dto.findIndex(x=> x.id==data.id);
-        this.productInput.productCode = this.products_dto[index].productCode;        
-        this.productInput.unitOfPrice = this.products_dto[index].price;
-        this.productInput.discountable = this.products_dto[index].discount;
-        this.getDiscounts(this.companyId);
-        this.getTotalAmount(this.products_dto[index].price); 
+          this.finish_arr = [];
+          this.active_finish =[];
+          this.productInput.unitOfPrice = 0;
+          this.productInput.productId = data.id;   
+          var index = this.products_dto.findIndex(x=> x.id==this.productInput.productId);
+          this.productInput.productCode = this.products_dto[index].productCode;        
+          this.productInput.discountable = this.products_dto[index].discount;  
+          this.productFinish(data.id); 
+          this.getTotalAmount(0);
+          this.getDiscounts(this.companyId);
     }
+
     clickProduct(data:any)
     {
+        this.finish_arr = [];
+        this.active_finish =[];
+        this.productInput.unitOfPrice = 0;
         if(this.productCategoryId == -1)
         {
+            this.activeTempProduct = true
             this.productInput.productId = null;
             this.productInput.temporaryProductId = data.id;
-            this.tempProductInput.id = data.id;
+            this.tempProductInput.id = data.id;  
             this.productInput.locked = true;
             this.productInput.temporaryCode = data.productCode;  
             this.productInput.productCode = data.productCode;        
-            this.productInput.unitOfPrice = data.price;
-            this.productInput.discountable = false;
+            //this.productInput.unitOfPrice = data.price;
+            this.productInput.discountable = false; 
+            this.tempproductFinish(this.productInput.temporaryProductId);
         }
         else{
+            this.activeTempProduct = false;
             this.productInput.productId = data.id;
             this.productInput.productCode = data.productCode;        
-            this.productInput.unitOfPrice = data.price;
             this.productInput.discountable = data.isDiscountable;
+            this.productFinish(data.id); 
         }
         this.getDiscounts(this.companyId);
         this.getTotalAmount(data.price); 
     }
+
     selectSection(data:any){
         this.productInput.sectionId = data.id;
     }
+
     removeProduct(data:any){
+        this.finish_arr = [];
+        this.active_finish =[];
+
         this.productInput.productId =null;
         this.productInput.unitOfPrice =0;
         this.productInput.discountable = false;
-        this.getDiscounts(this.companyId);
-        this.getTotalAmount(this.productInput.unitOfPrice);
-
+        this.getDiscounts(this.companyId); 
+        this.getTotalAmount(0);
     }
+
     removeSection(data:any){
         this.productInput.sectionId = null;
         this.productInput.productCode = null;
     }
+
+    productFinish(data:any){
+        this._select2Service.getFinishedDetal(data).subscribe(result=>{
+            this.finish_arr = [];
+            if(result.select2data!=null){
+                this.finish = result.select2data;
+                //console.log(result);
+                this.finish.forEach((temp:{id: number,name : string,price: number, gpCode: string })=>{              
+                this.finish_arr.push({
+                    id:temp.id,
+                    text:temp.name				
+                 });     
+                 if(this.product.finishedDetailId == null){
+                    this.active_finish =[{ id: this.finish[0].id, text: this.finish[0].name}];
+                    this.productInput.finishedDetailId = this.finish[0].id;
+                    this.productInput.unitOfPrice = this.finish[0].price;
+                    this.getDiscounts(this.companyId);
+                    this.getTotalAmount(this.finish[0].price);  
+                }           
+             });
+            }
+        });
+    }
+
+    
+    tempproductFinish(data:any){
+        this._select2Service.getTemporaryFinishedDetal(data).subscribe(result=>{
+            this.finish_arr = [];
+            if(result.select2data != null){
+                this.tempfinish = result.select2data;
+                this.tempfinish.forEach((temp:{id: number,name : string, price: number, gpCode: string })=>{              
+                this.finish_arr.push({
+                    id:temp.id,
+                    text:temp.name				
+                 });  
+                if(this.product.temporaryFinishedDetailId == null){
+                    this.active_finish =[{ id: this.tempfinish[0].id, text: this.tempfinish[0].name}];
+                    this.productInput.temporaryFinishedDetailId = this.tempfinish[0].id;
+                    this.productInput.unitOfPrice = this.tempfinish[0].price;
+                    this.getDiscounts(this.companyId);
+                    this.getTotalAmount(this.tempfinish[0].price);  
+                }             
+             });
+           }
+        });
+    }
+
+    selectFinish(data:any){
+       if(this.activeTempProduct == false){
+          this.productInput.finishedDetailId = data.id;
+          var index = this.finish.findIndex(x=> x.id==data.id);
+          this.productInput.unitOfPrice = this.finish[index].price;
+          this.getDiscounts(this.companyId);
+          this.getTotalAmount(this.finish[index].price); 
+       }
+       else if(this.activeTempProduct == true){
+           this.productInput.temporaryFinishedDetailId = data.id;
+           var index = this.tempfinish.findIndex(x=> x.id==data.id);
+           this.productInput.unitOfPrice = this.tempfinish[index].price;
+           this.getDiscounts(this.companyId);
+           this.getTotalAmount(this.tempfinish[index].price); 
+       }
+    }
+
+    removeFinish(data:any){
+        this.productInput.finishedDetailId =null;
+        this.productInput.temporaryFinishedDetailId =null;
+        this.productInput.unitOfPrice =0; 
+        this.productInput.discountable = false;
+        this.active_finish =[];
+        this.getTotalAmount(0);
+    }
+
     getDiscounts(companyId){
         this._select2Service.getCompanyDiscount(companyId).subscribe(result=>{
             if(result.select2data!=null){
@@ -397,6 +514,10 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
     }
 
     changeProductType(typeId):void{
+
+        this.finish_arr = [];
+        this.active_finish =[];
+
          if(typeId== '1')
          {
             this.activeTempProduct = false;
@@ -405,6 +526,9 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
             this.productInput.productCode = null;
             this.tempProductInput.id = null;
             this.productInput.locked = false;
+            this.productInput.unitOfPrice =0;
+            this.getDiscounts(this.companyId);
+            this.getTotalAmount(0); 
          }
          else{
             this.activeTempProduct = true;
@@ -412,22 +536,22 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
             this.productInput.unitOfPrice =0;
             this.productInput.discountable = false;
             this.getDiscounts(this.companyId);
-            this.getTotalAmount(this.productInput.unitOfPrice);    
+            this.getTotalAmount(0);    
          }
-        }
+    }
     
     check(event: KeyboardEvent) {
         // 31 and below are control keys, don't block them.
         if (event.keyCode > 31 && !this.allowedChars.has(event.keyCode)) {
           event.preventDefault();
         }
-      }
+    }
 
     getTotalAmount(price:number){
-        console.log(price);
-        console.log(this.dis);
-        console.log(this.productInput.discount);
-        console.log(price);
+        // console.log(price);
+        // console.log(this.dis);
+        // console.log(this.productInput.discount);
+        // console.log(price);
 
         if(price<1 || this.productInput.quantity<1){
             this.productInput.totalAmount = 0;
@@ -464,216 +588,229 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
             }
     }
 
-  public typed(value:any):void {
-    this.getProducts(value);
-  }
- 
-  public refreshValue(value:any):void {
-    this.value = value;
-  }
-  changeSelect(data){
-    if(data == 'Product'){
-        this.activeTempProduct = true;
-        this.productInput.productId = null;
+    public typed(value:any):void {
+        this.getProducts(value);
     }
-    else{
-        this.activeTempProduct = false;
+    
+    public refreshValue(value:any):void {
+        this.value = value;
+    }
+
+    changeSelect(data){
+        if(data == 'Product'){
+            this.activeTempProduct = true;
+            this.productInput.productId = null;
+        }
+        else{
+            this.activeTempProduct = false;
+            this.productInput.temporaryCode = null;
+        }
+    }
+
+
+    selectTempProduct(data:any){
+       // alert('temp');
+        this.productInput.temporaryProductId = data.id;
+        this.tempProductInput.id = data.id;
+        this.productInput.locked = true;
+        var index = this.temporaryProductDto.findIndex(x=> x.id==data.id);
+        this.productInput.temporaryCode = this.temporaryProductDto[index].productCode;  
+        this.productInput.productCode = this.temporaryProductDto[index].productCode;        
+        this.productInput.unitOfPrice = 0;
+        this.productInput.discountable = this.temporaryProductDto[index].discount;
+        this.getDiscounts(this.companyId);
+        this.getTotalAmount(this.productInput.unitOfPrice); 
+        this.tempproductFinish(this.productInput.temporaryProductId);
+        
+    }
+
+    removeTempProduct(data:any){
+        this.finish_arr = [];
+        this.active_finish = [];
+        this.productInput.temporaryProductId = null;
+        this.tempProductInput.id = null;
+        this.productInput.locked = false;
         this.productInput.temporaryCode = null;
+        this.productInput.productCode = null;
+        this.productInput.unitOfPrice = 0;
+        this.productInput.discountable = false;
+        this.getDiscounts(this.companyId);
+        this.getTotalAmount(0); 
+        
     }
-}
 
+    refreshTempProduct(value:any):void {
+        this.productInput.temporaryProductId = value.id;
+        this.productInput.temporaryCode = value.text;
+        this.productInput.productCode = value.text;
+        this.tempProductInput.id = value.id;
+        this.productInput.locked = true;
+    }
 
-selectTempProduct(data:any){
-    this.productInput.temporaryProductId = data.id;
-   /*  this.productInput.temporaryCode = data.text;
-    this.productInput.productCode = data.text; */
-    this.tempProductInput.id = data.id;
-    this.productInput.locked = true;
-    var index = this.temporaryProductDto.findIndex(x=> x.id==data.id);
-    this.productInput.temporaryCode = this.temporaryProductDto[index].productCode;  
-    this.productInput.productCode = this.temporaryProductDto[index].productCode;        
-    this.productInput.unitOfPrice = this.temporaryProductDto[index].price;
-    this.productInput.discountable = this.temporaryProductDto[index].discount;
-    this.getDiscounts(this.companyId);
-    this.getTotalAmount(this.productInput.unitOfPrice); 
-}
-removeTempProduct(data:any){
-    this.productInput.temporaryProductId = null;
-    this.tempProductInput.id = null;
-    this.productInput.locked = false;
-    this.productInput.temporaryCode = null;
-    this.productInput.productCode = null;
-    this.productInput.unitOfPrice = 0;
-    this.productInput.discountable = false;
-    this.getDiscounts(this.companyId);
-    this.getTotalAmount(this.productInput.unitOfPrice); 
-}
+    typedTempProduct(event):void{
+        // console.log(event);
+        this.productInput.temporaryCode = event;
+        this.productInput.productCode = event;
+        this.tempProductInput.id = 0;
 
-refreshTempProduct(value:any):void {
-    this.productInput.temporaryProductId = value.id;
-    this.productInput.temporaryCode = value.text;
-    this.productInput.productCode = value.text;
-    this.tempProductInput.id = value.id;
-    this.productInput.locked = true;
-}
-typedTempProduct(event):void{
-    // console.log(event);
-    this.productInput.temporaryCode = event;
-    this.productInput.productCode = event;
-    this.tempProductInput.id = 0;
+        // this.active_temproduct =[{id: 0, text: event}];
+        this.productInput.locked = true;
+    
+        this._select2Service.getTemporaryProducts(event).subscribe(result =>{
+                if(result.select2data!=null){
+                this.temporaryProductDto = result.select2data;
+                this.temporaryProduct = [];
+                this.temporaryProductDto.forEach((temp:{id: number,
+                        productCode: string,
+                        price: number,
+                        imageUrl: string,
+                        discount: boolean
+                })=>{
+                    if(temp.imageUrl == null || temp.imageUrl ==''){	
+                        temp.imageUrl = AppConsts.appBaseUrl+"assets/common/images/download.png"   
+                    }
+                    else{ 
+                        temp.imageUrl= this.path+temp.imageUrl;
+                    } 
+                    this.temporaryProduct.push({
+                        id:temp.id,
+                        /* text:`${temp.productCode}</br> Price:${temp.price} AED` */					
+                        text:`<colorbox style="background:url('${temp.imageUrl}');background-size: contain;background-repeat: no-repeat;width:60px;height:60px;display:block;float:left;margin-right:5px;border: 1px dotted #444d58;border-radius: 10px;background-size: cover;background-clip: border-box;"></colorbox></br>${temp.productCode}</br><custom style="color:red;">Non Standard Product</custom>`});
+                
+                });
+            }
+    });
+    }
 
-    // this.active_temproduct =[{id: 0, text: event}];
-    this.productInput.locked = true;
-   
-    this._select2Service.getTemporaryProducts(event).subscribe(result =>{
-             if(result.select2data!=null){
-            this.temporaryProductDto = result.select2data;
-            this.temporaryProduct = [];
-            this.temporaryProductDto.forEach((temp:{id: number,
-                    productCode: string,
-                    price: number,
-                    imageUrl: string,
-                    discount: boolean
-               })=>{
-                if(temp.imageUrl == null || temp.imageUrl ==''){	
-                    temp.imageUrl = AppConsts.appBaseUrl+"assets/common/images/download.png"   
-                 }
-                 else{ 
-                    temp.imageUrl= this.path+temp.imageUrl;
-                 } 
-                this.temporaryProduct.push({
-                    id:temp.id,
-                    /* text:`${temp.productCode}</br> Price:${temp.price} AED` */					
-                    text:`<colorbox style="background:url('${temp.imageUrl}');background-size: contain;background-repeat: no-repeat;width:60px;height:60px;display:block;float:left;margin-right:5px;border: 1px dotted #444d58;border-radius: 10px;background-size: cover;background-clip: border-box;"></colorbox>${temp.productCode}</br><custom style="color:red;">Non Standard Product</custom></br> Price:${temp.price} AED`                });
-               
+    expandFilter(){
+        this.showFilter = this.showFilter?false:true;
+        if(this.showFilter){
+            this._select2Service.getProductCategoryAll().subscribe(result=>{
+                if(result.select2data!=null){
+                    this.categorydto = result.select2data;
+                    this.productCategory = [];
+                    this.categorydto.forEach((cat:{id:number,name:string,backgroundcolor:string})=>{
+                    this.productCategory.push({
+                        id:cat.id,
+                        text:cat.name
+                    });
+                    });
+
+                    this.productCategory.push({
+                        id:-1,
+                        text:`<custom style="color:red;">Non Standard Product</custom>`
+                    });
+                    this.productCategory.push({
+                        id:-2,
+                        text:`<custom style="color:red;">Custom Product</custom>`
+                    });
+                }
             });
         }
-   });
-}
-expandFilter(){
-    this.showFilter = this.showFilter?false:true;
-    if(this.showFilter){
-        this._select2Service.getProductCategoryAll().subscribe(result=>{
-            if(result.select2data!=null){
-                this.categorydto = result.select2data;
-                this.productCategory = [];
-                this.categorydto.forEach((cat:{id:number,name:string,backgroundcolor:string})=>{
-                  this.productCategory.push({
-                      id:cat.id,
-                      text:cat.name
-                  });
-                });
+    }
 
-                this.productCategory.push({
-                    id:-1,
-                    text:`<custom style="color:red;">Non Standard Product</custom>`
+    searchProducts(event?: LazyLoadEvent)
+    {    
+        let data;
+        if(this.primengDatatableHelper.getMaxResultCount(this.paginator, event)==0){
+            data=10;
+        }
+        else{
+            data=this.primengDatatableHelper.getMaxResultCount(this.paginator, event)
+        }
+        this.primengDatatableHelper.showLoadingIndicator();
+
+        if(this.productCategoryId == -1){
+    
+            this._productService.getAdvancedTempProducts(
+                this.productCategoryId,
+                this.productSpecificationId,
+                this.filterText,
+                "",
+                data,
+                this.primengDatatableHelper.getSkipCount(this.paginator, event)
+            ).subscribe(result => {
+                this.primengDatatableHelper.totalRecordsCount = result.totalCount;
+                this.primengDatatableHelper.records = result.items;
+                // console.log(0,result.items);
+                this.primengDatatableHelper.hideLoadingIndicator();
+            });
+        } else {
+            this._productService.getAdvancedProducts(
+                this.productCategoryId,
+                this.productSpecificationId,
+                this.filterText,
+                "",
+                data,
+                this.primengDatatableHelper.getSkipCount(this.paginator, event)
+            ).subscribe(result => {
+                this.primengDatatableHelper.totalRecordsCount = result.totalCount;
+                this.primengDatatableHelper.records = result.items;
+                console.log(result.items);
+                this.primengDatatableHelper.hideLoadingIndicator();
+            });       }   
+    }
+
+    reloadPage(): void {
+     this.paginator.changePage(this.paginator.getPage(),null);
+    }
+
+    selectCategory(data:any){
+        this.productCategoryId = data.id;
+        this.active_prodSpecification = [];
+        this.productSpecification = [];
+        this.productSpecificationId = 0;
+        if(data.id > 0)
+        {
+        this._select2Service.getProductSpecificationCategoryBased(data.id).subscribe(result=>{
+            if(result.select2data!=null){
+                this.specificationDto = result.select2data;
+                this.productSpecification = [];
+                this.specificationDto.forEach((spec:{id:number,name:string})=>{
+                    this.productSpecification.push({
+                        id:spec.id,
+                        text:spec.name
+                    });
                 });
-                this.productCategory.push({
-                    id:-2,
-                    text:`<custom style="color:red;">Custom Product</custom>`
-                });
+                
             }
         });
     }
-}
-
-searchProducts(event?: LazyLoadEvent)
- {    
-    let data;
-    if(this.primengDatatableHelper.getMaxResultCount(this.paginator, event)==0){
-        data=10;
+    this.searchProducts();
     }
-    else{
-        data=this.primengDatatableHelper.getMaxResultCount(this.paginator, event)
+
+    removeCategory(data:any){
+        this.productCategoryId = 0;
+        this.productSpecificationId = 0;
+        this.active_prodSpecification = [];
+        this.active_finish = [];
+        this.searchProducts();
+        
     }
-    this.primengDatatableHelper.showLoadingIndicator();
 
-     if(this.productCategoryId == -1){
- 
-        this._productService.getAdvancedTempProducts(
-            this.productCategoryId,
-            this.productSpecificationId,
-            this.filterText,
-            "",
-            data,
-            this.primengDatatableHelper.getSkipCount(this.paginator, event)
-        ).subscribe(result => {
-            this.primengDatatableHelper.totalRecordsCount = result.totalCount;
-            this.primengDatatableHelper.records = result.items;
-            // console.log(0,result.items);
-            this.primengDatatableHelper.hideLoadingIndicator();
-        });
-    } else {
-        this._productService.getAdvancedProducts(
-            this.productCategoryId,
-            this.productSpecificationId,
-            this.filterText,
-            "",
-            data,
-            this.primengDatatableHelper.getSkipCount(this.paginator, event)
-        ).subscribe(result => {
-            this.primengDatatableHelper.totalRecordsCount = result.totalCount;
-            this.primengDatatableHelper.records = result.items;
-            console.log(result.items);
-            this.primengDatatableHelper.hideLoadingIndicator();
-        });       }   
-}
+    selectSpecification(data:any){
+        this.productSpecificationId = data.id;
+        this.searchProducts();
+    }
 
-reloadPage(): void {
-    this.paginator.changePage(this.paginator.getPage(),null);
-}
+    removeSpecification(data:any){
+        this.productSpecificationId = 0;
+        this.searchProducts();
+    }
 
-selectCategory(data:any){
-    this.productCategoryId = data.id;
-    this.active_prodSpecification = [];
-    this.productSpecification = [];
-    this.productSpecificationId = 0;
-    if(data.id > 0)
-    {
-    this._select2Service.getProductSpecificationCategoryBased(data.id).subscribe(result=>{
-        if(result.select2data!=null){
-            this.specificationDto = result.select2data;
-            this.productSpecification = [];
-              this.specificationDto.forEach((spec:{id:number,name:string})=>{
-                this.productSpecification.push({
-                    id:spec.id,
-                    text:spec.name
-                });
-            });
-            
+    saveSelected(ProductId):void{
+        //  console.log(ProductId,"save");
+    }
+
+    search_preview(data):void{
+        if(data == 1)
+        {
+            this.advancedSearch = true;
+            this.expandFilter();
+        } else if(data == 2)
+        {
+            this.advancedSearch = false;
         }
-    });
-   }
-   this.searchProducts();
-}
-removeCategory(data:any){
-    this.productCategoryId = 0;
-    this.productSpecificationId = 0;
-    this.active_prodSpecification = [];
-    this.searchProducts();
 
-}
-selectSpecification(data:any){
-    this.productSpecificationId = data.id;
-    this.searchProducts();
-}
-removeSpecification(data:any){
-    this.productSpecificationId = 0;
-    this.searchProducts();
-}
-
-saveSelected(ProductId):void{
-    //  console.log(ProductId,"save");
-}
-search_preview(data):void{
-    if(data == 1)
-    {
-        this.advancedSearch = true;
-        this.expandFilter();
-    } else if(data == 2)
-    {
-        this.advancedSearch = false;
     }
-
-}
 }

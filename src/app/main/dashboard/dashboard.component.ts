@@ -74,7 +74,7 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     clicking: true,
     sourceProp: 'src',
     visible: 13,
-    perspective: 1  ,
+    perspective: 1, 
     startSlide: 0,
     border: 2,
     dir: 'ltr',
@@ -182,13 +182,29 @@ bouncePercent = {
             this.loadslider(this.teamselect);
         }
     }
-    GotoLead(enq_id):void{
-        if(enq_id > 0)
-        {
-            //this.router.navigate(["/app/main/sales-enquiry",enq_id]);
-            window.open('app/main/sales-enquiry/'+enq_id, "_blank");
+    GotoLead(enq_data):void{
+        let x = abp.session.userId;
+		switch (x) {
+			case enq_data.coordinatorId:
+            window.open('app/main/sales-enquiry/'+enq_data.inquiryId, "_blank");
+			break;
+			case enq_data.creatorUserId:
+            window.open('app/main/sales-enquiry/'+enq_data.inquiryId, "_blank");
+			break;
+			case enq_data.designerId:
+            window.open('app/main/sales-enquiry/'+enq_data.inquiryId, "_blank");
+			break;	
+			case enq_data.salesPersonId:
+            window.open('app/main/sales-enquiry/'+enq_data.inquiryId, "_blank");
+			break;	
+			case enq_data.salesManagerId:
+            window.open('app/main/sales-enquiry/'+enq_data.inquiryId, "_blank");
+			break;
 
-        }
+			default:
+			this.notify.warn(this.l('You are not authorized to access this lead'));
+
+		}
     }
  
     teamdetail():void{

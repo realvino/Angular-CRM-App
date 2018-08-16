@@ -9,8 +9,11 @@
     "hmr": "ng serve --host 0.0.0.0 --port 4200 4201 --hmr -e=hmr",
     "test": "ng test",
     "pree2e": "webdriver-manager update --standalone false --gecko false",
-    "e2e": "protractor"
+    "e2e": "protractor",
+    "prod_build":"node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build angular --prod",
+    "prod_start":"node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng serve angular --prod"
   },
+
   "private": true,
   "dependencies": {
     "@angular/animations": "^4.3.1",
@@ -76,6 +79,7 @@
     "ng2-dragula": "^1.5.0",
     "ng2-file-upload": "^1.2.1",
     "ng2-select": "^1.2.0",
+    "ng2-slimscroll": "^2.0.1",
     "ng2modules-easypiechart": "^0.0.4",
     "ng2modules-flot": "^0.0.1",
     "ngx-bootstrap": "^1.8.0",
@@ -84,6 +88,7 @@
     "push.js": "0.0.12",
     "quill": "^1.3.0",
     "raphael": "^2.2.7",
+    "replace-in-file": "^3.4.0",
     "rtl-detect": "^1.0.0",
     "rxjs": "^5.4.2",
     "signalr": "^2.2.1",

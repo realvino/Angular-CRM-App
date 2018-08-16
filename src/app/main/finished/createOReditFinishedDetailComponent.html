@@ -6,11 +6,13 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title">
-                        <span *ngIf="finishDetailInput.id">{{l("Edit Finish Detail")}}: {{finishDetailInput.gpCode}}</span>
-                        <span *ngIf="!finishDetailInput.id">{{l("Create Finish Detail")}}</span>
+                        <span *ngIf="finishDetailInput.id && saveFinishedDetail">{{l("Edit Finish Detail")}}: {{finishDetailInput.gpCode}}</span>
+                        <span *ngIf="!finishDetailInput.id && saveFinishedDetail">{{l("Create Finish Detail")}}</span>
+                        <span *ngIf="tempfinishDetailInput.id && !saveFinishedDetail">{{l("Edit Finish Detail")}}: {{tempfinishDetailInput.gpCode}}</span>
+                        <span *ngIf="!tempfinishDetailInput.id && !saveFinishedDetail">{{l("Create Finish Detail")}}</span>
                     </h4>
                 </div>
-                <form *ngIf="active" #finishedDeteilForm="ngForm" novalidate (ngSubmit)="save()">
+                <form *ngIf="active && saveFinishedDetail" #finishedDeteilForm="ngForm" novalidate (ngSubmit)="save()">
                     <div class="modal-body">
                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
                             <input #nameInput class="form-control" type="text" name="GPCode" [ngClass]="{'edited':finishDetailInput.gpCode}" [(ngModel)]="finishDetailInput.gpCode" required>
@@ -18,7 +20,7 @@
                         </div>
     
                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                            <input class="form-control" type="text" name="price" [ngClass]="{'edited':finishDetailInput.price}" [(ngModel)]="finishDetailInput.price" required>
+                            <input class="form-control" type="number" name="price" [ngClass]="{'edited':finishDetailInput.price}" [(ngModel)]="finishDetailInput.price" (keydown)="check($event)" required (keydown)="checkMinus($event)">
                             <label>{{l("Price")}}<required_field></required_field></label>
                         </div>
                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
@@ -30,6 +32,28 @@
                     <div class="modal-footer">
                         <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
                         <button type="submit" class="btn btn-primary blue" [disabled]="!finishedDeteilForm.form.valid || !finishDetailInput.finishedId" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                    </div>
+                </form>
+                <form *ngIf="active && !saveFinishedDetail" #TempfinishedDeteilForm="ngForm" novalidate (ngSubmit)="save()">
+                    <div class="modal-body">
+                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                            <input #nameInput class="form-control" type="text" name="GPCode" [ngClass]="{'edited':tempfinishDetailInput.gpCode}" [(ngModel)]="tempfinishDetailInput.gpCode" required>
+                            <label>{{l("GP Code")}}<required_field></required_field></label>
+                        </div>
+    
+                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                            <input class="form-control" type="number" name="price" [ngClass]="{'edited':tempfinishDetailInput.price}" [(ngModel)]="tempfinishDetailInput.price" (keydown)="check($event)" required>
+                            <label>{{l("Price")}}<required_field></required_field></label>
+                        </div>
+                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                            <label>Finished <required_field></required_field></label>
+                            <ng-select [allowClear]="true" [active]="active_finish" [items]="finishes" (selected)="selectedFinish($event)" (removed)="removedFinish($event)" placeholder="Select A Finished">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                        <button type="submit" class="btn btn-primary blue" [disabled]="!TempfinishedDeteilForm.form.valid || !tempfinishDetailInput.finishedId" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
                     </div>
                 </form>
             </div>

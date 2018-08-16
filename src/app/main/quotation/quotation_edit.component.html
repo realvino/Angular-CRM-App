@@ -130,7 +130,7 @@
                            <div class="col-md-2" >
                             <div *ngIf="isvatswitch == true" class="text-right sub-total">
                                 <label style="display: block;">Total</label>
-                                <span>({{squotationTotal}})</span>
+                                <span>({{(quotationTotal+0).toLocaleString('en', { minimumFractionDigits: 2,maximumFractionDigits: 2 })}})</span>
                                 <label class="sub-total_content">{{sTotalamount}}</label>
                             </div>
                             <div *ngIf="!isvatswitch == true" class="text-right sub-total">
@@ -245,9 +245,9 @@
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label>{{products.discount}}</label>
-                                                        <span (click)="getApproval(products.id,products.locked)" tooltip="Excess discount" *ngIf="isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.QuotationproductDiscountApproval') && products.approval == false">
+                                                        <button style="margin-top: -10px;" class="btn btn-circle btn-icon-only white delete-person" (click)="getApproval(products.id,products.locked)" tooltip="Excess discount" [disabled]="!isGranted('Pages.Tenant.Quotation.Quotation.Edit.QuotationDetails.QuotationproductDiscountApproval')"  *ngIf="products.approval == false">
                                                                 <i class="fa fa-exclamation-triangle" style="color: brown;"></i>
-                                                                </span>
+                                                        </button>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label>{{products.sTotalAmount}}</label>
@@ -262,16 +262,22 @@
                                                 </button>
                                             </div>  
                                             </div>  
-                                        </div>
+                                     </div>
                                         <div class="row sec_sub-tot">
                                                 <div class="text-right sub-total_sec">
                                                     <!-- <button type="button" [disabled]="getTotal(product.subtotal)" style="display: none;"></button> -->
-                                                    <span style="margin-right: 10px;" class="sub-total_head">Sub Total : <span class="sub-total_content">{{product.subtotalFormat}}</span></span>         
+                                                    <span style="margin-right: 10px;" class="sub-total_head">Sub Total : <span class="main-total_content">{{product.subtotalFormat}}</span></span>         
                                                 </div>
                                             </div>
                                 </div>
                                 
                                
+                        </div>
+                        <div class="row sec_sub-tot">
+                            <div class="text-right sub-total_sec">
+                                <!-- <button type="button" [disabled]="getTotal(product.subtotal)" style="display: none;"></button> -->
+                                <span style="margin-right: 10px;" class="sub-total_head">Total Net Amount : <span class="sub-total_content">{{squotationTotal}}</span></span>         
+                            </div>
                         </div>
                     </div> 
                     <div class="portlet-body" style="margin-top: 40px">
@@ -356,7 +362,7 @@
                                     </div> -->
                                     <div class="col-md-3" *ngIf="negotiationSwitch == true">
                                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                            <input #nameInput class="form-control"  type="number" name="amount" [ngClass]="{'edited':quotation.overAllDiscountAmount}" [(ngModel)]="quotation.overAllDiscountAmount" (keyup)="getAmount(quotation.overAllDiscountAmount,1)" (keydown)="check($event)">
+                                            <input #nameInput class="form-control"  type="number"  [disabled]="true" name="amount" [ngClass]="{'edited':quotation.overAllDiscountAmount}" [(ngModel)]="quotation.overAllDiscountAmount" (keyup)="getAmount(quotation.overAllDiscountAmount,1)" (keydown)="check($event)">
                                                 <label>{{l("Discount (AED)")}}</label>
                                          </div>
                                     </div> 

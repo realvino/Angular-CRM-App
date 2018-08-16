@@ -256,26 +256,35 @@ export class LeadsKanbanComponent extends AppComponentBase implements AfterViewI
 
 selectSalesman(data:any){
 	this.salesmanId = data.id;
+	let value = JSON.stringify(data);
+    sessionStorage.setItem('sales'+abp.session.userId, value);
 	this.getTickets('');
 }
 removeSalesman(data:any){
 	this.salesmanId = 0;
+	sessionStorage.removeItem('sales'+abp.session.userId);
 	this.getTickets('');
 }
 selectDesigner(data:any){
 	this.designerId = data.id;
+	let value = JSON.stringify(data);
+    sessionStorage.setItem('designer'+abp.session.userId, value);
 	this.getTickets('');
 }
 removeDesigner(data:any){
 	this.designerId = 0;
+	sessionStorage.removeItem('designer'+abp.session.userId);
 	this.getTickets('');
 }
 selectCoordinator(data:any){
 	this.coordinatorId = data.id;
+	let value = JSON.stringify(data);
+    sessionStorage.setItem('coordinator'+abp.session.userId, value);
 	this.getTickets('');
 }
 removeCoordinator(data:any){
 	this.coordinatorId = 0;
+	sessionStorage.removeItem('coordinator'+abp.session.userId);
 	this.getTickets('');
 }
   ngAfterViewInit(): void { 
@@ -357,12 +366,35 @@ removeCoordinator(data:any){
 	}
 
 
-
 	getTickets(filter:string): void {
 		
 		setTimeout(() => {
 		    this.loading=true;
-        });
+		});
+		
+		let sa= sessionStorage.getItem('sales'+abp.session.userId);
+		const ds= sessionStorage.getItem('designer'+abp.session.userId);
+		const cr= sessionStorage.getItem('coordinator'+abp.session.userId);
+		
+        if(sa != null){
+			var obj = JSON.parse(sa);
+			this.salesmanId = obj.id;
+		    this.active_salesman = [{id:obj.id,text:obj.text}];
+			}
+
+			if(ds != null){
+				var obj = JSON.parse(ds);
+				this.designerId = obj.id;
+				this.active_designer = [{id:obj.id,text:obj.text}];
+				}
+
+				if(cr != null){
+					var obj = JSON.parse(cr);
+					this.coordinatorId = obj.id;
+					this.active_coordinator = [{id:obj.id,text:obj.text}];
+					}
+		
+
             this._inquiryProxyService.getSalesInquiryTickets(filter,this.salesmanId,this.designerId, this.coordinatorId).subscribe(inquiries => {
 			this.groups = inquiries;
 		    this.loading=false;

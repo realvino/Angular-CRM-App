@@ -51,14 +51,14 @@
     <div [busyIf]="loading" class='wrapper'>
         <div class='dndcontainer {{group.class}}'   *ngFor='let group of groups'>
             <div class="itemHead">
-                <h4> <b>{{group.name=='Assigned'?'New':group.name}}</b>
+                <h4> <b>{{group.name=='Assigned'?'New':group.name}} ({{group.getTicketReservation.length}})</b>
                 </h4>
                 <h5>  
                    <b style="float: left;" *ngIf="group.total != '0'"> AED {{group.total}}</b>
-                   &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; <span *ngIf="group.getTicketReservation.length && !group.isQuotation">{{group.getTicketReservation.length}} <span *ngIf="group.getTicketReservation.length >1">Leads</span> <span *ngIf="group.getTicketReservation.length == 1">Lead</span> </span>
-                   <span *ngIf="group.getTicketReservation.length && group.isQuotation">{{group.getTicketReservation.length}} <span *ngIf="group.getTicketReservation.length >1">Quotes</span> <span *ngIf="group.getTicketReservation.length == 1">Quote</span> </span>
+                   <!-- &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; <span *ngIf="group.getTicketReservation.length && !group.isQuotation">{{group.getTicketReservation.length}} <span *ngIf="group.getTicketReservation.length >1">Leads</span> <span *ngIf="group.getTicketReservation.length == 1">Lead</span> </span>
+                   <span *ngIf="group.getTicketReservation.length && group.isQuotation">{{group.getTicketReservation.length}} <span *ngIf="group.getTicketReservation.length >1">Quotes</span> <span *ngIf="group.getTicketReservation.length == 1">Quote</span> </span> -->
                </h5>
-            </div>    
+            </div> <br>   
             <div id="style-1" class="desk-items" [dragula]='"salesnested-bag"' [attr.data-type]="non-status" [attr.data-milestoneId]="group.statusId" [attr.data-milestoneName]="group.name" [attr.data-isQuotation]="group.isQuotation" [attr.data-StatusId]="group.statusId" *ngIf="isGranted('Pages.Tenant.Enquiry.SalesEnquiry.Edit')">
                 <a id="cart" *ngFor="let item of group.getTicketReservation" [ngStyle]="{'background':item.statusColorCode?item.statusColorCode:'','border-style':item.statusColorCode?'solid':'none','border-width':'0px'}"
                       [attr.data-itemId]="item.id" 

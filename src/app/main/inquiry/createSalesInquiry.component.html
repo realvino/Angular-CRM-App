@@ -223,7 +223,7 @@
         </div>
         <div class="col-md-3">
             <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                <input class="form-control" type="number" name="estimatedValue" [ngClass]="{'edited':inquiry.estimationValue}" [(ngModel)]="inquiry.estimationValue" [ngModelOptions]="{standalone: true}">
+                <input class="form-control" type="number" name="estimatedValue" [ngClass]="{'edited':inquiry.estimationValue}" [(ngModel)]="inquiry.estimationValue" [ngModelOptions]="{standalone: true}"  (keydown)="checkMinus($event)">
                     <label>{{l("Estimated Value")}} <required_field></required_field></label>
             </div>
         </div>

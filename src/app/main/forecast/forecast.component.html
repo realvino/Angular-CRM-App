@@ -19,9 +19,8 @@
         
     </div> 
    </div> 
-   <div class="portlet light margin-bottom-0" *ngIf="AdvancedFilter" >
-    <span>Advanced Filter</span>
-    <form class="horizontal-form">
+   <div class="portlet light margin-bottom-0" Id="forecastCss" *ngIf="AdvancedFilter" >
+    <form class="horizontal-form" style="margin-top: 2px;">
         <div class="form-body">                       
             <div class="row margin-bottom-10">
                  <div class="col-md-2">
@@ -41,15 +40,12 @@
                  </div> 
                  <div class="col-md-1" style="margin-top: -20px;width: 200px;">
                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                <input #nameInput class="form-control" [disabled]="!typeId"  type="text"  [ngClass]="{'edited': from}" [(ngModel)]="from" name="from">
-                                <label *ngIf="typeId != 4">{{l("Value")}}</label>
-                                <label *ngIf="typeId == 4">{{l(" Value From")}}</label>
+                                <input #nameInput class="form-control" [disabled]="!typeId"  type="text"  [ngClass]="{'edited': from}" placeholder="Value From" [(ngModel)]="from" name="from">
                             </div>
                 </div>  
                 <div class="col-md-1" style="margin-top: -20px;width: 200px;">
                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                <input [disabled]="typeId != 4" #nameInput class="form-control"  [ngClass]="{'edited':to}" [(ngModel)]="to"  type="text" name="to">
-                                <label>{{l("To")}}</label>
+                                <input [disabled]="typeId != 4" #nameInput class="form-control"  [ngClass]="{'edited':to}" [(ngModel)]="to" placeholder="Value To"  type="text" name="to">
                             </div>
                 </div>  
                

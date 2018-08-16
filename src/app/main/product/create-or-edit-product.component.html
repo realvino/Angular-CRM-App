@@ -36,18 +36,18 @@
                                                  <label>{{l("Product Code")}} <required_field></required_field></label>
                                         </div>
                                     </div>
-                                    <div class="col-md-6"> 
+                                    <!-- <div class="col-md-6"> 
                                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
                                             <input class="form-control" type="text" name="diemension" [ngClass]="{'edited':product_input.gpcode}" [(ngModel)]="product_input.gpcode" required>
                                                 <label>{{l("GPCode")}} <required_field></required_field></label>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6"> 
+                                    </div> -->
+                                    <!-- <div class="col-md-6"> 
                                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
                                              <input class="form-control" type="text" name="price" [ngClass]="{'edited':product_input.price}" [(ngModel)]="product_input.price" required>
                                              <label>{{l("Price")}} <required_field></required_field></label>                                   
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-6"> 
                                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
                                         <input class="form-control" type="text" name="suspectCode" [ngClass]="{'edited':product_input.suspectCode}" [(ngModel)]="product_input.suspectCode" required>
@@ -80,7 +80,7 @@
                                     </div>
                                     <!-- <div class="col-md-6" style="margin-top: -25px" *ngIf="standardProductSelected"> 
                                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                            <label>{{l("Fast Moving State")}} </label>
+                                            <label>{{l("State of Moving")}} </label>
                                             <ng-select [active]="active_ProductState" [allowClear]="true" [items]="productState" (selected)="selectedProductState($event)" (removed)="removedProductState($event)" placeholder="Nothing is selected">
                                             </ng-select>
                                         </div>
@@ -108,7 +108,7 @@
                                              <label>{{l("Product Code")}} <required_field></required_field></label>
                                     </div>
                                 </div>
-                                <div class="col-md-6"> 
+                                <!-- <div class="col-md-6"> 
                                     <div class="form-group form-md-line-input form-md-floating-label no-hint">
                                         <input class="form-control" type="text" name="diemension" [ngClass]="{'edited':product_input.gpcode}" [(ngModel)]="product_input.gpcode" required>
                                             <label>{{l("GPCode")}} <required_field></required_field></label>
@@ -119,7 +119,7 @@
                                          <input class="form-control" type="text" name="price" [ngClass]="{'edited':product_input.price}" [(ngModel)]="product_input.price" required>
                                          <label>{{l("Price")}} <required_field></required_field></label>                                   
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="col-md-6"> 
                                     <div class="form-group form-md-line-input form-md-floating-label no-hint">
                                     <input class="form-control" type="text" name="suspectCode" [ngClass]="{'edited':product_input.suspectCode}" [(ngModel)]="product_input.suspectCode" required>
@@ -146,19 +146,23 @@
                                 </div>
                                 <div class="col-md-6" style="margin-top: -25px"> 
                                     <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <label>{{l("Fast Moving State")}} </label>
+                                        <label>{{l("State of Moving")}} </label>
                                         <ng-select [active]="active_ProductState" [allowClear]="true" [items]="productState" (selected)="selectedProductState($event)" (removed)="removedProductState($event)" placeholder="Nothing is selected">
                                         </ng-select>
                                     </div>
                                 </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Description <required_field></required_field></label>
+                                        <p-editor [(ngModel)]="product_input.description" name="HtmlEditorInput" [style]="{'min-height':'100px'}"></p-editor>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-12 form-group">
                                 <label>Description <required_field></required_field></label>
                                     <p-editor [(ngModel)]="product_input.description" name="HtmlEditorInput" [style]="{'min-height':'100px'}"></p-editor>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="modal-footer">
                             <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
                             <button type="submit" class="btn btn-primary blue" [disabled]="!createCompanyForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
@@ -206,7 +210,7 @@
                                                  <label>{{l("Product Code")}} <required_field></required_field></label>
                                         </div>
                                     </div>
-                                    <div class="col-md-6"> 
+                                    <!-- <div class="col-md-6"> 
                                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
                                             <input class="form-control" type="text" name="diemension" [ngClass]="{'edited':product_input.gpcode}" [(ngModel)]="product_input.gpcode" required>
                                                 <label>{{l("GPCode")}} <required_field></required_field></label>
@@ -217,7 +221,7 @@
                                             <input class="form-control" type="text" name="price" [ngClass]="{'edited':product_input.price}" [(ngModel)]="product_input.price" required>
                                             <label>{{l("Price")}} <required_field></required_field></label>
                                        </div>
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-6"> 
                                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
                                             <!-- <input class="form-control" type="text" name="suspectCode" [ngClass]="{'edited':product_input.suspectCode}" [(ngModel)]="product_input.suspectCode" required> -->
@@ -253,23 +257,27 @@
                                     </div>
                                     <div class="col-md-6" style="margin-top: -24px"> 
                                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                            <label>{{l("Fast Moving State")}} </label>
+                                            <label>{{l("State of Moving")}} </label>
                                             <ng-select [active]="active_ProductState" [allowClear]="true" [items]="productState" (selected)="selectedProductState($event)" (removed)="removedProductState($event)" placeholder="Nothing is selected">
                                             </ng-select>
                                         </div>
                                     </div>
+                                    <div class="col-md-12 form-group">
+                                        <label>Description <required_field></required_field></label>
+                                            <p-editor [(ngModel)]="product_input.description" name="HtmlEditorInput" [style]="{'min-height':'100px'}"></p-editor>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label>Description <required_field></required_field></label>
                                         <p-editor [(ngModel)]="product_input.description" name="HtmlEditorInput" [style]="{'min-height':'100px'}"></p-editor>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="modal-footer">
                                 <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
                                 <button type="submit" class="btn btn-primary blue" [disabled]="!createCompanyForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
-                                <button *ngIf="product_input.id" type="button" class="btn btn-primary blue" [disabled]="!createCompanyForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="saveAs()" style="float:  left;"><i class="fa fa-save"></i> <span>{{l("Save As")}}</span></button>
+                                <button *ngIf="product_input.id" type="button" class="btn btn-primary blue" [disabled]="!createCompanyForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="saveAs()"><i class="fa fa-save"></i> <span>{{l("Save As")}}</span></button>
                             </div>
                         </div>
                     </form>

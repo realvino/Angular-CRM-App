@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit, AfterViewInit, ViewChild, Pipe } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { ViewServiceProxy, Select2ServiceProxy, Datadto, ColumnList, InquiryServiceProxy, ViewDto, QuotationServiceProxy, QuotationReportListDto, Select2TeamDto, TeamReportListDto } from "shared/service-proxies/service-proxies";
+import { ViewServiceProxy, Select2ServiceProxy, Datadto, ColumnList, InquiryServiceProxy, ViewDto, QuotationServiceProxy, QuotationReportListDto, Select2TeamDto, TeamReportListDto, Datadtoes } from "shared/service-proxies/service-proxies";
 import { DataTable } from 'primeng/components/datatable/datatable';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
@@ -37,6 +37,7 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
     filterText: string = '';
     active_view:SelectOption[];
     active_team:SelectOption[] = [];
+	team_list: Datadtoes[];
 
     gridColumn:ColumnList[];
     gridColumnCount:number=0;
@@ -47,7 +48,6 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
     quotationArrayCount:number=0;
     quotation:QuotationReportListDto = new QuotationReportListDto();
     teams:Array<any>;
-    team_list: Select2TeamDto[];
     teamId:number;
     teamReportList:TeamReportListDto = new TeamReportListDto();
     teamArray: Array<any>;
@@ -84,10 +84,10 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
             {brand: 'Toshiba', lastYearSale: '75%', thisYearSale: '54%', lastYearProfit: '$21,212', thisYearProfit: '$12,533'}
         ];
 
-        this._select2Service.getTeam().subscribe((result) => { 
-           if (result.selectData != null) {
-                this.teams = [];
-                this.team_list = result.selectData;
+        this._select2Service.getDashboardTeam().subscribe((result) => { 
+            if (result.selectDdata != null) {
+                 this.teams = [];
+                 this.team_list = result.selectDdata;
                 this.team_list.forEach((team: {id: number, name: string}) => {
                     this.teams.push({
                        id: team.id,
@@ -108,6 +108,7 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
 
         if( this.showdata == true)
         this.getAllTeamInquiry();
+        this.getFilterData();
         
     }
 
@@ -121,7 +122,7 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
     removeSales(data:any){
         this.active_view =[];
         this.viewId = 0;
-        //this.getInquiry();
+        this.getTeamInquiry();
     }
     exportToExcel(): void {
         if(this.viewId > 0){
@@ -166,8 +167,9 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
 
 		}
     }
+
     getSalesman(teamId){
-        this._select2Service.getTeamSalesman(teamId).subscribe(result=>{
+        this._select2Service.getTeamUserProfile(teamId).subscribe(result=>{
             if(result != null){
                this.sales = [];
                this.salesDto = result.select3data;
@@ -184,9 +186,16 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
     selectedTeam(value:any):void {
       this.active_team = [{id: value.id, text: value.text}];
       this.teamId = value.id;
+      this.active_view =[];
+      this.viewId = 0;
       this.getTeamInquiry();
-      this.getSalesman(this.teamId);
+
+      var index = this.team_list.findIndex(x => x.id==value.id);
+            if(index!=-1){
+                this.getSalesman(this.team_list[index].userId);
+            }
     }
+
     refreshTeam(value:any):void{
     //   this.active_team = [{id: value.id, text: value.text}];
     //   this.teamId = value.id;
@@ -197,6 +206,7 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
     //     this.viewId = 0;
     //   }
     }
+
     removedTeam(value:any):void {
         this.teamId = 0;
         this.active_team = [];
@@ -374,8 +384,11 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
             this.active_team = [{id:event.data.teamId, text:event.data.teamName}];
             this.teamId = event.data.teamId;
             this.getTeamInquiry();
-            this.getSalesman(this.teamId);
-        }
+            var index = this.team_list.findIndex(x => x.id == event.data.teamId);
+            if(index!=-1){
+                this.getSalesman(this.team_list[index].userId);
+            }
+         }
         if(event.data.accountManager != ""){
             // var index = this.sales.findIndex(x => x.text == event.data.accountManager)
             this.active_view = [{id:event.data.accountManagerId, text:event.data.accountManager}];
@@ -384,6 +397,27 @@ export class ForecastReportComponent extends AppComponentBase implements OnInit 
         }
     }
     
- 
+ getFilterData(){
+		this._select2Service.getSalesPersonTeam().subscribe(result=>{
+			if(result != null){
+			  let team_filter = result.salesManagerTeam;
+			  let sales_Filter = result.salesPerson;
+			  if(team_filter != null)
+			  {
+				this.active_team = [{id: team_filter.id, text: team_filter.name}];
+                this.teamId = team_filter.id;
+                this.getTeamInquiry();
+				this.getSalesman(team_filter.salesManId);
+			  }
+			  if(sales_Filter != null)
+			  {
+				this.active_view = [{id:sales_Filter.id,text:sales_Filter.name}];
+                this.viewId = sales_Filter.id;
+                this.getInquiry();
+			  }
+			  //this.getTickets('');
+			}
+		});
+	}
     
 }

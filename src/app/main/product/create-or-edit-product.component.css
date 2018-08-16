@@ -43,7 +43,7 @@
 .imgCont{
     /*padding: 54px;*/
     border: 1px solid #eee;
-    height: 218px;
+    height: 375px;
     overflow-x: hidden;
     overflow-y: scroll;
 }

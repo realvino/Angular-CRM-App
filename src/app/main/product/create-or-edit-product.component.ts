@@ -587,10 +587,10 @@ export class CreateEditProductComponent extends AppComponentBase  {
     }
 
     createFinishedDetails(){
-        this.createEditFinishedDetailModal.show(0,this.product_input.id);
+        this.createEditFinishedDetailModal.show(0,this.product_input.id,0);
     }
     editFinishedDetails(data){
-        this.createEditFinishedDetailModal.show(data.id,this.product_input.id);
+        this.createEditFinishedDetailModal.show(data.id,this.product_input.id,0);
     }
     deleteFinishedDetails(data) {
         this.message.confirm(

@@ -1066,6 +1066,12 @@ public removedAssigned(value:any):void {
         
 }
 
+checkMinus(event: KeyboardEvent) {
+  if (event.keyCode == 189 || event.keyCode == 109) {
+    event.preventDefault();
+  }
+}
+
 updateSalesman(){
   if(this.assignedDiff && this.inquiry.companyId > 0 && this.inquiry.assignedbyId > 0){
    this.updateSalesmanInput.companyId = this.inquiry.companyId;

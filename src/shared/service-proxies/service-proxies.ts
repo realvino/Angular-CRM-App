@@ -8026,6 +8026,292 @@ export class FinishedServiceProxy {
         }
         return Observable.of<void>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    getTemporaryFinishedDetail(id: number): Observable<TemporaryFinishedDetailList[]> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/GetTemporaryFinishedDetail?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetTemporaryFinishedDetail(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetTemporaryFinishedDetail(response_);
+                } catch (e) {
+                    return <Observable<TemporaryFinishedDetailList[]>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<TemporaryFinishedDetailList[]>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetTemporaryFinishedDetail(response: Response): Observable<TemporaryFinishedDetailList[]> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: TemporaryFinishedDetailList[] = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(TemporaryFinishedDetailList.fromJS(item));
+            }
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<TemporaryFinishedDetailList[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getTemporaryFinishedDetailForEdit(id: number): Observable<TemporaryFinishedDetailList> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/GetTemporaryFinishedDetailForEdit?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetTemporaryFinishedDetailForEdit(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetTemporaryFinishedDetailForEdit(response_);
+                } catch (e) {
+                    return <Observable<TemporaryFinishedDetailList>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<TemporaryFinishedDetailList>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetTemporaryFinishedDetailForEdit(response: Response): Observable<TemporaryFinishedDetailList> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: TemporaryFinishedDetailList = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? TemporaryFinishedDetailList.fromJS(resultData200) : new TemporaryFinishedDetailList();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<TemporaryFinishedDetailList>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    createOrUpdateTemporaryFinishedDetail(input: TemporaryFinishedDetailInput): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/CreateOrUpdateTemporaryFinishedDetail";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input ? input.toJSON() : null);
+        
+        let options_ = {
+            body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processCreateOrUpdateTemporaryFinishedDetail(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processCreateOrUpdateTemporaryFinishedDetail(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processCreateOrUpdateTemporaryFinishedDetail(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    createTemporaryFinishedDetailAsync(input: TemporaryFinishedDetailInput): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/CreateTemporaryFinishedDetailAsync";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input ? input.toJSON() : null);
+        
+        let options_ = {
+            body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processCreateTemporaryFinishedDetailAsync(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processCreateTemporaryFinishedDetailAsync(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processCreateTemporaryFinishedDetailAsync(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    updateTemporaryFinishedDetailAsync(input: TemporaryFinishedDetailInput): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/UpdateTemporaryFinishedDetailAsync";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input ? input.toJSON() : null);
+        
+        let options_ = {
+            body: content_,
+            method: "put",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processUpdateTemporaryFinishedDetailAsync(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processUpdateTemporaryFinishedDetailAsync(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdateTemporaryFinishedDetailAsync(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    deleteTemporaryFinishedDetail(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Finished/DeleteTemporaryFinishedDetail?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "delete",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processDeleteTemporaryFinishedDetail(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processDeleteTemporaryFinishedDetail(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processDeleteTemporaryFinishedDetail(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -26704,6 +26990,106 @@ export class Select2ServiceProxy {
     /**
      * @return Success
      */
+    getFinishedDetal(id: number): Observable<SelectFinishedResult> {
+        let url_ = this.baseUrl + "/api/services/app/Select2/GetFinishedDetal?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetFinishedDetal(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetFinishedDetal(response_);
+                } catch (e) {
+                    return <Observable<SelectFinishedResult>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<SelectFinishedResult>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetFinishedDetal(response: Response): Observable<SelectFinishedResult> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: SelectFinishedResult = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? SelectFinishedResult.fromJS(resultData200) : new SelectFinishedResult();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<SelectFinishedResult>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getTemporaryFinishedDetal(id: number): Observable<SelectFinishedResult> {
+        let url_ = this.baseUrl + "/api/services/app/Select2/GetTemporaryFinishedDetal?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetTemporaryFinishedDetal(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetTemporaryFinishedDetal(response_);
+                } catch (e) {
+                    return <Observable<SelectFinishedResult>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<SelectFinishedResult>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetTemporaryFinishedDetal(response: Response): Observable<SelectFinishedResult> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: SelectFinishedResult = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? SelectFinishedResult.fromJS(resultData200) : new SelectFinishedResult();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<SelectFinishedResult>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
     getCity(): Observable<Select2City> {
         let url_ = this.baseUrl + "/api/services/app/Select2/GetCity";
         url_ = url_.replace(/[?&]$/, "");
@@ -33800,6 +34186,166 @@ export class TenantDashboardServiceProxy {
             return throwException("An unexpected server error occurred.", status, responseText);
         }
         return Observable.of<GetSalesLeadList>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getSalesPersonOpportunitiesStatusAllUser(userId: string, teamId: string, startDate: moment.Moment, endDate: moment.Moment): Observable<GetSalesLeadList> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetSalesPersonOpportunitiesStatusAllUser?";
+        if (userId !== undefined)
+            url_ += "UserId=" + encodeURIComponent("" + userId) + "&"; 
+        if (teamId !== undefined)
+            url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
+        if (startDate !== undefined)
+            url_ += "StartDate=" + encodeURIComponent("" + startDate.toJSON()) + "&"; 
+        if (endDate !== undefined)
+            url_ += "EndDate=" + encodeURIComponent("" + endDate.toJSON()) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetSalesPersonOpportunitiesStatusAllUser(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetSalesPersonOpportunitiesStatusAllUser(response_);
+                } catch (e) {
+                    return <Observable<GetSalesLeadList>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<GetSalesLeadList>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetSalesPersonOpportunitiesStatusAllUser(response: Response): Observable<GetSalesLeadList> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: GetSalesLeadList = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? GetSalesLeadList.fromJS(resultData200) : new GetSalesLeadList();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<GetSalesLeadList>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getSessionInquiryRecentClosure(teamId: string, salesId: string): Observable<RecentInquiryClosureList> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetSessionInquiryRecentClosure?";
+        if (teamId !== undefined)
+            url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
+        if (salesId !== undefined)
+            url_ += "SalesId=" + encodeURIComponent("" + salesId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetSessionInquiryRecentClosure(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetSessionInquiryRecentClosure(response_);
+                } catch (e) {
+                    return <Observable<RecentInquiryClosureList>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<RecentInquiryClosureList>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetSessionInquiryRecentClosure(response: Response): Observable<RecentInquiryClosureList> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: RecentInquiryClosureList = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? RecentInquiryClosureList.fromJS(resultData200) : new RecentInquiryClosureList();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<RecentInquiryClosureList>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getSessionInquiryRecentActivity(teamId: string, salesId: string): Observable<RecentInquiryActivityList> {
+        let url_ = this.baseUrl + "/api/services/app/TenantDashboard/GetSessionInquiryRecentActivity?";
+        if (teamId !== undefined)
+            url_ += "TeamId=" + encodeURIComponent("" + teamId) + "&"; 
+        if (salesId !== undefined)
+            url_ += "SalesId=" + encodeURIComponent("" + salesId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+        
+        let options_ = {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetSessionInquiryRecentActivity(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetSessionInquiryRecentActivity(response_);
+                } catch (e) {
+                    return <Observable<RecentInquiryActivityList>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<RecentInquiryActivityList>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetSessionInquiryRecentActivity(response: Response): Observable<RecentInquiryActivityList> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: RecentInquiryActivityList = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? RecentInquiryActivityList.fromJS(resultData200) : new RecentInquiryActivityList();
+            return Observable.of(result200);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<RecentInquiryActivityList>(<any>null);
     }
 }
 
@@ -42819,6 +43365,120 @@ export interface IFinishedDetailInput {
     price: number;
 }
 
+export class TemporaryFinishedDetailList implements ITemporaryFinishedDetailList {
+    id: number;
+    gpCode: string;
+    price: number;
+    finishedId: number;
+    finishedCode: string;
+    finishedName: string;
+    finishedDescription: string;
+    temporaryProductId: number;
+
+    constructor(data?: ITemporaryFinishedDetailList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.gpCode = data["gpCode"];
+            this.price = data["price"];
+            this.finishedId = data["finishedId"];
+            this.finishedCode = data["finishedCode"];
+            this.finishedName = data["finishedName"];
+            this.finishedDescription = data["finishedDescription"];
+            this.temporaryProductId = data["temporaryProductId"];
+        }
+    }
+
+    static fromJS(data: any): TemporaryFinishedDetailList {
+        let result = new TemporaryFinishedDetailList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["gpCode"] = this.gpCode;
+        data["price"] = this.price;
+        data["finishedId"] = this.finishedId;
+        data["finishedCode"] = this.finishedCode;
+        data["finishedName"] = this.finishedName;
+        data["finishedDescription"] = this.finishedDescription;
+        data["temporaryProductId"] = this.temporaryProductId;
+        return data; 
+    }
+}
+
+export interface ITemporaryFinishedDetailList {
+    id: number;
+    gpCode: string;
+    price: number;
+    finishedId: number;
+    finishedCode: string;
+    finishedName: string;
+    finishedDescription: string;
+    temporaryProductId: number;
+}
+
+export class TemporaryFinishedDetailInput implements ITemporaryFinishedDetailInput {
+    id: number;
+    finishedId: number;
+    temporaryProductId: number;
+    gpCode: string;
+    price: number;
+
+    constructor(data?: ITemporaryFinishedDetailInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.finishedId = data["finishedId"];
+            this.temporaryProductId = data["temporaryProductId"];
+            this.gpCode = data["gpCode"];
+            this.price = data["price"];
+        }
+    }
+
+    static fromJS(data: any): TemporaryFinishedDetailInput {
+        let result = new TemporaryFinishedDetailInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["finishedId"] = this.finishedId;
+        data["temporaryProductId"] = this.temporaryProductId;
+        data["gpCode"] = this.gpCode;
+        data["price"] = this.price;
+        return data; 
+    }
+}
+
+export interface ITemporaryFinishedDetailInput {
+    id: number;
+    finishedId: number;
+    temporaryProductId: number;
+    gpCode: string;
+    price: number;
+}
+
 export class CreateFriendshipRequestInput implements ICreateFriendshipRequestInput {
     userId: number;
     tenantId: number;
@@ -46811,6 +47471,7 @@ export class NotificationListDto implements INotificationListDto {
     name: string;
     designerApproval: boolean;
     revisionApproval: boolean;
+    count: number;
 
     constructor(data?: INotificationListDto) {
         if (data) {
@@ -46828,6 +47489,7 @@ export class NotificationListDto implements INotificationListDto {
             this.name = data["name"];
             this.designerApproval = data["designerApproval"];
             this.revisionApproval = data["revisionApproval"];
+            this.count = data["count"];
         }
     }
 
@@ -46844,6 +47506,7 @@ export class NotificationListDto implements INotificationListDto {
         data["name"] = this.name;
         data["designerApproval"] = this.designerApproval;
         data["revisionApproval"] = this.revisionApproval;
+        data["count"] = this.count;
         return data; 
     }
 }
@@ -46854,6 +47517,7 @@ export interface INotificationListDto {
     name: string;
     designerApproval: boolean;
     revisionApproval: boolean;
+    count: number;
 }
 
 export class LCNumberInput implements ILCNumberInput {
@@ -54935,6 +55599,9 @@ export class QuotationProductListDto implements IQuotationProductListDto {
     imageUrl: string;
     creationTime: moment.Moment;
     description: string;
+    finishedDetailId: number;
+    finishName: string;
+    temporaryFinishedDetailId: number;
 
     constructor(data?: IQuotationProductListDto) {
         if (data) {
@@ -54972,6 +55639,9 @@ export class QuotationProductListDto implements IQuotationProductListDto {
             this.imageUrl = data["imageUrl"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.description = data["description"];
+            this.finishedDetailId = data["finishedDetailId"];
+            this.finishName = data["finishName"];
+            this.temporaryFinishedDetailId = data["temporaryFinishedDetailId"];
         }
     }
 
@@ -55008,6 +55678,9 @@ export class QuotationProductListDto implements IQuotationProductListDto {
         data["imageUrl"] = this.imageUrl;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["description"] = this.description;
+        data["finishedDetailId"] = this.finishedDetailId;
+        data["finishName"] = this.finishName;
+        data["temporaryFinishedDetailId"] = this.temporaryFinishedDetailId;
         return data; 
     }
 }
@@ -55038,6 +55711,9 @@ export interface IQuotationProductListDto {
     imageUrl: string;
     creationTime: moment.Moment;
     description: string;
+    finishedDetailId: number;
+    finishName: string;
+    temporaryFinishedDetailId: number;
 }
 
 export class QuotationProductInput implements IQuotationProductInput {
@@ -55058,6 +55734,8 @@ export class QuotationProductInput implements IQuotationProductInput {
     overAllDiscount: number;
     temporaryCode: string;
     temporaryProductId: number;
+    finishedDetailId: number;
+    temporaryFinishedDetailId: number;
 
     constructor(data?: IQuotationProductInput) {
         if (data) {
@@ -55087,6 +55765,8 @@ export class QuotationProductInput implements IQuotationProductInput {
             this.overAllDiscount = data["overAllDiscount"];
             this.temporaryCode = data["temporaryCode"];
             this.temporaryProductId = data["temporaryProductId"];
+            this.finishedDetailId = data["finishedDetailId"];
+            this.temporaryFinishedDetailId = data["temporaryFinishedDetailId"];
         }
     }
 
@@ -55115,6 +55795,8 @@ export class QuotationProductInput implements IQuotationProductInput {
         data["overAllDiscount"] = this.overAllDiscount;
         data["temporaryCode"] = this.temporaryCode;
         data["temporaryProductId"] = this.temporaryProductId;
+        data["finishedDetailId"] = this.finishedDetailId;
+        data["temporaryFinishedDetailId"] = this.temporaryFinishedDetailId;
         return data; 
     }
 }
@@ -55137,6 +55819,8 @@ export interface IQuotationProductInput {
     overAllDiscount: number;
     temporaryCode: string;
     temporaryProductId: number;
+    finishedDetailId: number;
+    temporaryFinishedDetailId: number;
 }
 
 export class PagedResultDtoOfImportHistoryList implements IPagedResultDtoOfImportHistoryList {
@@ -57264,6 +57948,96 @@ export interface ISelect2salesDto {
     name: string;
     salesManId: number;
     salesMan: string;
+}
+
+export class SelectFinishedResult implements ISelectFinishedResult {
+    select2data: FinishedDetailDto[];
+
+    constructor(data?: ISelectFinishedResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (data["select2data"] && data["select2data"].constructor === Array) {
+                this.select2data = [];
+                for (let item of data["select2data"])
+                    this.select2data.push(FinishedDetailDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): SelectFinishedResult {
+        let result = new SelectFinishedResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.select2data && this.select2data.constructor === Array) {
+            data["select2data"] = [];
+            for (let item of this.select2data)
+                data["select2data"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ISelectFinishedResult {
+    select2data: FinishedDetailDto[];
+}
+
+export class FinishedDetailDto implements IFinishedDetailDto {
+    id: number;
+    name: string;
+    gpCode: string;
+    price: number;
+
+    constructor(data?: IFinishedDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.gpCode = data["gpCode"];
+            this.price = data["price"];
+        }
+    }
+
+    static fromJS(data: any): FinishedDetailDto {
+        let result = new FinishedDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["gpCode"] = this.gpCode;
+        data["price"] = this.price;
+        return data; 
+    }
+}
+
+export interface IFinishedDetailDto {
+    id: number;
+    name: string;
+    gpCode: string;
+    price: number;
 }
 
 export class Select2City implements ISelect2City {
@@ -61162,6 +61936,11 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
     stage: string;
     value: number;
     stared: boolean;
+    salesPersonId: number;
+    coordinatorId: number;
+    designerId: number;
+    salesManagerId: number;
+    creatorUserId: number;
 
     constructor(data?: IRecentInquiryClosureDto) {
         if (data) {
@@ -61193,6 +61972,11 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
             this.stage = data["stage"];
             this.value = data["value"];
             this.stared = data["stared"];
+            this.salesPersonId = data["salesPersonId"];
+            this.coordinatorId = data["coordinatorId"];
+            this.designerId = data["designerId"];
+            this.salesManagerId = data["salesManagerId"];
+            this.creatorUserId = data["creatorUserId"];
         }
     }
 
@@ -61223,6 +62007,11 @@ export class RecentInquiryClosureDto implements IRecentInquiryClosureDto {
         data["stage"] = this.stage;
         data["value"] = this.value;
         data["stared"] = this.stared;
+        data["salesPersonId"] = this.salesPersonId;
+        data["coordinatorId"] = this.coordinatorId;
+        data["designerId"] = this.designerId;
+        data["salesManagerId"] = this.salesManagerId;
+        data["creatorUserId"] = this.creatorUserId;
         return data; 
     }
 }
@@ -61247,6 +62036,11 @@ export interface IRecentInquiryClosureDto {
     stage: string;
     value: number;
     stared: boolean;
+    salesPersonId: number;
+    coordinatorId: number;
+    designerId: number;
+    salesManagerId: number;
+    creatorUserId: number;
 }
 
 export class RecentInquiryActivityList implements IRecentInquiryActivityList {

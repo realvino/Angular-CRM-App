@@ -10,13 +10,85 @@
                         <span *ngIf="tempProduct_input.id">{{l("Edit NonStandard Product")}}: {{tempProduct_input.productCode}}</span>
                     </h4>
                 </div>
-                <form *ngIf="active" #createCompanyForm="ngForm" novalidate (ngSubmit)="save()">                        
+                <form *ngIf="active && !tempProduct_input.id" #createCompanyForm="ngForm" novalidate (ngSubmit)="save()">                        
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+							    <div class="col-md-6"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="productName"  [ngClass]="{'edited':tempProduct_input.productName}" [(ngModel)]="tempProduct_input.productName">
+                                        <label>{{l("Product Name")}} </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="product_code" [disabled]="tempProduct_input.id" [ngClass]="{'edited':tempProduct_input.productCode}" [(ngModel)]="tempProduct_input.productCode" required>
+                                        <label>{{l("Product Code")}} <required_field></required_field></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="suspectCode" [disabled]="tempProduct_input.id" [ngClass]="{'edited':tempProduct_input.suspectCode}" [(ngModel)]="tempProduct_input.suspectCode" required>
+                                        <label>{{l("SupplierCode")}} <required_field></required_field></label>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-6"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="gpcode" [ngClass]="{'edited':tempProduct_input.gpcode}" [(ngModel)]="tempProduct_input.gpcode">
+                                        <label>{{l("GPCode")}} </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="number" name="price" [ngClass]="{'edited':tempProduct_input.price}" [(ngModel)]="tempProduct_input.price" (keydown)="check($event)" required>
+                                        <label>{{l("Price")}} <required_field></required_field></label>
+                                    </div>
+                                </div> -->
+                                <div class="col-md-2"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="width" [ngClass]="{'edited':tempProduct_input.width}" [(ngModel)]="tempProduct_input.width">
+                                        <label>{{l("Width")}} </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="depth" [ngClass]="{'edited':tempProduct_input.depth}" [(ngModel)]="tempProduct_input.depth">
+                                        <label>{{l("Depth")}} </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2"> 
+                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                        <input class="form-control" type="text" name="height" [ngClass]="{'edited':tempProduct_input.height}" [(ngModel)]="tempProduct_input.height">
+                                        <label>{{l("Height")}} </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Description</label>
+                                        <p-editor [(ngModel)]="tempProduct_input.description" name="HtmlEditorInput" [style]="{'min-height':'100px'}"></p-editor>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label>Description</label>
+                                    <p-editor [(ngModel)]="tempProduct_input.description" name="HtmlEditorInput" [style]="{'min-height':'100px'}"></p-editor>
+                            </div>
+                        </div> -->
+                        <div class="modal-footer">
+                            <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                            <button type="submit" class="btn btn-primary blue" [disabled]="!createCompanyForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                        </div>
+                    </div>
+                </form>
+        <tabset  class="tab-container tabbable-line" #tabsActive *ngIf="tempProduct_input.id">
+            <tab heading="Non Standard Product Details"> 
+                <form *ngIf="active && tempProduct_input.id" #createCompanyForm="ngForm" novalidate (ngSubmit)="save()">                        
                     <div class="modal-body">
                         <div class="modal_processing" *ngIf="processed_image">
                             <span class="fa fa-2x fa-spinner loader"></span>
                         </div>
                         <div class="row">
-                            <div *ngIf="tempProduct_input.id" class="col-md-2" >
+                            <div class="col-md-2" >
                                 <div class="col-md-12 imgCont">
                                     <span *ngFor="let item of imageList">
                                         <img *ngIf="item.imageUrl" src="{{path+item.imageUrl}}" class="img-product" />
@@ -34,7 +106,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div *ngIf="tempProduct_input.id" class="col-md-10">
+                            <div class="col-md-10">
 							    <div class="col-md-6"> 
                                     <div class="form-group form-md-line-input form-md-floating-label no-hint">
                                         <input class="form-control" type="text" name="productName"  [ngClass]="{'edited':tempProduct_input.productName}" [(ngModel)]="tempProduct_input.productName">
@@ -53,7 +125,7 @@
                                         <label>{{l("SupplierCode")}} <required_field></required_field></label>
                                     </div>
                                 </div>
-                                <div class="col-md-6"> 
+                                <!-- <div class="col-md-6"> 
                                     <div class="form-group form-md-line-input form-md-floating-label no-hint">
                                         <input class="form-control" type="text" name="gpcode" [ngClass]="{'edited':tempProduct_input.gpcode}" [(ngModel)]="tempProduct_input.gpcode">
                                         <label>{{l("GPCode")}} </label>
@@ -61,10 +133,10 @@
                                 </div>
                                 <div class="col-md-6"> 
                                     <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <input class="form-control" type="text" name="price" [ngClass]="{'edited':tempProduct_input.price}" [(ngModel)]="tempProduct_input.price" required>
+                                        <input class="form-control" type="number" name="price" [ngClass]="{'edited':tempProduct_input.price}" [(ngModel)]="tempProduct_input.price" (keydown)="check($event)" required>
                                         <label>{{l("Price")}} <required_field></required_field></label>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="col-md-2"> 
                                     <div class="form-group form-md-line-input form-md-floating-label no-hint">
                                         <input class="form-control" type="text" name="width" [ngClass]="{'edited':tempProduct_input.width}" [(ngModel)]="tempProduct_input.width">
@@ -83,75 +155,55 @@
                                         <label>{{l("Height")}} </label>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div *ngIf="!tempProduct_input.id" class="col-md-12">
-							    <div class="col-md-6"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <input class="form-control" type="text" name="productName"  [ngClass]="{'edited':tempProduct_input.productName}" [(ngModel)]="tempProduct_input.productName">
-                                        <label>{{l("Product Name")}} </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <input class="form-control" type="text" name="product_code" [disabled]="tempProduct_input.id" [ngClass]="{'edited':tempProduct_input.productCode}" [(ngModel)]="tempProduct_input.productCode" required>
-                                        <label>{{l("Product Code")}} <required_field></required_field></label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <input class="form-control" type="text" name="suspectCode" [disabled]="tempProduct_input.id" [ngClass]="{'edited':tempProduct_input.suspectCode}" [(ngModel)]="tempProduct_input.suspectCode" required>
-                                        <label>{{l("SupplierCode")}} <required_field></required_field></label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <input class="form-control" type="text" name="gpcode" [ngClass]="{'edited':tempProduct_input.gpcode}" [(ngModel)]="tempProduct_input.gpcode">
-                                        <label>{{l("GPCode")}} </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <input class="form-control" type="text" name="price" [ngClass]="{'edited':tempProduct_input.price}" [(ngModel)]="tempProduct_input.price" required>
-                                        <label>{{l("Price")}} <required_field></required_field></label>
-                                    </div>
-                                </div>
-                                <div class="col-md-2"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <input class="form-control" type="text" name="width" [ngClass]="{'edited':tempProduct_input.width}" [(ngModel)]="tempProduct_input.width">
-                                        <label>{{l("Width")}} </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-2"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <input class="form-control" type="text" name="depth" [ngClass]="{'edited':tempProduct_input.depth}" [(ngModel)]="tempProduct_input.depth">
-                                        <label>{{l("Depth")}} </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-2"> 
-                                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <input class="form-control" type="text" name="height" [ngClass]="{'edited':tempProduct_input.height}" [(ngModel)]="tempProduct_input.height">
-                                        <label>{{l("Height")}} </label>
-                                    </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Description</label>
+                                        <p-editor [(ngModel)]="tempProduct_input.description" name="HtmlEditorInput" [style]="{'min-height':'100px'}"></p-editor>
                                 </div>
                             </div>
-
                         </div>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-12 form-group">
                                 <label>Description</label>
                                     <p-editor [(ngModel)]="tempProduct_input.description" name="HtmlEditorInput" [style]="{'min-height':'100px'}"></p-editor>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="modal-footer">
                             <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
                             <button type="submit" class="btn btn-primary blue" [disabled]="!createCompanyForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
                         </div>
                     </div>
                 </form>
+            </tab>
+            <tab heading="Finishes" *ngIf="tempProduct_input.id">
+               <div class="modal-body">
+                    <div class= "row">
+                        <div class="col-xs-12 text-right" style="top: -20px;left: -10px;">
+                           <button title="Create New" (click)="createFinishedDetails()" class="btn btn-circle btn-icon-only blue"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-xs-12">
+                            <div class="list-group">
+                               <a *ngFor="let item of finishedDetails" href="javascript:;" class="list-group-item">
+                                    <h4 class="list-group-item-heading">
+                                    {{item.gpCode}} - Price : {{item.price}} 
+                                    <button (click)="editFinishedDetails(item)"  title="{{l('Edit')}}" class="btn btn-circle btn-icon-only green edit-person"><i class="icon-pencil"></i></button>
+                                    <button (click)="deleteFinishedDetails(item)"title="{{l('Delete')}}" class="btn btn-circle btn-icon-only red delete-person" href="javascript:;"><i class="icon-trash"></i></button>
+                                    </h4>
+                                    <p class="list-group-item-text">
+                                     {{item.finishedName}} - {{item.finishedCode}}
+                                   </p>
+                               </a>
+                           </div>	
+                        </div>
+                   </div>
+                </div>
+             </tab>
+        </tabset>
         </div>
     </div>
 </div>
+<createEditFinishedDetailModal #createEditFinishedDetailModal (modalSave)="getFinishedDetails(tempProduct_input.id)"></createEditFinishedDetailModal> 
 <style>
    
 .modal_processing{
@@ -262,4 +314,11 @@
 .inputfile-1 + label:hover {
     background-color: #722040;
 }
+.list-group-item-heading > button.delete-person {
+            float: right;
+            margin-right: 10px;
+        }
+    .list-group-item-heading > button.edit-person {
+            float: right;
+        }
 </style>

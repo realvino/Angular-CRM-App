@@ -292,7 +292,7 @@
                                     <div class="item-head">
                                         <div class="item-details">
                                                 <img class="item-pic rounded" src="{{path+clos.salesManImage}}">
-                                            <a (click) = "GotoLead(clos.inquiryId)" class="item-name primary-link">{{clos.subMmissionId}}</a>
+                                            <a (click) = "GotoLead(clos)" class="item-name primary-link">{{clos.subMmissionId}}</a>
                                             <span class="item-label">{{clos.closureDate}} ({{clos.stageName}})</span>&nbsp;
                                             <span class="item-label" style="color: black;"><b>{{clos.total}}</b></span>&nbsp;
                                             <span class="item-label"> inactive {{clos.lastActivity| amTimeAgo}} </span>
@@ -316,7 +316,7 @@
                                         <div class="item-head">
                                             <div class="item-details">
                                                 <img class="item-pic rounded" src="{{path+clst.salesManImage}}">
-                                                <a (click) = "GotoLead(clst.inquiryId)" class="item-name primary-link">{{clst.subMmissionId}}</a>
+                                                <a (click) = "GotoLead(clst)" class="item-name primary-link">{{clst.subMmissionId}}</a>
                                                 <span class="item-label">{{clst.closureDate}} ({{clst.stageName}})</span>&nbsp;
                                                 <span class="item-label" style="color: black;"><b>{{clst.total}}</b></span>&nbsp;
                                                 <span class="item-label"> inactive {{clst.lastActivity| amTimeAgo}} </span>
@@ -339,7 +339,7 @@
                                         <div class="item-head">
                                             <div class="item-details">
                                                 <img class="item-pic rounded" src="{{path+mlst.salesManImage}}">
-                                                <a (click) = "GotoLead(mlst.inquiryId)" class="item-name primary-link">{{mlst.subMmissionId}}</a>
+                                                <a (click) = "GotoLead(mlst)" class="item-name primary-link">{{mlst.subMmissionId}}</a>
                                                 <span class="item-label">{{mlst.closureDate}} ({{mlst.stageName}})</span>&nbsp;
                                                 <span class="item-label" style="color: black;"><b>{{mlst.total}}</b></span>&nbsp;
                                                 <span class="item-label"> inactive {{mlst.lastActivity| amTimeAgo}} </span>
@@ -362,7 +362,7 @@
                                             <div class="item-head">
                                                 <div class="item-details">
                                                     <img class="item-pic rounded" src="{{path+over.salesManImage}}">
-                                                    <a (click) = "GotoLead(over.inquiryId)" class="item-name primary-link">{{over.subMmissionId}}</a>
+                                                    <a (click) = "GotoLead(over)" class="item-name primary-link">{{over.subMmissionId}}</a>
                                                     <span class="item-label">{{over.closureDate}} ({{over.stageName}})</span>&nbsp;
                                                     <span class="item-label" style="color: black;"><b>{{over.total}}</b></span>&nbsp;
                                                     <span class="item-label"> inactive {{over.lastActivity| amTimeAgo}} </span>
@@ -406,7 +406,7 @@
                                         <i class="fa fa-genderless m--font-danger"></i>									 
                                     </div>
                                     <div class="m-timeline-2__item-text  m--padding-top-5">
-                                      <a (click) = "GotoLead(oact.inquiryId)" class="item-name primary-link">{{oact.subMmissionId}}</a>
+                                      <a (click) = "GotoLead(oact)" class="item-name primary-link">{{oact.subMmissionId}}</a>
                                        <b>{{oact.inquiryName}}</b> &nbsp; <span style="color: #c0c9cc;" class="item-label"> inactive {{oact.lastActivity| amTimeAgo}} </span><br>
 
                                         {{oact.remarks}}        
@@ -433,7 +433,7 @@
                                                     <i class="fa fa-genderless m--font-warning"></i>                                     
                                             </div>
                                             <div class="m-timeline-2__item-text  m--padding-top-5">
-                                              <a  (click)="GotoLead(tact.inquiryId)" class="item-name primary-link">{{tact.subMmissionId}}</a>
+                                              <a  (click)="GotoLead(tact)" class="item-name primary-link">{{tact.subMmissionId}}</a>
                                                <b>{{tact.inquiryName}}</b>&nbsp; <span style="color: #c0c9cc;" class="item-label"> inactive {{tact.lastActivity| amTimeAgo}} </span><br>
                                                 {{tact.remarks}}  
                                                 <img width="20" *ngIf="tact.salesManImage" height="20" class="item-pic rounded" src="{{path+tact.salesManImage}}">
@@ -460,7 +460,7 @@
                                                     <i class="fa fa-genderless m--font-brand"></i>									 
                                                 </div>
                                             <div class="m-timeline-2__item-text  m--padding-top-5">
-                                              <a (click) = "GotoLead(nact.inquiryId)" class="item-name primary-link">{{nact.subMmissionId}}</a>
+                                              <a (click) = "GotoLead(nact)" class="item-name primary-link">{{nact.subMmissionId}}</a>
                                                <b>{{nact.inquiryName}}</b>&nbsp; <span style="color: #c0c9cc;" class="item-label"> inactive {{nact.lastActivity| amTimeAgo}} </span><br>
                                                 {{nact.remarks}}  
                                                 <img width="20" *ngIf="nact.salesManImage" height="20" class="item-pic rounded" src="{{path+nact.salesManImage}}">

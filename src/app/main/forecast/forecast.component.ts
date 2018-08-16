@@ -16,6 +16,7 @@ import {MonthPicker} from 'app/main/monthPicker/month';
 import { AppConsts } from '@shared/AppConsts';
 import { months } from 'moment';
 import { isNgTemplate } from '../../../../node_modules/@angular/compiler';
+import { AppSalesSummaryDatePeriod } from '@shared/AppEnums';
 
 @Component({
 templateUrl: './forecast.component.html',
@@ -42,8 +43,8 @@ export class ForecastComponent extends AppComponentBase implements AfterViewInit
 	active_view:SelectOption[];
     active_team:SelectOption[];
 	viewId: number;
-	from: number = 0;
-	to: number = 0;
+	from: number;
+	to: number;
 	teamId: number;
 	typeId: number;
 	counts: number = 1;
@@ -182,14 +183,14 @@ export class ForecastComponent extends AppComponentBase implements AfterViewInit
 			this.loading = true;
 		});
 
-		if(!this.from){
-			this.from = 0;
-		}
-		if(!this.to){
-			this.to = 0;
-		}
+		// if(!this.from){
+		// 	this.from = 0;
+		// }
+		// if(!this.to){
+		// 	this.to = 0;
+		// }
 
-		this._inquiryProxyService.getClosureDateInquiryTickets(filter,this.closureDate,this.teamId,this.viewId,this.typeId,this.from,this.to).subscribe(result =>{
+		this._inquiryProxyService.getClosureDateInquiryTickets(filter,this.closureDate,this.teamId,this.viewId,this.typeId,this.from > 0 ? this.from : 0,this.to > 0 ? this.to : 0).subscribe(result =>{
 			this.groups = result;
 			
 			this.loading = false;
@@ -238,7 +239,6 @@ export class ForecastComponent extends AppComponentBase implements AfterViewInit
 			  let sales_Filter = result.salesPerson;
 			  if(team_filter != null)
 			  {
-				 alert("hi");
 				this.active_team = [{id: team_filter.id, text: team_filter.name}];
 				this.teamId = team_filter.salesManId;
 				this.getSalesman(this.teamId);
@@ -286,13 +286,13 @@ export class ForecastComponent extends AppComponentBase implements AfterViewInit
 	}
 	selectType(data:any){
 	   this.typeId = data.id;
-	   this.from = 0;
-	   this.to = 0;
+	   this.from = null;
+	   this.to = null;
 	}
-	removeType(data:any){
+	removeType(data:any){ 
 	   this.typeId = 0;
-	   this.from = 0;
-	   this.to = 0;
+	   this.from = null;
+	   this.to = null;
 	}
 	goToLead(value:any):void{       
 	  let x = abp.session.userId;

@@ -30,7 +30,7 @@
                                 <div *ngFor="let act of NotificationList" class="item" id="note1">
                                     <div class="item-head">
                                         <div class="item-details" id="note2">
-                                                <h4><a (click)="gotoInquiry(act.id)">{{act.submissionId}}&nbsp; &nbsp;<span style="font-size: 10px;">{{act.name}}</span></a></h4>
+                                                <h4><a (click)="gotoInquiry(act.id)">{{act.submissionId}}-D1&nbsp; &nbsp;<span style="font-size: 10px;">{{act.name}}</span></a></h4>
                                                 <h4 class="list-group-item-text" id="note3">
                                                     <small id="note4" class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle" (click)="approve(act.id)">Accept</small>   
                                                     <small id="note5" class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle" (click)="reject(act.id)">Reject</small>
@@ -42,8 +42,7 @@
                                 <div *ngFor="let ract of RevisionList" class="item" id="note1">
                                     <div class="item-head">
                                         <div class="item-details" id="note22">
-                                                <h4><a (click)="gotoInquiry(ract.id)">{{ract.submissionId}}&nbsp; &nbsp;<span style="font-size: 10px;">{{ract.name}}</span></a></h4>
-                                                <h4 class="list-group-item-text" id="note3">
+                                            <h4><a (click)="gotoInquiry(ract.id)">{{ract.submissionId}}-D{{ract.count}}&nbsp; &nbsp;<span style="font-size: 10px;">{{ract.name}}</span></a></h4>                                                           <h4 class="list-group-item-text" id="note3">
                                                     <small id="note4" class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle" (click)="dapprove(ract.id,1)">Accept</small>   
                                                     <small id="note5" class="btn btn-transparent btn-no-border blue-oleo btn-outline btn-circle" (click)="dapprove(ract.id,2)">Reject</small>
                                                 </h4>

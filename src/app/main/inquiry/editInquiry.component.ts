@@ -1489,6 +1489,13 @@ deleteJobActivity(job: JobActivityList): void {
         });
       }
     }
+
+checkMinus(event: KeyboardEvent) {
+      if (event.keyCode == 189 || event.keyCode == 109) {
+        event.preventDefault();
+      }
+    }
+  
 close() {
   var self = this;
         this.unapproved = null;

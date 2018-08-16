@@ -293,7 +293,7 @@
                 <div class="row"  *ngIf="inquiry.mileStoneId > 1 && which_located!='sales-enquiry' && which_located!='sales-grid'" style="background: #e3e4e6; margin-right: 0px;margin-left: 0px; padding: 10px;margin-top: 10px;">
                         <div class="col-md-3">
                             <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                <input class="form-control" type="number" name="estimationValue" [ngClass]="{'edited':inquiry.estimationValue}" [(ngModel)]="inquiry.estimationValue" [ngModelOptions]="{standalone: true}">
+                                <input class="form-control" type="number" name="estimationValue" [ngClass]="{'edited':inquiry.estimationValue}" [(ngModel)]="inquiry.estimationValue" [ngModelOptions]="{standalone: true}" (keydown)="checkMinus($event)">
                                 <label>{{l("Estimation")}} <required_field></required_field></label>
                             </div>
                         </div>
@@ -353,7 +353,7 @@
                     </div>
                    <div class="col-md-3">
                        <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                           <input class="form-control" type="number" name="estimatedValue" [ngClass]="{'edited':saveLeadDetailInput.estimationValue}" [(ngModel)]="saveLeadDetailInput.estimationValue" >
+                           <input class="form-control" type="number" name="estimatedValue" [ngClass]="{'edited':saveLeadDetailInput.estimationValue}" [(ngModel)]="saveLeadDetailInput.estimationValue" (keydown)="checkMinus($event)">
                            <label>{{l("Estimated Value")}} <required_field></required_field></label>
                         </div>
                    </div>

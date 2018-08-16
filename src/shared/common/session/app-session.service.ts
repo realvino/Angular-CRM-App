@@ -37,6 +37,9 @@ export class AppSessionService {
         let role = this._user.role;
         return role;
     }
+    get filtersalesId(): number {
+        return 18;
+    }
     getShownLoginName(): string {
         let userName = this._user.userName;
         if (!this._abpMultiTenancyService.isEnabled) {

@@ -431,7 +431,7 @@ address{ margin-bottom:0px;}
 .imgCont{
     /*padding: 54px;*/
     border: 1px solid #eee;
-    height: 210px;
+    height: 375px;
     overflow-x: hidden;
     overflow-y: scroll;
 }
@@ -876,4 +876,11 @@ border: 0px solid #fff;
 border-radius: 2px;
 margin-left: 3px;
     }
+
+#forecastCss{
+    height: 65px;
+    border: 1px solid #ddd !important;
+    border-radius: 6px !important;
+    background: #ddd !important;
+}
     

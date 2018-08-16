@@ -19,21 +19,23 @@ export class SalesInquiryComponent extends AppComponentBase implements AfterView
 
    @ViewChild('createInquiryModal') createInquiryModal: CreateInquiryModalComponent;
    @ViewChild('ArchidataTable') ArchidataTable: DataTable;
+   @ViewChild('ClosedPaginator') ClosedPaginator: Paginator;
+   @ViewChild('QuotationPaginator') QuotationPaginator: Paginator;
+   @ViewChild('salesQuotdataTable') salesQuotdataTable: DataTable;
+   @ViewChild('dataTable') dataTable: DataTable;
+   @ViewChild('paginator') paginator: Paginator;
 
     advancedFiltersAreShown: boolean = false;
     filterText: string = '';
     filterText3: string = '';
     selectedPermission: string = '';
-    @ViewChild('dataTable') dataTable: DataTable;
-    @ViewChild('paginator') paginator: Paginator;
     filterText2: string = '';
     quotationArray: Array<any>;
     quotationArrayCount:number=0;
-    @ViewChild('salesQuotdataTable') salesQuotdataTable: DataTable;
     closedinquiryArray:Array<any>;
     closedinquiryArrayCount:number=0;
     reverse:NullableIdDto = new NullableIdDto();
-   constructor(
+    constructor(
         injector: Injector,
         private _http: Http,
         private _tokenAuth: TokenAuthServiceProxy,
@@ -66,26 +68,48 @@ export class SalesInquiryComponent extends AppComponentBase implements AfterView
  
     getInquiry(event?: LazyLoadEvent): void {
         let data;
+        let gridSkipCount = this.primengDatatableHelper.getSkipCount(this.paginator, event);
         if(this.primengDatatableHelper.getMaxResultCount(this.paginator, event)==0){
             data=10;
         }
         else{
             data=this.primengDatatableHelper.getMaxResultCount(this.paginator, event)
         }
+        if(event != undefined){
+            let MaxCount = event.rows.toString();
+            let SkipCount = event.first.toString();
+            sessionStorage.setItem('MaxCount'+abp.session.userId, MaxCount);
+            sessionStorage.setItem('SkipCount'+abp.session.userId, SkipCount);
+        }
+        let Max= sessionStorage.getItem('MaxCount'+abp.session.userId);
+        let Skip= sessionStorage.getItem('SkipCount'+abp.session.userId);
+        if(Max != null){
+            setTimeout(() => {
+                this.paginator.rows = JSON.parse(Max);
+                data = JSON.parse(Max);
+           });    
+        }
+        if(Skip != null){
+            setTimeout(() => {
+                this.paginator.first = JSON.parse(Skip);
+                gridSkipCount = JSON.parse(Skip);
+            });       
+         }
         this.primengDatatableHelper.showLoadingIndicator();
-
-        this._inquiryProxyService.getSalesInquiry(
-            this.filterText,
-            this.primengDatatableHelper.getSorting(this.dataTable),
-            data,
-            this.primengDatatableHelper.getSkipCount(this.paginator, event)
-        ).subscribe(result => {
-            this.primengDatatableHelper.totalRecordsCount = result.totalCount;
-            this.primengDatatableHelper.records = result.items;
-            this.primengDatatableHelper.hideLoadingIndicator();
+        setTimeout(() => {
+            this._inquiryProxyService.getSalesInquiry(
+                this.filterText,
+                this.primengDatatableHelper.getSorting(this.dataTable),
+                data,
+                gridSkipCount
+                ).subscribe(result => {
+                this.primengDatatableHelper.totalRecordsCount = result.totalCount;
+                this.primengDatatableHelper.records = result.items;
+                this.primengDatatableHelper.hideLoadingIndicator();
+            });
         });
-    }
- 
+     }
+
     createInquiry(): void {
         this._chatSignalrService.setPageTitle('New');
         this._chatSignalrService.setPageTag('Details');
@@ -109,23 +133,43 @@ export class SalesInquiryComponent extends AppComponentBase implements AfterView
 
     getQuotation(event?: LazyLoadEvent): void {
         let data;
-        if(this.primengDatatableHelper.getMaxResultCount(this.paginator, event)==0){
+        if(this.primengDatatableHelper.getMaxResultCount(this.QuotationPaginator, event)==0){
             data=10;
         }
         else{
-            data=this.primengDatatableHelper.getMaxResultCount(this.paginator, event)
+            data=this.primengDatatableHelper.getMaxResultCount(this.QuotationPaginator, event)
+        }
+        if(event != undefined){
+            let MaxCount = event.rows.toString();
+            let SkipCount = event.first.toString();
+            sessionStorage.setItem('MaxQuotationCount'+abp.session.userId, MaxCount);
+            sessionStorage.setItem('SkipQuotationCount'+abp.session.userId, SkipCount);
+        }
+        let Max= sessionStorage.getItem('MaxQuotationCount'+abp.session.userId);
+        let Skip= sessionStorage.getItem('SkipQuotationCount'+abp.session.userId);
+        if(Max != null){
+            setTimeout(() => {
+                this.QuotationPaginator.rows = JSON.parse(Max);
+                data = JSON.parse(Max);
+            });    
+        }
+        if(Skip != null){
+            setTimeout(() => {
+                this.QuotationPaginator.first = JSON.parse(Skip);
+            });       
         }
         this.primengDatatableHelper.showLoadingIndicator();
-
-        this._inquiryProxyService.getSalesQuotations(
-            this.filterText3,
-            this.primengDatatableHelper.getSorting(this.salesQuotdataTable),
-            data,
-            this.primengDatatableHelper.getSkipCount(this.paginator, event)
-        ).subscribe(result => {
-            this.quotationArray = result.items;
-            this.quotationArrayCount = result.totalCount;
-            this.primengDatatableHelper.hideLoadingIndicator();
+        setTimeout(() => { 
+            this._inquiryProxyService.getSalesQuotations(
+                this.filterText3,
+                this.primengDatatableHelper.getSorting(this.salesQuotdataTable),
+                data,
+                this.primengDatatableHelper.getSkipCount(this.QuotationPaginator, event)
+            ).subscribe(result => {
+                this.quotationArray = result.items;
+                this.quotationArrayCount = result.totalCount;
+                this.primengDatatableHelper.hideLoadingIndicator();
+            });
         });
     }
 
@@ -178,24 +222,44 @@ openClosedInquiry(data): void{
     }
     getclosedInquiry(event?: LazyLoadEvent): void {
         let data;
-        
-        if(this.primengDatatableHelper.getMaxResultCount(this.paginator, event)==0){
+        if(this.primengDatatableHelper.getMaxResultCount(this.ClosedPaginator, event)==0){
             data=10;
         }
         else{
-            data=this.primengDatatableHelper.getMaxResultCount(this.paginator, event)
+            data=this.primengDatatableHelper.getMaxResultCount(this.ClosedPaginator, event)
+        }
+        if(event != undefined){
+            let MaxCount = event.rows.toString();
+            let SkipCount = event.first.toString();
+            sessionStorage.setItem('MaxClosedCount'+abp.session.userId, MaxCount);
+            sessionStorage.setItem('SkipClosedCount'+abp.session.userId, SkipCount);
+        }
+        let Max= sessionStorage.getItem('MaxClosedCount'+abp.session.userId);
+        let Skip= sessionStorage.getItem('SkipClosedCount'+abp.session.userId);
+        if(Max != null){
+            setTimeout(() => {
+                this.ClosedPaginator.rows = JSON.parse(Max);
+                data = JSON.parse(Max);
+            });    
+        }
+        if(Skip != null){
+            setTimeout(() => {
+                this.ClosedPaginator.first = JSON.parse(Skip);
+            });       
         }
         this.primengDatatableHelper.showLoadingIndicator();
 
-        this._inquiryProxyService.getClosedInquiry(
-            this.filterText2,
-            this.primengDatatableHelper.getSorting(this.ArchidataTable),
-            data,
-            this.primengDatatableHelper.getSkipCount(this.paginator, event)
-        ).subscribe(result => {
-            this.closedinquiryArrayCount = result.totalCount;
-            this.closedinquiryArray = result.items;
-            this.primengDatatableHelper.hideLoadingIndicator();
+        setTimeout(() => {
+            this._inquiryProxyService.getClosedInquiry(
+                this.filterText2,
+                this.primengDatatableHelper.getSorting(this.ArchidataTable),
+                data,
+                this.primengDatatableHelper.getSkipCount(this.ClosedPaginator, event)
+            ).subscribe(result => {
+                this.closedinquiryArrayCount = result.totalCount;
+                this.closedinquiryArray = result.items;
+                this.primengDatatableHelper.hideLoadingIndicator();
+            });
         });
     }
     exportToExcel(from): void {

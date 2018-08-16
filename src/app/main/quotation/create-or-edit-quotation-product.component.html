@@ -70,9 +70,16 @@
                                     </ng-select>
                                 </div>
                             </div>
-                            <div class="col-md-4" style="margin-top: 21px;">
+                            <div class="col-md-3" style="margin-top: 21px;">
                                 <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                    <label>Section<required_field></required_field></label>
+                                    <label>Finish <required_field></required_field></label>
+                                    <ng-select [active]="active_finish" [allowClear]="true" [items]="finish_arr" (selected)="selectFinish($event)" (removed)="removeFinish($event)" placeholder="Nothing is Selected">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-md-3" style="margin-top: 21px;">
+                                <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                                    <label>Section <required_field></required_field></label>
                                     <ng-select [active]="active_section" [allowClear]="true" [items]="section" (selected)="selectSection($event)" (removed)="removeSection($event)" placeholder="Nothing is Selected">
                                     </ng-select>
                                 </div>
@@ -109,21 +116,26 @@
                                                     </div>
                                                     <div class="col-md-12" style="background: #e4e2e2;margin-top: -6px;">
                                                     <div class="row" *ngIf="showFilter" style="margin: 10px;">
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-3">
                                                             <label>Product Category</label>
                                                                 <ng-select [active]="active_prodCategory" [allowClear]="true" [items]="productCategory" (selected)="selectCategory($event)" (removed)="removeCategory($event)" placeholder="Nothing is Selected">
                                                                 </ng-select>
                                                          </div>
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-3">
                                                             <label>Product Specification</label>
                                                                 <ng-select [active]="active_prodSpecification" [disabled]="!productCategoryId" [allowClear]="true" [items]="productSpecification" (selected)="selectSpecification($event)" (removed)="removeSpecification($event)" placeholder="Nothing is Selected">
                                                                 </ng-select>                                      
                                                         </div>
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-3">
+                                                            <label>Finish<required_field></required_field></label>
+                                                            <ng-select [active]="active_finish" [allowClear]="true" [items]="finish_arr" (selected)="selectFinish($event)" (removed)="removeFinish($event)" placeholder="Nothing is Selected">
+                                                            </ng-select>
+                                                        </div>
+                                                        <div class="col-md-3">
                                                                     <label>Section<required_field></required_field></label>
                                                                     <ng-select [active]="active_section" [allowClear]="true" [items]="section" (selected)="selectSection($event)" (removed)="removeSection($event)" placeholder="Nothing is Selected">
                                                                     </ng-select>
-                                                            </div>
+                                                        </div>
                                                     </div>
                                                     </div>
                                                     <div class="portlet-body" *ngIf="showFilter">
@@ -216,7 +228,7 @@
                                                                                         <i  *ngIf="record.bafcoMade" style="color: green" class="fa fa-check-circle-o" aria-hidden="true"></i>    
 
                                                                                 </span><br>
-                                                                                <span> Price : <span style="font-weight: 700;">{{record.price}} AED </span></span><br>
+                                                                                <!-- <span> Price : <span style="font-weight: 700;">{{record.price}} AED </span></span><br> -->
                                                                             </ng-template>
                                                                 </p-column>
                                                             </p-dataTable>
@@ -242,7 +254,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                    <input class="form-control" type="number" name="quantity" [ngClass]="{'edited':productInput.quantity}" [(ngModel)]="productInput.quantity" (keyup)="getTotalAmount(productInput.unitOfPrice)" required>
+                                    <input class="form-control" type="number" name="quantity" [ngClass]="{'edited':productInput.quantity}" [(ngModel)]="productInput.quantity" (keyup)="getTotalAmount(productInput.unitOfPrice)" (keydown)="check($event)" required>
                                     <label>{{l("Quantity")}}  <required_field></required_field></label>
                                 </div>
                             </div>
@@ -276,7 +288,7 @@
                             <div class="col-md-6">
                                 <div class="col-md-6" style="padding-left: 0px;">
                                     <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                        <input class="form-control" type="number" name="uop" [ngClass]="{'edited':productInput.unitOfPrice}" [(ngModel)]="productInput.unitOfPrice" (keyup)="getTotalAmount(productInput.unitOfPrice)" [disabled]="productInput.productId || productInput.temporaryProductId" required>
+                                        <input class="form-control" type="number" name="uop" [ngClass]="{'edited':productInput.unitOfPrice}" [(ngModel)]="productInput.unitOfPrice" (keyup)="getTotalAmount(productInput.unitOfPrice)" (keydown)="check($event)" [disabled]="productInput.productId || productInput.temporaryProductId" required>
                                         <label>{{l("Unit of Price")}}  <required_field></required_field></label>
                                     </div>
                                 </div>
@@ -289,25 +301,13 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                    <input class="form-control" type="number" name="t_amount" [ngClass]="{'edited':productInput.totalAmount}" [(ngModel)]="productInput.totalAmount" required>
+                                    <input class="form-control" type="number" name="t_amount" [ngClass]="{'edited':productInput.totalAmount}" [(ngModel)]="productInput.totalAmount" (keydown)="check($event)" required>
                                     <label>{{l("Total Amount")}}  <required_field></required_field></label>
                                 </div>
                             </div>
                            
                         </div>
-                    </div> 
-                    <!-- <div class="row">
-                    <div class="col-md-6">
-                        <label>Discount:</label>
-                        <div class="onoffswitch">
-                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" [(ngModel)]="productInput.discountable" (change)="getDiscount()" checked>
-                            <label class="onoffswitch-label" for="myonoffswitch">
-                                <span class="onoffswitch-inner"></span>
-                                <span class="onoffswitch-switch"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div> -->   
+                    </div>  
                 </div>
                 <div class="modal-footer">
                         <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button> 
