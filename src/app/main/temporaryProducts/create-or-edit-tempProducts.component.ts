@@ -183,7 +183,7 @@ export class CreateOrEditTempProductModalComponent extends AppComponentBase  {
         this.temporaryPictureUrl = '';
         this.modal.hide();
         this.active = false;
-        //this.modalSave.emit();
+        this.modalSave.emit();
     }
    
     deleteImg(data){

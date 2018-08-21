@@ -25,6 +25,7 @@ export interface SelectOption {
 export class CreateEditProductComponent extends AppComponentBase  {
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
+    @Output() modalClose: EventEmitter<any> = new EventEmitter<any>();
     @ViewChild('modal') modal: ModalDirective;
     @ViewChild('nameInput') nameInput: ElementRef;
     
@@ -514,6 +515,7 @@ export class CreateEditProductComponent extends AppComponentBase  {
         this.active_ProductState = [];
         this.active_StandardProduct = [];
         this.standardProductSelected = false;
+        this.modalClose.emit();
     }
     selectedPriceLevel(data){
         this.pricelevel.priceLevelId = data.id;
