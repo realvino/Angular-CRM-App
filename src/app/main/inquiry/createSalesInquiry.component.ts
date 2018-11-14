@@ -1029,6 +1029,8 @@ public removedAssigned(value:any):void {
             if(result){
               this.saveLeadInformation(result);
               this.updateSalesman();
+              this.createInquiryContactInfo(result);
+              this.createInquiryCompanyInfo(result);
               this.notify.info(this.l('Saved Successfully'));
               //this.close();
               this.router.navigate(["/app/main/sales-enquiry",result]);
@@ -1052,6 +1054,8 @@ public removedAssigned(value:any):void {
             if(result){
               this.saveLeadInformation(result);
               this.updateSalesman();
+              this.createInquiryContactInfo(result);
+              this.createInquiryCompanyInfo(result);
               this.notify.info(this.l('Saved Successfully'));
               //this.close();
               this.router.navigate(["/app/main/sales-enquiry",result]);

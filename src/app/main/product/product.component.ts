@@ -57,6 +57,20 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         this.getData();
         this.getTempProduct();
     }
+
+    reload(data?:any){
+        if(data){
+            if(data.from == 0){
+                this.createEditProductModal.show(data.id);
+            } else if(data.from == 1){
+                this.createTempProductModal.show(data.id);
+            }
+        }
+        else{
+            this.ngOnInit();
+        }         
+    }
+
     ngAfterViewInit(): void {
         this.filterText = this._activatedRoute.snapshot.queryParams['filterText'] || '';
         this.filterText2 = this._activatedRoute.snapshot.queryParams['filterText2'] || '';
@@ -114,7 +128,7 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         this.createTempProductModal.show(0,1);
     }
     editTempProduct(data): void {
-        this.createTempProductModal.show(data,1);
+        this.createTempProductModal.show(data.id,1);
     }
     deleteTempProduct(product_list:any): void {
         this.message.confirm(
@@ -146,7 +160,6 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
     }
 
     editLeads(data): void {
-        console.log(data.id,' Product Id');
         this.createEditProductModal.show(data.id);
     }
     exportExcel():void{

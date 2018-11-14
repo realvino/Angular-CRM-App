@@ -51,18 +51,18 @@
                     <p-column field="" 
                               header="{{l('Actions')}}"
                               [sortable]="false" 
-                              styleClass="width-percent-15"
+                              [style]="{'width':'75px'}"
                               [hidden]="!isGrantedAny('Pages.Administration.Roles.Edit', 'Pages.Administration.Roles.Delete')">
-                        <ng-template let-record="rowData" pTemplate="body">
-                            <div class="btn-group" dropdown>
-                                <button dropdownToggle class="dropdown-toggle btn btn-xs btn-primary blue"
-                                        data-toggle="dropdown"
-                                        tooltip="{{l('Actions')}}"
-                                        aria-haspopup="true"
-                                        aria-expanded="false">
-                                    <i class="fa fa-cog"></i><span class="caret"></span>
-                                </button>
-                                <ul *dropdownMenu class="dropdown-menu">
+                              <ng-template let-record="rowData" pTemplate="body">
+                                <div class="btn-group dropdown mydropdown">
+                                    <button class="dropdown-toggle btn btn-xs btn-primary blue"
+                                            data-toggle="dropdown"
+                                            tooltip="{{l('Actions')}}"
+                                            aria-haspopup="true"
+                                            aria-expanded="false">
+                                        <i class="fa fa-cog"></i><span class="caret"></span>
+                                    </button>
+                                <ul class="dropdown-menu">
                                     <li>
                                         <a *ngIf="permission.isGranted('Pages.Administration.Roles.Edit')"
                                            (click)="createOrEditRoleModal.show(record.id)">{{l('Edit')}}</a>

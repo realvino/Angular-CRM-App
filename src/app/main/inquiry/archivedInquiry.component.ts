@@ -578,5 +578,9 @@ export class ArchivedInquiryComponent extends AppComponentBase implements AfterV
               this.primengDatatableHelper.hideLoadingIndicator();
           });
       } 
+
+      editQuotation(data): void {
+        this.router.navigate(["/app/main/openquotation",data.id,data.inquiryId]);    
+    }
       
     }

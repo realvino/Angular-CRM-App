@@ -57,6 +57,7 @@ export class ChatBarComponent extends AppComponentBase implements OnInit, AfterV
     tenantToHostChatAllowed: boolean = false;
     interTenantChatAllowed: boolean = false;
     sendingMessage: boolean = false;
+    role: string = '';
     loadingPreviousUserMessages: boolean = false;
     userNameFilter: string = '';
     serverClientTimeDifference: number = 0;
@@ -120,6 +121,7 @@ export class ChatBarComponent extends AppComponentBase implements OnInit, AfterV
     ngOnInit(): void {
         this.init();
         this.salesManagerNotifications();
+        this.role = this._appSessionService.getLoginRole();
     }
 
     salesManagerNotifications(){
@@ -139,21 +141,29 @@ export class ChatBarComponent extends AppComponentBase implements OnInit, AfterV
 
       approve(dataid){
         this.InputData.id = dataid;
-        this.message.confirm(
-            this.l('To Accept the Opportunity'),
-                isConfirmed => {
-                if (isConfirmed) {
-                    this._inquiryServiceProxy.inquiryDesignerApproval(this.InputData).subscribe(result=>{
-                        this.salesManagerNotifications();
-                        this.notify.success("Approved successfully");
-                    });
+        if(this.role == "Admin"){
+            this.notify.error("Please login their account then do the action");
+        }else{
+            this.message.confirm(
+                this.l('To Accept the Opportunity'),
+                    isConfirmed => {
+                    if (isConfirmed) {
+                        this._inquiryServiceProxy.inquiryDesignerApproval(this.InputData).subscribe(result=>{
+                            this.salesManagerNotifications();
+                            this.notify.success("Approved successfully");
+                        });
+                    }
                 }
-            }
-        );
+            );
+        }
+        
     }
 
      reject(dataid){
         this.InputData.id = dataid;
+        if(this.role == "Admin"){
+            this.notify.error("Please login their account then do the action");
+        }else{
         this.message.confirm(
             this.l('To Reject the Opportunity'),
                 isConfirmed => {
@@ -165,11 +175,15 @@ export class ChatBarComponent extends AppComponentBase implements OnInit, AfterV
                 }
             }
         );
+      }
     }
 
     dapprove(dataid,typeid){
         this.RevisionInputData.id = dataid;
         this.RevisionInputData.typeId = typeid;
+        if(this.role == "Admin"){
+            this.notify.error("Please login their account then do the action");
+        }else{
         if(typeid == 1)
         {
          this.message.confirm(
@@ -218,7 +232,7 @@ export class ChatBarComponent extends AppComponentBase implements OnInit, AfterV
                 }
             );
         }
-        
+    } 
     }
 
 

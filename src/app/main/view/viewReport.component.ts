@@ -230,6 +230,7 @@ export class ViewReportComponent extends AppComponentBase implements OnInit {
 
     getInquiry(event?: LazyLoadEvent): void {
         let data;
+        this.paginator.first = 0;
         if(this.primengDatatableHelper.getMaxResultCount(this.paginator, event)==0){
             data=10;
         }
@@ -267,8 +268,7 @@ export class ViewReportComponent extends AppComponentBase implements OnInit {
             this.ClosureId,
             this.LastActId,
             this.primengDatatableHelper.getSorting(this.dataTable),
-            data,
-            this.primengDatatableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
+            data,this.primengDatatableHelper.getSkipCount(this.paginator, event) ).subscribe(result => {
             this.primengDatatableHelper.totalRecordsCount = result.totalCount;
             this.primengDatatableHelper.records = result.items;
             console.log(result.items); 
@@ -881,7 +881,12 @@ hideColumn(col){
         break;
 
         default:
-        this.notify.warn(this.l('You are not authorized to access this Quotation'));
+        if(this.isGranted('Pages.Manage.Leads')){
+            window.open('app/main/quotation/'+event.data.quotationId, "_blank");
+        }
+        else{
+            this.notify.warn(this.l('You are not authorized to access this Quotation'));
+        }
 
     }
 

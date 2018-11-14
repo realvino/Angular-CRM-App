@@ -2,6 +2,7 @@ import { Component, ViewChild, Injector, ElementRef, Output, EventEmitter, OnIni
 import { ModalDirective,TabsetComponent } from 'ngx-bootstrap';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TeamServiceProxy, TeamListDto,CreateTeamInput,Select2ServiceProxy,Datadto,TeamDetailList,CreateTeamDetailInput } from "shared/service-proxies/service-proxies";
+// import { TransferTeamComponent } from './transferTeam.component';
  
 export interface SelectOption{
    id?: number;
@@ -20,6 +21,8 @@ export class CreateEditTeamComponent extends AppComponentBase implements OnInit 
     @ViewChild('modal') modal: ModalDirective;
     @ViewChild('nameInput') nameInput: ElementRef;
     @ViewChild('staticTabs') staticTabs: TabsetComponent;
+    // @ViewChild('transferTeamModal') transferTeamModal: TransferTeamComponent;
+
 	team:CreateTeamInput = new CreateTeamInput();
 	teams: TeamListDto [] = [];
 	teamdetails:TeamDetailList[] =[];

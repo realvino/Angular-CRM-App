@@ -40,7 +40,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="btn-group mydropdown" style="pointer-events: all;" *ngIf="isGranted('Pages.Tenant.Quotation.Revision.Request') && quotationList.designerName">
+                            <div class="btn-group mydropdown" style="pointer-events: all;" *ngIf="isGranted('Pages.Tenant.Quotation.Revision.Request') && quotationList.designerName && !this.quotationList.won && !this.quotationList.lost">
                                 <a class="btn green-haze btn-outline btn-circle btn-sm" (click)="DesigerRequest()" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false"> Designer Revision
                                     <i class="fa fa-angle-down"></i>
                                 </a>    
@@ -362,16 +362,16 @@
                                     </div> -->
                                     <div class="col-md-3" *ngIf="negotiationSwitch == true">
                                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
-                                            <input #nameInput class="form-control"  type="number"  [disabled]="true" name="amount" [ngClass]="{'edited':quotation.overAllDiscountAmount}" [(ngModel)]="quotation.overAllDiscountAmount" (keyup)="getAmount(quotation.overAllDiscountAmount,1)" (keydown)="check($event)">
-                                                <label>{{l("Discount (AED)")}}</label>
+                                            <input #nameInput class="form-control"  type="number"  [disabled]="false" name="amount" [ngClass]="{'edited':quotation.overAllDiscountAmount}" [(ngModel)]="quotation.overAllDiscountAmount" (keyup)="getAmount(quotation.overAllDiscountAmount,1)">
+                                                <label>{{l("Discount Amount")}}</label>
                                          </div>
                                     </div> 
-                                    <div class="col-md-3" *ngIf="negotiationSwitch == true">
+                                    <!-- <div class="col-md-3" *ngIf="negotiationSwitch == true">
                                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
                                             <input #nameInput class="form-control"  type="number" name="percentage" [ngClass]="{'edited':quotation.overAllDiscountPercentage}" [(ngModel)]="quotation.overAllDiscountPercentage" (keyup)="getAmount(quotation.overAllDiscountPercentage,2)" (keydown)="check($event)">
                                                 <label>{{l("Discount (%)")}}</label>
                                          </div>
-                                    </div>  
+                                    </div>   -->
                                     <div class="col-md-3" *ngIf="quotation.won == true">
                                         <div class="form-group form-md-line-input form-md-floating-label no-hint">
                                             <input #nameInput class="form-control"  type="text" name="ponumber" [ngClass]="{'edited':quotation.poNumber}" [(ngModel)]="quotation.poNumber" required>

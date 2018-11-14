@@ -50,6 +50,8 @@ export class CreateOrEditTempProductModalComponent extends AppComponentBase  {
     processed_image:boolean=false;
 
     finishedDetails: TemporaryFinishedDetailList[];
+    QuotationProductId: any;
+    ProductId: any;
     
     constructor(
         injector: Injector,
@@ -102,12 +104,13 @@ export class CreateOrEditTempProductModalComponent extends AppComponentBase  {
         self.imguploader.setOptions(self._uploaderOptions);
     }
     
-    show(QuotationProduct?:any,from?:number): void {
+    show(QuotationProductId?:any,from?:number): void {
+        this.ProductId = QuotationProductId;
         this.from = from;
         this.tempProduct_input = new TemporaryProductInput();
         if(from == 1){
-            this.testData = QuotationProduct;
-            this._tempProductServiceProxy.getTemporaryProductForEdit(QuotationProduct.id).subscribe(result=>{
+            //this.testData = QuotationProduct;
+            this._tempProductServiceProxy.getTemporaryProductForEdit(this.ProductId).subscribe(result=>{
                 console.log(result);
                 if(result.temporaryProductLists){
                     this.tempProduct_input = result.temporaryProductLists;
@@ -121,8 +124,8 @@ export class CreateOrEditTempProductModalComponent extends AppComponentBase  {
             });
         }
         else{
-            this.updateQuotationProduct = QuotationProduct;
-            this._tempProductServiceProxy.getTemporaryProductForEdit(this.updateQuotationProduct.temporaryProductId).subscribe(result=>{
+            //this.updateQuotationProduct = QuotationProduct;
+            this._tempProductServiceProxy.getTemporaryProductForEdit(this.ProductId).subscribe(result=>{
                 console.log(result);
                 if(result.temporaryProductLists){
                     this.tempProduct_input = result.temporaryProductLists;
@@ -159,7 +162,6 @@ export class CreateOrEditTempProductModalComponent extends AppComponentBase  {
                 this.updateQuotationProduct.overAllPrice = Math.round(this.updateQuotationProduct.unitOfPrice * this.updateQuotationProduct.quantity);
                 this.updateQuotationProduct.totalAmount = Math.round(this.updateQuotationProduct.unitOfPrice * this.updateQuotationProduct.quantity);
                 console.log(this.updateQuotationProduct);
-                alert(1);
                 if(this.updateQuotationProduct.id > 0)
                 {
                     this._quotationService.createOrUpdateQuotationProduct(this.updateQuotationProduct).subscribe(() => {
@@ -194,13 +196,8 @@ export class CreateOrEditTempProductModalComponent extends AppComponentBase  {
                 if(isConfirmed) {
                     this._tempProductServiceProxy.getDeleteTemporaryProductImage(data).subscribe(result=>{
                         this.notify.success("DeletedSuccessfully");
-                        if(this.from  == 1)
-                        {
-                            this.show(this.testData,this.from);
-                        }
-                        else{
-                            this.show(this.updateQuotationProduct,this.from);
-                        }                    });
+                        this.show(this.ProductId,this.from);        
+                    });
                 }
             }
         );
@@ -213,15 +210,8 @@ export class CreateOrEditTempProductModalComponent extends AppComponentBase  {
                 this.processed_image = false;
                 this.notify.success("ImageSavedSuccessfully");
             }, 3000);
-            if(this.from  == 1)
-            {
-                this.show(this.testData,this.from);
-                this.processed_image = false;
-            }
-            else{
-                this.show(this.updateQuotationProduct,this.from);
-                this.processed_image = false;
-            }
+            this.show(this.ProductId,this.from);
+            this.processed_image = false;
         });
     }
     check(event: KeyboardEvent) {

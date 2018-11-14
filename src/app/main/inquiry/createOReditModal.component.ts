@@ -258,7 +258,7 @@ export class CreateInquiryComponent extends AppComponentBase implements AfterVie
 		   this.id = +params['id']; // (+) converts string 'id' to a number
 		   this.show(this.id);
 		   this.getEnquiryActivity();
-		});
+		}); 
 		this.opts = {
       position: 'right',
       barBackground: 'grey',

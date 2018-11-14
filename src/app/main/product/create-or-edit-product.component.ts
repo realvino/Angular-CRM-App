@@ -79,7 +79,7 @@ export class CreateEditProductComponent extends AppComponentBase  {
     tempProductInput:TemporaryProductInput =new TemporaryProductInput();
 
     finishedDetails: FinishedDetailList[];
-    
+    proid:number;
     constructor(
         injector: Injector,
         private _selectProxyService: Select2ServiceProxy,
@@ -102,20 +102,17 @@ export class CreateEditProductComponent extends AppComponentBase  {
 
     initFileUploader(data? : any): void {
         let self = this;
-        console.log(data);
         self.imguploader = new FileUploader({ url: AppConsts.remoteServiceBaseUrl + "/Profile/UploadMultiProductPicture?ProductId="+data.id});
         self._uploaderOptions.autoUpload = true;
         self._uploaderOptions.authToken = 'Bearer ' + self._tokenService.getToken();
         self._uploaderOptions.removeAfterUpload = true;
         self.imguploader.onAfterAddingFile = (file) => {
             file.withCredentials = false;
-            console.log(file);
         };
         self.imguploader.onSuccessItem = (item, response, status) => {
             this.processed_image = true;
             let resp = <IAjaxResponse>JSON.parse(response);
             if (resp.success) {
-                console.log(resp.result);
                 this.temporaryPictureUrl = AppConsts.remoteServiceBaseUrl + resp.result.fileName;
                 this.pictureFileName = resp.result.fileName;
                 if(this.pictureFileName!=null && this.product_input.id!=null && this.product_input.id!=0){
@@ -128,11 +125,10 @@ export class CreateEditProductComponent extends AppComponentBase  {
                 this.processed_image = false;
             }
         };
-        console.log(this.pictureFileName,'opopopopopop');
         self.imguploader.setOptions(self._uploaderOptions);
     }
     
-    show(product?:any): void {
+    show(productId?:any): void {
         this.product_input = new ProductInput();
         this._selectProxyService.getProductSpecification().subscribe(result=>{
             if(result.select2data!=null){
@@ -185,25 +181,8 @@ export class CreateEditProductComponent extends AppComponentBase  {
                 });
             }
         });
-
-        /* this._selectProxyService.getProduct().subscribe(result =>{
-            if(result.select2data!=null){
-                this.standardProductdto = result.select2data;
-                this.standardProduct = [];
-                this.standardProductdto.forEach((stdPro:{id:number,name:string})=>{
-                    this.standardProduct.push({
-                        id:stdPro.id,
-                        text:stdPro.name
-                    });
-                   
-                });
-            }
-
-        }); */
-        
-        this.productEdit(product,1);
-        this.modal.show();
-        this.active= true;
+        this.productEdit(productId,1);
+       
     }
 
     selectedStandardProduct(data:any){
@@ -226,7 +205,6 @@ export class CreateEditProductComponent extends AppComponentBase  {
                 this.product_input.description = result.productLists.description;
             }
             if(result.images != null){
-                console.log("EditImage",result.images);
                 this.imageList = result.images;
             }
         });
@@ -274,7 +252,7 @@ export class CreateEditProductComponent extends AppComponentBase  {
                          }
                         this.standardProduct.push({
                            id:stdPro.id,
-                           text:`<colorbox style="background:url('${stdPro.imageUrl}');background-size: contain;background-repeat: no-repeat;width:60px;height:60px;display:block;float:left;margin-right:5px;border: 1px dotted #444d58;border-radius: 10px;background-size: cover;background-clip: border-box;"></colorbox>${stdPro.productCode}</br>${stdPro.specificationName}</br> Price:${stdPro.price} AED`					
+                           text:`<colorbox style="background:url('${stdPro.imageUrl}');background-size: contain;background-repeat: no-repeat;width:60px;height:60px;display:block;float:left;margin-right:5px;border: 1px dotted #444d58;border-radius: 10px;background-size: cover;background-clip: border-box;"></colorbox>${stdPro.productCode}</br>${stdPro.specificationName}`					
                         });
                     });
                 }
@@ -282,11 +260,9 @@ export class CreateEditProductComponent extends AppComponentBase  {
     }
 
     selectedSuspectCode(data:any){
-        console.log("selected",data);
         this.active_suspectCode =[{id:data.id, text:data.text}];
         this.suspect_Dto = true;
         this._temporaryProductServiceProxy.getTemporaryProductForEditBySuspectCode(data.text).subscribe(result=>{
-            console.log(result,"TempResult");
             if(result.temporaryProductLists != null){
 
                 if(this.product_input.id == null){
@@ -318,37 +294,22 @@ export class CreateEditProductComponent extends AppComponentBase  {
     }
 
     refreshSuspectCode(value:any){
-        console.log("refresh",value);
     }
     removedSuspectCode(value:any){
-        console.log("remove",value);
         this.active_suspectCode = [];
         this.suspect_Dto = false;
-        // this.product_input.suspectCode = "";
-        // this.product_input.productCode = "";
-        // this.product_input.productName = "";
-        // this.product_input.gpcode = "";
-        // this.product_input.price = null;
-        // this.product_input.description = "";
         this.productEdit(this.product_input.id,1);
 
         
     }
     typedSuspectCode(data:string){
-        console.log("typed",data);
         this.active_suspectCode =[{id:0, text:data}];
         this.suspect_Dto = false;
-        this.product_input.suspectCode = data;
-        // this.product_input.productCode = "";
-        // this.product_input.productName = "";
-        // this.product_input.gpcode = "";
-        // this.product_input.price = null;
-        // this.product_input.description = "";
-        
+        this.product_input.suspectCode = data;       
     }
 
-    productEdit(data,from){
-        this._productServiceProxy.getProductForEdit(data).subscribe(result=>{
+    productEdit(productId,from){
+        this._productServiceProxy.getProductForEdit(productId).subscribe(result=>{
             if(from){
             if(result.productLists){
                             
@@ -390,6 +351,9 @@ export class CreateEditProductComponent extends AppComponentBase  {
             }
         }
         });
+
+        this.modal.show();
+        this.active= true;
     }
     private selectedProductgroup(data){
         this.active_product = [{id:data.id,text:data.text}];
@@ -426,18 +390,22 @@ export class CreateEditProductComponent extends AppComponentBase  {
                 this._productServiceProxy.createOrUpdateProduct(this.product_input)
                 .finally(() => this.saving = false)
                 .subscribe((result) => {
-                    if(result > 0){
+                    if(result > 0){                      
                         this.product_imageInput.id = 0;
                         this.product_imageInput.productId = result;
                         this.imageList.forEach((image:{id:number,imageUrl:string})=>{
                             this.product_imageInput.imageUrl = image.imageUrl;
-                            console.log("Image",this.product_imageInput);
                             this._productServiceProxy.createProductImages(this.product_imageInput).subscribe(result=>{
                             });
                         });
+                        this.close();
+                        if(this.product_input.id > 0){
+                            this.modalSave.emit();
+                         }
+                         else{
+                            this.modalSave.emit({id: result, from: 0});
+                         }
                     }
-                    this.close();
-                    this.modalSave.emit(this.product_input);
                 });
             }
             else{
@@ -454,27 +422,41 @@ export class CreateEditProductComponent extends AppComponentBase  {
 
                 this._temporaryProductServiceProxy.createOrUpdateTemporaryProduct(this.tempProductInput)
                 .finally(() => this.saving = false)
-                .subscribe(result=>{              
-                    this.close();
-                    this.modalSave.emit(this.tempProductInput);
+                .subscribe(result=>{    
+                    this.close();          
+                    if(this.product_input.id > 0){
+                        this.modalSave.emit();
+                     }
+                     else{
+                        this.modalSave.emit({id: result, from: 1});
+                     }
                 });
             }
             
         }
         else{
             if(this.suspect_Dto){
-                console.log(this.temporaryProduct_LinkInput);
                 this._productServiceProxy.linkProductToQuotation(this.temporaryProduct_LinkInput).subscribe(result=>{
                     this.close();
-                    this.modalSave.emit(this.temporaryProduct_LinkInput);          
-               });           
+                    if(this.product_input.id > 0){
+                        this.modalSave.emit();
+                     }
+                     else{
+                        this.modalSave.emit({id: result, from: 0});
+                     }
+                });           
             }
             else
             {
                 this._productServiceProxy.createOrUpdateProduct(this.product_input).subscribe(result=>{
-                     this.close();
-                     this.modalSave.emit(this.product_input);
-                },error =>{
+                    if(this.product_input.id > 0){
+                        this.close();
+                        this.modalSave.emit();
+                     }
+                     else{
+                        this.modalSave.emit({id: result, from: 0});
+                     }
+                    },error =>{
                     this.saving = false;
                 } 
               );
@@ -537,7 +519,6 @@ export class CreateEditProductComponent extends AppComponentBase  {
         });
     }
     editPrice(data){
-        console.log(data);
         this.EditPriceModal.show(data);
     }
     deletePrice(data):void{
@@ -554,7 +535,6 @@ export class CreateEditProductComponent extends AppComponentBase  {
         );
     }
     deleteImg(data){
-        console.log(data);
         this.message.confirm(
             this.l('Are you sure to Delete this Product Image'),
             isConfirmed => {
@@ -569,16 +549,14 @@ export class CreateEditProductComponent extends AppComponentBase  {
     }
     productImageSave(){
         this.product_imageInput.id = 0;
-        console.log("ImageSave",this.product_imageInput);
         this._productServiceProxy.createProductImages(this.product_imageInput).subscribe(result=>{
-            console.log(result);
            
             setTimeout(() => {
                 this.processed_image = false;
                 this.notify.success("ImageSavedSuccessfully");
             }, 3000);
             
-            this.productEdit(this.product_input.id,0);
+            this.productEdit(this.product_imageInput.productId,0);
         });
     }
 

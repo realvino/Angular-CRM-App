@@ -314,8 +314,12 @@ export class ForecastComponent extends AppComponentBase implements AfterViewInit
 			break;
 
 			default:
+			if(this.isGranted('Pages.Manage.Leads')){
+                window.open('app/main/sales-enquiry/'+value.id, "_blank");
+            }
+            else{
 			this.notify.warn(this.l('You are not authorized to access this lead'));
-
+            }
 		}
 	}
 } 

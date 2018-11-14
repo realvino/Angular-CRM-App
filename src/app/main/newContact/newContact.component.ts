@@ -329,7 +329,6 @@ export class newContactComponent extends AppComponentBase implements OnInit,Afte
     model.value.newtitleid = 0;
   }
   public selectedCompany(value: any,model): void {
-    alert(value.id);
     this.contact_edit.newCompanyId = value.id;
  }
 

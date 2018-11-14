@@ -201,8 +201,13 @@ bouncePercent = {
             window.open('app/main/sales-enquiry/'+enq_data.inquiryId, "_blank");
 			break;
 
-			default:
+            default:
+            if(this.isGranted('Pages.Manage.Leads')){
+                window.open('app/main/sales-enquiry/'+enq_data.inquiryId, "_blank");
+            }
+            else{
 			this.notify.warn(this.l('You are not authorized to access this lead'));
+            }
 
 		}
     }

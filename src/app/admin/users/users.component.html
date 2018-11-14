@@ -80,15 +80,17 @@
                               [sortable]="false"
                               [style]="{'width':'75px'}"
                               [hidden]="!isGrantedAny('Pages.Administration.Users.Impersonation', 'Pages.Administration.Users.Edit', 'Pages.Administration.Users.ChangePermissions', 'Pages.Administration.Users.Delete')">
-                        <ng-template let-record="rowData" pTemplate="body">
-                            <div class="btn-group" dropdown>
-                                <button dropdownToggle class="dropdown-toggle btn btn-xs btn-primary blue"
-                                        data-toggle="dropdown"
-                                        aria-haspopup="true"
-                                        aria-expanded="false">
-                                    <i class="fa fa-cog"></i><span class="caret"></span>
-                                </button>
-                                <ul *dropdownMenu class="dropdown-menu">
+                            
+                              <ng-template let-record="rowData" pTemplate="body">
+                                    <div class="btn-group dropdown mydropdown">
+                                        <button class="dropdown-toggle btn btn-xs btn-primary blue"
+                                                data-toggle="dropdown"
+                                                tooltip="{{l('Actions')}}"
+                                                aria-haspopup="true"
+                                                aria-expanded="false">
+                                            <i class="fa fa-cog"></i><span class="caret"></span>
+                                        </button>
+                                    <ul class="dropdown-menu">
                                     <li>
                                         <a *ngIf="permission.isGranted('Pages.Administration.Users.Impersonation') && record.id !== appSession.userId"
                                            (click)="_impersonationService.impersonate(record.id, appSession.tenantId)">{{l('LoginAsThisUser')}}</a>

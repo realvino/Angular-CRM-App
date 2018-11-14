@@ -23,7 +23,9 @@ export interface SelectOption{
 export class CreateQuotationProductModalComponent extends AppComponentBase {
  
     datainput: number;
-    advancedSearch: boolean = false;;
+    advancedSearch: boolean = false;quotationId: number;
+    productId: number;
+;
     dis: number;
     custom: number;
     companyId: number;
@@ -102,9 +104,12 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
 
 
     show(productId?:number,quotationId?: number,companyId?: number): void { 
+
         this.advancedSearch = false;
         this.activeTempProduct = false;
         this.companyId = companyId;
+        this.productId = productId;
+        this.quotationId = quotationId;
         this.custom = 0;
         this.active_product = [];
         this.active_section = [];
@@ -234,10 +239,24 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
         this.modal.show();
     }
 
+    reload(data?:any){
+        console.log(data);
+        if(data){
+            if(data.from == 0){
+                this.createEditProductModal.show(data.id);
+            } else if(data.from == 1){
+                this.createTempProductModal.show(data.id);
+            }
+        }
+        else{
+            this.show(this.productId,this.quotationId,this.companyId);
+        }         
+    }
+    
     createOrEditProduct(from,_productId):void{
         if(from == true && this.product.temporaryProductId > 0)
         {
-            this.createTempProductModal.show(this.product,0);
+            this.createTempProductModal.show(this.product.temporaryProductId,0);
         }
         else if(from == true )
         {
@@ -256,7 +275,7 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
     }
 
     editTempProduct(): void {
-    this.createTempProductModal.show(this.product);
+    this.createTempProductModal.show(this.product.temporaryProductId);
     }
 
     getProducts(data): void {
@@ -362,6 +381,13 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
         this.modalSave.emit(this.productInput);
         this.modal.hide();
         this.active = false;
+        this.product_arr =[];
+        this.temporaryProduct =[];
+        this.selectedQuotationProductId = 0;
+        this.primengDatatableHelper.records = [];
+        this.primengDatatableHelper.totalRecordsCount = 0;
+        this.showFilter = false;
+
     }
     
     selectProduct(data:any){
@@ -413,7 +439,7 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
     removeProduct(data:any){
         this.finish_arr = [];
         this.active_finish =[];
-
+        this.productInput.finishedDetailId = null;
         this.productInput.productId =null;
         this.productInput.unitOfPrice =0;
         this.productInput.discountable = false;
@@ -518,27 +544,30 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
         this.finish_arr = [];
         this.active_finish =[];
 
-         if(typeId== '1')
-         {
+        if(typeId== '1')
+        {
             this.activeTempProduct = false;
             this.productInput.temporaryProductId = null;
             this.productInput.temporaryCode = null;
-            this.productInput.productCode = null;
+            this.productInput.temporaryFinishedDetailId = null;
             this.tempProductInput.id = null;
             this.productInput.locked = false;
             this.productInput.unitOfPrice =0;
             this.getDiscounts(this.companyId);
             this.getTotalAmount(0); 
-         }
-         else{
+        }
+        else{
             this.activeTempProduct = true;
             this.productInput.productId =null;
+            this.productInput.productCode = null;
+            this.productInput.finishedDetailId = null;
             this.productInput.unitOfPrice =0;
             this.productInput.discountable = false;
             this.getDiscounts(this.companyId);
             this.getTotalAmount(0);    
-         }
+        }
     }
+
     
     check(event: KeyboardEvent) {
         // 31 and below are control keys, don't block them.
@@ -635,7 +664,9 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
         this.productInput.unitOfPrice = 0;
         this.productInput.discountable = false;
         this.getDiscounts(this.companyId);
-        this.getTotalAmount(0); 
+        this.getTotalAmount(0);
+        this.productInput.temporaryFinishedDetailId=null; 
+        this.productInput.temporaryFinishedDetailId=null;
         
     }
 
@@ -807,9 +838,40 @@ export class CreateQuotationProductModalComponent extends AppComponentBase {
         {
             this.advancedSearch = true;
             this.expandFilter();
+            this.active_finish= [];
+            this.activeTempProduct = false;
+            this.productInput.temporaryProductId = null;
+            this.productInput.temporaryCode = null;
+            this.productInput.temporaryFinishedDetailId = null;
+            this.productInput.locked = false;
+            this.productInput.approval = false;
+            this.productInput.productId =null;
+            this.productInput.productCode = null;
+            this.productInput.finishedDetailId = null;
+            this.productInput.discountable = false;
+            this.productInput.unitOfPrice =0;
+            this.getDiscounts(this.companyId);
+            this.getTotalAmount(0); 
         } else if(data == 2)
         {
             this.advancedSearch = false;
+            this.active_finish= [];
+            this.activeTempProduct = false;
+            this.productInput.temporaryProductId = null;
+            this.productInput.temporaryCode = null;
+            this.productInput.temporaryFinishedDetailId = null;
+            this.productInput.locked = false;
+            this.productInput.approval = false;
+            this.productInput.productId =null;
+            this.productInput.productCode = null;
+            this.productInput.finishedDetailId = null;
+            this.productInput.discountable = false;
+            this.productInput.unitOfPrice =0;
+            this.getDiscounts(this.companyId);
+            this.getTotalAmount(0); 
+            this.primengDatatableHelper.records=[];
+            this.primengDatatableHelper.totalRecordsCount=0;
+            this.selectedQuotationProductId=0
         }
 
     }

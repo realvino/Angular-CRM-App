@@ -317,5 +317,5 @@
         </div>
     </div>
 </div>
-<createEditProductModal #createEditProductModal (modalClose)="show(productInput.id,productInput.quotationId)"></createEditProductModal>
+<createEditProductModal #createEditProductModal (modalSave)="reload($event)"></createEditProductModal>
 <createTempProductModal #createTempProductModal (modalSave)="show(productInput.id,productInput.quotationId)"></createTempProductModal>

@@ -12367,6 +12367,51 @@ export class InquiryServiceProxy {
     /**
      * @return Success
      */
+    updateInquiryLCNumber(input: LCNumberInput): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Inquiry/UpdateInquiryLCNumber";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input ? input.toJSON() : null);
+        
+        let options_ = {
+            body: content_,
+            method: "put",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processUpdateInquiryLCNumber(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processUpdateInquiryLCNumber(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdateInquiryLCNumber(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
     getSalesManagerNotifications(): Observable<ListResultDtoOfNotificationListDto> {
         let url_ = this.baseUrl + "/api/services/app/Inquiry/GetSalesManagerNotifications";
         url_ = url_.replace(/[?&]$/, "");
@@ -12458,51 +12503,6 @@ export class InquiryServiceProxy {
             return throwException("An unexpected server error occurred.", status, responseText);
         }
         return Observable.of<ListResultDtoOfNotificationListDto>(<any>null);
-    }
-
-    /**
-     * @return Success
-     */
-    updateInquiryLCNumber(input: LCNumberInput): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Inquiry/UpdateInquiryLCNumber";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(input ? input.toJSON() : null);
-        
-        let options_ = {
-            body: content_,
-            method: "put",
-            headers: new Headers({
-                "Content-Type": "application/json; charset=UTF-8", 
-                "Accept": "application/json; charset=UTF-8"
-            })
-        };
-
-        return this.http.request(url_, options_).flatMap((response_) => {
-            return this.processUpdateInquiryLCNumber(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof Response) {
-                try {
-                    return this.processUpdateInquiryLCNumber(response_);
-                } catch (e) {
-                    return <Observable<void>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<void>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processUpdateInquiryLCNumber(response: Response): Observable<void> {
-        const status = response.status; 
-
-        if (status === 200) {
-            const responseText = response.text();
-            return Observable.of<void>(<any>null);
-        } else if (status !== 200 && status !== 204) {
-            const responseText = response.text();
-            return throwException("An unexpected server error occurred.", status, responseText);
-        }
-        return Observable.of<void>(<any>null);
     }
 }
 
@@ -31758,6 +31758,51 @@ export class TeamServiceProxy {
         }
         return Observable.of<void>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    updateSalesmanTeam(input: SalesPersonTeamChange): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Team/UpdateSalesmanTeam";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input ? input.toJSON() : null);
+        
+        let options_ = {
+            body: content_,
+            method: "put",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+                "Accept": "application/json; charset=UTF-8"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processUpdateSalesmanTeam(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processUpdateSalesmanTeam(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdateSalesmanTeam(response: Response): Observable<void> {
+        const status = response.status; 
+
+        if (status === 200) {
+            const responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return Observable.of<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -31880,7 +31925,7 @@ export class TemporaryProductServiceProxy {
     /**
      * @return Success
      */
-    createOrUpdateTemporaryProduct(input: TemporaryProductInput): Observable<void> {
+    createOrUpdateTemporaryProduct(input: TemporaryProductInput): Observable<number> {
         let url_ = this.baseUrl + "/api/services/app/TemporaryProduct/CreateOrUpdateTemporaryProduct";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -31902,30 +31947,33 @@ export class TemporaryProductServiceProxy {
                 try {
                     return this.processCreateOrUpdateTemporaryProduct(response_);
                 } catch (e) {
-                    return <Observable<void>><any>Observable.throw(e);
+                    return <Observable<number>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<void>><any>Observable.throw(response_);
+                return <Observable<number>><any>Observable.throw(response_);
         });
     }
 
-    protected processCreateOrUpdateTemporaryProduct(response: Response): Observable<void> {
+    protected processCreateOrUpdateTemporaryProduct(response: Response): Observable<number> {
         const status = response.status; 
 
         if (status === 200) {
             const responseText = response.text();
-            return Observable.of<void>(<any>null);
+            let result200: number = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return Observable.of(result200);
         } else if (status !== 200 && status !== 204) {
             const responseText = response.text();
             return throwException("An unexpected server error occurred.", status, responseText);
         }
-        return Observable.of<void>(<any>null);
+        return Observable.of<number>(<any>null);
     }
 
     /**
      * @return Success
      */
-    createTemporaryProduct(input: TemporaryProductInput): Observable<void> {
+    createTemporaryProduct(input: TemporaryProductInput): Observable<number> {
         let url_ = this.baseUrl + "/api/services/app/TemporaryProduct/CreateTemporaryProduct";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -31947,24 +31995,27 @@ export class TemporaryProductServiceProxy {
                 try {
                     return this.processCreateTemporaryProduct(response_);
                 } catch (e) {
-                    return <Observable<void>><any>Observable.throw(e);
+                    return <Observable<number>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<void>><any>Observable.throw(response_);
+                return <Observable<number>><any>Observable.throw(response_);
         });
     }
 
-    protected processCreateTemporaryProduct(response: Response): Observable<void> {
+    protected processCreateTemporaryProduct(response: Response): Observable<number> {
         const status = response.status; 
 
         if (status === 200) {
             const responseText = response.text();
-            return Observable.of<void>(<any>null);
+            let result200: number = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return Observable.of(result200);
         } else if (status !== 200 && status !== 204) {
             const responseText = response.text();
             return throwException("An unexpected server error occurred.", status, responseText);
         }
-        return Observable.of<void>(<any>null);
+        return Observable.of<number>(<any>null);
     }
 
     /**
@@ -47422,6 +47473,45 @@ export interface IPagedResultDtoOfCompanyEnquiryList {
     items: CompanyEnquiryList[];
 }
 
+export class LCNumberInput implements ILCNumberInput {
+    inquiryId: number;
+    lcNumber: string;
+
+    constructor(data?: ILCNumberInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.inquiryId = data["inquiryId"];
+            this.lcNumber = data["lcNumber"];
+        }
+    }
+
+    static fromJS(data: any): LCNumberInput {
+        let result = new LCNumberInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["inquiryId"] = this.inquiryId;
+        data["lcNumber"] = this.lcNumber;
+        return data; 
+    }
+}
+
+export interface ILCNumberInput {
+    inquiryId: number;
+    lcNumber: string;
+}
+
 export class ListResultDtoOfNotificationListDto implements IListResultDtoOfNotificationListDto {
     items: NotificationListDto[];
 
@@ -47472,6 +47562,8 @@ export class NotificationListDto implements INotificationListDto {
     designerApproval: boolean;
     revisionApproval: boolean;
     count: number;
+    manager: string;
+    salesman: string;
 
     constructor(data?: INotificationListDto) {
         if (data) {
@@ -47490,6 +47582,8 @@ export class NotificationListDto implements INotificationListDto {
             this.designerApproval = data["designerApproval"];
             this.revisionApproval = data["revisionApproval"];
             this.count = data["count"];
+            this.manager = data["manager"];
+            this.salesman = data["salesman"];
         }
     }
 
@@ -47507,6 +47601,8 @@ export class NotificationListDto implements INotificationListDto {
         data["designerApproval"] = this.designerApproval;
         data["revisionApproval"] = this.revisionApproval;
         data["count"] = this.count;
+        data["manager"] = this.manager;
+        data["salesman"] = this.salesman;
         return data; 
     }
 }
@@ -47518,45 +47614,8 @@ export interface INotificationListDto {
     designerApproval: boolean;
     revisionApproval: boolean;
     count: number;
-}
-
-export class LCNumberInput implements ILCNumberInput {
-    inquiryId: number;
-    lcNumber: string;
-
-    constructor(data?: ILCNumberInput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.inquiryId = data["inquiryId"];
-            this.lcNumber = data["lcNumber"];
-        }
-    }
-
-    static fromJS(data: any): LCNumberInput {
-        let result = new LCNumberInput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["inquiryId"] = this.inquiryId;
-        data["lcNumber"] = this.lcNumber;
-        return data; 
-    }
-}
-
-export interface ILCNumberInput {
-    inquiryId: number;
-    lcNumber: string;
+    manager: string;
+    salesman: string;
 }
 
 export class GetLanguagesOutput implements IGetLanguagesOutput {
@@ -60294,6 +60353,7 @@ export class TeamDetailList implements ITeamDetailList {
     salesman: string;
     teamId: number;
     teamName: string;
+    isEnquiry: boolean;
 
     constructor(data?: ITeamDetailList) {
         if (data) {
@@ -60311,6 +60371,7 @@ export class TeamDetailList implements ITeamDetailList {
             this.salesman = data["salesman"];
             this.teamId = data["teamId"];
             this.teamName = data["teamName"];
+            this.isEnquiry = data["isEnquiry"];
         }
     }
 
@@ -60327,6 +60388,7 @@ export class TeamDetailList implements ITeamDetailList {
         data["salesman"] = this.salesman;
         data["teamId"] = this.teamId;
         data["teamName"] = this.teamName;
+        data["isEnquiry"] = this.isEnquiry;
         return data; 
     }
 }
@@ -60337,6 +60399,7 @@ export interface ITeamDetailList {
     salesman: string;
     teamId: number;
     teamName: string;
+    isEnquiry: boolean;
 }
 
 export class CreateTeamDetailInput implements ICreateTeamDetailInput {
@@ -60380,6 +60443,53 @@ export interface ICreateTeamDetailInput {
     id: number;
     salesmanId: number;
     teamId: number;
+}
+
+export class SalesPersonTeamChange implements ISalesPersonTeamChange {
+    salespersonId: number;
+    currentTeamId: number;
+    updateTeamId: number;
+    creatorUserId: number;
+
+    constructor(data?: ISalesPersonTeamChange) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.salespersonId = data["salespersonId"];
+            this.currentTeamId = data["currentTeamId"];
+            this.updateTeamId = data["updateTeamId"];
+            this.creatorUserId = data["creatorUserId"];
+        }
+    }
+
+    static fromJS(data: any): SalesPersonTeamChange {
+        let result = new SalesPersonTeamChange();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["salespersonId"] = this.salespersonId;
+        data["currentTeamId"] = this.currentTeamId;
+        data["updateTeamId"] = this.updateTeamId;
+        data["creatorUserId"] = this.creatorUserId;
+        return data; 
+    }
+}
+
+export interface ISalesPersonTeamChange {
+    salespersonId: number;
+    currentTeamId: number;
+    updateTeamId: number;
+    creatorUserId: number;
 }
 
 export class PagedResultDtoOfTemporaryProductList implements IPagedResultDtoOfTemporaryProductList {

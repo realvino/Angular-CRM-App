@@ -81,12 +81,12 @@ export class TeamComponent extends AppComponentBase implements AfterViewInit {
 			if (isConfirmed) {
 				this._teamProxyService.deleteTeam(teams.id)
                         .subscribe(result => {
-							if(result){
-							this.notify.success(this.l("Deleted Successfully"));	
-							}
-							else{
-								this.getTeam();
-							}
+							// if(result){
+							// this.notify.success(this.l("Deleted Successfully"));	
+							// }
+							// else{
+							// 	this.getTeam();
+							// }
 						});
 			} 
 			 
